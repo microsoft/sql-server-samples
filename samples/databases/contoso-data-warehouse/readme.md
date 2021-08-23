@@ -38,7 +38,7 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 <!-- Examples -->
-2. Visual Studio 2015 (or higher) with the latest SSDT installed
+1. Visual Studio 2015 (or higher) with the latest SSDT installed
 
 **Azure prerequisites:**
 
