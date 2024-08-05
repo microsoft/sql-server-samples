@@ -20,3 +20,6 @@ This includes samples for setting up mssql-server in Windows Containers. Current
 
 ## Handling UPDATE STATISTICS on SQL Server PolyBase external tables
 [This sample](https://github.com/microsoft/sql-server-samples/tree/master/samples/manage/polybase/external-table/README.md) describes an option to update statistics on SQL Server PolyBase external tables.
+
+## Regenerate IDENTITY column values in SQL Server and Azure SQL
+[This sample](https://github.com/microsoft/sql-server-samples/tree/master/samples/manage/stored-procedure/identity-management/README.md) describes an option to regenerate IDENTITY column values in SQL Server and Azure SQL, ensuring referential integrity and preserving related objects like constraints, indexes, and triggers. This process prevents data overflow errors and maintains data consistency without renaming or losing linked objects.
