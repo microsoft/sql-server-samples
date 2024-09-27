@@ -204,6 +204,9 @@ BEGIN
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -287,6 +290,9 @@ BEGIN
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -348,6 +354,9 @@ BEGIN
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -410,6 +419,9 @@ BEGIN
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -471,6 +483,9 @@ BEGIN
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -772,6 +787,9 @@ AS
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -838,6 +856,9 @@ AS
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -916,6 +937,9 @@ AS
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -996,6 +1020,9 @@ AS
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -1080,6 +1107,9 @@ AS
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -1149,6 +1179,9 @@ AS
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -1214,6 +1247,9 @@ AS
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -1255,6 +1291,9 @@ DECLARE @retry INT = 10;
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -1296,6 +1335,9 @@ DECLARE @retry INT = 10;
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -1335,6 +1377,9 @@ DECLARE @retry INT = 10;
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
@@ -1382,6 +1427,9 @@ DECLARE @retry INT = 10;
             ELSE
             BEGIN
                 PRINT 'Suffered an error for which Retry is inappropriate.';
+				IF XACT_STATE() = -1
+                    ROLLBACK TRANSACTION;
+
                 THROW;
             END
         END CATCH
