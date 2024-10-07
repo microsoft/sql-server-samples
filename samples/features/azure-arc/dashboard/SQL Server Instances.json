@@ -1,10 +1,10 @@
 {
   "properties": {
-    "lenses": {
-      "0": {
+    "lenses": [
+      {
         "order": 0,
-        "parts": {
-          "0": {
+        "parts": [
+          {
             "position": {
               "x": 0,
               "y": 0,
@@ -56,7 +56,7 @@
               }
             }
           },
-          "1": {
+          {
             "position": {
               "x": 3,
               "y": 0,
@@ -109,7 +109,7 @@
               }
             }
           },
-          "2": {
+          {
             "position": {
               "x": 9,
               "y": 0,
@@ -161,7 +161,7 @@
               }
             }
           },
-          "3": {
+          {
             "position": {
               "x": 12,
               "y": 0,
@@ -214,7 +214,7 @@
               }
             }
           },
-          "4": {
+          {
             "position": {
               "x": 0,
               "y": 5,
@@ -254,7 +254,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "resources\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n| where properties.detectedProperties.mssqldiscovered == \"true\"\r\n| extend machineIdHasSQLServerDiscovered = id\r\n| project name, machineIdHasSQLServerDiscovered, resourceGroup, subscriptionId\r\n| join kind= leftouter (\r\n    resources\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    | extend machineIdHasSQLServerExtensionInstalled = iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\")\r\n    | project Provisioning_State = properties.provisioningState,\r\n    License_Type = properties.settings.LicenseType,\r\n    ESU = iff(notnull(properties.settings.enableExtendedSecurityUpdates), \"enabled\", \"\"),\r\n    Extension_Version = properties.instanceView.typeHandlerVersion,\r\n    Exlcuded_instaces = properties.ExcludedSqlInstances,\r\n    Purview = iff(notnull(properties.settings.ExternalPolicyBasedAuthorization),\"enabled\",\"\"),\r\n    Entra = iff(notnull(properties.settings.AzureAD),\"enabled\",\"\"),\r\n    BPA = iff(notnull(properties.settings.AssessmentSettings),\"enabled\",\"\"),\r\n    machineIdHasSQLServerExtensionInstalled)\r\non $left.machineIdHasSQLServerDiscovered == $right.machineIdHasSQLServerExtensionInstalled\r\n| where isnotempty(machineIdHasSQLServerExtensionInstalled)\r\n| project-away machineIdHasSQLServerDiscovered, machineIdHasSQLServerExtensionInstalled",
+                  "value": "resources\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n| where properties.detectedProperties.mssqldiscovered == \"true\"\r\n| extend machineIdHasSQLServerDiscovered = id\r\n| project name, machineIdHasSQLServerDiscovered, resourceGroup, subscriptionId\r\n| join kind= leftouter (\r\n    resources\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    | extend machineIdHasSQLServerExtensionInstalled = iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\")\r\n    | project Provisioning_State = properties.provisioningState,\r\n    License_Type = properties.settings.LicenseType,\r\n    ESU = iff(notnull(properties.settings.enableExtendedSecurityUpdates), \"enabled\", \"\"),\r\n    Extension_Version = properties.instanceView.typeHandlerVersion,\r\n    Excluded_instances = properties.ExcludedSqlInstances,\r\n    Purview = iff(notnull(properties.settings.ExternalPolicyBasedAuthorization),\"enabled\",\"\"),\r\n    Entra = iff(notnull(properties.settings.AzureAD),\"enabled\",\"\"),\r\n    BPA = iff(notnull(properties.settings.AssessmentSettings),\"enabled\",\"\"),\r\n    machineIdHasSQLServerExtensionInstalled)\r\non $left.machineIdHasSQLServerDiscovered == $right.machineIdHasSQLServerExtensionInstalled\r\n| where isnotempty(machineIdHasSQLServerExtensionInstalled)\r\n| project-away machineIdHasSQLServerDiscovered, machineIdHasSQLServerExtensionInstalled",
                   "isOptional": true
                 }
               ],
@@ -266,7 +266,7 @@
               }
             }
           },
-          "5": {
+          {
             "position": {
               "x": 0,
               "y": 9,
@@ -318,7 +318,7 @@
               }
             }
           },
-          "6": {
+          {
             "position": {
               "x": 0,
               "y": 13,
@@ -371,7 +371,7 @@
               }
             }
           },
-          "7": {
+          {
             "position": {
               "x": 6,
               "y": 13,
@@ -424,7 +424,7 @@
               }
             }
           },
-          "8": {
+          {
             "position": {
               "x": 13,
               "y": 13,
@@ -477,7 +477,7 @@
               }
             }
           },
-          "9": {
+          {
             "position": {
               "x": 0,
               "y": 19,
@@ -530,7 +530,7 @@
               }
             }
           },
-          "10": {
+          {
             "position": {
               "x": 6,
               "y": 19,
@@ -571,7 +571,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "resources\n| where ['type']  ==\"microsoft.azurearcdata/sqlserverinstances/databases\"\n| summarize Count=count() by Encrypte=iif(tostring(properties['databaseOptions'].isEncrypted)==\"false\",\"No\", \"Yes\")",
+                  "value": "resources\n| where ['type']  ==\"microsoft.azurearcdata/sqlserverinstances/databases\"\n| summarize Count=count() by Encrypted=iif(tostring(properties['databaseOptions'].isEncrypted)==\"false\",\"No\", \"Yes\")",
                   "isOptional": true
                 }
               ],
@@ -583,7 +583,7 @@
               }
             }
           },
-          "11": {
+          {
             "position": {
               "x": 12,
               "y": 19,
@@ -636,7 +636,7 @@
               }
             }
           },
-          "12": {
+          {
             "position": {
               "x": 0,
               "y": 25,
@@ -689,7 +689,7 @@
               }
             }
           },
-          "13": {
+          {
             "position": {
               "x": 6,
               "y": 25,
@@ -742,7 +742,7 @@
               }
             }
           },
-          "14": {
+          {
             "position": {
               "x": 0,
               "y": 30,
@@ -796,9 +796,9 @@
               }
             }
           }
-        }
+        ]
       }
-    },
+    ],
     "metadata": {
       "model": {
         "timeRange": {

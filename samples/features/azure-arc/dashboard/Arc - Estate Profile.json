@@ -1,10 +1,10 @@
 {
   "properties": {
-    "lenses": {
-      "0": {
+    "lenses": [
+      {
         "order": 0,
-        "parts": {
-          "0": {
+        "parts": [
+          {
             "position": {
               "x": 0,
               "y": 0,
@@ -25,7 +25,7 @@
               }
             }
           },
-          "1": {
+          {
             "position": {
               "x": 0,
               "y": 2,
@@ -77,7 +77,7 @@
               }
             }
           },
-          "2": {
+          {
             "position": {
               "x": 2,
               "y": 2,
@@ -117,7 +117,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| summarize windowsServerCount = count()",
+                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| summarize windowsServerCount = count()",
                   "isOptional": true
                 }
               ],
@@ -129,7 +129,7 @@
               }
             }
           },
-          "3": {
+          {
             "position": {
               "x": 4,
               "y": 2,
@@ -169,7 +169,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| where osEdition == \"Datacenter\" \n| summarize windowsDCServerCount = count()",
+                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| where osEdition == \"Datacenter\" \n| summarize windowsDCServerCount = count()",
                   "isOptional": true
                 }
               ],
@@ -181,7 +181,7 @@
               }
             }
           },
-          "4": {
+          {
             "position": {
               "x": 6,
               "y": 2,
@@ -221,7 +221,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| where osEdition == \"Standard\" \n| summarize windowsStdServerCount = count()",
+                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| where osEdition == \"Standard\" \n| summarize windowsStdServerCount = count()",
                   "isOptional": true
                 }
               ],
@@ -233,7 +233,7 @@
               }
             }
           },
-          "5": {
+          {
             "position": {
               "x": 8,
               "y": 2,
@@ -273,7 +273,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n| where mssqlDiscovered == \"true\"\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| summarize SQLServerCount = count()",
+                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n| where mssqlDiscovered == \"true\"\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| summarize SQLServerCount = count()",
                   "isOptional": true
                 }
               ],
@@ -285,7 +285,7 @@
               }
             }
           },
-          "6": {
+          {
             "position": {
               "x": 10,
               "y": 2,
@@ -337,7 +337,7 @@
               }
             }
           },
-          "7": {
+          {
             "position": {
               "x": 12,
               "y": 2,
@@ -389,7 +389,7 @@
               }
             }
           },
-          "8": {
+          {
             "position": {
               "x": 14,
               "y": 2,
@@ -441,7 +441,7 @@
               }
             }
           },
-          "9": {
+          {
             "position": {
               "x": 16,
               "y": 2,
@@ -481,7 +481,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| where osSku contains \"Windows Server 2012\" \n| summarize windowsServerCount = count()",
+                  "value": "//Standard VM Query - VM alone\n//Can be used in other queries, pulls out the most important properties for Arc VMs\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Type of ESU assigned (Standard/Data center)\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\n| where osSku contains \"Windows Server 2012\" \n| summarize windowsServerCount = count()",
                   "isOptional": true
                 }
               ],
@@ -493,7 +493,7 @@
               }
             }
           },
-          "10": {
+          {
             "position": {
               "x": 18,
               "y": 2,
@@ -545,7 +545,7 @@
               }
             }
           },
-          "11": {
+          {
             "position": {
               "x": 21,
               "y": 2,
@@ -597,7 +597,7 @@
               }
             }
           },
-          "12": {
+          {
             "position": {
               "x": 0,
               "y": 5,
@@ -650,7 +650,7 @@
               }
             }
           },
-          "13": {
+          {
             "position": {
               "x": 0,
               "y": 11,
@@ -698,12 +698,12 @@
               "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
               "settings": {},
               "partHeader": {
-                "title": "Linix Servers by OS",
+                "title": "Linux Servers by OS",
                 "subtitle": "Linux servers by OS Version"
               }
             }
           },
-          "14": {
+          {
             "position": {
               "x": 0,
               "y": 17,
@@ -756,7 +756,7 @@
               }
             }
           },
-          "15": {
+          {
             "position": {
               "x": 9,
               "y": 17,
@@ -811,7 +811,7 @@
               }
             }
           },
-          "16": {
+          {
             "position": {
               "x": 18,
               "y": 17,
@@ -864,7 +864,7 @@
               }
             }
           },
-          "17": {
+          {
             "position": {
               "x": 0,
               "y": 23,
@@ -916,7 +916,7 @@
               }
             }
           },
-          "18": {
+          {
             "position": {
               "x": 13,
               "y": 23,
@@ -966,11 +966,11 @@
               },
               "partHeader": {
                 "title": "Distinct Windows OS SKUs",
-                "subtitle": "Count of distinct Wndows OS SKUs deployed"
+                "subtitle": "Count of distinct Windows OS SKUs deployed"
               }
             }
           },
-          "19": {
+          {
             "position": {
               "x": 16,
               "y": 23,
@@ -1022,7 +1022,7 @@
               }
             }
           },
-          "20": {
+          {
             "position": {
               "x": 13,
               "y": 26,
@@ -1074,7 +1074,7 @@
               }
             }
           },
-          "21": {
+          {
             "position": {
               "x": 0,
               "y": 29,
@@ -1127,7 +1127,7 @@
               }
             }
           },
-          "22": {
+          {
             "position": {
               "x": 0,
               "y": 34,
@@ -1180,7 +1180,7 @@
               }
             }
           },
-          "23": {
+          {
             "position": {
               "x": 0,
               "y": 39,
@@ -1201,7 +1201,7 @@
               }
             }
           },
-          "24": {
+          {
             "position": {
               "x": 0,
               "y": 40,
@@ -1254,7 +1254,7 @@
               }
             }
           },
-          "25": {
+          {
             "position": {
               "x": 0,
               "y": 46,
@@ -1307,7 +1307,7 @@
               }
             }
           },
-          "26": {
+          {
             "position": {
               "x": 0,
               "y": 52,
@@ -1356,11 +1356,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Server Distribution by Business Unit",
-                "subtitle": "All Servers by Business Unir tag value"
+                "subtitle": "All Servers by Business Unit tag value"
               }
             }
           },
-          "27": {
+          {
             "position": {
               "x": 0,
               "y": 59,
@@ -1413,7 +1413,7 @@
               }
             }
           },
-          "28": {
+          {
             "position": {
               "x": 13,
               "y": 59,
@@ -1466,7 +1466,7 @@
               }
             }
           },
-          "29": {
+          {
             "position": {
               "x": 0,
               "y": 65,
@@ -1519,7 +1519,7 @@
               }
             }
           },
-          "30": {
+          {
             "position": {
               "x": 0,
               "y": 71,
@@ -1572,7 +1572,7 @@
               }
             }
           },
-          "31": {
+          {
             "position": {
               "x": 0,
               "y": 77,
@@ -1620,14 +1620,14 @@
               "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
               "settings": {},
               "partHeader": {
-                "title": "SQL Server Distibution by  Data Center",
+                "title": "SQL Server Distribution by  Data Center",
                 "subtitle": "Count of SQL Servers discovered for each Data Center"
               }
             }
           }
-        }
+        ]
       }
-    },
+    ],
     "metadata": {
       "model": {
         "timeRange": {

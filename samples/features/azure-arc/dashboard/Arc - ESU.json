@@ -1,10 +1,10 @@
 {
   "properties": {
-    "lenses": {
-      "0": {
+    "lenses": [
+      {
         "order": 0,
-        "parts": {
-          "0": {
+        "parts": [
+          {
             "position": {
               "x": 0,
               "y": 0,
@@ -25,7 +25,7 @@
               }
             }
           },
-          "1": {
+          {
             "position": {
               "x": 0,
               "y": 2,
@@ -46,7 +46,7 @@
               }
             }
           },
-          "2": {
+          {
             "position": {
               "x": 6,
               "y": 2,
@@ -67,7 +67,7 @@
               }
             }
           },
-          "3": {
+          {
             "position": {
               "x": 12,
               "y": 2,
@@ -88,7 +88,7 @@
               }
             }
           },
-          "4": {
+          {
             "position": {
               "x": 0,
               "y": 3,
@@ -141,7 +141,7 @@
               }
             }
           },
-          "5": {
+          {
             "position": {
               "x": 6,
               "y": 3,
@@ -194,7 +194,7 @@
               }
             }
           },
-          "6": {
+          {
             "position": {
               "x": 12,
               "y": 3,
@@ -247,7 +247,7 @@
               }
             }
           },
-          "7": {
+          {
             "position": {
               "x": 0,
               "y": 8,
@@ -288,19 +288,19 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Windows 2012 Servers with no ESU license by Application\n//Applicaton breakdown requires tagging of resources\nResources\n| where type == \"microsoft.hybridcompute/machines\"\n| extend application = tostring(tags.Application)\n| extend osSku = tostring(properties.osSku)\n| extend esuLicense= tostring(properties.licenseProfile.esuProfile.licenseAssignmentState)\n//Change to Windows Server 2012 for live version\n| where osSku contains \"Windows Server 2012\"\n//Select Servers with no license\n| where esuLicense == \"NotAssigned\"\n| summarize ServerCount = count() by application",
+                  "value": "//Windows 2012 Servers with no ESU license by Application\n//Application breakdown requires tagging of resources\nResources\n| where type == \"microsoft.hybridcompute/machines\"\n| extend application = tostring(tags.Application)\n| extend osSku = tostring(properties.osSku)\n| extend esuLicense= tostring(properties.licenseProfile.esuProfile.licenseAssignmentState)\n//Change to Windows Server 2012 for live version\n| where osSku contains \"Windows Server 2012\"\n//Select Servers with no license\n| where esuLicense == \"NotAssigned\"\n| summarize ServerCount = count() by application",
                   "isOptional": true
                 }
               ],
               "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
               "settings": {},
               "partHeader": {
-                "title": "Windows Server 2012 ESU not assigned by appllication",
+                "title": "Windows Server 2012 ESU not assigned by application",
                 "subtitle": "Windows Server 2012 servers with no ESU active by application"
               }
             }
           },
-          "8": {
+          {
             "position": {
               "x": 6,
               "y": 8,
@@ -348,12 +348,12 @@
               "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
               "settings": {},
               "partHeader": {
-                "title": "SQL Server 2012 ESU not assigned by appllication",
+                "title": "SQL Server 2012 ESU not assigned by application",
                 "subtitle": "SQL Server 2012 servers with no ESU active by application"
               }
             }
           },
-          "9": {
+          {
             "position": {
               "x": 12,
               "y": 8,
@@ -406,7 +406,7 @@
               }
             }
           },
-          "10": {
+          {
             "position": {
               "x": 0,
               "y": 13,
@@ -458,7 +458,7 @@
               }
             }
           },
-          "11": {
+          {
             "position": {
               "x": 12,
               "y": 13,
@@ -511,7 +511,7 @@
               }
             }
           },
-          "12": {
+          {
             "position": {
               "x": 0,
               "y": 18,
@@ -564,7 +564,7 @@
               }
             }
           },
-          "13": {
+          {
             "position": {
               "x": 0,
               "y": 24,
@@ -616,7 +616,7 @@
               }
             }
           },
-          "14": {
+          {
             "position": {
               "x": 12,
               "y": 24,
@@ -669,7 +669,7 @@
               }
             }
           },
-          "15": {
+          {
             "position": {
               "x": 0,
               "y": 29,
@@ -721,7 +721,7 @@
               }
             }
           },
-          "16": {
+          {
             "position": {
               "x": 12,
               "y": 29,
@@ -774,9 +774,9 @@
               }
             }
           }
-        }
+        ]
       }
-    },
+    ],
     "metadata": {
       "model": {
         "timeRange": {

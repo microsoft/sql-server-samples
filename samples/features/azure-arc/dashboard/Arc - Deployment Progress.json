@@ -1,10 +1,10 @@
 {
   "properties": {
-    "lenses": {
-      "0": {
+    "lenses": [
+      {
         "order": 0,
-        "parts": {
-          "0": {
+        "parts": [
+          {
             "position": {
               "x": 0,
               "y": 0,
@@ -25,7 +25,7 @@
               }
             }
           },
-          "1": {
+          {
             "position": {
               "x": 0,
               "y": 2,
@@ -77,7 +77,7 @@
               }
             }
           },
-          "2": {
+          {
             "position": {
               "x": 3,
               "y": 2,
@@ -129,7 +129,7 @@
               }
             }
           },
-          "3": {
+          {
             "position": {
               "x": 7,
               "y": 2,
@@ -181,7 +181,7 @@
               }
             }
           },
-          "4": {
+          {
             "position": {
               "x": 11,
               "y": 2,
@@ -233,7 +233,7 @@
               }
             }
           },
-          "5": {
+          {
             "position": {
               "x": 14,
               "y": 2,
@@ -254,7 +254,7 @@
               }
             }
           },
-          "6": {
+          {
             "position": {
               "x": 0,
               "y": 4,
@@ -294,7 +294,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - used to count Windows Servers\n//Can be used in other queries, pulls out the most important properties for Arc VMs and related SQL Server instances\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n| where osType == \"windows\"\n| summarize windowsCount = count()",
+                  "value": "//Standard VM Query - used to count Windows Servers\n//Can be used in other queries, pulls out the most important properties for Arc VMs and related SQL Server instances\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n| where osType == \"windows\"\n| summarize windowsCount = count()",
                   "isOptional": true
                 }
               ],
@@ -302,11 +302,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Windows Servers",
-                "subtitle": "Count of Windws Servers registered to Arc"
+                "subtitle": "Count of Windows Servers registered to Arc"
               }
             }
           },
-          "7": {
+          {
             "position": {
               "x": 3,
               "y": 4,
@@ -346,7 +346,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - used to count Windows Servers\n//Can be used in other queries, pulls out the most important properties for Arc VMs and related SQL Server instances\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n| where osType == \"windows\"\n| summarize windowsCoreCount = sum(coreCount)",
+                  "value": "//Standard VM Query - used to count Windows Servers\n//Can be used in other queries, pulls out the most important properties for Arc VMs and related SQL Server instances\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n| where osType == \"windows\"\n| summarize windowsCoreCount = sum(coreCount)",
                   "isOptional": true
                 }
               ],
@@ -354,11 +354,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Windows Servers Core Count",
-                "subtitle": "Count of Windws Servers Cores registered to Arc"
+                "subtitle": "Count of Windows Servers Cores registered to Arc"
               }
             }
           },
-          "8": {
+          {
             "position": {
               "x": 7,
               "y": 4,
@@ -406,11 +406,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Provisioned Windows Server Servers",
-                "subtitle": "Windows Server servers where Provisioning State = \"Succeded\""
+                "subtitle": "Windows Server servers where Provisioning State = \"Succeeded\""
               }
             }
           },
-          "9": {
+          {
             "position": {
               "x": 11,
               "y": 4,
@@ -462,7 +462,7 @@
               }
             }
           },
-          "10": {
+          {
             "position": {
               "x": 0,
               "y": 6,
@@ -514,7 +514,7 @@
               }
             }
           },
-          "11": {
+          {
             "position": {
               "x": 3,
               "y": 6,
@@ -566,7 +566,7 @@
               }
             }
           },
-          "12": {
+          {
             "position": {
               "x": 7,
               "y": 6,
@@ -618,7 +618,7 @@
               }
             }
           },
-          "13": {
+          {
             "position": {
               "x": 11,
               "y": 6,
@@ -639,7 +639,7 @@
               }
             }
           },
-          "14": {
+          {
             "position": {
               "x": 0,
               "y": 8,
@@ -691,7 +691,7 @@
               }
             }
           },
-          "15": {
+          {
             "position": {
               "x": 3,
               "y": 8,
@@ -739,11 +739,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Servers with SQL Server Ent/Std Edition",
-                "subtitle": "Servers with at least one instance of Standard or Enterprisre Edition"
+                "subtitle": "Servers with at least one instance of Standard or Enterprise Edition"
               }
             }
           },
-          "16": {
+          {
             "position": {
               "x": 7,
               "y": 8,
@@ -795,7 +795,7 @@
               }
             }
           },
-          "17": {
+          {
             "position": {
               "x": 11,
               "y": 8,
@@ -816,7 +816,7 @@
               }
             }
           },
-          "18": {
+          {
             "position": {
               "x": 16,
               "y": 8,
@@ -868,7 +868,7 @@
               }
             }
           },
-          "19": {
+          {
             "position": {
               "x": 0,
               "y": 10,
@@ -908,19 +908,19 @@
                 },
                 {
                   "name": "query",
-                  "value": "resources\n| where type == 'microsoft.azurearcdata/sqlserverinstances'\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring(properties.status)\n| where provisioningState == \"Succeeded\"\n| summarize succeedededProvisioningInstanceCount = count()",
+                  "value": "resources\n| where type == 'microsoft.azurearcdata/sqlserverinstances'\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring(properties.status)\n| where provisioningState == \"Succeeded\"\n| summarize succeededProvisioningInstanceCount = count()",
                   "isOptional": true
                 }
               ],
               "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
               "settings": {},
               "partHeader": {
-                "title": "Provisioned SQL Server Instasnces",
+                "title": "Provisioned SQL Server Instances",
                 "subtitle": "Count of SQL Server instances provisioned"
               }
             }
           },
-          "20": {
+          {
             "position": {
               "x": 3,
               "y": 10,
@@ -972,7 +972,7 @@
               }
             }
           },
-          "21": {
+          {
             "position": {
               "x": 7,
               "y": 10,
@@ -984,7 +984,7 @@
               "type": "Extension/HubsExtension/PartType/MarkdownPart",
               "settings": {
                 "content": {
-                  "content": "<div style=''>\n<span style='font-weight:bold'>Connected and Provisioned Instances</span>\n<span style=''>Windows & Linux VMs can host multiple SQL Server Instances and so the total number of SQL Server Instances can exceed the number of SQL Server servers (servers with SQL Server discovered). Some servers may have SQL Sewrver discovered but there are no SQL Server engine instances and only other SQL Server roles such as Analysis Services, Reporting Services, or Integration Services are installed.</span>  \n<span>Total Connected & Provisioned instances should ideally equal Total SQL Server instances</span>\n</div>\n",
+                  "content": "<div style=''>\n<span style='font-weight:bold'>Connected and Provisioned Instances</span>\n<span style=''>Windows & Linux VMs can host multiple SQL Server Instances and so the total number of SQL Server Instances can exceed the number of SQL Server servers (servers with SQL Server discovered). Some servers may have SQL Server discovered but there are no SQL Server engine instances and only other SQL Server roles such as Analysis Services, Reporting Services, or Integration Services are installed.</span>  \n<span>Total Connected & Provisioned instances should ideally equal Total SQL Server instances</span>\n</div>\n",
                   "title": "",
                   "subtitle": "",
                   "markdownSource": 1,
@@ -993,7 +993,7 @@
               }
             }
           },
-          "22": {
+          {
             "position": {
               "x": 0,
               "y": 12,
@@ -1046,7 +1046,7 @@
               }
             }
           },
-          "23": {
+          {
             "position": {
               "x": 13,
               "y": 12,
@@ -1099,7 +1099,7 @@
               }
             }
           },
-          "24": {
+          {
             "position": {
               "x": 0,
               "y": 18,
@@ -1152,7 +1152,7 @@
               }
             }
           },
-          "25": {
+          {
             "position": {
               "x": 0,
               "y": 24,
@@ -1205,7 +1205,7 @@
               }
             }
           },
-          "26": {
+          {
             "position": {
               "x": 0,
               "y": 31,
@@ -1258,7 +1258,7 @@
               }
             }
           },
-          "27": {
+          {
             "position": {
               "x": 9,
               "y": 31,
@@ -1310,7 +1310,7 @@
               }
             }
           },
-          "28": {
+          {
             "position": {
               "x": 0,
               "y": 38,
@@ -1359,11 +1359,11 @@
               "settings": {},
               "partHeader": {
                 "title": "SQL Server Instances by Version",
-                "subtitle": "SQL Server instasnces enabled by Azure Arc by SQL Server version"
+                "subtitle": "SQL Server instances enabled by Azure Arc by SQL Server version"
               }
             }
           },
-          "29": {
+          {
             "position": {
               "x": 9,
               "y": 38,
@@ -1416,7 +1416,7 @@
               }
             }
           },
-          "30": {
+          {
             "position": {
               "x": 0,
               "y": 45,
@@ -1468,7 +1468,7 @@
               }
             }
           },
-          "31": {
+          {
             "position": {
               "x": 0,
               "y": 51,
@@ -1520,7 +1520,7 @@
               }
             }
           },
-          "32": {
+          {
             "position": {
               "x": 0,
               "y": 56,
@@ -1572,7 +1572,7 @@
               }
             }
           },
-          "33": {
+          {
             "position": {
               "x": 0,
               "y": 61,
@@ -1612,7 +1612,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//Standard VM Query - VM alone\r\n//Can be used in other queries, pulls out the most important properties for Arc VMs\r\n//Main Table - All Arc Virtual Machines\r\nresources\r\n//Arc registered VMs (Windows & linux)\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n//Boolean - SQL installed (true/false)\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n//Machine Characteristics\r\n| extend coreCount = toint(properties.detectedProperties.coreCount)\r\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\r\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\r\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\r\n//Machine ID & Name\r\n| extend machineId = tolower(tostring(id))\r\n| extend machineName = name\r\n//Operating System\r\n| extend osSku = tostring(properties.osSku)\r\n| extend osName = tostring(properties.osName)\r\n| extend osVersion = tostring(properties.osVersion)\r\n//Windows or Linux\r\n| extend osType = tostring(properties.osType)\r\n//OS Edition (Datacenter or Standard) \r\n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\r\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\r\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\r\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n//Type of ESU assigned (Standard/Data center)\r\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\r\n//\r\n//Include below if Subscription Name needed\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n//Agent Status\r\n| join kind=leftouter  (\r\n\t//Provisioned Servers\r\n\t//It is possible for a Server to be known to Arc but not fully provisioned - this query checks that state\r\n\tresources\r\n\t//Machine extensions resource type\r\n\t| where type == \"microsoft.hybridcompute/machines/extensions\"\r\n\t//Search for Approriate Agent\r\n\t| where properties.['type'] in (\"AzureMonitorWindowsAgent\", \"AzureMonitorLinuxAgent\")\r\n\t//extract Machine name from ID\r\n\t| extend machineIdHasAgentExtensionInstalled = tolower(iff(id contains \"/extensions/AzureMonitorWindowsAgent\" or id contains \"/extensions/AzureMonitorLinuxAgent\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n\t| extend provisioningState = properties.provisioningState\r\n\t| extend status = properties.instanceView.status.message\r\n\t)\r\non $left.machineId == $right.machineIdHasAgentExtensionInstalled",
+                  "value": "//Standard VM Query - VM alone\r\n//Can be used in other queries, pulls out the most important properties for Arc VMs\r\n//Main Table - All Arc Virtual Machines\r\nresources\r\n//Arc registered VMs (Windows & linux)\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n//Boolean - SQL installed (true/false)\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n//Machine Characteristics\r\n| extend coreCount = toint(properties.detectedProperties.coreCount)\r\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\r\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\r\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\r\n//Machine ID & Name\r\n| extend machineId = tolower(tostring(id))\r\n| extend machineName = name\r\n//Operating System\r\n| extend osSku = tostring(properties.osSku)\r\n| extend osName = tostring(properties.osName)\r\n| extend osVersion = tostring(properties.osVersion)\r\n//Windows or Linux\r\n| extend osType = tostring(properties.osType)\r\n//OS Edition (Datacenter or Standard) \r\n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\r\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\r\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\r\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n//Type of ESU assigned (Standard/Data center)\r\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\r\n//\r\n//Include below if Subscription Name needed\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n//Agent Status\r\n| join kind=leftouter  (\r\n\t//Provisioned Servers\r\n\t//It is possible for a Server to be known to Arc but not fully provisioned - this query checks that state\r\n\tresources\r\n\t//Machine extensions resource type\r\n\t| where type == \"microsoft.hybridcompute/machines/extensions\"\r\n\t//Search for Appropriate Agent\r\n\t| where properties.['type'] in (\"AzureMonitorWindowsAgent\", \"AzureMonitorLinuxAgent\")\r\n\t//extract Machine name from ID\r\n\t| extend machineIdHasAgentExtensionInstalled = tolower(iff(id contains \"/extensions/AzureMonitorWindowsAgent\" or id contains \"/extensions/AzureMonitorLinuxAgent\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n\t| extend provisioningState = properties.provisioningState\r\n\t| extend status = properties.instanceView.status.message\r\n\t)\r\non $left.machineId == $right.machineIdHasAgentExtensionInstalled",
                   "isOptional": true
                 }
               ],
@@ -1624,7 +1624,7 @@
               }
             }
           },
-          "34": {
+          {
             "position": {
               "x": 0,
               "y": 67,
@@ -1664,7 +1664,7 @@
                 },
                 {
                   "name": "query",
-                  "value": "//All Servers and all SQL Server Instances\r\n//version 1 - Comprehensive query which returns all VMs and also all SQL instances on\r\n//those VMs if they exist.\r\n//used to diagnose missing Agents, License type etc\r\n//Complex Query which operates across 3 resource types\r\n//\r\n//Resource Types used\r\n//1) resources where type == \"microsoft.hybridcompute/machines\" - All VMs\r\n//2) resourcecontainers where type == 'microsoft.resources/subscriptions' - Owning subscription for VMs\r\n//3) resources where type == 'microsoft.azurearcdata/sqlserverinstances' - collection of SQL Server instances on VM if they exist (outer join used)\r\n//4) resources where type == \"microsoft.hybridcompute/machines/extensions\" and properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\") - Extension holding SQLServer Agent for Server if it exists (again, outer join used)\r\n//\r\n// 1) gives us the underlying VM\r\n// 2) gives us the owning subscription\r\n// 3) Selects all Instances\r\n// 4) gets the license status (paid etc) & ESU Status\r\n//\r\n// 1) VMs with SQL\r\nresources \r\n//Arc registered VMs (Windows & linux)\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n//Machine Characteristics\r\n| extend coreCount = toint(properties.detectedProperties.coreCount)\r\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\r\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\r\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\r\n//Machine ID & Name\r\n| extend machineId = tolower(tostring(id))\r\n| extend machineName = name\r\n//Operating System\r\n| extend osSku = tostring(properties.osSku)\r\n| extend osName = tostring(properties.osName)\r\n| extend osVersion = tostring(properties.osVersion)\r\n//Windows or Linux\r\n| extend osType = tostring(properties.osType)\r\n//OS Edition (Datacenter or Standard) \r\n| extend osEdition = iff(osType == \"linux\", \"N/A\",iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\"))\r\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\r\n| extend osESU = properties.licenseProfile.esuProfile.licenseAssignmentState\r\n| extend osEsuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n//Type of ESU assigned (Standard/Data center)\r\n| extend osESUServerType = tostring(properties.licenseProfile.esuProfile.serverType)\r\n//\r\n// 2) Subscription Name\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n//\r\n// 3) Does the VM host at least 1 instance of SQL Server Standard or Enterprise\r\n| join kind = leftouter  (\r\n    resources\r\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\r\n    //SQL Server Version & Edition\r\n    | extend sqlVersion = tostring(properties.version)\r\n    | extend sqlEdition = tostring(properties.edition)\r\n    | extend sqlInstance = name\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | extend status = tostring(properties.status)\r\n    | extend sqlID = ['id']\r\n    //needed for join - container is \"owning\" VM hosting SQL\r\n    | extend containerId = tolower(tostring (properties.containerResourceId))\r\n    | where isnotempty(containerId)\r\n    | extend sqlSku = sku\r\n    | extend sqlLocation = location\r\n    | extend sqlTags = ['tags']\r\n    | extend sqlProperties = properties\r\n    | project-away subscriptionId, resourceGroup, ['type'], tenantId, name, ['id'], kind, location, ['tags'], properties\r\n)\r\non $left.machineId == $right.containerId\r\n//\r\n//4) Join for SQL Server Agent to retrieve Server Level License Type\r\n| join kind=leftouter  (\r\n    resources\r\n    //Machine extensions resource type\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    //Machine has SQL Server extension\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    | extend sqlAgentInstalled = \"Yes\"\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend agentName = name\r\n    //extract Machine name from ID\r\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n    | extend sqlEnableExtendedSecurityUpdates = properties.settings.enableExtendedSecurityUpdates\r\n    | extend  sqlESU = iff(notnull(sqlEnableExtendedSecurityUpdates), iff(sqlEnableExtendedSecurityUpdates == true,\"enabled\",\"disabled\"), \"N/A\")\r\n    | project-away name, resourceGroup, subscriptionId\r\n    )\r\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\r\n| join kind=leftouter  (\r\n\t//Provisioned Servers\r\n\t//It is possible for a Server to be known to Arc but not fully provisioned - this query checks that state\r\n\tresources\r\n\t//Machine extensions resource type\r\n\t| where type == \"microsoft.hybridcompute/machines/extensions\"\r\n\t//Search for Approriate Agent\r\n\t| where properties.['type'] in (\"AzureMonitorWindowsAgent\", \"AzureMonitorLinuxAgent\")\r\n\t//extract Machine name from ID\r\n\t| extend machineIdHasAgentExtensionInstalled = tolower(iff(id contains \"/extensions/AzureMonitorWindowsAgent\" or id contains \"/extensions/AzureMonitorLinuxAgent\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n\t| extend provisioningState = properties.provisioningState\r\n\t| extend status = properties.instanceView.status.message\r\n\t)\r\non $left.machineId == $right.machineIdHasAgentExtensionInstalled",
+                  "value": "//All Servers and all SQL Server Instances\r\n//version 1 - Comprehensive query which returns all VMs and also all SQL instances on\r\n//those VMs if they exist.\r\n//used to diagnose missing Agents, License type etc\r\n//Complex Query which operates across 3 resource types\r\n//\r\n//Resource Types used\r\n//1) resources where type == \"microsoft.hybridcompute/machines\" - All VMs\r\n//2) resourcecontainers where type == 'microsoft.resources/subscriptions' - Owning subscription for VMs\r\n//3) resources where type == 'microsoft.azurearcdata/sqlserverinstances' - collection of SQL Server instances on VM if they exist (outer join used)\r\n//4) resources where type == \"microsoft.hybridcompute/machines/extensions\" and properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\") - Extension holding SQLServer Agent for Server if it exists (again, outer join used)\r\n//\r\n// 1) gives us the underlying VM\r\n// 2) gives us the owning subscription\r\n// 3) Selects all Instances\r\n// 4) gets the license status (paid etc) & ESU Status\r\n//\r\n// 1) VMs with SQL\r\nresources \r\n//Arc registered VMs (Windows & linux)\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n//Machine Characteristics\r\n| extend coreCount = toint(properties.detectedProperties.coreCount)\r\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\r\n| extend processorNames = tostring(properties.detectedProperties.processorNames)\r\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\r\n//Machine ID & Name\r\n| extend machineId = tolower(tostring(id))\r\n| extend machineName = name\r\n//Operating System\r\n| extend osSku = tostring(properties.osSku)\r\n| extend osName = tostring(properties.osName)\r\n| extend osVersion = tostring(properties.osVersion)\r\n//Windows or Linux\r\n| extend osType = tostring(properties.osType)\r\n//OS Edition (Datacenter or Standard) \r\n| extend osEdition = iff(osType == \"linux\", \"N/A\",iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\"))\r\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\r\n| extend osESU = properties.licenseProfile.esuProfile.licenseAssignmentState\r\n| extend osEsuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n//Type of ESU assigned (Standard/Data center)\r\n| extend osESUServerType = tostring(properties.licenseProfile.esuProfile.serverType)\r\n//\r\n// 2) Subscription Name\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n//\r\n// 3) Does the VM host at least 1 instance of SQL Server Standard or Enterprise\r\n| join kind = leftouter  (\r\n    resources\r\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\r\n    //SQL Server Version & Edition\r\n    | extend sqlVersion = tostring(properties.version)\r\n    | extend sqlEdition = tostring(properties.edition)\r\n    | extend sqlInstance = name\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | extend status = tostring(properties.status)\r\n    | extend sqlID = ['id']\r\n    //needed for join - container is \"owning\" VM hosting SQL\r\n    | extend containerId = tolower(tostring (properties.containerResourceId))\r\n    | where isnotempty(containerId)\r\n    | extend sqlSku = sku\r\n    | extend sqlLocation = location\r\n    | extend sqlTags = ['tags']\r\n    | extend sqlProperties = properties\r\n    | project-away subscriptionId, resourceGroup, ['type'], tenantId, name, ['id'], kind, location, ['tags'], properties\r\n)\r\non $left.machineId == $right.containerId\r\n//\r\n//4) Join for SQL Server Agent to retrieve Server Level License Type\r\n| join kind=leftouter  (\r\n    resources\r\n    //Machine extensions resource type\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    //Machine has SQL Server extension\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    | extend sqlAgentInstalled = \"Yes\"\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend agentName = name\r\n    //extract Machine name from ID\r\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n    | extend sqlEnableExtendedSecurityUpdates = properties.settings.enableExtendedSecurityUpdates\r\n    | extend  sqlESU = iff(notnull(sqlEnableExtendedSecurityUpdates), iff(sqlEnableExtendedSecurityUpdates == true,\"enabled\",\"disabled\"), \"N/A\")\r\n    | project-away name, resourceGroup, subscriptionId\r\n    )\r\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\r\n| join kind=leftouter  (\r\n\t//Provisioned Servers\r\n\t//It is possible for a Server to be known to Arc but not fully provisioned - this query checks that state\r\n\tresources\r\n\t//Machine extensions resource type\r\n\t| where type == \"microsoft.hybridcompute/machines/extensions\"\r\n\t//Search for Appropriate Agent\r\n\t| where properties.['type'] in (\"AzureMonitorWindowsAgent\", \"AzureMonitorLinuxAgent\")\r\n\t//extract Machine name from ID\r\n\t| extend machineIdHasAgentExtensionInstalled = tolower(iff(id contains \"/extensions/AzureMonitorWindowsAgent\" or id contains \"/extensions/AzureMonitorLinuxAgent\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n\t| extend provisioningState = properties.provisioningState\r\n\t| extend status = properties.instanceView.status.message\r\n\t)\r\non $left.machineId == $right.machineIdHasAgentExtensionInstalled",
                   "isOptional": true
                 }
               ],
@@ -1678,9 +1678,9 @@
               }
             }
           }
-        }
+        ]
       }
-    },
+    ],
     "metadata": {
       "model": {
         "timeRange": {
