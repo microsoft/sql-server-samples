@@ -14,6 +14,7 @@ Releases provide convenient downloads of sample databases and applications, elim
   - [IoT Smart Grid sample v1.0](https://github.com/Microsoft/sql-server-samples/releases/tag/iot-smart-grid-v1.0) illustrates how SQL Server can be leveraged to ingest data from IoT devices and sensors, and how you can run analytics on that data.
 
 To see the complete list of resources in this repository, navigate to [Releases](https://github.com/Microsoft/sql-server-samples/releases)
+(this now includes an entity diagram of Northwind database) to help visual learners.
 
 ## Working in GitHub
 To contribute on GitHub, follow these steps:
