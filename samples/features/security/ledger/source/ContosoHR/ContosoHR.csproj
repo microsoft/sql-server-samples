@@ -61,7 +61,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.0" />
   </ItemGroup>
 
 </Project>
