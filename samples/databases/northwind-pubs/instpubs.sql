@@ -68,236 +68,129 @@ execute sp_addtype empid   ,'char(9)'     ,'NOT NULL'
 raiserror('Now at the create table section ....',0,1)
 
 GO
-
-CREATE TABLE authors
-(
-   au_id          id
-
-         CHECK (au_id like '[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]')
-
-         CONSTRAINT UPKCL_auidind PRIMARY KEY CLUSTERED,
-
-   au_lname       varchar(40)       NOT NULL,
-   au_fname       varchar(20)       NOT NULL,
-
-   phone          char(12)          NOT NULL
-
-         DEFAULT ('UNKNOWN'),
-
-   address        varchar(40)           NULL,
-   city           varchar(20)           NULL,
-   state          char(2)               NULL,
-
-   zip            char(5)               NULL
-
-         CHECK (zip like '[0-9][0-9][0-9][0-9][0-9]'),
-
-   contract       bit               NOT NULL
-)
+CREATE TABLE authors (
+    au_id          CHAR(11) CHECK (au_id LIKE '[0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]')
+                    CONSTRAINT UPKCL_auidind PRIMARY KEY CLUSTERED,
+    au_lname       VARCHAR(40) NOT NULL,
+    au_fname       VARCHAR(20) NOT NULL,
+    phone          CHAR(12) NOT NULL DEFAULT ('UNKNOWN'),
+    address        VARCHAR(40) NULL,
+    city           VARCHAR(20) NULL,
+    state          CHAR(2) NULL,
+    zip            CHAR(5) NULL CHECK (zip LIKE '[0-9][0-9][0-9][0-9][0-9]'),
+    contract       BIT NOT NULL
+);
 
 GO
 
-CREATE TABLE publishers
-(
-   pub_id         char(4)           NOT NULL
-
-         CONSTRAINT UPKCL_pubind PRIMARY KEY CLUSTERED
-
-         CHECK (pub_id in ('1389', '0736', '0877', '1622', '1756')
-            OR pub_id like '99[0-9][0-9]'),
-
-   pub_name       varchar(40)           NULL,
-   city           varchar(20)           NULL,
-   state          char(2)               NULL,
-
-   country        varchar(30)           NULL
-
-         DEFAULT('USA')
-)
+CREATE TABLE publishers (
+    pub_id         CHAR(4) NOT NULL 
+                    CONSTRAINT UPKCL_pubind PRIMARY KEY CLUSTERED 
+                    CHECK (pub_id IN ('1389', '0736', '0877', '1622', '1756') OR pub_id LIKE '99[0-9][0-9]'),
+    pub_name       VARCHAR(40) NULL,
+    city           VARCHAR(20) NULL,
+    state          CHAR(2) NULL,
+    country        VARCHAR(30) NULL DEFAULT('USA')
+);
 
 GO
 
-CREATE TABLE titles
-(
-   title_id       tid
-
-         CONSTRAINT UPKCL_titleidind PRIMARY KEY CLUSTERED,
-
-   title          varchar(80)       NOT NULL,
-
-   type           char(12)          NOT NULL
-
-         DEFAULT ('UNDECIDED'),
-
-   pub_id         char(4)               NULL
-
-         REFERENCES publishers(pub_id),
-
-   price          money                 NULL,
-   advance        money                 NULL,
-   royalty        int                   NULL,
-   ytd_sales      int                   NULL,
-   notes          varchar(200)          NULL,
-
-   pubdate        datetime          NOT NULL
-
-         DEFAULT (getdate())
-)
+CREATE TABLE titles (
+    title_id       CHAR(6) CONSTRAINT UPKCL_titleidind PRIMARY KEY CLUSTERED,
+    title          VARCHAR(80) NOT NULL,
+    type           CHAR(12) NOT NULL DEFAULT ('UNDECIDED'),
+    pub_id         CHAR(4) NULL REFERENCES publishers(pub_id),
+    price          MONEY NULL,
+    advance        MONEY NULL,
+    royalty        INT NULL,
+    ytd_sales      INT NULL,
+    notes          VARCHAR(200) NULL,
+    pubdate        DATETIME NOT NULL DEFAULT (GETDATE())
+);
 
 GO
 
-CREATE TABLE titleauthor
-(
-   au_id          id
-
-         REFERENCES authors(au_id),
-
-   title_id       tid
-
-         REFERENCES titles(title_id),
-
-   au_ord         tinyint               NULL,
-   royaltyper     int                   NULL,
-
-
-   CONSTRAINT UPKCL_taind PRIMARY KEY CLUSTERED(au_id, title_id)
-)
+CREATE TABLE titleauthor (
+    au_id          CHAR(11) REFERENCES authors(au_id),
+    title_id       CHAR(6) REFERENCES titles(title_id),
+    au_ord         TINYINT NULL,
+    royaltyper     INT NULL,
+    CONSTRAINT UPKCL_taind PRIMARY KEY CLUSTERED(au_id, title_id)
+);
 
 GO
 
-CREATE TABLE stores
-(
-   stor_id        char(4)           NOT NULL
-
-         CONSTRAINT UPK_storeid PRIMARY KEY CLUSTERED,
-
-   stor_name      varchar(40)           NULL,
-   stor_address   varchar(40)           NULL,
-   city           varchar(20)           NULL,
-   state          char(2)               NULL,
-   zip            char(5)               NULL
-)
+CREATE TABLE stores (
+    stor_id        CHAR(4) NOT NULL CONSTRAINT UPK_storeid PRIMARY KEY CLUSTERED,
+    stor_name      VARCHAR(40) NULL,
+    stor_address   VARCHAR(40) NULL,
+    city           VARCHAR(20) NULL,
+    state          CHAR(2) NULL,
+    zip            CHAR(5) NULL
+);
 
 GO
 
-CREATE TABLE sales
-(
-   stor_id        char(4)           NOT NULL
-
-         REFERENCES stores(stor_id),
-
-   ord_num        varchar(20)       NOT NULL,
-   ord_date       datetime          NOT NULL,
-   qty            smallint          NOT NULL,
-   payterms       varchar(12)       NOT NULL,
-
-   title_id       tid
-
-         REFERENCES titles(title_id),
-
-
-   CONSTRAINT UPKCL_sales PRIMARY KEY CLUSTERED (stor_id, ord_num, title_id)
-)
+CREATE TABLE sales (
+    stor_id        CHAR(4) NOT NULL REFERENCES stores(stor_id),
+    ord_num        VARCHAR(20) NOT NULL,
+    ord_date       DATETIME NOT NULL,
+    qty            SMALLINT NOT NULL,
+    payterms       VARCHAR(12) NOT NULL,
+    title_id       CHAR(6) REFERENCES titles(title_id),
+    CONSTRAINT UPKCL_sales PRIMARY KEY CLUSTERED (stor_id, ord_num, title_id)
+);
 
 GO
 
-CREATE TABLE roysched
-(
-   title_id       tid
-
-         REFERENCES titles(title_id),
-
-   lorange        int                   NULL,
-   hirange        int                   NULL,
-   royalty        int                   NULL
-)
+CREATE TABLE roysched (
+    title_id       CHAR(6) REFERENCES titles(title_id),
+    lorange        INT NULL,
+    hirange        INT NULL,
+    royalty        INT NULL
+);
 
 GO
 
-CREATE TABLE discounts
-(
-   discounttype   varchar(40)       NOT NULL,
-
-   stor_id        char(4) NULL
-
-         REFERENCES stores(stor_id),
-
-   lowqty         smallint              NULL,
-   highqty        smallint              NULL,
-   discount       dec(4,2)          NOT NULL
-)
+CREATE TABLE discounts (
+    discounttype   VARCHAR(40) NOT NULL,
+    stor_id        CHAR(4) NULL REFERENCES stores(stor_id),
+    lowqty         SMALLINT NULL,
+    highqty        SMALLINT NULL,
+    discount       DECIMAL(4,2) NOT NULL
+);
 
 GO
 
-CREATE TABLE jobs
-(
-   job_id         smallint          IDENTITY(1,1)
-
-         PRIMARY KEY CLUSTERED,
-
-   job_desc       varchar(50)       NOT NULL
-
-         DEFAULT 'New Position - title not formalized yet',
-
-   min_lvl        tinyint           NOT NULL
-
-         CHECK (min_lvl >= 10),
-
-   max_lvl        tinyint           NOT NULL
-
-         CHECK (max_lvl <= 250)
-)
+CREATE TABLE jobs (
+    job_id         SMALLINT IDENTITY(1,1) PRIMARY KEY CLUSTERED,
+    job_desc       VARCHAR(50) NOT NULL DEFAULT 'New Position - title not formalized yet',
+    min_lvl        TINYINT NOT NULL CHECK (min_lvl >= 10),
+    max_lvl        TINYINT NOT NULL CHECK (max_lvl <= 250)
+);
 
 GO
 
-CREATE TABLE pub_info
-(
-   pub_id         char(4)           NOT NULL
-
-         REFERENCES publishers(pub_id)
-
-         CONSTRAINT UPKCL_pubinfo PRIMARY KEY CLUSTERED,
-
-   logo           image                 NULL,
-   pr_info        text                  NULL
-)
+CREATE TABLE pub_info (
+    pub_id         CHAR(4) NOT NULL REFERENCES publishers(pub_id) CONSTRAINT UPKCL_pubinfo PRIMARY KEY CLUSTERED,
+    logo           IMAGE NULL,
+    pr_info        TEXT NULL
+);
 
 GO
 
-CREATE TABLE employee
-(
-   emp_id         empid
-
-         CONSTRAINT PK_emp_id PRIMARY KEY NONCLUSTERED
-
-         CONSTRAINT CK_emp_id CHECK (emp_id LIKE
-            '[A-Z][A-Z][A-Z][1-9][0-9][0-9][0-9][0-9][FM]' or
-            emp_id LIKE '[A-Z]-[A-Z][1-9][0-9][0-9][0-9][0-9][FM]'),
-
-   fname          varchar(20)       NOT NULL,
-   minit          char(1)               NULL,
-   lname          varchar(30)       NOT NULL,
-
-   job_id         smallint          NOT NULL
-
-         DEFAULT 1
-
-         REFERENCES jobs(job_id),
-
-   job_lvl        tinyint
-
-         DEFAULT 10,
-
-   pub_id         char(4)           NOT NULL
-
-         DEFAULT ('9952')
-
-         REFERENCES publishers(pub_id),
-
-   hire_date      datetime          NOT NULL
-
-         DEFAULT (getdate())
-)
+CREATE TABLE employee (
+    emp_id         CHAR(10) CONSTRAINT PK_emp_id PRIMARY KEY NONCLUSTERED CHECK (
+                    emp_id LIKE '[A-Z][A-Z][A-Z][1-9][0-9][0-9][0-9][0-9][FM]' OR 
+                    emp_id LIKE '[A-Z]-[A-Z][1-9][0-9][0-9][0-9][0-9][FM]'),
+    fname          VARCHAR(20) NOT NULL,
+    minit          CHAR(1) NULL,
+    lname          VARCHAR(30) NOT NULL,
+    job_id         SMALLINT NOT NULL DEFAULT 1 REFERENCES jobs(job_id),
+    job_lvl        TINYINT DEFAULT 10,
+    pub_id         CHAR(4) NOT NULL DEFAULT ('9952') REFERENCES publishers(pub_id),
+    hire_date      DATETIME NOT NULL DEFAULT (GETDATE())
+);
 
 GO
 
