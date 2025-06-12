@@ -5,8 +5,7 @@
     <RootNamespace>wwi_azure_functions</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.22" />
-    <PackageReference Include="MsSql.RestApi" Version="0.4.0" />
+    <PackageReference Include="Belgrade.TSql.RestApi" Version="0.9.5" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
