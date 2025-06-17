@@ -1,4 +1,4 @@
-﻿{
+{
   "schemaVersion": "1.0",
   "name": "Microsoft ruleset",
   "version": "1.1.17",
@@ -759,7 +759,7 @@
         "Performance"
       ],
       "displayName": "TF 2312 sets the default cardinality estimation model",
-      "description": "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compability level of SQL Server 2014 and higher versions. If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
+      "description": "Trace Flag 2312 sets the Query Optimizer cardinality estimation model to the default version of the database compatibility level of SQL Server 2014 and higher versions. If the database compatibility level is lower than 120, enabling trace flag 2312 uses the cardinality estimation model of SQL Server 2014 (120).",
       "message": "Trace Flag 2312 does not apply to this SQL Server version. Check if you need to set a non-default trace flag with the current system build and configuration",
       "helpLink": "https://support.microsoft.com/help/2801413",
       "level": "Low",
@@ -1141,7 +1141,7 @@
         "Backup"
       ],
       "displayName": "TF 3023 enables Backup Checksum option by default",
-      "description": "Trace Flag 3023 enables the CHECKSUM option of the BACKUP command by default. This trace flag forces the CHECKSUM option for BACKUP command even when not explicitely set. Starting with SQL Server 2014, this behavior is controlled by setting the Backup Checksum Default configuration option.",
+      "description": "Trace Flag 3023 enables the CHECKSUM option of the BACKUP command by default. This trace flag forces the CHECKSUM option for BACKUP command even when not explicitly set. Starting with SQL Server 2014, this behavior is controlled by setting the Backup Checksum Default configuration option.",
       "message": "Disable trace flag 3023 to turn off 'CHECKSUM' option as default for 'BACKUP' command",
       "helpLink": "https://support.microsoft.com/help/2656988",
       "level": "Information",
@@ -4638,7 +4638,7 @@
       ],
       "displayName": "System Health important messages",
       "description": "The system_health session is an Extended Events session that is included by default with SQL Server. This session starts automatically when the SQL Server Database Engine starts, and runs without any noticeable performance effects. The session collects system data that you can use to help troubleshoot performance issues in the Database Engine",
-      "message": "Error @{Error_Number} occured @{Error_Count} times. Last time was @{Last_Logged_Days_Ago} days ago",
+      "message": "Error @{Error_Number} occurred @{Error_Count} times. Last time was @{Last_Logged_Days_Ago} days ago",
       "helpLink": "https://docs.microsoft.com/sql/relational-databases/extended-events/use-the-system-health-session",
       "level": "High",
       "probes": [
