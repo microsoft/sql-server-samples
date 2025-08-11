@@ -1,7 +1,0 @@
-// ==========================
-//	Export Model
-// ==========================
-
-EXPORT MINING MODEL [<mining model,name,MyModel>]
-    TO '<file,file name,C:\MyModel.dmb>'
-	WITH DEPENDENCIES, PASSWORD='<password, string,>'

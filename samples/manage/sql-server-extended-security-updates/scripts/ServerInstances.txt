@@ -1,6 +1,0 @@
-Server1\SQL2008
-Server1\SQL2008R2
-Server2\SQL2008R2
-Server3\SQL2008
-Server4\SQL2008
-Server4

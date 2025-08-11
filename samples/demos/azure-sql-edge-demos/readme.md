@@ -1,2 +1,0 @@
-# Azure SQL Demos
-

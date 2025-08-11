@@ -1,9 +1,0 @@
-// ==========================
-// Stored Procedure Call
-//
-// namespace and class can be
-// omitted if the method is
-// unique within the assembly
-// ==========================
-
-CALL <assembly,name,MyAssembly>.<namespace,name,MyNamespace>.<class,name,MyClass>.<method,name,MyMethod>(<parameters,param list,>)

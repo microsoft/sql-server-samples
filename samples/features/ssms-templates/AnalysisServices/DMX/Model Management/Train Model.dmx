@@ -1,8 +1,0 @@
-// ==========================
-//   Train Mining Model
-//
-//  Trains a model inside a
-//  previously trained structure
-// ==========================
-
-INSERT INTO MINING MODEL [<mining model,name,MyModel>]

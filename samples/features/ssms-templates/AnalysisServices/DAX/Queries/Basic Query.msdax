@@ -1,4 +1,0 @@
-/* Basic DAX Query */
-
-EVALUATE <>
-ORDER BY <> <ASC or DESC>

@@ -1,7 +1,0 @@
-
-
-/**
- * A series of static factories for all hamcrest matchers.
- */
-class Matchers
-{

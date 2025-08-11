@@ -1,5 +1,0 @@
-// ===============================
-// 	Clear Mining Structure Cases
-// ===============================
-
-DELETE FROM MINING STRUCTURE [<mining structure,name,MyStructure>].CASES

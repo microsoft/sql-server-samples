@@ -1,5 +1,0 @@
-// ===============================
-// 	Clear Model Content
-// ===============================
-
-DELETE FROM MINING MODEL [<mining model,name,MyModel>]

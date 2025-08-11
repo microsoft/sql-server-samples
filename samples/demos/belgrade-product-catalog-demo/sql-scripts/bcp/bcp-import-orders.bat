@@ -1,1 +1,0 @@
-bcp dbo.Orders in .\orders.bcp -f orders.fmt -S 127.0.0.1 -d ProductCatalog -T

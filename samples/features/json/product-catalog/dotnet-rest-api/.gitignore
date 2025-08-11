@@ -1,9 +1,0 @@
-*.xproj.user
-.vs/*
-.vscode/*
-bin/*
-obj/*
-*.sln
-*.log
-*.lock.json
-appsettings.development.json

@@ -1,5 +1,0 @@
-// ===============================
-// Drop Model
-// ===============================
-
-DROP MINING MODEL [<mining model,name,MyModel>]

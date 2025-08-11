@@ -1,9 +1,0 @@
-﻿/* Validation styles ------ */
-label.error {
-    background: url("../images/unchecked.gif") no-repeat scroll 0 0 transparent;
-    color: #EA5200;
-    font-weight: bold;
-    padding-bottom: 2px;
-    padding-left: 16px;
-}
-

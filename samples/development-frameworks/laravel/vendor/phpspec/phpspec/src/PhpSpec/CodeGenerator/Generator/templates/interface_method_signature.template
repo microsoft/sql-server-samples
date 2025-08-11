@@ -1,3 +1,0 @@
-
-    public function %name%(%arguments%);
-

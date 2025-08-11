@@ -1,8 +1,0 @@
-{
-    "connection":{
-        "server"  : "<<server name or ip>>",
-        "userName": "<<user name>>",
-        "password": "<<password>>",
-        "options": { "encrypt": true, "database": "<<database name>>" }
-    }
-}

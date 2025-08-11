@@ -1,7 +1,0 @@
-// ==========================
-//	Export Structure
-// ==========================
-
-EXPORT MINING STRUCTURE [<mining structure,name,MyStructure>]
-    TO '<file,file name,C:\MyStructure.dmb>'
-	WITH DEPENDENCIES, PASSWORD='<password, string,>'

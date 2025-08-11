@@ -1,4 +1,0 @@
-
-    private function __construct()
-    {
-    }

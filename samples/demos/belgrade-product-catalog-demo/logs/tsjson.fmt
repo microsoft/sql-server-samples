@@ -1,6 +1,0 @@
-12.0
-4
-1       SQLCHAR            0       30   "\t"   1     EventTime                 SQL_Latin1_General_CP1_CI_AS
-2       SQLCHAR            0       20   "\t"   2     Level                 SQL_Latin1_General_CP1_CI_AS
-3       SQLCHAR            0       4000   "\t"   3     Message                 SQL_Latin1_General_CP1_CI_AS
-4       SQLCHAR            0       80000   "\r\n"   4     EventData                 SQL_Latin1_General_CP1_CI_AS

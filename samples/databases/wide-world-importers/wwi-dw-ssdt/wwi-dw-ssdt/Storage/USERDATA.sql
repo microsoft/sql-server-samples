@@ -1,3 +1,0 @@
-﻿ALTER DATABASE [$(DatabaseName)]
-    ADD FILEGROUP [USERDATA];
-

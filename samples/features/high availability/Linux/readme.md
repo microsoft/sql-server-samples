@@ -1,1 +1,0 @@
-# Samples for High Availability solutions for SQL Server on Linux

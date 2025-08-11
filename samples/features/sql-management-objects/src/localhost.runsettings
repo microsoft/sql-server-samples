@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RunSettings>
-  <TestRunParameters>
-    <Parameter name="connectionString" value="server=localhost;User Id=sa;Password=[password];Timeout=60" />
-    <Parameter name="testDatabase" value="WideWorldImporters" />
-    <Parameter name="proxyPort" value="0" />
-  </TestRunParameters>
-</RunSettings>

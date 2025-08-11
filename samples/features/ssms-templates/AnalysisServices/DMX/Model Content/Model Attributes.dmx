@@ -1,9 +1,0 @@
-// ==========================
-// Model Attributes
-//
-// returns the list of attributes
-// used by a model
-// ==========================
-
-CALL System.GetModelAttributes('<mining model, name, MyModel>')
-

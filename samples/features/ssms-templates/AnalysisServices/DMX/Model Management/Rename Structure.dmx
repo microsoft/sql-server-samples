@@ -1,6 +1,0 @@
-// ==========================
-//	Rename Structure
-// ==========================
-
-RENAME MINING STRUCTURE [<old name,name,MyStructure>]
-  TO [<new name,name,MyNewStructure>]

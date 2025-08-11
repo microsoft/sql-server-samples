@@ -1,9 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:sqlserver://localhost:1433
-    username: SA
-    password: yourStrong(!)Password
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop # Defaults to "none" when NOT in embedded mode

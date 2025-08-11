@@ -1,8 +1,0 @@
-SQL Server VSS allows ISVs to develop backup solutions using APIs exposed by VSS framework. One such API method which is commonly used while performing differential backup using SQL VSS is IVssComponent::GetPartialFile. While performing differential backup, IVssComponent::GetPartialFile is used iteratively to obtain the range of changed differential bytes for backup which changed since last full backup.
-
-The output for *GetPartialFile* provides the file path, file name and pbstrRange which is a pointer to 64KB string buffer containing the comma-separated list of the form offset1:length1, offset2:length2, where each offset and length is a 64-bit integer specifying a file offset in bytes and length of the range in bytes, respectively.
-If the changed pages within a partial file is large enough to fall outside the tracking range limit of the 64 bit string buffer, pbstrRange returns the filename containing those ranges instead of the range and offset within the current partial file.
-
-The ISV Backup code should be able to handle both the output for pbstrRange viz offset/length range string for backup range within the current file or filename containing the backup range if the range falls outside the current file.
-
-This T-SQL sample code can help the backup vendors to simulate this behavior consistently to test and handle this scenario where pbstrRange generates filename. The sample code updates alternate extents to create enough non-contiguous extent such that the changed differential extent range falls outside 64KB buffer so pbstrRange outputs filename containing the ranges to be backed up.

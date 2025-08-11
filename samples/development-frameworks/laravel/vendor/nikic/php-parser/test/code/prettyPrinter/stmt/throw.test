@@ -1,7 +1,0 @@
-throw
------
-<?php
-
-throw $e;
------
-throw $e;

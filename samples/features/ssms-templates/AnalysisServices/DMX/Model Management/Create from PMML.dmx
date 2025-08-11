@@ -1,9 +1,0 @@
-// ===============================
-// 	Create From PMML
-//
-//  Replace the string with PMML.
-//  Single quotes embedded in the
-//  PMML string must be doubled.
-// ===============================
-
-CREATE MINING MODEL [<mining model,name,MyModel>] FROM PMML '<pmml,string,>'

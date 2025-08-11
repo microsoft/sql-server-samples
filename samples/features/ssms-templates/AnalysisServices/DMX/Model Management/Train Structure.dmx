@@ -1,9 +1,0 @@
-// ==================================
-// Train Structure
-// ==================================
-
-INSERT INTO MINING STRUCTURE [<mining structure,name,MyStructure>]
-(
-	<column list,col def list,>
-)
-OPENQUERY([<datasource,name,MyDataSource>],'<query,string,SELECT * FROM MyTable>')

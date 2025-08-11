@@ -1,8 +1,0 @@
-*.cproj.user
-.vs/*
-.vscode/*
-bin/*
-obj/*
-*.log
-Properties/PublishProfiles/*
-SqlClrRegEx.sql

@@ -1,5 +1,0 @@
-<Delete xmlns="http://schemas.microsoft.com/analysisservices/2003/engine">
-  <Object>
-    <DatabaseID>DatabaseID</DatabaseID>
-  </Object>
-</Delete>

@@ -1,3 +1,0 @@
-﻿#!/usr/bin/env node
-var debug = require('debug')('nodejs_express4_rest_api');
-var app = require('../app');

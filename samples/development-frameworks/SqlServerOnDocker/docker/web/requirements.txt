@@ -1,2 +1,0 @@
-django ~> 1.11.15
-django-pyodbc-azure==1.11.0.0

@@ -1,6 +1,0 @@
-// ==========================
-//	Content Query
-// ==========================
-
-SELECT <select list,expr list,*> FROM [<mining model,name,MyModel>].CONTENT
-WHERE <where clause,boolean expression,>

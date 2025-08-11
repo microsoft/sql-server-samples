@@ -1,5 +1,0 @@
-﻿CREATE SEQUENCE [Sequences].[ColorID]
-    AS INT
-    START WITH 37
-    INCREMENT BY 1;
-

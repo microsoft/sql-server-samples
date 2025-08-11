@@ -1,5 +1,0 @@
-// ==========================
-//	PMML Content
-// ==========================
-
-SELECT * FROM [<mining model,name,MyModel].PMML
