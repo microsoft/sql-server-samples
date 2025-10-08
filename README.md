@@ -45,4 +45,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 These samples and templates are all licensed under the MIT license. See the license.txt file in the root.
 
 ## Questions
-Email questions to: sqlserversamples@microsoft.com. my project name
+Email questions to: sqlserversamples@microsoft.com. my project name is deployment
