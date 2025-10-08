@@ -47,6 +47,9 @@
         <properties>
             <property name="equalsSpacing" value="1"/>
         </properties>
+		<properties>
+			<property name="notequalsSpacing" value="1"/>
+		</properties>
     </rule>
 
 </ruleset>
