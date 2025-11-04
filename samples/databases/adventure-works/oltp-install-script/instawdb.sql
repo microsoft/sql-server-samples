@@ -85,13 +85,27 @@ PRINT '';
 PRINT '*** Dropping Database';
 GO
 
-IF EXISTS (SELECT [name] FROM [master].[sys].[databases] WHERE [name] = N'$(DatabaseName)')
-    DROP DATABASE $(DatabaseName);
+DECLARE @DBName NVARCHAR(128) = N'$(DatabaseName)';
 
--- If the database has any other open connections close the network connection.
-IF @@ERROR = 3702
-    RAISERROR('$(DatabaseName) database cannot be dropped because there are still other open connections', 127, 127) WITH NOWAIT, LOG;
+IF EXISTS (SELECT [name] FROM [master].[sys].[databases] WHERE [name] = @DBName)
+BEGIN
+    -- Close existing connections to the database
+    DECLARE @SQL NVARCHAR(MAX) = N'';
+    SELECT @SQL += 'ALTER DATABASE [' + @DBName + '] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;'
+    EXEC sp_executesql @SQL;
+
+    -- Drop the database
+    SET @SQL = N'DROP DATABASE [' + @DBName + '];';
+    EXEC sp_executesql @SQL;
+END
 GO
+
+IF EXISTS (SELECT [name] FROM [master].[sys].[databases] WHERE [name] = @DBName)
+BEGIN
+    RAISERROR('%s database cannot be dropped because there are still other open connections', 127, 127, @DBName) WITH NOWAIT, LOG;
+END
+GO
+
 
 
 -- ****************************************
