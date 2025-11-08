@@ -13,8 +13,9 @@ This database manages the complete manufacturing lifecycle for a futon manufactu
 - **Production Management**: Work orders, production completions, and work center capacity tracking
 - **Quality Control**: Inspection tracking for incoming, in-process, and final products
 - **Purchasing**: Purchase orders and supplier management
-- **Sales**: Customer orders and fulfillment tracking
+- **Sales Operations**: Multi-channel sales (Retail, Online, Wholesale) with complete order lifecycle
 - **20 Manufacturing Reports**: Comprehensive reporting views for operational insights
+- **20 Sales Operations Reports**: Complete sales analytics and performance metrics
 
 ## Database Structure
 
@@ -40,6 +41,16 @@ This database manages the complete manufacturing lifecycle for a futon manufactu
 - `ProductionOrder` / `ProductionOrderMaterial` / `ProductionCompletion` - Production
 - `SalesOrder` / `SalesOrderDetail` - Sales
 - `QualityInspection` - Quality control records
+
+#### Sales Operations Tables
+- `SalesChannel` - Sales channels (Retail, Online, Wholesale)
+- `Store` - Retail store locations
+- `SalesTerritory` - Geographic sales territories
+- `SalesRep` - Sales representatives
+- `SalesReturn` / `SalesReturnDetail` - Product returns and refunds
+- `SalesQuote` / `SalesQuoteDetail` - Sales quotations
+- `Promotion` - Promotional campaigns
+- `PriceList` / `PriceListDetail` - Channel-specific pricing
 
 ## Product Hierarchy
 
@@ -75,8 +86,20 @@ Run the SQL scripts in order:
 -- 3. Create manufacturing reports
 :r 03-manufacturing-reports.sql
 
--- 4. (Optional) Run sample queries
+-- 4. (Optional) Run manufacturing sample queries
 :r 04-sample-queries.sql
+
+-- 5. Enhance schema for sales operations
+:r 05-sales-schema-enhancements.sql
+
+-- 6. Insert sales sample data
+:r 06-sales-sample-data.sql
+
+-- 7. Create sales operations reports
+:r 07-sales-reports.sql
+
+-- 8. (Optional) Run sales sample queries
+:r 08-sales-sample-queries.sql
 ```
 
 ## Manufacturing Reports
@@ -275,6 +298,203 @@ GROUP BY Year, Month, ItemName
 ORDER BY Year, Month, ItemName;
 ```
 
+## Sales Operations Reports
+
+### 1. Sales Performance by Channel (`vw_Sales_ByChannel`)
+Analyze sales across Retail, Online, and Wholesale channels with trends.
+
+```sql
+-- Monthly sales by channel
+SELECT * FROM vw_Sales_ByChannel
+WHERE Year = 2024
+ORDER BY Year, Month, NetSales DESC;
+```
+
+### 2. Store Performance Report (`vw_Sales_StorePerformance`)
+Track individual retail store performance metrics.
+
+```sql
+-- Top performing stores
+SELECT * FROM vw_Sales_StorePerformance
+ORDER BY NetSales DESC;
+```
+
+### 3. Sales Representative Performance (`vw_Sales_RepPerformance`)
+Evaluate sales rep performance, territories, and quote conversion.
+
+```sql
+-- Sales rep leaderboard
+SELECT * FROM vw_Sales_RepPerformance
+ORDER BY SalesRank;
+```
+
+### 4. Customer Sales Analysis (`vw_Sales_CustomerAnalysis`)
+Comprehensive customer metrics with segmentation and status.
+
+```sql
+-- High-value customers
+SELECT * FROM vw_Sales_CustomerAnalysis
+WHERE CustomerSegment IN ('VIP', 'Regular')
+ORDER BY TotalSales DESC;
+```
+
+### 5. Product Sales Performance (`vw_Sales_ProductPerformance`)
+Product-level sales metrics by channel with profitability.
+
+```sql
+-- Best selling products
+SELECT * FROM vw_Sales_ProductPerformance
+ORDER BY TotalUnitsSold DESC;
+```
+
+### 6. Sales Trend Analysis (`vw_Sales_TrendAnalysis`)
+Month-over-month and year-over-year growth analysis.
+
+```sql
+-- Recent trends with growth rates
+SELECT * FROM vw_Sales_TrendAnalysis
+ORDER BY Year DESC, Month DESC;
+```
+
+### 7. Average Order Value Analysis (`vw_Sales_OrderValueAnalysis`)
+Order size distribution and metrics by channel and customer type.
+
+```sql
+-- AOV by channel
+SELECT ChannelName, AvgNetAmount, OrderCount
+FROM vw_Sales_OrderValueAnalysis
+GROUP BY ChannelName, AvgNetAmount, OrderCount;
+```
+
+### 8. Sales Returns Analysis (`vw_Sales_ReturnsAnalysis`)
+Track returns by reason, product, and channel.
+
+```sql
+-- Top return reasons
+SELECT ReasonDescription, SUM(TotalRefunds) AS Refunds
+FROM vw_Sales_ReturnsAnalysis
+GROUP BY ReasonDescription
+ORDER BY Refunds DESC;
+```
+
+### 9. Sales Quote Conversion Analysis (`vw_Sales_QuoteConversion`)
+Monitor quote-to-order conversion rates and pipeline.
+
+```sql
+-- Quote conversion rates
+SELECT ConversionStatus, COUNT(*) AS Quotes, AVG(QuoteAmount) AS AvgValue
+FROM vw_Sales_QuoteConversion
+GROUP BY ConversionStatus;
+```
+
+### 10. Discount Analysis Report (`vw_Sales_DiscountAnalysis`)
+Analyze discount impact on margins and profitability.
+
+```sql
+-- Discount effectiveness by channel
+SELECT * FROM vw_Sales_DiscountAnalysis
+ORDER BY Year DESC, Month DESC;
+```
+
+### 11. Top Selling Products Report (`vw_Sales_TopProducts`)
+Ranked product performance by channel and time period.
+
+```sql
+-- Top 10 products this month
+SELECT * FROM vw_Sales_TopProducts
+WHERE Year = YEAR(GETDATE()) AND Month = MONTH(GETDATE())
+  AND UnitRank <= 10
+ORDER BY ChannelName, UnitRank;
+```
+
+### 12. Sales by Territory Report (`vw_Sales_ByTerritory`)
+Geographic territory performance and sales rep efficiency.
+
+```sql
+-- Territory comparison
+SELECT * FROM vw_Sales_ByTerritory
+ORDER BY NetSales DESC;
+```
+
+### 13. Channel Profitability Analysis (`vw_Sales_ChannelProfitability`)
+Full profitability analysis including COGS and margins by channel.
+
+```sql
+-- Most profitable channels
+SELECT * FROM vw_Sales_ChannelProfitability
+ORDER BY GrossProfit DESC;
+```
+
+### 14. Customer Lifetime Value (`vw_Sales_CustomerLifetimeValue`)
+Calculate CLV with customer tiers and activity status.
+
+```sql
+-- Top customers by lifetime value
+SELECT * FROM vw_Sales_CustomerLifetimeValue
+WHERE CustomerTier IN ('Platinum', 'Gold')
+ORDER BY TotalRevenue DESC;
+```
+
+### 15. Sales Growth Analysis (`vw_Sales_GrowthAnalysis`)
+Track revenue and customer growth by channel over time.
+
+```sql
+-- Recent growth trends
+SELECT * FROM vw_Sales_GrowthAnalysis
+WHERE Year >= YEAR(DATEADD(MONTH, -6, GETDATE()))
+ORDER BY Year DESC, Month DESC;
+```
+
+### 16. Order Size Distribution (`vw_Sales_OrderSizeDistribution`)
+Analyze order patterns and basket sizes.
+
+```sql
+-- Order size breakdown
+SELECT * FROM vw_Sales_OrderSizeDistribution
+ORDER BY ChannelName, OrderSizeBucket;
+```
+
+### 17. Product Mix Analysis (`vw_Sales_ProductMixAnalysis`)
+Identify popular product combinations and cross-sell opportunities.
+
+```sql
+-- Most common product combinations
+SELECT * FROM vw_Sales_ProductMixAnalysis
+WHERE UniqueProducts > 1
+ORDER BY OrderCount DESC;
+```
+
+### 18. Day of Week / Time-Based Analysis (`vw_Sales_TimeBasedAnalysis`)
+Understand sales patterns by day of week and time of day.
+
+```sql
+-- Sales by day of week
+SELECT DayOfWeek, SUM(OrderCount) AS Orders, SUM(TotalRevenue) AS Revenue
+FROM vw_Sales_TimeBasedAnalysis
+GROUP BY DayOfWeek, DayNumber
+ORDER BY DayNumber;
+```
+
+### 19. Sales Pipeline (`vw_Sales_Pipeline`)
+Track conversion rates from quotes through delivery.
+
+```sql
+-- Pipeline funnel analysis
+SELECT * FROM vw_Sales_Pipeline
+ORDER BY StageOrder;
+```
+
+### 20. Customer Segmentation RFM Analysis (`vw_Sales_CustomerSegmentation`)
+RFM (Recency, Frequency, Monetary) segmentation with actionable recommendations.
+
+```sql
+-- Customer segments with recommended actions
+SELECT CustomerSegment, COUNT(*) AS Customers, SUM(Monetary) AS TotalValue
+FROM vw_Sales_CustomerSegmentation
+GROUP BY CustomerSegment
+ORDER BY TotalValue DESC;
+```
+
 ## Sample Data
 
 The database includes sample data for:
@@ -282,10 +502,16 @@ The database includes sample data for:
 - 15 Components (5 pillow types, 5 mattress types, 5 frame types)
 - 6 Finished futon products
 - 5 Suppliers with pricing
-- 8 Customers
+- 8 Customers with various types (Retail, Wholesale, Online)
 - 3 Warehouses
 - 5 Work centers
 - Initial inventory levels
+- 7 Retail stores across multiple cities
+- 6 Sales territories with regions
+- 8 Sales representatives
+- 15 Sales orders across all channels (Retail, Online, Wholesale)
+- Sales returns and quotations
+- Promotions and price lists by channel
 
 ## Use Cases
 
@@ -364,4 +590,5 @@ Created as part of SQL Server Samples repository for demonstrating manufacturing
 
 ## Version History
 
-- 1.0.0 - Initial release with complete schema, sample data, and 20 reports
+- 2.0.0 - Added sales operations with 20 sales reports, multi-channel support, returns, quotes, and territories
+- 1.0.0 - Initial release with complete schema, sample data, and 20 manufacturing reports
