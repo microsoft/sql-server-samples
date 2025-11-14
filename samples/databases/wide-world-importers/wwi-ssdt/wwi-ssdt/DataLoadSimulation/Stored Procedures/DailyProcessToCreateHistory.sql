@@ -54,7 +54,7 @@ BEGIN
 	DECLARE @MaxSeasonalVariationPercent int = 25
 	DECLARE @MinYearlyGrowthPercent int = 3
 	DECLARE @MaxYearlyGrowthPercent int = 30
-	declare @StartDate date = '20200101'
+	declare @StartDate date = '20130101'
 	declare @EndDate date = '20230101'
 	declare @CurrentDateTime datetime2 = @StartDate
 	declare @MaxDailyVariationPercent int = 5

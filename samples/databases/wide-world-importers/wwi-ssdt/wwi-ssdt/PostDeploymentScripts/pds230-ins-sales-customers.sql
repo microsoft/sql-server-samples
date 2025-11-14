@@ -12,7 +12,7 @@ DECLARE buyinggroup CURSOR
 
 DECLARE @BuyingGroupID       AS INT
 DECLARE @BuyingGroupName     AS NVARCHAR(50)
-DECLARE @CurrentDateTime     AS DATETIME2(7) = '20200101';
+DECLARE @CurrentDateTime     AS DATETIME2(7) = '20130101';
 DECLARE @EndOfTime           AS DATETIME2(7) =  '99991231 23:59:59.9999999';
 DECLARE @myCityID            AS INT
 DECLARE @myCityName          AS NVARCHAR(50)
@@ -56,7 +56,7 @@ DECLARE @DeliveryMethodID             AS INT
 DECLARE @DeliveryCityID               AS INT
 DECLARE @PostalCityID                 AS INT
 DECLARE @CreditLimit                  AS DECIMAL(18,2) = NULL
-DECLARE @AccountOpenedDate            AS DATE = '20200101'
+DECLARE @AccountOpenedDate            AS DATE = '20130101'
 DECLARE @StandardDiscountPercentage   AS DECIMAL(18,3) = 0
 DECLARE @IsStatementSent              AS BIT = 0
 DECLARE @IsOnCreditHold               AS BIT = 0

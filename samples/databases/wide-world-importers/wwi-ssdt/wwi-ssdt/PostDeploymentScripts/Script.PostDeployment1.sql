@@ -160,9 +160,15 @@ SET NOCOUNT ON;
                      date that is being processed. Note this parameter is being
                      depricated in future releases.
 */
+
+-- TODO: EDIT: KISHAN: IMPORTANT
+-- Edit Enddate here for simulatino data, you can change start date too but make sure
+-- Start date >= 20130101
+-- End   date <= 20171230 
+-- Haven't verified end date, but date range of 2020 jan is failing at ETL, some sql scripts have 2017 year is what we noticed
 EXEC DataLoadSimulation.DailyProcessToCreateHistory
-    @StartDate = '20200101',
-    @EndDate = '20200201',
+    @StartDate = '20130201',
+    @EndDate = '20130301',
     @AverageNumberOfCustomerOrdersPerDay = 30,
     @SaturdayPercentageOfNormalWorkDay = 25,
     @SundayPercentageOfNormalWorkDay = 0,

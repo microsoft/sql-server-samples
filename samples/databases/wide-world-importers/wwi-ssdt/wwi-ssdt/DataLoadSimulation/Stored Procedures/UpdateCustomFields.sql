@@ -172,7 +172,7 @@ BEGIN
         END;
 
         SET @CustomFields = JSON_MODIFY(@CustomFields, N'$.HireDate',
-                                        CONVERT(nvarchar(20), DATEADD(day, 0 - CEILING(RAND() * 2000) - 100, '20200101'), 126));
+                                        CONVERT(nvarchar(20), DATEADD(day, 0 - CEILING(RAND() * 2000) - 100, '20130101'), 126));
 
         SET @JobTitle = N'Team Member';
         SET @JobTitle = CASE WHEN RAND() < 0.05 THEN N'General Manager'
