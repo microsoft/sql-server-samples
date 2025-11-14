@@ -35,11 +35,6 @@ CREATE NONCLUSTERED INDEX [FK_Fact_Purchase_Supplier_Key]
     ON [PS_Date] ([Date Key]);
 
 
-GO
-CREATE CLUSTERED COLUMNSTORE INDEX [CCX_Fact_Purchase]
-    ON [Fact].[Purchase]
-    ON [PS_Date] ([Date Key]);
-
 
 GO
 EXECUTE sp_addextendedproperty @name = N'Description', @value = N'Purchase fact table (stock purchases from suppliers)', @level0type = N'SCHEMA', @level0name = N'Fact', @level1type = N'TABLE', @level1name = N'Purchase';

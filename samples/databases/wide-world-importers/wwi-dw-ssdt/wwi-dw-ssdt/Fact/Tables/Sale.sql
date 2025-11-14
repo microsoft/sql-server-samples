@@ -73,11 +73,6 @@ CREATE NONCLUSTERED INDEX [FK_Fact_Sale_Stock_Item_Key]
     ON [PS_Date] ([Invoice Date Key]);
 
 
-GO
-CREATE CLUSTERED COLUMNSTORE INDEX [CCX_Fact_Sale]
-    ON [Fact].[Sale]
-    ON [PS_Date] ([Invoice Date Key]);
-
 
 GO
 EXECUTE sp_addextendedproperty @name = N'Description', @value = N'Sale fact table (invoiced sales to customers)', @level0type = N'SCHEMA', @level0name = N'Fact', @level1type = N'TABLE', @level1name = N'Sale';

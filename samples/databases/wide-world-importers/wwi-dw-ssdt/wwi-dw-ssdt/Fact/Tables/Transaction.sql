@@ -63,10 +63,6 @@ CREATE NONCLUSTERED INDEX [FK_Fact_Transaction_Transaction_Type_Key]
     ON [PS_Date] ([Date Key]);
 
 
-GO
-CREATE CLUSTERED COLUMNSTORE INDEX [CCX_Fact_Transaction]
-    ON [Fact].[Transaction]
-    ON [PS_Date] ([Date Key]);
 
 
 GO

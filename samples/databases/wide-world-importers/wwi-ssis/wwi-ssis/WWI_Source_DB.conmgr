@@ -5,6 +5,8 @@
   DTS:CreationName="OLEDB">
   <DTS:ObjectData>
     <DTS:ConnectionManager
-      DTS:ConnectionString="Data Source=.;Initial Catalog=WideWorldImporters;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      DTS:ConnectRetryCount="1"
+      DTS:ConnectRetryInterval="5"
+      DTS:ConnectionString="Data Source=localhost,1433;User ID=sa;Initial Catalog=WideWorldImporters;Provider=MSOLEDBSQL.1;Persist Security Info=True;Application Name=SSIS-{E8464E14-D126-4B86-AFFB-295B0D3506F4}WWI_Source_DB;" />
   </DTS:ObjectData>
 </DTS:ConnectionManager>

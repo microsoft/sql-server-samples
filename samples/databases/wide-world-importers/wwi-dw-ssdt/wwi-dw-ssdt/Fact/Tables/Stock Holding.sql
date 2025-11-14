@@ -18,10 +18,6 @@ CREATE NONCLUSTERED INDEX [FK_Fact_Stock_Holding_Stock_Item_Key]
     ON [Fact].[Stock Holding]([Stock Item Key] ASC);
 
 
-GO
-CREATE CLUSTERED COLUMNSTORE INDEX [CCX_Fact_Stock_Holding]
-    ON [Fact].[Stock Holding];
-
 
 GO
 EXECUTE sp_addextendedproperty @name = N'Description', @value = 'Auto-created to support a foreign key', @level0type = N'SCHEMA', @level0name = N'Fact', @level1type = N'TABLE', @level1name = N'Stock Holding', @level2type = N'INDEX', @level2name = N'FK_Fact_Stock_Holding_Stock_Item_Key';

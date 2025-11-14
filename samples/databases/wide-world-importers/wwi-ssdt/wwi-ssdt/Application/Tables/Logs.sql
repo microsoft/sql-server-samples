@@ -2,7 +2,7 @@
 	[Message] NVARCHAR(4000) NOT NULL,
 	[Level] VARCHAR(16) NOT NULL,
 	[EventTime] DATETIME2 (7) NOT NULL,
-	[LogEvent] NVARCHAR(max) NULL,
+	[LogEvent] NVARCHAR(3000) NULL,
 	INDEX CCX_Application_Logs CLUSTERED COLUMNSTORE
 )
 GO

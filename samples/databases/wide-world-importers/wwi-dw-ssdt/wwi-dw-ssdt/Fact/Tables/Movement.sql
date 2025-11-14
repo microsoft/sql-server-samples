@@ -55,11 +55,6 @@ CREATE NONCLUSTERED INDEX [IX_Integration_Movement_WWI_Stock_Item_Transaction_ID
     ON [PS_Date] ([Date Key]);
 
 
-GO
-CREATE CLUSTERED COLUMNSTORE INDEX [CCX_Fact_Movement]
-    ON [Fact].[Movement]
-    ON [PS_Date] ([Date Key]);
-
 
 GO
 EXECUTE sp_addextendedproperty @name = N'Description', @value = N'Movement fact table (movements of stock items)', @level0type = N'SCHEMA', @level0name = N'Fact', @level1type = N'TABLE', @level1name = N'Movement';

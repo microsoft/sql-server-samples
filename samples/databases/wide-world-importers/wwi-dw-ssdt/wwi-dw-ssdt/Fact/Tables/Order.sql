@@ -78,12 +78,6 @@ CREATE NONCLUSTERED INDEX [IX_Integration_Order_WWI_Order_ID]
 
 
 GO
-CREATE CLUSTERED COLUMNSTORE INDEX [CCX_Fact_Order]
-    ON [Fact].[Order]
-    ON [PS_Date] ([Order Date Key]);
-
-
-GO
 EXECUTE sp_addextendedproperty @name = N'Description', @value = N'Order fact table (customer orders)', @level0type = N'SCHEMA', @level0name = N'Fact', @level1type = N'TABLE', @level1name = N'Order';
 
 
