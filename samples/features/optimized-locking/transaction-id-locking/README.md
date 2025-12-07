@@ -43,7 +43,7 @@ Every transaction that modifies a row, it tags that row with its own TID, so eac
 - **Key features:** Optimized Locking
 - **Workload:** No workload related to this sample
 - **Programming Language:** T-SQL
-- **Authors:** [Sergio Govoni](https://www.linkedin.com/in/sgovoni/) | [Microsoft MVP Profile](https://mvp.microsoft.com/mvp/profile/c7b770c0-3c9a-e411-93f2-9cb65495d3c4) | [Blog](https://segovoni.medium.com/) | [GitHub](https://github.com/segovoni) | [Twitter](https://twitter.com/segovoni)
+- **Authors:** [Sergio Govoni](https://www.linkedin.com/in/sgovoni/) | [Microsoft MVP Profile](https://mvp.microsoft.com/mvp/profile/c7b770c0-3c9a-e411-93f2-9cb65495d3c4) | [Blog](https://segovoni.medium.com/) | [GitHub](https://github.com/segovoni) | [X](https://twitter.com/segovoni)
 
 <a name=before-you-begin></a>
 ## Before you begin
