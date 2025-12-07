@@ -109,22 +109,42 @@ FROM
   dbo.TelemetryPacket;
 ```
 
+The output is similar to the following, except to the values in PageId column.
+
+| PageId      | PacketID  | Device    |
+| ----------- | --------- | --------- |
+| (1:2456:0)  | 1         | Something |
+| (1:2457:0)  | 2         | Something |
+| (1:2458:0)  | 3         | Something |
+
 The values shown in the PageId column represent the physical location of the data.
 
 Let's look at the row where PacketID equals 1.
 
-The value (1:XXXX:0) in the PageId column is composed of three parts separated by ":". Here is what each part represents:
+The value (1:2456:0) in the PageId column is composed of three parts separated by ":". Here is what each part represents:
 - 1 is the numeric identifier of the database file (file number) where the page is located
-- XXXX is the page number inside file 1 of the database
+- 2456 is the page number inside file 1 of the database
 - 0 is the slot number
 
-Use the `DBCC PAGE` command to inspect the TID of page XXXX.
+Use the `DBCC PAGE` command to inspect the TID of page 2456.
 
 ```sql
-DBCC PAGE ('OptimizedLocking', 1, XXXX, 3);
+DBCC PAGE ('OptimizedLocking', 1, 2456, 3);
 ```
 
-The value of the unique transaction identifier (TID) that modified the row with PacketID equal to 1 is in the Version Information section, under the Transaction Timestamp attribute.
+The value of the unique transaction identifier (TID) that modified the row with PacketID equal to 1 is in the **Version Information** section, under the **Transaction Timestamp** attribute, as shown in the following sample data.
+
+```sql
+Version Information = 
+ Transaction Timestamp: 985
+ Version Pointer: Null
+Slot 0 Column 1 Offset 0x4 Length 4 Length (physical) 4
+PacketID = 1 
+Slot 0 Column 2 Offset 0x8 Length 8000 Length (physical) 8000
+Device = Something…
+```
+
+TID 985 represents the identifier of the transaction that inserted the rows; every subsequent change to the table rows will update the TID.
 
 <a name=disclaimers></a>
 ## Disclaimers
