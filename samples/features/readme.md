@@ -32,6 +32,10 @@ Graph tables enable you to add a non-relational capability to your database.
 
 The SQL Server Management Objects (SMO) Framework is a set of objects designed for programmatic management of Microsoft SQL Server and Microsoft Azure SQL Database. These code snippets demonstrate features of SMO and illustrate how to use SMO properties and collections without sacrificing performance.
 
+[Optimized Locking](optimized-locking)
+
+Optimized Locking offers an improved transaction locking mechanism to reduce lock blocking and lock memory consumption for concurrent transactions.
+
 ## Samples for Business Intelligence features within SQL Server
 
 [Reporting Services (SSRS)](reporting-services)
