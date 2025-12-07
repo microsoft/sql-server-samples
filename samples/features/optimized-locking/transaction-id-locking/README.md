@@ -1,13 +1,13 @@
 <!-- Always leave the MS logo -->
 ![](https://github.com/microsoft/sql-server-samples/blob/master/media/solutions-microsoft-logo-small.png)
 
-# SQL Server 2025 Optimized Locking: Transaction ID (TID) Locking internals
+# Optimized Locking: Transaction ID (TID) Locking internals
 
 This sample describes how to read and interpret the Transaction ID stored in row data pages.
 
 ## Background
 
-Optimized Locking is a SQL Server 2025 database engine feature designed to reduce the memory used for lock management, decrease the phenomenon known as lock escalation, and increase workload concurrency.
+Optimized Locking is a database engine feature designed to reduce the memory used for lock management, decrease the phenomenon known as lock escalation, and increase workload concurrency.
 
 Optimized Locking depends on two technologies that have long been part of the SQL Server engine:
 - [Accelerated Database Recovery (ADR)](https://learn.microsoft.com/sql/relational-databases/accelerated-database-recovery-concepts) is a required prerequisite for enabling Optimized Locking 
@@ -27,7 +27,6 @@ The TID is stored on disk in the additional 14 bytes that are associated with ea
 
 Every transaction that modifies a row, it tags that row with its own TID, so each row in the database is labeled with the last TID that modified it.
 
-
 ### Contents
 
 [About this sample](#about-this-sample)<br/>
@@ -41,7 +40,7 @@ Every transaction that modifies a row, it tags that row with its own TID, so eac
 ## About this sample
 
 - **Applies to:** SQL Server 2025 (or higher)
-- **Key features:** SQL Server 2025 Optimized Locking
+- **Key features:** Optimized Locking
 - **Workload:** No workload related to this sample
 - **Programming Language:** T-SQL
 - **Authors:** [Sergio Govoni](https://www.linkedin.com/in/sgovoni/) | [Microsoft MVP Profile](https://mvp.microsoft.com/mvp/profile/c7b770c0-3c9a-e411-93f2-9cb65495d3c4) | [Blog](https://segovoni.medium.com/) | [GitHub](https://github.com/segovoni) | [Twitter](https://twitter.com/segovoni)
@@ -60,9 +59,9 @@ To run this sample, you need the following prerequisites.
 
 ### Setup code
 
-1. Download [create-configure-optimizedlocking-db.sql T-SQL script](sql-scripts) from sql-scripts folder
-2. Check if a database called OptimizedLocking does not exist in your SQL Server 2025 instance
-3. Execute create-configure-optimizedlocking-db.sql script on your SQL Server 2025 instance
+1. Download [create-configure-optimizedlocking-db.sql](sql-scripts) T-SQL script from sql-scripts folder
+2. Check if a database called OptimizedLocking does not exist in your SQL Server instance
+3. Execute create-configure-optimizedlocking-db.sql script on your SQL Server instance
 4. Run the commands described in the sample details section
 
 <a name=sample-details></a>
@@ -138,6 +137,7 @@ The value of the unique transaction identifier (TID) that modified the row with 
 Version Information = 
  Transaction Timestamp: 985
  Version Pointer: Null
+
 Slot 0 Column 1 Offset 0x4 Length 4 Length (physical) 4
 PacketID = 1 
 Slot 0 Column 2 Offset 0x8 Length 8000 Length (physical) 8000
