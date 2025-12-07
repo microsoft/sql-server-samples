@@ -1,7 +1,7 @@
 <!-- Always leave the MS logo -->
 ![](https://github.com/microsoft/sql-server-samples/blob/master/media/solutions-microsoft-logo-small.png)
 
-# Optimized Locking: Transaction ID (TID) Locking internals
+# Optimized Locking: Transaction ID (TID) locking internals
 
 This sample describes how to read and interpret the Transaction ID stored in row data pages.
 
