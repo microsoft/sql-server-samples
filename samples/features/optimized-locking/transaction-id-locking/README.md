@@ -3,7 +3,7 @@
 
 # Optimized Locking: Transaction ID (TID) locking internals
 
-This sample describes how to read and interpret the Transaction ID stored in row data pages.
+This sample describes how to read and interpret the Transaction ID (TID) stored in row data pages.
 
 ## Background
 
@@ -17,7 +17,7 @@ Optimized Locking is based on two key mechanisms:
 - Transaction ID (TID) locking
 - Lock After Qualification (LAQ)
 
-### What is the Transaction ID?
+### What is the Transaction ID (TID)?
 
 The Transaction ID (TID) is a unique transaction identifier.
 
@@ -25,7 +25,7 @@ When a [row-versioning based isolation level](https://learn.microsoft.com/en-us/
 
 The TID is stored on disk in the additional 14 bytes that are associated with each row when features such as RCSI or ADR are enabled.
 
-Every transaction that modifies a row, it tags that row with its own TID, so each row in the database is labeled with the last TID that modified it.
+Every transaction that modifies a row tags that row with its own TID, so each row in the database is labeled with the last TID that modified it.
 
 ### Contents
 
@@ -59,15 +59,15 @@ To run this sample, you need the following prerequisites.
 
 ### Setup code
 
-1. Download [create-configure-optimizedlocking-db.sql](sql-scripts) T-SQL script from sql-scripts folder
-2. Check if a database called OptimizedLocking does not exist in your SQL Server instance
+1. Download [create-configure-optimizedlocking-db.sql](sql-scripts/create-configure-optimizedlocking-db.sql) T-SQL script from sql-scripts folder
+2. Verify that a database named OptimizedLocking does not already exist in your SQL Server instance
 3. Execute create-configure-optimizedlocking-db.sql script on your SQL Server instance
 4. Run the commands described in the sample details section
 
 <a name=sample-details></a>
 ## Sample Details
 
-Currently, the only way to read the Transaction ID of a row is by using the `DBCC PAGE` command.
+Currently, the only way to read the TID of a row is by using the `DBCC PAGE` command.
 
 Let's consider the table dbo.TelemetryPacket, with the schema defined in the following T-SQL code snippet.
 
@@ -108,7 +108,7 @@ FROM
   dbo.TelemetryPacket;
 ```
 
-The output is similar to the following, except to the values in PageId column.
+The output is similar to the following, except for the values in the PageId column.
 
 | PageId      | PacketID  | Device    |
 | ----------- | --------- | --------- |
@@ -116,22 +116,24 @@ The output is similar to the following, except to the values in PageId column.
 | (1:2457:0)  | 2         | Something |
 | (1:2458:0)  | 3         | Something |
 
-The values shown in the PageId column represent the physical location of the data.
+Each value in the PageId column follows the format **(FileID:PageID:SlotID)** and represents the physical location of the data.
 
-Let's look at the row where PacketID equals 1.
-
-The value (1:2456:0) in the PageId column is composed of three parts separated by ":". Here is what each part represents:
-- 1 is the numeric identifier of the database file (file number) where the page is located
-- 2456 is the page number inside file 1 of the database
-- 0 is the slot number
+Let's examine the row where PacketID equals 1. The value (1:2456:0) is composed of three parts separated by ":". Here is what each part represents:
+- **1** - the numeric identifier of the database file (FileID)
+- **2456** - the page number within the file (PageID)
+- **0** - the slot number on the page (SlotID)
 
 Use the `DBCC PAGE` command to inspect the TID of page 2456.
 
 ```sql
+-- Enable trace flag for DBCC PAGE output
+DBCC TRACEON(3604);
+GO
+
 DBCC PAGE ('OptimizedLocking', 1, 2456, 3);
 ```
 
-The value of the unique transaction identifier (TID) that modified the row with PacketID equal to 1 is in the **Version Information** section, under the **Transaction Timestamp** attribute, as shown in the following sample data.
+The value of the unique TID that modified the row with PacketID equal to 1 is in the **Version Information** section, under the **Transaction Timestamp** attribute, as shown in the following sample data.
 
 ```sql
 Version Information = 
@@ -150,6 +152,8 @@ TID 985 represents the identifier of the transaction that inserted the rows; eve
 ## Disclaimers
 
 The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample.
+
+> **Note:** The `DBCC PAGE` command is undocumented and intended for troubleshooting and diagnostic purposes only. It should not be used in production environments without proper understanding and testing.
 
 <a name=related-links></a>
 ## Related Links
