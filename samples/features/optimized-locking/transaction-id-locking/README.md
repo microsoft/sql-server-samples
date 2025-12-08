@@ -1,0 +1,161 @@
+<!-- Always leave the MS logo -->
+![](https://github.com/microsoft/sql-server-samples/blob/master/media/solutions-microsoft-logo-small.png)
+
+# Optimized Locking: Transaction ID (TID) locking internals
+
+This sample describes how to read and interpret the Transaction ID (TID) stored in row data pages.
+
+## Background
+
+Optimized Locking is a database engine feature designed to reduce the memory used for lock management, decrease the phenomenon known as lock escalation, and increase workload concurrency.
+
+Optimized Locking depends on two technologies that have long been part of the SQL Server engine:
+- [Accelerated Database Recovery (ADR)](https://learn.microsoft.com/sql/relational-databases/accelerated-database-recovery-concepts) is a required prerequisite for enabling Optimized Locking 
+- [Read Committed Snapshot Isolation (RCSI)](https://learn.microsoft.com/sql/t-sql/statements/set-transaction-isolation-level-transact-sql) is not a strict requirement, but allows full benefit from Optimized Locking
+
+Optimized Locking is based on two key mechanisms:
+- Transaction ID (TID) locking
+- Lock After Qualification (LAQ)
+
+### What is the Transaction ID (TID)?
+
+The Transaction ID (TID) is a unique transaction identifier.
+
+When a [row-versioning based isolation level](https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide#Row_versioning) is active, or when [Accelerated Database Recovery (ADR)](https://learn.microsoft.com/sql/relational-databases/accelerated-database-recovery-concepts) is enabled, every row in the database internally contains a transaction identifier.
+
+The TID is stored on disk in the additional 14 bytes that are associated with each row when features such as RCSI or ADR are enabled.
+
+Every transaction that modifies a row tags that row with its own TID, so each row in the database is labeled with the last TID that modified it.
+
+### Contents
+
+[About this sample](#about-this-sample)<br/>
+[Before you begin](#before-you-begin)<br/>
+[Run this sample](#run-this-sample)<br/>
+[Sample Details](#sample-details)<br/>
+[Disclaimers](#disclaimers)<br/>
+[Related links](#related-links)<br/>
+
+<a name=about-this-sample></a>
+## About this sample
+
+- **Applies to:** SQL Server 2025 (or higher)
+- **Key features:** Optimized Locking
+- **Workload:** No workload related to this sample
+- **Programming Language:** T-SQL
+- **Authors:** [Sergio Govoni](https://www.linkedin.com/in/sgovoni/) | [Microsoft MVP Profile](https://mvp.microsoft.com/mvp/profile/c7b770c0-3c9a-e411-93f2-9cb65495d3c4) | [Blog](https://segovoni.medium.com/) | [GitHub](https://github.com/segovoni) | [X](https://twitter.com/segovoni)
+
+<a name=before-you-begin></a>
+## Before you begin
+
+To run this sample, you need the following prerequisites.
+
+**Software prerequisites:**
+
+1. SQL Server 2025 (or higher)
+
+<a name=run-this-sample></a>
+## Run this sample
+
+### Setup code
+
+1. Download [create-configure-optimizedlocking-db.sql](sql-scripts/create-configure-optimizedlocking-db.sql) T-SQL script from sql-scripts folder
+2. Verify that a database named OptimizedLocking does not already exist in your SQL Server instance
+3. Execute create-configure-optimizedlocking-db.sql script on your SQL Server instance
+4. Run the commands described in the sample details section
+
+<a name=sample-details></a>
+## Sample Details
+
+Currently, the only way to read the TID of a row is by using the `DBCC PAGE` command.
+
+Let's consider the table dbo.TelemetryPacket, with the schema defined in the following T-SQL code snippet.
+
+```sql
+USE [OptimizedLocking]
+GO
+
+CREATE TABLE dbo.TelemetryPacket
+(
+  PacketID INT IDENTITY(1, 1)
+  ,Device CHAR(8000) DEFAULT ('Something')
+);
+GO
+```
+
+The table schema is designed so that each row occupies exactly one data page.
+
+Insert three rows with default values into the dbo.TelemetryPacket table. Note that this is done in a single transaction.
+
+```sql
+BEGIN TRANSACTION
+INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
+INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
+INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
+COMMIT
+```
+
+Let's explore the content of the dbo.TelemetryPacket table, enriched with the PageId column, which shows the result of the undocumented function sys.fn_PhysLocFormatter. Use this function to correlate the rows returned by the `SELECT` with their physical location on disk.
+
+```sql
+USE [OptimizedLocking]
+GO
+
+SELECT
+  *
+  ,PageId = sys.fn_PhysLocFormatter(%%physloc%%)
+FROM
+  dbo.TelemetryPacket;
+```
+
+The output is similar to the following, except for the values in the PageId column.
+
+| PageId      | PacketID  | Device    |
+| ----------- | --------- | --------- |
+| (1:2456:0)  | 1         | Something |
+| (1:2457:0)  | 2         | Something |
+| (1:2458:0)  | 3         | Something |
+
+Each value in the PageId column follows the format **(FileID:PageID:SlotID)** and represents the physical location of the data.
+
+Let's examine the row where PacketID equals 1. The value (1:2456:0) is composed of three parts separated by ":". Here is what each part represents:
+- **1** - the numeric identifier of the database file (FileID)
+- **2456** - the page number within the file (PageID)
+- **0** - the slot number on the page (SlotID)
+
+Use the `DBCC PAGE` command to inspect the TID of page 2456.
+
+```sql
+-- Enable trace flag for DBCC PAGE output
+DBCC TRACEON(3604);
+GO
+
+DBCC PAGE ('OptimizedLocking', 1, 2456, 3);
+```
+
+The value of the unique TID that modified the row with PacketID equal to 1 is in the **Version Information** section, under the **Transaction Timestamp** attribute, as shown in the following sample data.
+
+```sql
+Version Information = 
+ Transaction Timestamp: 985
+ Version Pointer: Null
+
+Slot 0 Column 1 Offset 0x4 Length 4 Length (physical) 4
+PacketID = 1 
+Slot 0 Column 2 Offset 0x8 Length 8000 Length (physical) 8000
+Device = Something…
+```
+
+TID 985 represents the identifier of the transaction that inserted the rows; every subsequent change to the table rows will update the TID.
+
+<a name=disclaimers></a>
+## Disclaimers
+
+The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample.
+
+> **Note:** The `DBCC PAGE` command is undocumented and intended for troubleshooting and diagnostic purposes only. It should not be used in production environments without proper understanding and testing.
+
+<a name=related-links></a>
+## Related Links
+
+- [Optimized locking](https://learn.microsoft.com/sql/relational-databases/performance/optimized-locking)
