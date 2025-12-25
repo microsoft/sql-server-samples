@@ -9,3 +9,4 @@ Markdown==2.6.6
 bleach>=3.3.0
 django-pyodbc-azure==1.9.6.0
 whitenoise==3.2
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
