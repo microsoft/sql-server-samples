@@ -39,7 +39,7 @@ Every transaction that modifies a row tags that row with its own TID, so each ro
 <a name=about-this-sample></a>
 ## About this sample
 
-- **Applies to:** SQL Server 2025 (or higher)
+- **Applies to:** SQL Server 2025 (or higher), Azure SQL Database
 - **Key features:** Optimized Locking
 - **Workload:** No workload related to this sample
 - **Programming Language:** T-SQL
@@ -52,7 +52,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2025 (or higher)
+1. SQL Server 2025 (or higher) or Azure SQL Database
 
 <a name=run-this-sample></a>
 ## Run this sample
@@ -66,8 +66,6 @@ To run this sample, you need the following prerequisites.
 
 <a name=sample-details></a>
 ## Sample Details
-
-Currently, the only way to read the TID of a row is by using the `DBCC PAGE` command.
 
 Let's consider the table dbo.TelemetryPacket, with the schema defined in the following T-SQL code snippet.
 
@@ -87,73 +85,73 @@ The table schema is designed so that each row occupies exactly one data page.
 
 Insert three rows with default values into the dbo.TelemetryPacket table. Note that this is done in a single transaction.
 
-```sql
-BEGIN TRANSACTION
-INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
-INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
-INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
-COMMIT
-```
-
-Let's explore the content of the dbo.TelemetryPacket table, enriched with the PageId column, which shows the result of the undocumented function sys.fn_PhysLocFormatter. Use this function to correlate the rows returned by the `SELECT` with their physical location on disk.
+Before committing the transaction, we query the [sys.dm_tran_locks](https://learn.microsoft.com/sql/relational-databases/system-dynamic-management-views/sys-dm-tran-locks-transact-sql) DMV, which exposes the TID locks as a new resource type = `XACT`.
 
 ```sql
-USE [OptimizedLocking]
-GO
+BEGIN TRANSACTION;
+
+INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
+INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
+INSERT INTO dbo.TelemetryPacket DEFAULT VALUES;
 
 SELECT
-  *
-  ,PageId = sys.fn_PhysLocFormatter(%%physloc%%)
+  l.resource_description
+  ,l.resource_associated_entity_id
+  ,l.resource_lock_partition
+  ,l.request_mode
+  ,l.request_type
+  ,l.request_status
+  ,l.request_owner_type
 FROM
-  dbo.TelemetryPacket;
+  sys.dm_tran_locks AS l
+WHERE
+  (l.request_session_id = @@SPID)
+  AND (l.resource_type = 'XACT');
+
+COMMIT;
 ```
 
-The output is similar to the following, except for the values in the PageId column.
+The resource_description column, in this example, reports the `XACT` value equal to `10:1147:0`.
 
-| PageId      | PacketID  | Device    |
-| ----------- | --------- | --------- |
-| (1:2456:0)  | 1         | Something |
-| (1:2457:0)  | 2         | Something |
-| (1:2458:0)  | 3         | Something |
+TID `1147` represents the identifier of the transaction that inserted the rows and it will be stored in the row data page if the transaction is confirmed. Every subsequent change to the rows will update the TID.
 
-Each value in the PageId column follows the format **(FileID:PageID:SlotID)** and represents the physical location of the data.
-
-Let's examine the row where PacketID equals 1. The value (1:2456:0) is composed of three parts separated by ":". Here is what each part represents:
-- **1** - the numeric identifier of the database file (FileID)
-- **2456** - the page number within the file (PageID)
-- **0** - the slot number on the page (SlotID)
-
-Use the `DBCC PAGE` command to inspect the TID of page 2456.
+Now let's make a change on the row identified by the PacketID value 2 and before confirming the transaction let's repeat again the query on the DMV.
 
 ```sql
--- Enable trace flag for DBCC PAGE output
-DBCC TRACEON(3604);
-GO
+BEGIN TRANSACTION;
 
-DBCC PAGE ('OptimizedLocking', 1, 2456, 3);
+UPDATE
+  t
+SET
+  t.Device = 'Something updated'
+FROM
+  dbo.TelemetryPacket AS t
+WHERE
+  t.PacketID = 2;
+
+SELECT
+  l.resource_description
+  ,l.resource_associated_entity_id
+  ,l.resource_lock_partition
+  ,l.request_mode
+  ,l.request_type
+  ,l.request_status
+  ,l.request_owner_type
+FROM
+  sys.dm_tran_locks AS l
+WHERE
+  (l.request_session_id = @@SPID)
+  AND (l.resource_type = 'XACT');
+
+COMMIT;
 ```
 
-The value of the unique TID that modified the row with PacketID equal to 1 is in the **Version Information** section, under the **Transaction Timestamp** attribute, as shown in the following sample data.
-
-```sql
-Version Information = 
- Transaction Timestamp: 985
- Version Pointer: Null
-
-Slot 0 Column 1 Offset 0x4 Length 4 Length (physical) 4
-PacketID = 1 
-Slot 0 Column 2 Offset 0x8 Length 8000 Length (physical) 8000
-Device = Something…
-```
-
-TID 985 represents the identifier of the transaction that inserted the rows; every subsequent change to the table rows will update the TID.
+Even for the `UPDATE` command, the resource_description column displays the TID of the transaction that is modifying the row. If the transaction is confirmed, the TID will be stored in the data page of the row itself.
 
 <a name=disclaimers></a>
 ## Disclaimers
 
 The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample.
-
-> **Note:** The `DBCC PAGE` command is undocumented and intended for troubleshooting and diagnostic purposes only. It should not be used in production environments without proper understanding and testing.
 
 <a name=related-links></a>
 ## Related Links
