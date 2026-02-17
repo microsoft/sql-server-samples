@@ -1,0 +1,23 @@
+Exercise 1: Migration of sample database
+Steps involved in the Sql server database Configuration:
+1.	Downloaded the sql server script file from given Github URL.
+2.	Open SSMS with Sql server Authentication and created a new DB called SourceFuse_Test.
+3.	Run the downloaded DB script which contains the creation of the DB onject creation script along with constraints.
+4.	Validated the objects creation after the successful run of the script.
+5.	Open DBeaver / PsAdmin for the accessing and manipulation of the Postgres DB.
+6.	Created a new DB called “SourceFuse_test” with the DB Creation script after checking the datatypes and constraints compatibility.
+7.	Validated the DB after the successful object creation done.
+8.	Created the SSIS package for the migration of data from Sql server to Postgres called “SouirceFuse_package”
+9.	With the help of dataflow specified the source as Sql server with port number 1433 and Targer as Postgres db with port number 5433. Included all the tables in this ssis migration activity for data movement.
+10.	Once the mapping activity done with the ssis package, run the script and validated the data migration and all data’s are moved from Sql server to Postgres.
+11.	Also scheduled the SSIS Package for the migration of the changed data’s from sql server to postgres for upcoming changes.
+Note:
+	With Other migration tools such as “AWS SCT,  Isphire, QuerySurge, DBConvert also we can do this migration activity.
+
+Exercise2: Migration Strategy
+1.	For the migration of data from Sql server to Postgres we have lot of tools available in market like SSIS package, AWS SCT, Isphire, QuerySurge, DBConvert, etc.
+2.	For the given scenario, we can achieve this by SSIS as follows 
+a.	First we have to migrate the schema which contains the entire db onjects along with constraint from sql server to postgres.
+b.	Once the schema conversion done manually, we have to migrate data from Sql server to postgres using SSIS packages. (For first time migration we have to migrate the entire data. Due to this we have to do this in downtime occurs)
+c.	For the further migration of schema, data, we can schedule the job with SSIS package(s) to fetch only the changes. For this no need to wait for downtime.
+3.	With the help of AWS SCT, we can migrate entire database from Sql server to postgres in single shot. But make sure we are doing this in downtime itself.
