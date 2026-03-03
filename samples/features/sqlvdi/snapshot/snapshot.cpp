@@ -57,9 +57,10 @@ All Rights Reserved.
 void performTransfer(
     IClientVirtualDeviceSet2*      vds,
     IClientVirtualDevice*          vd,
-    int                            backup);
+    int                            backup,
+    const char*                    dumpFile);
 
-HANDLE execSQL(bool doBackup, WCHAR* pInstanceName, WCHAR* pDbName, WCHAR* pVdsName);
+HANDLE execSQL(bool doBackup, WCHAR* pInstanceName, WCHAR* pDbName, WCHAR* pVdsName, WCHAR* pTargetDbName, WCHAR* pLogicalDataName, WCHAR* pLogicalLogName, WCHAR* pDataFile, WCHAR* pLogFile);
 bool checkSQL(HANDLE);
 
 bool ynPrompt(const char* str);
@@ -83,6 +84,18 @@ main(int argc, char* argv[])
     char*                       pInstanceName = nullptr;
     WCHAR                       wInstanceName[128] = { 0 };
     int                         rc = 0;
+    char*                       pDataFile = nullptr;
+    char*                       pLogFile = nullptr;
+    char*                       pTargetDbName = nullptr;
+    char*                       pLogicalDataName = nullptr;
+    char*                       pLogicalLogName = nullptr;
+    const char*                 pDumpFile = "snapshot.dmp";
+    WCHAR                       wDbName[128];
+    WCHAR                       wTargetDbName[128] = { 0 };
+    WCHAR                       wLogicalDataName[128] = { 0 };
+    WCHAR                       wLogicalLogName[128] = { 0 };
+    WCHAR                       wDataFile[256] = { 0 };
+    WCHAR                       wLogFile[256] = { 0 };
 
     // Check the input parm
     //
@@ -107,11 +120,33 @@ main(int argc, char* argv[])
         {
             pInstanceName = argv[3];
         }
+
+        if (argc >= 9)
+        {
+            pTargetDbName = argv[4];
+            pLogicalDataName = argv[5];
+            pLogicalLogName = argv[6];
+            pDataFile = argv[7];
+            pLogFile = argv[8];
+        }
+
+        if (argc == 5)
+        {
+            pDumpFile = argv[4];
+        }
+        else if (argc == 10)
+        {
+            pDumpFile = argv[9];
+        }
     }
 
     if (badParm)
     {
-        printf("usage: snapshot {B|R} <databaseName> [<instanceName>]\n"
+        printf("usage: snapshot {B|R} <databaseName> [options...]\n"
+            "  Backup:  snapshot B <sourceDB> [<instanceName>] [<dumpFile>]\n"
+            "  Restore: snapshot R <sourceDB> [<instanceName>] [<dumpFile>]\n"
+            "  Restore: snapshot R <sourceDB> <instanceName> <targetDB> <logicalData> <logicalLog> <dataFile.mdf> <logFile.ldf> <dumpFile>\n"
+            "  Default dumpFile: snapshot.dmp\n"
             "Demonstrate a Backup or Restore WITH SNAPSHOT\n");
         printf("\n\n** NOTE **\n The ability to take or mount snapshots must be implemented\n"
             "before this sample is truely functional.\n");
@@ -196,12 +231,22 @@ main(int argc, char* argv[])
     //
     printf("\nSending the SQL...\n");
 
-    WCHAR wDbName[128];
     MultiByteToWideChar(CP_ACP, 0,
         pDbName, -1,
         wDbName, 127);
 
-    hThread = execSQL(doBackup, wInstanceName, wDbName, wVdsName);
+    if (pTargetDbName && pLogicalDataName && pLogicalLogName && pDataFile && pLogFile)
+    {
+        MultiByteToWideChar(CP_ACP, 0, pTargetDbName, -1, wTargetDbName, 127);
+        MultiByteToWideChar(CP_ACP, 0, pLogicalDataName, -1, wLogicalDataName, 127);
+        MultiByteToWideChar(CP_ACP, 0, pLogicalLogName, -1, wLogicalLogName, 127);
+        MultiByteToWideChar(CP_ACP, 0, pDataFile, -1, wDataFile, 255);
+        MultiByteToWideChar(CP_ACP, 0, pLogFile, -1, wLogFile, 255);
+    }
+
+    hThread = execSQL(doBackup, wInstanceName, wDbName, wVdsName,
+        wTargetDbName, wLogicalDataName, wLogicalLogName,
+        wDataFile, wLogFile);
     if (hThread == nullptr)
     {
         printf("execSQL failed.\n");
@@ -246,8 +291,9 @@ main(int argc, char* argv[])
     }
 
     printf("\nPerforming data transfer...\n");
+    printf("Using dump file: %s\n", pDumpFile);
 
-    performTransfer(vds, vd, doBackup);
+    performTransfer(vds, vd, doBackup, pDumpFile);
 
 
 shutdown:
@@ -391,6 +437,11 @@ struct PARMS
     WCHAR*    pInstanceName;
     WCHAR*    pDbName;
     WCHAR*    pVdsName;
+    WCHAR*    pTargetDbName;
+    WCHAR*    pLogicalDataName;
+    WCHAR*    pLogicalLogName;
+    WCHAR*    pDataFile;
+    WCHAR*    pLogFile;
 };
 
 unsigned __stdcall
@@ -420,11 +471,27 @@ SQLRoutine(void* input)
 
     // Generate the command to execute
     //
-    swprintf_s(sqlCommand, L"%ls DATABASE [%ls] %ls VIRTUAL_DEVICE='%ls' WITH SNAPSHOT",
-        parms->doBackup ? L"BACKUP" : L"RESTORE",
-        parms->pDbName,
-        parms->doBackup ? L"TO" : L"FROM",
-        parms->pVdsName);
+    if (!parms->doBackup && parms->pTargetDbName[0] && parms->pLogicalDataName[0] && 
+        parms->pLogicalLogName[0] && parms->pDataFile[0] && parms->pLogFile[0])
+    {
+        // RESTORE with MOVE options
+        swprintf_s(sqlCommand, L"RESTORE DATABASE [%ls] FROM VIRTUAL_DEVICE='%ls' WITH SNAPSHOT, REPLACE, NORECOVERY, "
+            L"MOVE '%ls' TO '%ls', MOVE '%ls' TO '%ls'",
+            parms->pTargetDbName,
+            parms->pVdsName,
+            parms->pLogicalDataName,
+            parms->pDataFile,
+            parms->pLogicalLogName,
+            parms->pLogFile);
+    }
+    else
+    {
+        swprintf_s(sqlCommand, L"%ls DATABASE [%ls] %ls VIRTUAL_DEVICE='%ls' WITH SNAPSHOT",
+            parms->doBackup ? L"BACKUP" : L"RESTORE",
+            parms->pDbName,
+            parms->doBackup ? L"TO" : L"FROM",
+            parms->pVdsName);
+    }
 
     // Initialize the ODBC environment.
     //
@@ -587,7 +654,9 @@ exit:
 //
 // Return the thread handle (NULL on error).
 //
-HANDLE execSQL(bool doBackup, WCHAR* pInstanceName, WCHAR* pDbName, WCHAR* pVDName)
+HANDLE execSQL(bool doBackup, WCHAR* pInstanceName, WCHAR* pDbName, WCHAR* pVDName,
+    WCHAR* pTargetDbName, WCHAR* pLogicalDataName, WCHAR* pLogicalLogName,
+    WCHAR* pDataFile, WCHAR* pLogFile)
 {
     unsigned int    threadId;
     HANDLE          hThread;
@@ -597,6 +666,11 @@ HANDLE execSQL(bool doBackup, WCHAR* pInstanceName, WCHAR* pDbName, WCHAR* pVDNa
     parms.pDbName = pDbName;
     parms.pInstanceName = pInstanceName;
     parms.pVdsName = pVDName;
+    parms.pTargetDbName = pTargetDbName;
+    parms.pLogicalDataName = pLogicalDataName;
+    parms.pLogicalLogName = pLogicalLogName;
+    parms.pDataFile = pDataFile;
+    parms.pLogFile = pLogFile;
 
     hThread = (HANDLE)_beginthreadex(
         nullptr, 0, SQLRoutine, (void*)&parms, 0, &threadId);
@@ -661,10 +735,11 @@ bool ynPrompt(const char* str)
 void performTransfer(
     IClientVirtualDeviceSet2*    iVds,
     IClientVirtualDevice*        vd,
-    int                          backup)
+    int                          backup,
+    const char*                  dumpFile)
 {
     FILE*           fh;
-    char*           fname = (char*)"snapshot.dmp";
+    const char*     fname = dumpFile;
     VDC_Command*    cmd;
     DWORD           completionCode;
     DWORD           bytesTransferred;
