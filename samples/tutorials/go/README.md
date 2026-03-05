@@ -1,3 +1,11 @@
+---
+page_type: sample
+languages:
+- go
+products:
+- azure-sql-database	
+---
+
 # Set up instructions 
 
 1. `go get github.com/denisenkom/go-mssqldb`

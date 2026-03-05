@@ -1,0 +1,113 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_dependencyType": "appService.windows"
+  },
+  "parameters": {
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "aeenclavedemowus",
+      "metadata": {
+        "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
+      }
+    },
+    "resourceGroupLocation": {
+      "type": "string",
+      "defaultValue": "westus",
+      "metadata": {
+        "description": "Location of the resource group. Resource groups could have different location than resources, however by default we use API versions from latest hybrid profile which support all locations for resource types we support."
+      }
+    },
+    "resourceName": {
+      "type": "string",
+      "defaultValue": "ContosoHR20210131163006",
+      "metadata": {
+        "description": "Name of the main resource to be created by this template."
+      }
+    },
+    "resourceLocation": {
+      "type": "string",
+      "defaultValue": "[parameters('resourceGroupLocation')]",
+      "metadata": {
+        "description": "Location of the resource. By default use resource group's location, unless the resource provider is not supported there."
+      }
+    }
+  },
+  "variables": {
+    "appServicePlan_name": "[concat('Plan', uniqueString(concat(parameters('resourceName'), subscription().subscriptionId)))]",
+    "appServicePlan_ResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('resourceGroupName'), '/providers/Microsoft.Web/serverFarms/', variables('appServicePlan_name'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "name": "[parameters('resourceGroupName')]",
+      "location": "[parameters('resourceGroupLocation')]",
+      "apiVersion": "2019-10-01"
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(parameters('resourceGroupName'), 'Deployment', uniqueString(concat(parameters('resourceName'), subscription().subscriptionId)))]",
+      "resourceGroup": "[parameters('resourceGroupName')]",
+      "apiVersion": "2019-10-01",
+      "dependsOn": [
+        "[parameters('resourceGroupName')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "location": "[parameters('resourceLocation')]",
+              "name": "[parameters('resourceName')]",
+              "type": "Microsoft.Web/sites",
+              "apiVersion": "2015-08-01",
+              "tags": {
+                "[concat('hidden-related:', variables('appServicePlan_ResourceId'))]": "empty"
+              },
+              "dependsOn": [
+                "[variables('appServicePlan_ResourceId')]"
+              ],
+              "kind": "app",
+              "properties": {
+                "name": "[parameters('resourceName')]",
+                "kind": "app",
+                "httpsOnly": true,
+                "reserved": false,
+                "serverFarmId": "[variables('appServicePlan_ResourceId')]",
+                "siteConfig": {
+                  "metadata": [
+                    {
+                      "name": "CURRENT_STACK",
+                      "value": "dotnetcore"
+                    }
+                  ]
+                }
+              },
+              "identity": {
+                "type": "SystemAssigned"
+              }
+            },
+            {
+              "location": "[parameters('resourceLocation')]",
+              "name": "[variables('appServicePlan_name')]",
+              "type": "Microsoft.Web/serverFarms",
+              "apiVersion": "2015-08-01",
+              "sku": {
+                "name": "S1",
+                "tier": "Standard",
+                "family": "S",
+                "size": "S1"
+              },
+              "properties": {
+                "name": "[variables('appServicePlan_name')]"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -2,13 +2,13 @@
 
 # Get controller username and password as input. It is used as default for the controller.
 #
-if [ -z "$CONTROLLER_USERNAME" ]
+if [ -z "$AZDATA_USERNAME" ]
 then
     read -p "Create Username for Azure Arc Data Controller: " username
     echo
-    export CONTROLLER_USERNAME=$username
+    export AZDATA_USERNAME=$username
 fi
-if [ -z "$CONTROLLER_PASSWORD" ]
+if [ -z "$AZDATA_PASSWORD" ]
 then
     while true; do
         read -s -p "Create Password for Azure Arc Data Controller: " password
@@ -18,7 +18,7 @@ then
         [ "$password" = "$password2" ] && break
         echo "Password mismatch. Please try again."
     done
-    export CONTROLLER_PASSWORD=$password
+    export AZDATA_PASSWORD=$password
 fi
 
 # Prompt for private preview repository username and password provided by Microsoft
@@ -36,6 +36,38 @@ then
     export DOCKER_PASSWORD=$AADC_PASSWORD
 fi
 
+
+# Propmpt for Arc Data Controller properties.
+#
+if [ -z "$ARC_DC_NAME" ]
+then
+    read -p "Enter a name for the new Azure Arc Data Controller: " dc_name
+    echo
+    export ARC_DC_NAME=$dc_name
+fi
+
+if [ -z "$ARC_DC_SUBSCRIPTION" ]
+then
+    read -p "Enter a subscription ID for the new Azure Arc Data Controller: " dc_subscription
+    echo
+    export ARC_DC_SUBSCRIPTION=$dc_subscription
+fi
+
+if [ -z "$ARC_DC_RG" ]
+then
+    read -p "Enter a resource group for the new Azure Arc Data Controller: " dc_rg
+    echo
+    export ARC_DC_RG=$dc_rg
+fi
+
+if [ -z "$ARC_DC_REGION" ]
+then
+    read -p "Enter a region for the new Azure Arc Data Controller (eastus, eastus2, centralus, westus2, westeurope or southeastasia): " dc_region
+    echo
+    export ARC_DC_REGION=$dc_region
+fi
+
+
 set -Eeuo pipefail
 
 # This is a script to create single-node Kubernetes cluster and deploy Azure Arc Data Controller on it.
@@ -49,7 +81,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Requirements file.
 export OSCODENAME=$(lsb_release -cs)
-export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://aka.ms/azdata-"$OSCODENAME
+export AZDATA_PRIVATE_PREVIEW_DEB_PACKAGE="https://private-repo.microsoft.com/python/azure-arc-data/private-preview-jul-2020/ubuntu-"$OSCODENAME"/azdata-cli_20.0.1-1~"$OSCODENAME"_all.deb"
 
 # Kube version.
 #
@@ -64,8 +96,8 @@ RETRY_INTERVAL=5
 # Variables used for azdata cluster creation.
 #
 export ACCEPT_EULA=yes
-export CLUSTER_NAME=azure-arc-system
-export PV_COUNT="40"
+export CLUSTER_NAME=arc
+export PV_COUNT="80"
 
 # Make a directory for installing the scripts and logs.
 #
@@ -110,7 +142,7 @@ cd setupscript/
 
 # Download and install azdata prerequisites
 #
-sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc
+sudo apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc apt-transport-https libkrb5-dev
 
 # Download and install azdata package
 #
@@ -123,6 +155,19 @@ cd -
 azdata --version
 echo "Azdata has been successfully installed."
 
+# Installing azdata extensions
+#
+echo "Installing azdata extension for Arc data controller..."
+azdata extension add --source https://private-repo.microsoft.com/python/azure-arc-data/private-preview-jul-2020/pypi-azdata-cli-extensions/azdata_cli_dc-0.0.2-py2.py3-none-any.whl --yes
+
+echo "Installing azdata extension for postgres..."
+azdata extension add --source https://private-repo.microsoft.com/python/azure-arc-data/private-preview-jul-2020/pypi-azdata-cli-extensions/azdata_cli_postgres-0.0.2-py2.py3-none-any.whl --yes
+
+echo "Installing azdata extension for sql..."
+azdata extension add --source https://private-repo.microsoft.com/python/azure-arc-data/private-preview-jul-2020/pypi-azdata-cli-extensions/azdata_cli_sqlinstance-0.0.2-py2.py3-none-any.whl --yes
+
+echo "Azdata extensions installed successfully."
+
 # Install Azure CLI
 #
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
@@ -134,9 +179,7 @@ echo "Starting to setup pre-requisites for kubernetes..."
 
 # Setup the kubernetes preprequisites.
 #
-echo $(hostname -i) $(hostname) >> sudo tee -a /etc/hosts
-
-swapoff -a
+sudo swapoff -a
 sudo sed -i '/swap/s/^\(.*\)$/#\1/g' /etc/fstab
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -208,9 +251,9 @@ for i in $(seq 1 $PV_COUNT); do
 
   vol="vol$i"
 
-  sudo mkdir -p /mnt/local-storage/$vol
+  sudo mkdir -p /azurearc/local-storage/$vol
 
-  sudo mount --bind /mnt/local-storage/$vol /mnt/local-storage/$vol
+  sudo mount --bind /azurearc/local-storage/$vol /azurearc/local-storage/$vol
 
 done
 echo "Kubernetes pre-requisites have been completed." 
@@ -290,7 +333,9 @@ echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
-azdata control create -n $CLUSTER_NAME -c azure-arc-kubeadm-private-preview-acr --accept-eula $ACCEPT_EULA
+azdata arc dc config init -s azure-arc-kubeadm-private-preview -t azure-arc-custom --force
+
+azdata arc dc create -n $ARC_DC_NAME -p azure-arc-kubeadm-private-preview --namespace $CLUSTER_NAME --location $ARC_DC_REGION --resource-group $ARC_DC_RG --subscription $ARC_DC_SUBSCRIPTION --connectivity-mode indirect
 echo "Azure Arc Data Controller cluster created." 
 
 # Setting context to cluster.

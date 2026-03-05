@@ -1,6 +1,6 @@
--- ==========================================================================================
--- Create Database Role template for Azure SQL Database and Azure SQL Data Warehouse Database
--- ==========================================================================================
+-- =========================================================================================
+-- Create Database Role template for Azure SQL Database and Azure Synapse Analytics Database
+-- =========================================================================================
 -- Create the database role
 CREATE ROLE <role_name, sysname, Production_Owner> AUTHORIZATION [dbo]
 GO

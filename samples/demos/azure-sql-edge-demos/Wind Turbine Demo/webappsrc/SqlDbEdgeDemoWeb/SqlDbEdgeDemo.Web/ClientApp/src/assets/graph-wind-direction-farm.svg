@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="402.5" height="181" viewBox="0 0 402.5 181">
+    <defs>
+        <clipPath id="a">
+            <rect width="384" height="149" style="fill:none"/>
+        </clipPath>
+    </defs>
+    <g transform="translate(-438.5 -473)">
+        <path d="M1-121.863H31.379l30.379-12,37.024,13,59.808,7.5,20.269-8.5,42.387,16,26.581-7.5,29.429,7.5,41.967-18.1L357-117.934V-10H1V-120.5H1" transform="translate(484 645)" style="fill-rule:evenodd;fill:none"/>
+        <path d="M355.553,26.2H295.22l-30.892-3.687L235.576,26.2l-31.782-2.564-33.14-1.123-27.939,2.934-32.381.753L80.058,24.972l-27.758,3L21.57,26.2l-23.479-1" transform="translate(485 572)" style="stroke:#00c3ff;stroke-linejoin:round;stroke-width:2px;fill:none"/>
+        <g transform="translate(12 234)">
+            <text class="d" transform="translate(466 385)">
+                <tspan x="1.895" y="11">-5min</tspan>
+            </text>
+            <text class="d" transform="translate(533 385)">
+                <tspan x="1.785" y="11">-4min</tspan>
+            </text>
+            <text class="d" transform="translate(599 385)">
+                <tspan x="1.895" y="11">-3min</tspan>
+            </text>
+            <text class="d" transform="translate(666 385)">
+                <tspan x="1.895" y="11">-2min</tspan>
+            </text>
+            <text class="d" transform="translate(732 385)">
+                <tspan x="2.654" y="11">-1min</tspan>
+            </text>
+            <text class="d" transform="translate(799 385)">
+                <tspan x="1.895" y="11">-0min</tspan>
+            </text>
+        </g>
+        <text class="e" transform="translate(627 640)">
+            <tspan x="21.719" y="11">Time</tspan>
+        </text>
+        <text class="e" transform="translate(438.5 580.5) rotate(-90)">
+            <tspan x="9.859" y="11">Direction</tspan>
+        </text>
+        <g transform="translate(457 473)" style="clip-path:url(#a)">
+            <g transform="translate(-445 -370)">
+                <rect class="g" width="358" height="1" transform="translate(471 377)"/>
+                <text class="d" transform="translate(445 370)">
+                    <tspan x="3.794" y="11">360</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -343)">
+                <rect class="g" width="358" height="1" transform="translate(471 377)"/>
+                <text class="d" transform="translate(445 370)">
+                    <tspan x="3.794" y="11">300</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -316)">
+                <rect class="g" width="358" height="1" transform="translate(471 377)"/>
+                <text class="d" transform="translate(445 370)">
+                    <tspan x="3.575" y="11">240</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -289)">
+                <rect class="g" width="358" height="1" transform="translate(471 377)"/>
+                <text class="d" transform="translate(445 370)">
+                    <tspan x="5.313" y="11">180</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -262)">
+                <rect class="g" width="358" height="1" transform="translate(471 377)"/>
+                <text class="d" transform="translate(445 370)">
+                    <tspan x="9.263" y="11">60</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -235)">
+                <rect class="g" width="358" height="1" transform="translate(471 377)"/>
+                <text class="d" transform="translate(445 370)">
+                    <tspan x="14.731" y="11">0</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

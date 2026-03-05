@@ -1,0 +1,264 @@
+.Alerts {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  .turbine {
+    width: 19vw;
+    position: absolute;
+    top: 7vw;
+    left: 34vw;
+    // max-height: 80vh;
+  }
+  .line  {
+    position: absolute;
+    &.power-generated {
+      top: 14vw;
+      left: 28.5vw;
+      width: 11vw;
+    }
+    &.vibration {
+      top: 30vw;
+      left: 26.5vw;
+      width: 14vw;
+    }
+    &.oil-temperature {
+      top: 25vw;
+      left: 42.25vw;
+      width: 11vw;  
+    }
+    &.security {
+      top: 11.2vw;
+      left: 42.8vw;
+      width: 15vw;
+    }
+    &.wind-direction {
+      top: 17.1vw;
+      left: 43vw;
+      width: 11.5vw;
+    }
+    &.wind-speed {
+      top: 11.9vw;
+      left: 47vw;
+      width: 9vw;
+    }
+  }
+  .loader {
+    position: absolute;
+    top: 40%;
+    left: calc(50% - 265px);
+    width: 450px;
+    background: white;
+    padding: 50px 40px;
+    -webkit-box-shadow: 3px 6px 24px -10px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 6px 24px -10px rgba(0,0,0,0.75);
+    box-shadow: 3px 6px 24px -10px rgba(0,0,0,0.75);
+    p {
+      color: #00999A;
+      font-family: SegoeUISemiBold;
+      font-size: 20px;
+      margin: 0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .progress-border {
+      background: #E4F4F4;
+      border: 1px solid #BBE0E0;
+      width: 450px;
+      height: 30px;
+      .progress {
+        background: #00999A;
+        height: 100%;
+      }
+    }
+  }
+  .content-wrap {
+    height: 100%;
+    width: 100%;
+    .menu {
+      position: absolute;
+      top: 2.5vw;
+      left: calc(50% - 13vw);
+      button {
+        width: 7vw;
+        color: #707070B2;
+        background: #E4F4F4;
+        border: 1px solid #707070B2;
+        height: 2.2vw;
+        text-align: center;
+        font-family: SegoeUISemiBold;
+        font-size: 0.7vw;
+        outline: none;
+        cursor: pointer;
+        &.selected {
+          color: #00999A;
+          border-color: #00999A;
+        }
+        &:first-child {
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+        }
+        &:last-child {
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+        }
+      }
+    }
+    .refresh {
+      position: absolute;
+      top: 2.5vw;
+      cursor: pointer;
+      left: calc(50% + 2vw);
+      width: 5vw;
+      color: #707070B2;
+      background: #E4F4F4;
+      border: 1px solid #707070B2;
+      height: 2.2vw;
+      text-align: center;
+      font-family: SegoeUISemiBold;
+      font-size: 0.7vw;
+      outline: none;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+      .icon {
+        width: 0.8vw;
+        margin-right: 0.35vw;
+      }
+    }
+    .stats-panels {
+      position: absolute;
+      top: 34vw;
+      left: 47vw;  
+      display: flex;
+    }
+    .left-panels {
+      position: absolute;
+      top: 10vw;
+      left: 8vw;
+      display: flex;
+      flex-direction: column;
+    }
+    .right-panels {
+      position: absolute;
+      top: 10vw;
+      right: 8vw;
+      display: flex;
+      flex-direction: column;
+    }
+    .left-panels, .right-panels {
+      .panel {
+        margin-bottom: 30px;
+      }
+      .bottom-panels {
+        display: flex;
+        .panel {
+          margin-right: 2vw;
+          height: 3.5vw;
+          width: 7.5vw;
+          .stat {
+            font-size: 1.6vw;
+            font-family: SegoeUISemiLight;
+            color: #757B88;
+          }
+        }
+      }
+    }
+    .panel {
+      background: white;
+      padding: 20px;
+      padding: 1vw;
+      width: 19vw;
+      -webkit-box-shadow: 3px 6px 24px -10px rgba(0,0,0,0.75);
+      -moz-box-shadow: 3px 6px 24px -10px rgba(0,0,0,0.75);
+      box-shadow: 3px 6px 24px -10px rgba(0,0,0,0.75);
+
+      &.power {
+        top: 10vw;
+        left: 10vw;
+        position: absolute;
+      }
+      &.vibrations {
+        top: 29vw;
+        left: 6vw;
+        position: absolute;
+      }
+      &.oil {
+        top: 21vw;
+        left: 52vw;
+        position: absolute;
+      }
+      &.security {
+        top: 7vw;
+        left: 56vw;
+        width: 15vw;
+        position: absolute;
+      }
+      .graph {
+        width: 100%;
+        height: auto;
+        margin-left: -0.3vw;
+        margin-bottom: -0.3vw;
+        &.power-generated, &.vibration, &.oil-temperature {
+          .e,.f{fill:#777;font-size:10px;font-family:SegoeUISemilight,Segoe UI;font-weight:300;letter-spacing:.02em}.f{fill:#333}.h{opacity:.039}
+        }
+        &.wind-speed-farm, &.wind-direction-farm {
+          .d,.e{fill:#777;font-size:10px;font-family:SegoeUISemilight,Segoe UI;font-weight:300;letter-spacing:.02em}.e{fill:#333}.g{opacity:.039}
+        }
+        &.wind-speed-turbine, &.wind-direction-turbine {
+          .c,.d{fill:#777;font-size:10px;font-family:SegoeUISemilight,Segoe UI;font-weight:300;letter-spacing:.02em}.d{fill:#333}.f{opacity:.039}
+        }
+      }
+      p {
+        color: #6C7280;
+        font-family: SegoeUISemiLight;
+        font-size: 0.8vw;
+        margin: 0;
+        &.padded {
+          padding: 1.5vw 3vw;
+          text-align: center;
+          line-height: 1.5;
+        }
+      }
+      &.small {
+        width: 6vw;
+        height: 2.4vw;
+        margin-right: 0.5vw;
+        h3 {
+          font-size: 0.8vw;
+          margin-bottom: 10px;
+        }
+      }
+      .panel-heading {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+      h3 {
+        color: #00999A;
+        font-size: 1vw;
+        font-family: SegoeUISemiBold;
+        margin: 0;
+        margin-bottom: 5px;
+      }
+      .legend {
+        color: #777777;
+        font-size: 0.55vw;
+        font-family: SegoeUISemiLight;
+        display: flex;
+        align-items: center;
+        .ball {
+          height: 0.3vw;
+          width: 0.3vw;
+          border-radius: 50%;
+          background: #777777;
+          margin-left: 0.6vw;
+          margin-right: 0.2vw;
+          &.actual {
+            background: #00C3FF;
+          }
+        }
+      }
+    }
+  }
+}

@@ -37,7 +37,7 @@ SET @params = '@CurrBytesOut smallint OUTPUT, @UTF8BytesOut smallint OUTPUT'
 WHILE @cnt < @maxcnt
 BEGIN
 	SELECT TOP 1 @OName = ObjectName, @CName = ColumnName FROM #tmpObjects WHERE isdone = 0
-	SELECT @sqlcmd = 'SELECT @CurrBytesOut = MAX(DATALENGTH(' + @CName + ')), @UTF8BytesOut = MAX(DATALENGTH(CAST(' + @CName + ' AS VARCHAR(4000)) COLLATE Latin1_General_100_CI_AI_SC_UTF8)) FROM ' + @OName; 
+	SELECT @sqlcmd = 'SELECT @CurrBytesOut = MAX(DATALENGTH(' + @CName + ')), @UTF8BytesOut = MAX(DATALENGTH(CAST(' + @CName + ' AS VARCHAR(4000)) COLLATE Latin1_General_100_CI_AI_SC_UTF8)) FROM ' + @OName + ' WITH (NOLOCK)';  
 
 	EXEC sp_executesql @sqlcmd, @params, @CurrBytesOut = @CurrBytes OUTPUT, @UTF8BytesOut = @UTF8Bytes OUTPUT
 

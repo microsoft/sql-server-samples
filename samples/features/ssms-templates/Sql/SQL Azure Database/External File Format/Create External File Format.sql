@@ -1,6 +1,6 @@
--- ==========================================================================
--- Create external file format template for Azure SQL Data Warehouse Database 
--- ==========================================================================
+-- =========================================================================
+-- Create external file format template for Azure Synapse Analytics Database 
+-- =========================================================================
 
 IF EXISTS (
   SELECT *

@@ -7,7 +7,7 @@
 			"target": {
 			  "type": "Database",
 			  "version": "[13.0,)",
-			  "platform": "/^(Windows|Linux)$/",
+			  "platform": "Windows, Linux",
 			  "engineEdition": "OnPremises, ManagedInstance",
 			  "name": { "not": "/^(master|tempdb|model)$/" }
 			},
@@ -26,7 +26,7 @@
 		{
 			"target": {
 			  "type": "Server",
-			  "platform": "/^(Windows|Linux)$/",
+			  "platform": "Windows, Linux",
 			  "engineEdition": "OnPremises"
 			},
 			"id": "Custom_TF834",
@@ -60,7 +60,7 @@
 			  "target": {
 				"type": "Database",
 				"version": "(,12.0)",
-				"platform": "/^(Windows|Linux)$/",
+				"platform": "Windows, Linux",
 				"engineEdition": "OnPremises, ManagedInstance"
 			  },
 			  "implementation": {
@@ -72,7 +72,7 @@
 			  "target": {
 				"type": "Database",
 				"version": "[12.0, 13.0)",
-				"platform": "/^(Windows|Linux)$/",
+				"platform": "Windows, Linux",
 				"engineEdition": "OnPremises, ManagedInstance"
 			  },
 			  "implementation": {
@@ -84,7 +84,7 @@
 			  "target": {
 				"type": "Database",
 				"version": "[13.0,)",
-				"platform": "/^(Windows|Linux)$/",
+				"platform": "Windows, Linux",
 				"engineEdition": "OnPremises, ManagedInstance"
 			  },
 			  "implementation": {

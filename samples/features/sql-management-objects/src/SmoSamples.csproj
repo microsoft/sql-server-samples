@@ -18,7 +18,7 @@
   </ItemGroup>
  
   <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="150.18118.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />

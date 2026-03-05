@@ -1,6 +1,6 @@
--- =========================================================================
--- Alter external data source template for Azure SQL Data Warehouse Database 
--- =========================================================================
+-- ========================================================================
+-- Alter external data source template for Azure Synapse Analytics Database 
+-- ========================================================================
 
 ALTER EXTERNAL DATA SOURCE <data_source_name, sysname, sample_data_source> SET
 	LOCATION = N'<location, sysname, sample_location>',

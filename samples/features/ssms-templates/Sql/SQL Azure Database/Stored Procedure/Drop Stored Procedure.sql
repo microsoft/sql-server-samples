@@ -1,6 +1,6 @@
--- ===========================================================================================
--- Drop Stored Procedure Template for Azure SQL Database and Azure SQL Data Warehouse Database
--- ===========================================================================================
+-- ==========================================================================================
+-- Drop Stored Procedure Template for Azure SQL Database and Azure Synapse Analytics Database
+-- ==========================================================================================
 
 -- Drop stored procedure if it already exists
 IF EXISTS (

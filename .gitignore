@@ -441,3 +441,6 @@ samples/features/sql-management-objects/src/out/CodeCoverage/CodeCoverage.config
 # Certificates
 *.pem
 *.p12
+
+# Composer
+/vendor/

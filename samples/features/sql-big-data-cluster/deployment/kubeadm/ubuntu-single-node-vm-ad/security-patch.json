@@ -2,7 +2,7 @@
   "patch": [
     {
       "op": "replace",
-      "path": "security",
+      "path": "security.activeDirectory",
       "value": {
         "ouDistinguishedName":"OU=bdc,DC=megalomania,DC=local",
         "dnsIpAddresses": ["00.00.000.00"],

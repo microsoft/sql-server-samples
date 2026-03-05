@@ -7,7 +7,6 @@ fi
 DIR_PREFIX=$1
 
 kubeadm reset --force
-unalias azdata
 
 systemctl stop kubelet
 rm -rf /var/lib/cni/
@@ -23,8 +22,12 @@ ip link set flannel.1 down
 #brctl delbr flannel.1
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 
-rm -rf .azdata/
-rm -rf bdcdeploy/
+# Remove azdata
+#
+apt-get remove -y azdata-cli
+rm /etc/apt/sources.list.d/azdata-cli.list
+rm /etc/apt/trusted.gpg.d/dpgswdist.v1.asc.gpg
+apt autoremove
 
 # Remove mounts.
 #

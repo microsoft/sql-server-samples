@@ -6,6 +6,9 @@ sudo kubeadm reset --force
 
 # Clean up azdata-cli package.
 #
+azdata extension remove --name azdata-cli-dc --yes
+azdata extension remove --name azdata-cli-postgres --yes
+azdata extension remove --name azdata-cli-sqlinstance --yes
 unalias azdata
 unalias az
 sudo dpkg --remove --force-all azdata-cli
@@ -67,13 +70,13 @@ fi
 # Clean the mounted volumes.
 #
 
-for i in $(seq 1 40); do
+for i in $(seq 1 80); do
 
   vol="vol$i"
 
-  sudo umount /mnt/local-storage/$vol
+  sudo umount /azurearc/local-storage/$vol
 
-  sudo rm -rf /mnt/local-storage/$vol
+  sudo rm -rf /azurearc/local-storage/$vol
 
 done
 

@@ -1,0 +1,4 @@
+- isim : SARIF sonuç dosyasını yükleyin 
+kullanılabilir : github/codeql-action/upload-sarif@v1
+        ile :
+          sarif_file : sonuçlar.sarif

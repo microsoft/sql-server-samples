@@ -27,7 +27,7 @@
 '			-v tu="domain\username" -v tp="password"		'Credentials for target server. OPTIONAL, default credentials are used if missing.
 '			-v tst="SITE"						'Specifies SharePoint site, in case target server is in SharePoint integrated mode
 '			-v tf="TARGETFOLDER"					'Set to "/" for migrating into the root level, or to something like "/folder/subfolder" for copying into some folder, which must be already existing. Everything within "SOURCEFOLDER" will be copied into "TARGETFOLDER". OPTIONAL, default is "/".
-'			-v security= "True/False"				'If set to “False”, destination catalog items will inherit security setting according to the settings of the target system. Default is false.
+'			-v security= "True/False"				'If set to "False", destination catalog items will inherit security setting according to the settings of the target system. Default is false.
 '			
 ' Example: rs.exe -i ssrs_migration.rss -e Mgmt2010 -s http://server1/reportserver -v ts="http://server2/_vti_bin/reportserver"
 ' Example: rs.exe -i ssrs_migration.rss -e Mgmt2010 -s http://server1/reportserver -u domain1\user1 -p password1 -v f="/SOURCEFOLDER" -v ts="http://server2/_vti_bin/reportserver" -v tu="domain1\user2" -v tp="password2" -v tf="/TARGETFOLDER"

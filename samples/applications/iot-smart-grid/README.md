@@ -45,6 +45,18 @@ To run this sample, you need the following prerequisites.
 <a name=run-this-sample></a>
 
 ## Run this sample
+1. Create a database with the name: PowerConsumption
+
+2. Run the script setup-or-reset-demo.sql to create the DB Objects
+
+3. Start the DataGenerator (WindowsForms: Client.exe OR Console: ConsoleClient.exe)application DemoWorkload.exe
+
+4. Change the connection string in the configuration settings, if needed. By default, it points to the local default SQL Server instance with integrated authentication.
+
+5. Load the Power BI Report (WindowsForms: Click on the lower left link, Console: Type REPORT)
+
+-**or**-
+
 1. Clone this repository using Git for Windows (http://www.git-scm.com/), or download the zip file.
 
 2. From Visual Studio, open the **IoT-Smart-Grid.sln** file from the root directory.

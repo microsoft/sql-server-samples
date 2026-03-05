@@ -1,6 +1,6 @@
---=================================================================================
--- Drop Table template for Azure SQL Database and Azure SQL Data Warehouse Database 
---=================================================================================
+--================================================================================
+-- Drop Table template for Azure SQL Database and Azure Synapse Analytics Database 
+--================================================================================
 IF EXISTS (
   SELECT *
 	FROM sys.tables

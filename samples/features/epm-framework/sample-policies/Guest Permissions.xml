@@ -1,0 +1,404 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft Corporation.-->
+<!--Licensed under the MIT License-->
+<model xmlns="smlif.xsd">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">DMF:Name</_locTag>
+    <_locTag _loc="locData">DMF:Description</_locTag>
+    <_locTag _loc="locData">DMF:Condition</_locTag>
+    <_locTag _loc="locData">DMF:ObjectSet</_locTag>
+    <_locTag _loc="locData">DMF:RootCondition</_locTag>
+    <_locTag _loc="locData">DMF:PolicyCategory</_locTag>
+    <_locTag _loc="locData">DMF:HelpText</_locTag>
+</_locDefinition>
+  <identity>
+    <name>urn:uuid:96fe1236-abf6-4a57-b54d-e9baab394fd1</name>
+    <baseURI>http://documentcollection/</baseURI>
+  </identity>
+  <xs:bufferSchema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <definitions xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+      <document>
+        <docinfo>
+          <aliases>
+            <alias>/system/schema/DMF</alias>
+          </aliases>
+          <sfc:version DomainVersion="3" />
+        </docinfo>
+        <data>
+          <xs:schema targetNamespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+            <xs:element name="Policy">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ObjectSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Condition">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="PolicyCategory">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSetLevel">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <DMF:bufferData xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08">
+              <instances xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Policy/Guest Permissions</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Policy xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:PolicyCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Has No Database Access</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyCondition>
+                      <DMF:PolicyObjectSet>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyObjectSet>
+                      <DMF:PolicyPolicyCategory>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Security</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyPolicyCategory>
+                      <DMF:Name type="string">Guest Permissions</DMF:Name>
+                      <DMF:Description type="string">Checks if permission to access the database is enabled for guest user. Remove access to the guest user if it is not required. The guest user cannot be dropped, but a guest user account can be disabled by revoking its CONNECT permission. You do this by executing REVOKE CONNECT FROM GUEST from within any database other than master, msdb, or tempdb.</DMF:Description>
+                      <DMF:Condition type="string">Has No Database Access</DMF:Condition>
+                      <DMF:ObjectSet type="string">Guest Permissions_ObjectSet</DMF:ObjectSet>
+                      <DMF:PolicyCategory type="string">Microsoft Best Practices: Security</DMF:PolicyCategory>
+                      <DMF:Enabled type="boolean">false</DMF:Enabled>
+                      <DMF:AutomatedPolicyEvaluationMode type="AutomatedPolicyEvaluationMode">None</DMF:AutomatedPolicyEvaluationMode>
+                      <DMF:HelpText type="string" />
+                      <DMF:HelpLink type="string">http://go.microsoft.com/fwlink/?LinkId=116354</DMF:HelpLink>
+                      <DMF:ActiveEndDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveEndDate>
+                      <DMF:ActiveStartDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveStartDate>
+                    </DMF:Policy>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:ObjectSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:TargetSets>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:TargetSets>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Guest Permissions_ObjectSet</DMF:Name>
+                      <DMF:Facet type="string">User</DMF:Facet>
+                    </DMF:ObjectSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Has No Database Access</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">&lt;Operator&gt;&lt;?char 13?&gt;
+  &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+  &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+  &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+  &lt;Attribute&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Unsupported&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;Name&gt;HasDBAccess&lt;/Name&gt;&lt;?char 13?&gt;
+  &lt;/Attribute&gt;&lt;?char 13?&gt;
+  &lt;Function&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;FunctionType&gt;False&lt;/FunctionType&gt;&lt;?char 13?&gt;
+    &lt;ReturnType&gt;Bool&lt;/ReturnType&gt;&lt;?char 13?&gt;
+    &lt;Count&gt;0&lt;/Count&gt;&lt;?char 13?&gt;
+  &lt;/Function&gt;&lt;?char 13?&gt;
+&lt;/Operator&gt;</DMF:Expression>
+                      <DMF:Name type="string">Has No Database Access</DMF:Name>
+                      <DMF:Description type="string">Confirms that the database user does not have access to the database.</DMF:Description>
+                      <DMF:Facet type="string">User</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Security</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:PolicyCategory xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Microsoft Best Practices: Security</DMF:Name>
+                    </DMF:PolicyCategory>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Levels>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User/TargetSetLevel/Server_/Database_/User</sml:Uri>
+                          </sfc:Reference>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User/TargetSetLevel/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:Levels>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database/User</DMF:TargetTypeSkeleton>
+                      <DMF:Enabled type="boolean">true</DMF:Enabled>
+                    </DMF:TargetSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Guest</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">&lt;Operator&gt;&lt;?char 13?&gt;
+  &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+  &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+  &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+  &lt;Attribute&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Unsupported&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;Name&gt;Name&lt;/Name&gt;&lt;?char 13?&gt;
+  &lt;/Attribute&gt;&lt;?char 13?&gt;
+  &lt;Constant&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+    &lt;Value&gt;guest&lt;/Value&gt;&lt;?char 13?&gt;
+  &lt;/Constant&gt;&lt;?char 13?&gt;
+&lt;/Operator&gt;</DMF:Expression>
+                      <DMF:Name type="string">Guest</DMF:Name>
+                      <DMF:Description type="string">The user is the Guest account.</DMF:Description>
+                      <DMF:Facet type="string">User</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User/TargetSetLevel/Server_/Database_/User</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSetLevel xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetSetLevelCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Guest</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:TargetSetLevelCondition>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database/User</DMF:TargetTypeSkeleton>
+                      <DMF:LevelName type="string">User</DMF:LevelName>
+                      <DMF:Condition type="string">Guest</DMF:Condition>
+                    </DMF:TargetSetLevel>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/User or Model</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">&lt;Operator&gt;&lt;?char 13?&gt;
+  &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+  &lt;OpType&gt;AND&lt;/OpType&gt;&lt;?char 13?&gt;
+  &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+  &lt;Group&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;Count&gt;1&lt;/Count&gt;&lt;?char 13?&gt;
+    &lt;Operator&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;OpType&gt;OR&lt;/OpType&gt;&lt;?char 13?&gt;
+      &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+      &lt;Operator&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+        &lt;Attribute&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;Name&gt;IsSystemObject&lt;/Name&gt;&lt;?char 13?&gt;
+        &lt;/Attribute&gt;&lt;?char 13?&gt;
+        &lt;Function&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;FunctionType&gt;False&lt;/FunctionType&gt;&lt;?char 13?&gt;
+          &lt;ReturnType&gt;Bool&lt;/ReturnType&gt;&lt;?char 13?&gt;
+          &lt;Count&gt;0&lt;/Count&gt;&lt;?char 13?&gt;
+        &lt;/Function&gt;&lt;?char 13?&gt;
+      &lt;/Operator&gt;&lt;?char 13?&gt;
+      &lt;Operator&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+        &lt;Attribute&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;Name&gt;Name&lt;/Name&gt;&lt;?char 13?&gt;
+        &lt;/Attribute&gt;&lt;?char 13?&gt;
+        &lt;Constant&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+          &lt;Value&gt;model&lt;/Value&gt;&lt;?char 13?&gt;
+        &lt;/Constant&gt;&lt;?char 13?&gt;
+      &lt;/Operator&gt;&lt;?char 13?&gt;
+    &lt;/Operator&gt;&lt;?char 13?&gt;
+  &lt;/Group&gt;&lt;?char 13?&gt;
+  &lt;Operator&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+    &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+    &lt;Attribute&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Unsupported&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;Name&gt;Status&lt;/Name&gt;&lt;?char 13?&gt;
+    &lt;/Attribute&gt;&lt;?char 13?&gt;
+    &lt;Function&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;FunctionType&gt;Enum&lt;/FunctionType&gt;&lt;?char 13?&gt;
+      &lt;ReturnType&gt;Numeric&lt;/ReturnType&gt;&lt;?char 13?&gt;
+      &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+      &lt;Constant&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+        &lt;Value&gt;Microsoft.SqlServer.Management.Smo.DatabaseStatus&lt;/Value&gt;&lt;?char 13?&gt;
+      &lt;/Constant&gt;&lt;?char 13?&gt;
+      &lt;Constant&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+        &lt;Value&gt;Normal&lt;/Value&gt;&lt;?char 13?&gt;
+      &lt;/Constant&gt;&lt;?char 13?&gt;
+    &lt;/Function&gt;&lt;?char 13?&gt;
+  &lt;/Operator&gt;&lt;?char 13?&gt;
+&lt;/Operator&gt;</DMF:Expression>
+                      <DMF:Name type="string">User or Model</DMF:Name>
+                      <DMF:Description type="string">Confirms that the database is a user database or the Model database and that the database is online.</DMF:Description>
+                      <DMF:Facet type="string">Database</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User/TargetSetLevel/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSetLevel xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Guest Permissions__ObjectSet/TargetSet/Server_/Database_/User</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetSetLevelCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/User or Model</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:TargetSetLevelCondition>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:LevelName type="string">Database</DMF:LevelName>
+                      <DMF:Condition type="string">User or Model</DMF:Condition>
+                    </DMF:TargetSetLevel>
+                  </data>
+                </document>
+              </instances>
+            </DMF:bufferData>
+          </xs:schema>
+        </data>
+      </document>
+    </definitions>
+  </xs:bufferSchema>
+</model>

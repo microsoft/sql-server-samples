@@ -30,15 +30,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct](http://micr
 ## Setup
 ### Set up the Demo Database
 1. Clone/Download the repository
-2. Import the *Clinic* database
-	+ Open SSMS and connect to your SQL Server 2016 instance
+2. Open SSMS and connect to your SQL Server 2016 instance
+        + In Object Explorer right-click on the server instance and select Properties. In the Security tab set Server authentication to SQL Server and Windows Authentication. Close the Properties window.
+        + In Object Explorer right-click on the server instance and select Restart.
+3. Import the *Clinic* database
 	+ In SSMS, right-click on *Databases* in Object Explorer and select *Import Data-tier Application...*. 
 	+ Locate your copy of the bacpac file, located in the */setup* folder. 
 	![Import Data-tier Application Wizard](img/import-bacpac.png)
 	+ Complete the steps of the wizard. 
-3. While connected to your database (master) via SSMS, execute [setup/Create-Application-Login.sql](setup/Create-Application-Login.sql) link.
+4. While connected to your database (master) via SSMS, execute [setup/Create-Application-Login.sql](setup/Create-Application-Login.sql) link.
 	+ Before running the script, create a password for the `ContosoClinicApplicaation` user.  
-	+ This script creates a login and user, assigns `datareader` and `datawriter` permissions, and gives several Always Encrypted specific permissions to the `ContosoClinicApplication` user 
+	+ This script creates a login and user, assigns `datareader` and `datawriter` permissions, and gives several Always Encrypted specific permissions to the `ContosoClinicApplication` user  
 
 ### Modify and Set up the Sample Application Project
 1. Start Visual Studio and open the Contoso Application solution file- located in /src. 
@@ -121,7 +123,7 @@ Our connection string for our application now contains `Column Encryption Settin
 ### Row Level Security (RLS) 
 
 #### Login to the application 
-Sign in using (Rachel@contoso.com/Password1!) or (alice@contoso.com/Password1!)
+Sign in using (Rachel@contoso.com/Password!1) or (alice@contoso.com/Password!1)
 
 #### Enable Row Level Security (RLS) 
 + Connect to your database using SSMS: 

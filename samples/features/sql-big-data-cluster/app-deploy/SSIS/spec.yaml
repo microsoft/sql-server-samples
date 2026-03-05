@@ -2,5 +2,5 @@ name: back-up-db
 version: v1
 runtime: SSIS
 entrypoint: ./back-up-db.dtsx
-options: /REP V /CONN "MasterSQL"\;"\"Data Source=master-0;User ID=sa;Initial Catalog=master;Password=[SA_PASSWORD]\""
+options: /REP V /CONN "MasterSQL"\;"\"Data Source=master-svc;User ID=sa;Initial Catalog=master;Password=[SA_PASSWORD]\""
 schedule: "*/1 * * * *"

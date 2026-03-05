@@ -1,0 +1,383 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+  },
+  "variables": {
+    "prefix": "sqldbedge",
+    "uniquePrefix": "[concat(variables('prefix'), substring(uniqueString(resourceGroup().id), 0, 6))]",
+    "registry": {
+      "name": "[concat(variables('uniquePrefix'), 'registry')]",
+      "id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', concat(variables('uniquePrefix'), 'registry'))]",
+      "vault": {
+        "name": "[concat(variables('uniquePrefix'), 'vault')]",
+        "id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', concat(variables('uniquePrefix'), 'vault'))]"
+      }
+    },
+    "storage": {
+      "name": "[concat(variables('uniquePrefix'), 'storage')]",
+      "id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', concat(variables('uniquePrefix'), 'storage'))]"
+    },
+    "ml": {
+      "name": "[concat(variables('uniquePrefix'), 'ml')]",
+      "id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', concat(variables('uniquePrefix'), 'ml'))]"
+    },
+    "insights": {
+      "component": {
+        "name": "[concat(variables('uniquePrefix'), 'insightscomp')]",
+        "id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', concat(variables('uniquePrefix'), 'insightscomp'))]"
+      }
+    },
+    "sqldbedgehub": {
+      "name": "[concat(variables('uniquePrefix'), 'sqldbedgehub')]",
+      "id": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', concat(variables('uniquePrefix'), 'sqldbedgehub'))]"
+    },
+    "website": {
+      "name": "[concat(variables('uniquePrefix'), 'app')]",
+      "serverfarms": {
+        "name": "[concat(variables('uniquePrefix'), 'serverfarms')]"
+      }
+    }
+  },
+  "resources": [
+    {
+        "type": "Microsoft.ContainerRegistry/registries",
+        "apiVersion": "2019-12-01-preview",
+        "name": "[variables('registry').name]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+            "name": "Basic",
+            "tier": "Basic"
+        },
+        "properties": {
+            "adminUserEnabled": true,
+            "policies": {
+                "quarantinePolicy": {
+                    "status": "disabled"
+                },
+                "trustPolicy": {
+                    "type": "Notary",
+                    "status": "disabled"
+                },
+                "retentionPolicy": {
+                    "days": 7,
+                    "status": "disabled"
+                }
+            },
+            "encryption": {
+                "status": "disabled"
+            },
+            "dataEndpointEnabled": false
+        }
+    },
+    {
+        "type": "microsoft.insights/components",
+        "apiVersion": "2015-05-01",
+        "name": "[variables('insights').component.name]",
+        "location": "[resourceGroup().location]",
+        "kind": "web",
+        "properties": {
+            "Application_Type": "web"
+        }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('storage').name]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+          "name": "Standard_LRS",
+          "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "networkAcls": {
+            "bypass": "AzureServices",
+            "virtualNetworkRules": [],
+            "ipRules": [],
+            "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": false,
+        "encryption": {
+            "services": {
+                "file": {
+                    "keyType": "Account",
+                    "enabled": true
+                },
+                "blob": {
+                    "keyType": "Account",
+                    "enabled": true
+                }
+            },
+            "keySource": "Microsoft.Storage"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storage').name, '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storage').name)]"
+      ],
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "enabled": false
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storage').name, '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storage').name)]"
+      ],
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('storage').name, '/default/dacpac')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storage').name, 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storage').name)]"
+      ],
+      "properties": {
+        "publicAccess": "None"
+      }
+    },
+		{
+			"type": "Microsoft.KeyVault/vaults",
+			"apiVersion": "2018-02-14",
+			"name": "[variables('registry').vault.name]",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"tenantId": "[subscription().tenantId]",
+				"enabledForDeployment": true,
+				"enabledForDiskEncryption": true,
+				"enabledForTemplateDeployment": true,
+				"sku": {
+					"name": "standard",
+					"family": "A"
+				},
+				"networkAcls": {
+					"defaultAction": "Allow",
+					"bypass": "AzureServices"
+				},
+				"accessPolicies": []
+			}
+		},
+    {
+        "type": "Microsoft.MachineLearningServices/workspaces",
+        "apiVersion": "2018-11-19",
+        "name": "[variables('ml').name]",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storage').name)]",
+            "[resourceId('Microsoft.ContainerRegistry/registries', variables('registry').name)]",
+            "[resourceId('Microsoft.KeyVault/vaults', variables('registry').vault.name)]",
+            "[resourceId('microsoft.insights/components', variables('insights').component.name)]"
+        ],
+        "sku": {
+            "name": "Basic",
+            "tier": "Basic"
+        },
+        "identity": {
+            "type": "SystemAssigned"
+        },
+        "properties": {
+            "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', variables('storage').name)]",
+            "containerRegistry": "[resourceId('Microsoft.ContainerRegistry/registries', variables('registry').name)]",
+            "keyVault": "[resourceId('Microsoft.KeyVault/vaults', variables('registry').vault.name)]",
+            "applicationInsights": "[resourceId('microsoft.insights/components', variables('insights').component.name)]",
+            "discoveryUrl": "[concat('https://', resourceGroup().location, '.experiments.azureml.net/discovery')]"
+        }
+    },
+    {
+        "type": "Microsoft.Devices/IotHubs",
+        "apiVersion": "2019-11-04",
+        "name": "[variables('sqldbedgehub').name]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+            "name": "S1",
+            "tier": "Standard",
+            "capacity": 1
+        },
+        "properties": {
+            "ipFilterRules": [],
+            "eventHubEndpoints": {
+                "events": {
+                    "retentionTimeInDays": 1,
+                    "partitionCount": 4
+                }
+            },
+            "routing": {
+                "endpoints": {
+                    "serviceBusQueues": [],
+                    "serviceBusTopics": [],
+                    "eventHubs": [],
+                    "storageContainers": []
+                },
+                "routes": [],
+                "fallbackRoute": {
+                    "name": "$fallback",
+                    "source": "DeviceMessages",
+                    "condition": "true",
+                    "endpointNames": [
+                        "events"
+                    ],
+                    "isEnabled": true
+                }
+            },
+            "storageEndpoints": {},
+            "messagingEndpoints": {
+                "fileNotifications": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "ttlAsIso8601": "PT1H",
+                    "maxDeliveryCount": 10
+                }
+            },
+            "enableFileUploadNotifications": false,
+            "cloudToDevice": {
+                "maxDeliveryCount": 10,
+                "defaultTtlAsIso8601": "PT1H",
+                "feedback": {
+                    "lockDurationAsIso8601": "PT1M",
+                    "ttlAsIso8601": "PT1H",
+                    "maxDeliveryCount": 10
+                }
+            },
+            "features": "None"
+        }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('website').serverfarms.name]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      ],
+      "sku": {
+        "name": "D1",
+        "tier": "Shared",
+        "size": "D1",
+        "family": "D",
+        "capacity": 0
+      },
+      "kind": "app",
+      "properties": {
+        "perSiteScaling": false,
+        "maximumElasticWorkerCount": 1,
+        "isSpot": false,
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0
+      }
+    },
+    {
+      "apiVersion": "2018-02-01",
+      "name": "[variables('website').name]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('website').serverfarms.name)]"
+      ],
+      "tags": null,
+      "properties": {
+        "name": "[variables('website').name]",
+        "enabled": true,
+        "hostNameSslStates": [{
+            "name": "[concat(variables('website').name, '.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(variables('website').name, '.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('website').serverfarms.name)]",
+        "siteConfig": {
+          "appSettings": [{
+              "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "XDT_MicrosoftApplicationInsights_Mode",
+              "value": "default"
+            },
+            {
+              "name": "DiagnosticServices_EXTENSION_VERSION",
+              "value": "disabled"
+            },
+            {
+              "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
+              "value": "disabled"
+            },
+            {
+              "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
+              "value": "disabled"
+            },
+            {
+              "name": "InstrumentationEngine_EXTENSION_VERSION",
+              "value": "disabled"
+            },
+            {
+              "name": "SnapshotDebugger_EXTENSION_VERSION",
+              "value": "disabled"
+            },
+            {
+              "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
+              "value": "disabled"
+            },
+            {
+              "name": "IoTHub:ModuleConnectionString",
+              "value": ""
+            }
+          ],
+          "metadata": [{
+            "name": "CURRENT_STACK",
+            "value": "dotnetcore"
+          }]
+        },
+        "clientAffinityEnabled": true
+      },
+      "resources": [{
+        "name": "MSDeploy",
+        "type": "extensions",
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2015-08-01",
+        "dependsOn": [
+          "[concat('Microsoft.Web/sites/', variables('website').name)]"
+        ],
+        "tags": {
+          "displayName": "webDeploy"
+        },
+        "properties": {
+          "packageUri": "https://zarmada.blob.core.windows.net/sqldbedge-shared/sqldbedgedemo.zip?sp=r&st=2020-04-21T03:07:20Z&se=2050-04-21T11:07:20Z&spr=https&sv=2019-02-02&sr=b&sig=veWrTqH9RqjDeceBszIBtg3ueQlyBxmLd4ZPVrpTXpg%3D",
+          "dbType": "None",
+          "connectionString": ""
+        }
+      }]
+    }
+  ]
+}

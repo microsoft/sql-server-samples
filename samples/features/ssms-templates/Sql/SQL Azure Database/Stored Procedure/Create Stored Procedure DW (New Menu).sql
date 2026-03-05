@@ -1,6 +1,6 @@
--- ======================================================================
--- Create Stored Procedure Template for Azure SQL Data Warehouse Database
--- ======================================================================
+-- =====================================================================
+-- Create Stored Procedure Template for Azure Synapse Analytics Database
+-- =====================================================================
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

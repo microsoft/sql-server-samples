@@ -1,0 +1,33 @@
+.Turbine {
+  position: relative;
+  width: 8vw;
+  height: fit-content;
+  .top {
+    position: absolute;
+    left: 0.4vw;
+    width: 8vw;
+    height: 8vw;
+    top: 1vw;
+    .a{fill:#e6e6e6;stroke:#000;stroke-miterlimit:10;stroke-width:.25px}
+  }
+  .base {
+    position: absolute;
+    left: 3.5vw;
+    top: 4vw;
+    height: 10vw;
+    .a{fill:#e6e6e6;stroke:#000;stroke-miterlimit:10;stroke-width:.25px}
+
+    @media screen and (min-width: 1200px) {
+      left: 3.65vw;
+    }
+    @media screen and (min-width: 1500px) {
+      left: 3.80vw;
+    }
+    @media screen and (min-width: 1600px) {
+      left: 3.90vw;
+    }
+    @media screen and (min-width: 1800px) {
+      left: 4vw;
+    }
+  }
+}

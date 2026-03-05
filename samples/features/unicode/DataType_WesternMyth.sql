@@ -7,7 +7,13 @@
 -- Test Latin character strings with Latin collation
 -- Set size limit of data types to be the same under Basic Multilingual Plane (BMP)
 -- Characters between 1-byte (ASCII) and 3-bytes (East Asian)
+USE master;
+DROP DATABASE IF EXISTS UnicodeDatabase;
+CREATE DATABASE UnicodeDatabase COLLATE LATIN1_GENERAL_100_CI_AS_SC_UTF8
+GO
 
+USE UnicodeDatabase
+GO
 DROP TABLE IF EXISTS t1;
 CREATE TABLE t1 (c1 varchar(24) COLLATE Latin1_General_100_CI_AI, 
 	c2 nvarchar(8) COLLATE Latin1_General_100_CI_AI);  
@@ -46,7 +52,8 @@ GO
 
 
 -- uh-oh data loss on the varchar example. Why?
--- varchar is bound to code page enconding, and these code points cannot be found in the Latin code page.
+-- varchar is bound to code page enconding, 
+-- and these code points cannot be found in the Latin code page.
 SELECT ASCII('敏' COLLATE Latin1_General_100_CI_AI), CHAR(63)
 SELECT ASCII('捷' COLLATE Latin1_General_100_CI_AI), CHAR(63)
 
@@ -152,10 +159,10 @@ GO
 
 -- But the majority of my data is set to Latin (ASCII)
 DROP TABLE IF EXISTS t4;
-CREATE TABLE t4 (c1 varchar(110) COLLATE Latin1_General_100_CI_AI_SC);  
+CREATE TABLE t4 (c1 varchar(110) COLLATE Latin1_General_100_CI_AI_SC_UTF8);  
 INSERT INTO t4 VALUES (N'MyStringThequickbrownfoxjumpsoverthelazydogIsLatinAscii敏捷的棕色狐狸跳👶👦')  
-SELECT LEN(c1) AS [varchar UTF16 LEN],  
-	DATALENGTH(c1) AS [varchar UTF16 DATALENGTH], c1
+SELECT LEN(c1) AS [varchar UTF8 LEN],  
+	DATALENGTH(c1) AS [varchar UTF8 DATALENGTH], c1
 FROM t4; 
 GO
 
@@ -164,8 +171,8 @@ GO
 -- Where are the savings?
 SELECT DATALENGTH(N'MyStringThequickbrownfoxjumpsoverthelazydogIsLatinAscii') AS [Latin_UTF16_2bytes], 
 	DATALENGTH(N'敏捷的棕色狐狸跳') AS [Chinese_UTF16_2bytes], 
-	DATALENGTH(N'👶👦') AS [SC_UTF16_4bytes]
+	DATALENGTH(N'👶') AS [SC_UTF16_4bytes]
 SELECT DATALENGTH('MyStringThequickbrownfoxjumpsoverthelazydogIsLatinAscii' COLLATE Latin1_General_100_CI_AI_SC_UTF8) AS [Latin_UTF8_1byte], 
 	DATALENGTH('敏捷的棕色狐狸跳' COLLATE Latin1_General_100_CI_AI_SC_UTF8) AS [Chinese_UTF8_3bytes], 
-	DATALENGTH('👶👦' COLLATE Latin1_General_100_CI_AI_SC_UTF8) AS [SC_UTF8_4bytes]
+	DATALENGTH('👶' COLLATE Latin1_General_100_CI_AI_SC_UTF8) AS [SC_UTF8_4bytes]
 GO

@@ -229,7 +229,24 @@ function VerifyServiceEndpoints {
             return $false
         }
 }
-
+function VerifyServiceDelegation {
+    param (
+        $subnet
+    )
+        Write-Host("Verifying Service Delegation for subnet '{0}'." -f $subnet.Name)
+        If(
+            (Get-AzDelegation -Subnet $subnet).ServiceName -eq 'Microsoft.Sql/managedInstances'
+          )
+        {
+            Write-Host "Passed Validation - `'Microsoft.Sql/managedInstances`' delegated to subnet $($subnet.Name)." -ForegroundColor Green
+            return $true
+        }
+        Else
+        {
+            Write-Host "Warning - `'Microsoft.Sql/managedInstances`' is not delegated to subnet $($subnet.Name)." -ForegroundColor Yellow
+            return $false
+        }
+}
 function LoadNetworkSecurityGroup {
     param (
         $subnet
@@ -836,6 +853,23 @@ function PrepareServiceEndpoints
     $subnet.ServiceEndpoints.Clear()
 }
 
+function PrepareServiceDelegation
+{
+    param($subnet)
+    Write-Host "Adding Service Delegation"
+    Try
+    {
+        $provissioingState = Add-AzDelegation -ServiceName "Microsoft.Sql/managedInstances" -Subnet $subnet -Name 'ServiceDelegation'
+        if($provissioingState){
+            Write-Host "Provissioning State $($provissioingState.ProvisioningState)"
+        }
+    }
+    Catch
+    {
+        Write-Host "Failed: $_" -ForegroundColor Red
+    }
+    
+}
 function PrepareNSG
 {
     param(
@@ -938,13 +972,14 @@ $subnet = LoadVirtualNetworkSubnet -virtualNetwork $virtualNetwork -subnetName $
 Write-Host
 
 VerifySubnet $subnet
+$isOkServiceDelegation = VerifyServiceDelegation $subnet
 $isOkServiceEndpoints = VerifyServiceEndpoints $subnet
 $nsgVerificationResult = VerifyNSG $subnet
 $isOkNSG = $nsgVerificationResult['success']
 $routeTableVerificationResult = VerifyRouteTable $subnet
 $hasRouteTable = $routeTableVerificationResult['hasRouteTable']
 $isOkRouteTable = $routeTableVerificationResult['success']
-$isValid = $isOkServiceEndpoints -and $isOkNSG -and $isOkRouteTable
+$isValid = $isOkServiceEndpoints -and $isOkNSG -and $isOkRouteTable -and $isOkServiceDelegation
 
 If($isValid -ne $true)
 {
@@ -974,7 +1009,11 @@ If($isValid -ne $true)
             Write-Host "[UDR] Create Route table with required routes." -ForegroundColor Yellow
         }
         Write-Host "[UDR] Associate newly created Route table to subnet." -ForegroundColor Yellow
-    }   
+    }
+    If($isOkServiceDelegation -ne $true)
+    {
+        Write-Host "[Service Delegation] Add Microsoft.Sql/managedInstances as a service delegation for subnet" -ForegroundColor Yellow
+    }    
     Write-Host
     Write-Host("-------------------------------------------------------------------------------------------------------- ")  -ForegroundColor Yellow    
     Write-Host
@@ -1004,8 +1043,17 @@ If($isValid -ne $true)
         If($isOkRouteTable -ne $true)
         {
             PrepareRouteTable $routeTableVerificationResult $virtualNetwork $subnet
-        }   
+        }
+           
+        If($isOkNSG -ne $true)
+        {
+            PrepareNSG $nsgVerificationResult $virtualNetwork $subnet
+        }
 
+        If($isOkServiceDelegation -ne $true)
+        {
+            PrepareServiceDelegation $subnet
+        }
         SetVirtualNetwork $virtualNetwork
 
         Write-Host

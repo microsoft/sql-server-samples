@@ -1,0 +1,59 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "String"
+        },
+        "sqlAdministratorLogin": {
+            "type": "String"
+        },
+        "sqlAdministratorPassword": {
+            "type": "SecureString"
+        },
+        "tagValues": {
+            "defaultValue": {"Created with":"Synapse Azure Resource Manager deploment template"},
+            "type": "Object"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "storage",
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[uri(deployment().properties.templateLink.uri, '/microsoft/sql-server-samples/master/samples/manage/synapse-analytics/storage/azuredeploy.json')]",
+                "contentVersion": "1.0.0.0"
+              },
+              "parameters":{
+                "storageAccount":{"value": "[parameters('name')]"}
+              }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "name": "workspace",
+            "properties": {
+              "mode": "Incremental",
+              "templateLink": {
+                "uri": "[uri(deployment().properties.templateLink.uri, '/microsoft/sql-server-samples/master/samples/manage/synapse-analytics/workspace/azuredeploy.json')]",
+                "contentVersion": "1.0.0.0"
+              },
+              "parameters":{
+                "name":{"value": "[parameters('name')]"},
+                "sqlAdministratorLogin":{"value": "[parameters('sqlAdministratorLogin')]"},
+                "sqlAdministratorPassword":{"value": "[parameters('sqlAdministratorPassword')]"},
+                "defaultDataLakeStorageAccountName":{"value": "[parameters('name')]"},
+                "tagValues":{"value": "[parameters('tagValues')]"}
+              }
+            },
+            "dependsOn": [
+                "storage"
+            ]
+        }
+    ],
+    "outputs": {}
+}

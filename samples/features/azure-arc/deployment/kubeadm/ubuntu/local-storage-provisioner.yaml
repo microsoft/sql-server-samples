@@ -35,8 +35,8 @@ metadata:
 data:
   storageClassMap: |     
     local-storage:
-       hostDir: /mnt/local-storage
-       mountDir:  /mnt/local-storage
+       hostDir: /azurearc/local-storage
+       mountDir:  /azurearc/local-storage
        blockCleanerCommand:
          - "/scripts/shred.sh"
          - "2" 
@@ -73,7 +73,7 @@ spec:
             - mountPath: /etc/provisioner/config 
               name: provisioner-config
               readOnly: true             
-            - mountPath:  /mnt/local-storage
+            - mountPath:  /azurearc/local-storage
               name: local-storage
               mountPropagation: "HostToContainer" 
       volumes:
@@ -82,7 +82,7 @@ spec:
             name: local-provisioner-config         
         - name: local-storage
           hostPath:
-            path: /mnt/local-storage
+            path: /azurearc/local-storage
 ---
 apiVersion: v1
 kind: ServiceAccount

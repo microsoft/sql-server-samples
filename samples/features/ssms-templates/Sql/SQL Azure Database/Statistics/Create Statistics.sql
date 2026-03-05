@@ -1,6 +1,6 @@
--- ===============================================================================================
--- Create Sampled Statistics Template for Azure SQL Database and Azure SQL Data Warehouse Database
--- ===============================================================================================
+-- ======================================================================================================================================
+-- Create Sampled Statistics Template for Azure SQL Database, Azure Synapse Analytics Database, and Azure Synapse SQL Analytics on-demand
+-- ======================================================================================================================================
 CREATE STATISTICS <statistics_name, sysname, statistics_name> 
 ON <schema_name, sysname, schema_name>.<table_name, sysname, table_name>
 ( 

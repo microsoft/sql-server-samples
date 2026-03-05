@@ -1,3 +1,11 @@
+---
+page_type: sample
+languages:
+- php
+products:
+- azure-sql-database	
+---
+
 # Developing applications with php and SQL Server 
 
 Pick a platform below to get started:

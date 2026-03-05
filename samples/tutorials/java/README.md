@@ -1,3 +1,11 @@
+---
+page_type: sample
+languages:
+- java
+products:
+- azure-sql-database	
+---
+
 # Developing applications with Java and SQL Server 
 
 Pick a platform below to get started:

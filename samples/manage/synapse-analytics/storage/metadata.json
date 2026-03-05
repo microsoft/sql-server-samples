@@ -1,0 +1,10 @@
+{
+  "$schema": "https://aka.ms/azure-quickstart-templates-metadata-schema#",
+  "type": "QuickStart",
+	"itemDisplayName": "Deploy Azure Storage account for Synapse Workspace",
+	"description": "This template allows you to deploy Azure Storage account for Synapse Workspace.",
+	"summary": "Deploy Azure Storage account for Synapse Workspace.",
+	"githubUsername": "jocapc",
+	"dateUpdated": "2019-10-10"
+}
+

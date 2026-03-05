@@ -12,5 +12,4 @@ Contains samples that show how to connect to Microsoft SQL databases, including 
 * Ruby
 
 
-
-
+You can find many Azure-specific samples in the AzureSqlGettingStarted folder.

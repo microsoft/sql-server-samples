@@ -1,0 +1,84 @@
+/*
+ Global Styles
+
+ This file should only be used for site wide styles. If the style is specific to a component then it
+ should be in a file next to the component
+*/
+@font-face {
+  font-family: SegoeUI;
+  src: local('Segoe UI'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff2)
+      format('woff2'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.woff)
+      format('woff'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.ttf)
+      format('truetype'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/normal/latest.svg#web)
+      format('svg');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: SegoeUILight;
+  src: local('Segoe UI Light'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/light/latest.woff2)
+      format('woff2'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/light/latest.woff)
+      format('woff'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/light/latest.ttf)
+      format('truetype'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/light/latest.svg#web)
+      format('svg');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: SegoeUISemilight;
+  src: local('Segoe UI Semilight'), local('Segoe UI'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.woff2)
+      format('woff2'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.woff)
+      format('woff'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.ttf)
+      format('truetype'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semilight/latest.svg#web)
+      format('svg');
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: SegoeUISemibold;
+  src: local('Segoe UI Semibold'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff2)
+      format('woff2'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.woff)
+      format('woff'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.ttf)
+      format('truetype'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/semibold/latest.svg#web)
+      format('svg');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: SegoeUIBold;
+  src: local('Segoe UI Bold'), local('Segoe UI'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.woff2)
+      format('woff2'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.woff)
+      format('woff'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.ttf)
+      format('truetype'),
+    url(//c.s-microsoft.com/static/fonts/segoe-ui/west-european/bold/latest.svg#web)
+      format('svg');
+  font-weight: 700;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Cousine&display=swap');
+
+
+body {
+  font-family: SegoeUI;
+}

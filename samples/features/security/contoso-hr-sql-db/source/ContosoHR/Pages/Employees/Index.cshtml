@@ -1,0 +1,54 @@
+﻿@page
+@model ContosoHR.Pages.Employees.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee[0].Ssn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee[0].Salary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Employee) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ssn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.EmployeeId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.EmployeeId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.EmployeeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,6 +1,6 @@
--- ====================================================================
--- Create External Table Template for Azure SQL Data Warehouse Database
--- ====================================================================
+-- ===================================================================
+-- Create External Table Template for Azure Synapse Analytics Database
+-- ===================================================================
 
 IF OBJECT_ID('<schema_name, sysname, dbo>.<table_name, sysname, sample_external_table>', 'U') IS NOT NULL
     DROP EXTERNAL TABLE <schema_name, sysname, dbo>.<table_name, sysname, sample_external_table>

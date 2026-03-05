@@ -1,0 +1,49 @@
+﻿@page
+@model ContosoHR.Pages.Employees.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Employee.Ssn" class="control-label"></label>
+                <input asp-for="Employee.Ssn" class="form-control" />
+                <span asp-validation-for="Employee.Ssn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Employee.FirstName" class="control-label"></label>
+                <input asp-for="Employee.FirstName" class="form-control" />
+                <span asp-validation-for="Employee.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Employee.LastName" class="control-label"></label>
+                <input asp-for="Employee.LastName" class="form-control" />
+                <span asp-validation-for="Employee.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Employee.Salary" class="control-label"></label>
+                <input asp-for="Employee.Salary" class="form-control" />
+                <span asp-validation-for="Employee.Salary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

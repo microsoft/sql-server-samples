@@ -2,10 +2,16 @@ $parameters = $args[0]
 $scriptUrlBase = $args[1]
 
 $subscriptionId = $parameters['subscriptionId']
+$environmentName = $parameters['environmentName']
 $resourceGroupName = $parameters['resourceGroupName']
 $virtualNetworkName = $parameters['virtualNetworkName']
 $certificateNamePrefix = $parameters['certificateNamePrefix']
 $clientCertificatePassword = $parameters['clientCertificatePassword'] #used only when certificates are created using openssl
+
+if ($environmentName -eq '' -or ($null -eq $environmentName)) {
+    $environmentName = 'AzureCloud'
+    Write-Host "Environment: AzureCloud." -ForegroundColor Green
+}
 
 if ($clientCertificatePassword -eq '' -or ($null -eq $clientCertificatePassword)) {
     $clientCertificatePassword = 'S0m3Str0nGP@ssw0rd'
@@ -52,11 +58,14 @@ function EnsureAzModule {
     }
 }
 
-function EnsureLogin () {
+function EnsureLogin {
+    param (
+        $environmentName
+    )
     $context = Get-AzContext
     If ($null -eq $context.Subscription) {
         Write-Host "Sign-in..."
-        If ($null -eq (Connect-AzAccount -ErrorAction SilentlyContinue -ErrorVariable Errors)) {
+        If ($null -eq (Connect-AzAccount -Environment $environmentName -ErrorAction SilentlyContinue -ErrorVariable Errors)) {
             Write-Host ("Sign-in failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
         }
@@ -220,9 +229,8 @@ function CreateCertificate() {
 
 VerifyPSVersion
 EnsureAzModule
-EnsureLogin
+EnsureLogin -environmentName $environmentName
 SelectSubscriptionId -subscriptionId $subscriptionId
-
 $virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName
 
 $subnets = $virtualNetwork.Subnets.Name

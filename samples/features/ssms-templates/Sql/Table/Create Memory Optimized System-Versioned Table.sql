@@ -19,7 +19,7 @@ USE <database, sysname, AdventureWorks>
 GO
 
 BEGIN
-       IF ((SELECT temporal_type FROM SYS.TABLES WHERE object_id = OBJECT_ID('<schema_name, sysname, dbo>.<table_name, sysname, sample_memoryoptimizedtable>', 'U')) = 2)
+       IF ((SELECT temporal_type FROM sys.tables WHERE object_id = OBJECT_ID('<schema_name, sysname, dbo>.<table_name, sysname, sample_memoryoptimizedtable>', 'U')) = 2)
        BEGIN
             ALTER TABLE [<schema_name, sysname, dbo>].[<table_name, sysname, sample_memoryoptimizedtable>] SET (SYSTEM_VERSIONING = OFF)
        END

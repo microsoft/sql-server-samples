@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "name": "CmdShell check",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "DirectoryCheck",
+      "itemType": "definition",
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises",
+        "version": "[11.0,)"
+      },
+      "displayName": "CmdShell probe",
+      "description": "This is an example of cmdshell probe type. ",
+      "message": "File @{stdout.name} has size @{stdout.size} and it's bigger than threshold = @{threshold} bytes",
+      "level": "Warning",
+      "threshold": 1024,
+      "condition": {
+        "lt": [
+          "@stdout.size",
+          "@threshold"
+        ]
+      },
+      "probes": [
+        {
+          "id": "ListOfDirectoryFiles",
+          "transform": {
+            "type": "parse",
+            "map": {
+              "stdout": "/^(?<date>\\d\\d/\\d\\d/\\d\\d\\d\\d)\\s+(?<time>\\d\\d:\\d\\d\\s(AM|PM))\\s+(?<size>[0-9.,]+)\\s+(?<name>.+)$/ix"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "probes": {
+    "ListOfDirectoryFiles": [
+      {
+        "type": "CmdShell",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "OnPremises",
+          "version": "[11.0,)"
+        },
+        "implementation": {
+          "command": "dir"
+        }
+      }
+    ]
+  }
+}

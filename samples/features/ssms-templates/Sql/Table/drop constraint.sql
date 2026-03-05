@@ -3,6 +3,11 @@
 --
 -- This template creates a table with a CHECK CONSTRAINT,  
 -- then it removes the CHECK CONSTRAINT from the table
+
+-- Note: The DROP syntax can also be used to drop
+-- Edge Constraint object types. To achieve this replace
+-- the constraint_name attribute with the name of the
+-- respective Edge Constraint object
 -- ========================================================
 USE <database, sysname, AdventureWorks>
 GO

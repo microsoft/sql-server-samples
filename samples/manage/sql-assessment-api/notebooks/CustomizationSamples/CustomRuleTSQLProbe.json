@@ -12,19 +12,17 @@
 			"[12.0,12.0.6259.0)",
 			"[13.0,)"
 			],
-		  "platform": "/Windows|Linux/"
+		  "platform": [ "Windows", "Linux" ]
         },
 		"id": "DBSpaceAvailable",
 		"itemType": "definition",
         "displayName": "Database files have little free space",
 		"description": "Average available space in all the database files is less than the threshold.",
-        "message": "Database has only @{SPACEAVAILABLEPERC}% of free space (threshold is set to @{threshold}%). Total space: @{SPACETOTALMB} MB. Free space: @{SPACEAVAILABLEMB} MB",
+            "message": "Database has only @{space_available_rel:P0} of free space (threshold is set to @{threshold:P0}). Total space: @{space_total:N2} MB. Free space: @{space_available:N2} MB",
 		"probes": ["DBSpaceAvailable"],
-		"threshold": 25,
-        "condition": [
-			{"greater": ["@SPACEAVAILABLEPERC", "@threshold"]}
-		]
-      }
+            "threshold": 0.25,
+            "condition": { "greater": [ "@space_available_rel", "@threshold" ] }
+        }
     ],
 	"probes":{
 		"DBSpaceAvailable": [
@@ -33,13 +31,12 @@
 				"target": {
 				"type": "Database",
 				"engineEdition": "OnPremises, ManagedInstance",
-				"platform": "/Windows|Linux/"
+                    "platform": [ "Windows", "Linux" ]
 				},
 				"implementation": {
 					"useDatabase": true, 
-					"query":
-					"SELECT convert(decimal(12,2),((sum (convert(decimal(12,2),round(a.size/128.000,2))) - sum(convert(decimal(12,2),round(fileproperty(a.name,'SpaceUsed')/128.000,2)))) /sum (convert(decimal(12,2),round(a.size/128.000,2)))*100)) as SPACEAVAILABLEPERC , SUM(convert(decimal(12,2),round(a.size/128.000,2))) as SPACETOTALMB , SUM(convert(decimal(12,2),round(fileproperty(a.name,'SpaceUsed')/128.000,2))) as SPACEUSEDMB , SUM(convert(decimal(12,2),round((a.size-fileproperty(a.name,'SpaceUsed'))/128.000,2))) as SPACEAVAILABLEMB FROM dbo.sysfiles a  WHERE groupid <> 0;"
-				}
+                    "query": "SELECT (total - used)/total AS space_available_rel, total as space_total, used as space_used, total - used as space_available FROM ( SELECT SUM(a.size)/128.0 AS total, SUM(fileproperty(a.name,'SpaceUsed'))/128.0 AS used FROM dbo.sysfiles a WHERE groupid <> 0)data;"
+                }
 			}
 		]
 	}

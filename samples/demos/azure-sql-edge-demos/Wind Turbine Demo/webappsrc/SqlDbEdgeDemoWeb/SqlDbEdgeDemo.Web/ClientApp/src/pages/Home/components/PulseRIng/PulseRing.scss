@@ -1,0 +1,10 @@
+.PulseRing {
+  position: absolute;
+  width: 9vw;
+  top: 26.4vw;
+  left: 39.7vw;
+  .f{fill:none}.e{stroke:none}
+  g {
+    transition: opacity 0.3s;
+  }
+}

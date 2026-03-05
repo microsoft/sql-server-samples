@@ -28,7 +28,7 @@ You will see in the results that each rule has some properties (not the full lis
 - Message property explains the recommendation but if you need more info, there is a HelpLink property that points at documentation on the subject.
 - Origin shows which ruleset and version the recommendation is coming from
 
-See [config.json](./config.json) for a full list of rules and properties.
+See [ruleset.json](./ruleset.json) for a full list of rules and properties.
 
 If you want to get recommendations for all databases on the local instance, run this command.
 
@@ -42,4 +42,4 @@ To learn more about SQL Assessment API such as customizing and extending the rul
 
 - Docs online page: https://docs.microsoft.com/sql/sql-assessment-api/sql-assessment-api-overview 
 - GitHub repo: http://aka.ms/sql-assessment-api
-- SQL Assessment API Tutorial notebook: coming soon
+- SQL Assessment API Tutorial notebook: [SQLAssessmentAPITutorialNotebook.ipynb](./notebooks/SQLAssessmentAPITutorialNotebook.ipynb)

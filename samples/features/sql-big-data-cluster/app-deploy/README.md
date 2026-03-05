@@ -1,19 +1,19 @@
 # Application deployment on SQL Server big data cluster
 
 ## Build more intelligent apps
-Application deployment allows you to deploy applications into SQL Server big data cluster as containers. These apps are hosted for you and exposed as Swagger compliant web services for usage in your application. The apps you deploy have access to the data stored in the big data cluster and can be monitored easily. For more information, see [How to deploy and app on SQL Server 2019 big data cluster (preview)](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions). This page provides a number of samples for different technology stacks.
+Application deployment allows you to deploy applications into SQL Server big data cluster as containers. These apps are hosted for you and exposed as Swagger compliant web services for usage in your application. The apps you deploy have access to the data stored in the big data cluster and can be monitored easily. For more information, see [How to deploy and app on SQL Server 2019 big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps). This page provides a number of samples for different technology stacks.
 
 ![Appdeploy](Appdeploy.PNG)
 
 ## Pre-requisites
 * SQL Server big data cluster CTP 2.3 or later
-* `azdata` CLI familiarity. If you are unfamiliar with `azdata` please refer to - [App Deployment in SQL Server big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) for more information.
+* `azdata` CLI familiarity. If you are unfamiliar with `azdata` please refer to - [App Deployment in SQL Server big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps) for more information.
 
 * Tip 
 **azdata app -h** will display the various commands to manage the app
 
 ## Templates
-Templates are used by our [App Deploy add-ins](https://docs.microsoft.com/en-us/sql/big-data-cluster/app-deployment-extension?view=sqlallproducts-allversions) and can be used to quickly deploy applications.
+Templates are used by our [App Deploy add-ins](https://docs.microsoft.com/en-us/sql/big-data-cluster/app-deployment-extension) and can be used to quickly deploy applications.
 > Looking for our templates? See [the SQLBDC-AppDeploy repo](https://github.com/Microsoft/SQLBDC-AppDeploy).
 
 ## Available samples
@@ -53,4 +53,4 @@ These samples demonstrates how you can deploy a simple R app into SQL Server big
 ## Related Links
 For more information, see these articles:
 
-[How to deploy and app on SQL Server 2019 big data cluster (preview)](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions)
+[How to deploy and app on SQL Server 2019 big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps)

@@ -1,0 +1,17 @@
+{
+    "name": "microsoft/sql-server-samples",
+    "description": "Official Microsoft GitHub Repository containing code samples for SQL Server",
+    "type": "project",
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "scripts": {
+        "cs-check": "phpcs -p --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1",
+        "cs-fix": "phpcbf -p --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1"
+    }
+}

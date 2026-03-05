@@ -1,0 +1,24 @@
+.Toast {
+  position: absolute;
+  bottom: 1vw;
+  right: 1vw;
+  height: 2vw;
+  width: 10vw;
+  background: #00999A;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 0.7vw;
+  padding: 0 0.7vw;
+  .icon-tick {
+    width: 1vw;
+    margin-right: 0.3vw;
+  }
+  .icon-close {
+    width: 0.8vw;
+    cursor: pointer;
+  }
+  span {
+    flex: 1;
+  }
+}

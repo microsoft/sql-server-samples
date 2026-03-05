@@ -5,12 +5,12 @@
     "probes":{
         "ManagedCodeRuleProbe": [
             {
-                "type": "CLR",
+                "type": "External",
                 "target": {
                   "type": "Server"
                 },
                 "implementation": {
-                  "class": "TestsProbeLibrary.Probe1",
+                  "class": "TestsProbeLibrary.Probe2",
                   "assembly": "C:\\SQLAsmnt\\CustomizationSamples\\TestsProbeLibrary.dll"
                 }
             }
@@ -27,11 +27,11 @@
             "itemType": "definition",
             "displayName": "Check uses 3rd-party assembly",
             "description": "This is an example of a check using an assembly to get required data.",
-            "message": "Method from the assembly returned a number greater than the threshold: @{QueryResult} > @{threshold}.",
+            "message": "Method from the assembly returned a number greater than the threshold: @{ActualCpuUtilization} > @{threshold}.",
             "target": { "type": "Server" },
             "probes": ["ManagedCodeRuleProbe"],
             "threshold": 83,
-            "condition": { "less": ["@QueryResult", "@threshold"]  }
+            "condition": { "less": ["@ActualCpuUtilization", "@threshold"]  }
         }
     ]
 }

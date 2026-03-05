@@ -16,7 +16,7 @@ GO
 
 BEGIN
     --If table is system-versioned, SYSTEM_VERSIONING must be set to OFF first 
-    IF ((SELECT temporal_type FROM SYS.TABLES WHERE object_id = OBJECT_ID('<schema_name, sysname, dbo>.<temporal_table_name, sysname, sample_table>', 'U')) = 2)
+    IF ((SELECT temporal_type FROM sys.tables WHERE object_id = OBJECT_ID('<schema_name, sysname, dbo>.<temporal_table_name, sysname, sample_table>', 'U')) = 2)
     BEGIN
         ALTER TABLE [<schema_name, sysname, dbo>].[<temporal_table_name, sysname, sample_table>] SET (SYSTEM_VERSIONING = OFF)
     END

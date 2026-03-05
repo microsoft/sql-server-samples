@@ -1,3 +1,11 @@
+---
+page_type: sample
+languages:
+- nodejs
+products:
+- azure-sql-database	
+---
+
 # Developing applications with Node.js and SQL Server 
 
 Pick a platform below to get started:

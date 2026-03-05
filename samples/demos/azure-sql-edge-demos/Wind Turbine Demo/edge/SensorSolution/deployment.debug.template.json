@@ -1,0 +1,122 @@
+{
+  "$schema-template": "2.0.0",
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": "",
+            "registryCredentials": {
+              "sqldbedgecr": {
+                "username": "$CONTAINER_REGISTRY_USER_NAME",
+                "password": "$CONTAINER_REGISTRY_PASSWORD",
+                "address": "$CONTAINER_REGISTRY_NAME"
+              }
+            }
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.0",
+              "createOptions": {}
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.0",
+              "createOptions": {
+                "HostConfig": {
+                  "PortBindings": {
+                    "5671/tcp": [
+                      {
+                        "HostPort": "5671"
+                      }
+                    ],
+                    "8883/tcp": [
+                      {
+                        "HostPort": "8883"
+                      }
+                    ],
+                    "443/tcp": [
+                      {
+                        "HostPort": "443"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "modules": {
+          "SensorModule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.SensorModule.debug}",
+              "createOptions": {}
+            }
+          },
+          "AzureSQLDatabaseEdge": {
+            "settings": {
+                "image": "marketplace.azurecr.io/microsoftsqledge-preview/azure-sql-database-edge",
+                "createOptions": "{\"HostConfig\":{\"CapAdd\":[\"SYS_PTRACE\"],\"Binds\":[\"sqlvolume:/sqlvolume\"],\"PortBindings\":{\"1433/tcp\":[{\"HostPort\":\"1433\"}]},\"Mounts\":[{\"Type\":\"volume\",\"Source\":\"sqlvolume\",\"Target\":\"/var/opt/mssql\"}]},\"User\":\"0:0\",\"Env\":[\"MSSQL_AGENT_ENABLED=TRUE\",\"ClientTransportType=AMQP_TCP_Only\",\"MSSQL_PID=Developer\"]}"
+            },
+            "type": "docker",
+            "version": "1.0",
+            "env": {
+                "ACCEPT_EULA": {
+                    "value": "Y"
+                },
+                "SA_PASSWORD": {
+                    "value": "Microsoft2020$"
+                },
+                "MSSQL_LCID": {
+                    "value": "1033"
+                },
+                "MSSQL_COLLATION": {
+                    "value": "SQL_Latin1_General_CP1_CI_AS"
+                }
+            },
+            "status": "running",
+            "restartPolicy": "always"
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.0",
+        "routes": {
+          "SensorModuleToIoTHub": "FROM /messages/modules/SensorModule/outputs/* INTO $upstream"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    },
+    "SensorModule": {
+      "properties.desired": {
+        "SqlConnnectionString": "Server=tcp:AzureSQLDatabaseEdge,1433;Initial Catalog=turbine-sensor-db;Persist Security Info=False;User ID=sa;Password=Microsoft2020$;MultipleActiveResultSets=False;Connection Timeout=30;",
+        "PushTimeInterval": 5000,
+        "Alert": "start",
+        "OnnxModelUrl": ""
+      }
+    },
+    "AzureSQLDatabaseEdge": {
+      "properties.desired": {
+          "SqlPackage": "$SQL_PACKAGE"
+      }
+    }
+  }
+}
