@@ -1,5 +1,5 @@
 param(
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [ValidateNotNullOrEmpty()]
   [string]$ManagementGroupId,
 
@@ -22,6 +22,11 @@ param(
   [Parameter(Mandatory = $false)]
   [switch]$SkipManagedIdentityRoleAssignment
 )
+
+if (-not $PSBoundParameters.ContainsKey('ManagementGroupId')) {
+  $ManagementGroupId = (Get-AzContext).Tenant.Id
+  Write-Output "ManagementGroupId not specified. Using tenant root management group: $ManagementGroupId"
+}
 
 $AssignmentScope = "/providers/Microsoft.Management/managementGroups/$ManagementGroupId"
 
@@ -55,14 +60,9 @@ else {
 $PolicyDefinitionName = "activate-sql-arc-$LicenseToken-$PlatformToken"
 $PolicyAssignmentName = "sql-arc-$LicenseToken-$PlatformToken"
 
-if ($TargetLicenseType -eq 'PAYG') {
-  $PolicyDefinitionDisplayName = "Arc-enabled SQL Server ($PlatformLabel) license type to 'Pay-as-you-go'"
-  $PolicyAssignmentDisplayName = "Arc-enabled SQL Server ($PlatformLabel) license type to 'Pay-as-you-go'"
-}
-else {
-  $PolicyDefinitionDisplayName = "Set Arc-enabled SQL Server ($PlatformLabel) license type to 'License With Software Assurance'"
-  $PolicyAssignmentDisplayName = "Set Arc-enabled SQL Server ($PlatformLabel) license type to 'License With Software Assurance'"
-}
+$LicenseTypeLabel = if ($TargetLicenseType -eq 'PAYG') { 'Pay-as-you-go' } else { 'License With Software Assurance' }
+$PolicyDefinitionDisplayName = "Configure Arc-enabled SQL Server ($PlatformLabel) license type to '$LicenseTypeLabel'"
+$PolicyAssignmentDisplayName = "Configure Arc-enabled SQL Server ($PlatformLabel) license type to '$LicenseTypeLabel'"
 
 #Create policy definition
 New-AzPolicyDefinition `

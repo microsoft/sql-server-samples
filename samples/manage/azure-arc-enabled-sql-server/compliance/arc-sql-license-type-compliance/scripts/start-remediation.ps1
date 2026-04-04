@@ -1,5 +1,5 @@
 param(
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [ValidateNotNullOrEmpty()]
   [string]$ManagementGroupId,
 
@@ -30,6 +30,11 @@ param(
   [Parameter(Mandatory = $false)]
   [switch]$GrantMissingPermissions
 )
+
+if (-not $PSBoundParameters.ContainsKey('ManagementGroupId')) {
+  $ManagementGroupId = (Get-AzContext).Tenant.Id
+  Write-Output "ManagementGroupId not specified. Using tenant root management group: $ManagementGroupId"
+}
 
 $AssignmentScope = "/providers/Microsoft.Management/managementGroups/$ManagementGroupId"
 

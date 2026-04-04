@@ -1,8 +1,8 @@
 {
-  "displayName": "Set Arc-enabled SQL Server license type to 'License With Software Assurance'",
+  "displayName": "Configure Arc-enabled SQL Server license type",
   "policyType": "Custom",
   "mode": "Indexed",
-  "description": "This policy sets the license type for Arc-enabled SQL Server to 'License With Software Assurance'.  ",
+  "description": "This policy configures the license type for Arc-enabled SQL Server extensions to a specified target value.",
   "metadata": {
     "category": ""
   },

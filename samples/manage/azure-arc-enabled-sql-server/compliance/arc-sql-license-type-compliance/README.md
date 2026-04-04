@@ -21,7 +21,7 @@ Parameter reference:
 
 | Parameter | Required | Default | Allowed values | Description |
 |---|---|---|---|---|
-| `ManagementGroupId` | Yes | N/A | Any valid management group ID | Scope where the policy definition is created. |
+| `ManagementGroupId` | No | Tenant root group | Any valid management group ID | Scope where the policy definition is created. Defaults to the tenant root management group when not specified. |
 | `ExtensionType` | No | `Both` | `Windows`, `Linux`, `Both` | Targets the Arc SQL extension platform. When `Both` (default), a single policy definition and assignment covers both platforms. When a specific type is selected, the naming and scope are tailored to that platform. |
 | `SubscriptionId` | No | Not set | Any valid subscription ID | If provided, policy assignment scope is the subscription. |
 | `TargetLicenseType` | Yes | N/A | `Paid`, `PAYG` | Target `LicenseType` value to enforce. |
@@ -29,12 +29,25 @@ Parameter reference:
 
 Definition and assignment creation:
 
-1. Clone the repo.
+1. Download the required files.
 
 ```powershell
-git clone https://github.com/microsoft/sql-server-samples.git
-cd sql-server-samples/samples/manage/azure-arc-enabled-sql-server/compliance/arc-sql-license-type-compliance
+# Optional: create and enter a local working directory
+mkdir sql-arc-lt-compliance
+cd sql-arc-lt-compliance
 ```
+
+```powershell
+$baseUrl = "https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/manage/azure-arc-enabled-sql-server/compliance/arc-sql-license-type-compliance"
+
+New-Item -ItemType Directory -Path policy, scripts -Force | Out-Null
+
+curl -sLo policy/azurepolicy.json "$baseUrl/policy/azurepolicy.json"
+curl -sLo scripts/deployment.ps1 "$baseUrl/scripts/deployment.ps1"
+curl -sLo scripts/start-remediation.ps1 "$baseUrl/scripts/start-remediation.ps1"
+```
+
+> **Note:** On Windows PowerShell 5.1, `curl` is an alias for `Invoke-WebRequest`. Use `curl.exe` instead, or run the commands in PowerShell 7+.
 
 2. Login to Azure.
 
@@ -42,35 +55,57 @@ cd sql-server-samples/samples/manage/azure-arc-enabled-sql-server/compliance/arc
 Connect-AzAccount
 ```
 
-```powershell
-# Example: target both platforms (default)
-.\scripts\deployment.ps1 -ManagementGroupId "<management-group-id>" -SubscriptionId "<subscription-id>" -TargetLicenseType "PAYG" -LicenseTypesToOverwrite @("Paid")
-
-# Example: target only Linux
-.\scripts\deployment.ps1 -ManagementGroupId "<management-group-id>" -ExtensionType "Linux" -SubscriptionId "<subscription-id>" -TargetLicenseType "PAYG" -LicenseTypesToOverwrite @("Paid")
-```
-The first example (without `-ExtensionType`) will:
-* Create/update a single policy definition and assignment covering **both** Windows and Linux.
-* Assign that policy at the specified subscription scope.
-* Enforce LicenseType = PAYG.
-* Update only resources where current `LicenseType` is `Paid`.
-
-The second example creates a Linux-specific definition and assignment, with platform-tailored naming.
-
-Scenario examples:
+3. Set your variables. Only `TargetLicenseType` is required — all others are optional.
 
 ```powershell
-# Target Paid, both Linux and Windows, but only for resources with missing LicenseType or LicenseOnly (do not target PAYG)
-.\scripts\deployment.ps1 -ManagementGroupId "<management-group-id>" -TargetLicenseType "Paid" -LicenseTypesToOverwrite @("Unspecified","LicenseOnly")
+# ── Required ──
+$TargetLicenseType    = "PAYG"                                      # "Paid" or "PAYG"
 
-# Target PAYG, but only where current LicenseType is Paid (do not target missing or LicenseOnly)
-.\scripts\deployment.ps1 -ManagementGroupId "<management-group-id>" -ExtensionType "Linux" -TargetLicenseType "PAYG" -LicenseTypesToOverwrite @("Paid")
-
-# Overwrite all known existing LicenseType values (Paid, PAYG, LicenseOnly), but not missing
-.\scripts\deployment.ps1 -ManagementGroupId "<management-group-id>" -ExtensionType "Linux" -TargetLicenseType "Paid" -LicenseTypesToOverwrite @("Paid","PAYG","LicenseOnly")
+# ── Optional (uncomment to override defaults) ──
+# $ManagementGroupId      = "<management-group-id>"                 # Default: tenant root management group
+# $SubscriptionId         = "<subscription-id>"                     # Default: policy assigned at management group scope
+# $ExtensionType          = "Both"                                  # "Windows", "Linux", or "Both" (default)
+# $LicenseTypesToOverwrite = @("Unspecified","Paid","PAYG","LicenseOnly")  # Default: all
 ```
 
-Note: `scripts/deployment.ps1` automatically grants required roles to the policy assignment managed identity at assignment scope, preventing common `PolicyAuthorizationFailed` errors during DeployIfNotExists deployments.
+4. Run the deployment.
+
+```powershell
+# Minimal — uses defaults for management group, platform, and overwrite targets
+.\scripts\deployment.ps1 -TargetLicenseType $TargetLicenseType
+
+# With subscription scope
+.\scripts\deployment.ps1 -TargetLicenseType $TargetLicenseType -SubscriptionId $SubscriptionId
+
+# With all options
+.\scripts\deployment.ps1 `
+  -ManagementGroupId $ManagementGroupId `
+  -SubscriptionId $SubscriptionId `
+  -ExtensionType $ExtensionType `
+  -TargetLicenseType $TargetLicenseType `
+  -LicenseTypesToOverwrite $LicenseTypesToOverwrite
+```
+
+This will:
+* Create/update the policy definition at the management group scope.
+* Create/assign the policy (at subscription scope when `-SubscriptionId` is provided, otherwise at management group scope).
+* Target the selected `ExtensionType` platform(s) — `Both` by default covers Windows and Linux.
+* Enforce the selected `TargetLicenseType` on resources matching the `LicenseTypesToOverwrite` filter.
+
+**Scenario examples:**
+
+```powershell
+# Move all Paid licenses to PAYG, both platforms
+.\scripts\deployment.ps1 -TargetLicenseType "PAYG" -LicenseTypesToOverwrite @("Paid")
+
+# Set missing and LicenseOnly to Paid, skip resources already on PAYG
+.\scripts\deployment.ps1 -TargetLicenseType "Paid" -LicenseTypesToOverwrite @("Unspecified","LicenseOnly")
+
+# Linux only — move Paid to PAYG at a specific subscription
+.\scripts\deployment.ps1 -ExtensionType "Linux" -SubscriptionId "<subscription-id>" -TargetLicenseType "PAYG" -LicenseTypesToOverwrite @("Paid")
+```
+
+> **Note:** `deployment.ps1` automatically grants required roles to the policy assignment managed identity at assignment scope, preventing common `PolicyAuthorizationFailed` errors during DeployIfNotExists deployments.
 
 ## Start Remediation
 
@@ -78,19 +113,43 @@ Parameter reference:
 
 | Parameter | Required | Default | Allowed values | Description |
 |---|---|---|---|---|
-| `ManagementGroupId` | Yes | N/A | Any valid management group ID | Used to resolve the policy definition/assignment naming context. |
+| `ManagementGroupId` | No | Tenant root group | Any valid management group ID | Used to resolve the policy definition/assignment naming context. Defaults to the tenant root management group when not specified. |
 | `ExtensionType` | No | `Both` | `Windows`, `Linux`, `Both` | Must match the platform used for the assignment. When `Both` (default), remediates the combined assignment. |
 | `SubscriptionId` | No | Not set | Any valid subscription ID | If provided, remediation runs at subscription scope. |
 | `TargetLicenseType` | Yes | N/A | `Paid`, `PAYG` | Must match the assignment target license type. |
 | `GrantMissingPermissions` | No | `false` | Switch (`present`/`not present`) | If set, checks and assigns missing required roles before remediation. |
 
-```powershell
-# Example: remediate both platforms (default)
-.\scripts\start-remediation.ps1 -ManagementGroupId "<management-group-id>" -SubscriptionId "<subscription-id>" -TargetLicenseType "PAYG" -GrantMissingPermissions
+1. Set your variables. `TargetLicenseType` is required and must match the value used during deployment — all others are optional.
 
-# Example: remediate only Linux
-.\scripts\start-remediation.ps1 -ManagementGroupId "<management-group-id>" -ExtensionType "Linux" -SubscriptionId "<subscription-id>" -TargetLicenseType "PAYG" -GrantMissingPermissions
+```powershell
+# ── Required ──
+$TargetLicenseType    = "PAYG"                                      # Must match the deployment target
+
+# ── Optional (uncomment to override defaults) ──
+# $ManagementGroupId      = "<management-group-id>"                 # Default: tenant root management group
+# $SubscriptionId         = "<subscription-id>"                     # Default: remediation runs at management group scope
+# $ExtensionType          = "Both"                                  # Must match the platform used for deployment
 ```
+
+2. Run the remediation.
+
+```powershell
+# Minimal — uses defaults for management group and platform
+.\scripts\start-remediation.ps1 -TargetLicenseType $TargetLicenseType -GrantMissingPermissions
+
+# With subscription scope
+.\scripts\start-remediation.ps1 -TargetLicenseType $TargetLicenseType -SubscriptionId $SubscriptionId -GrantMissingPermissions
+
+# With all options
+.\scripts\start-remediation.ps1 `
+  -ManagementGroupId $ManagementGroupId `
+  -ExtensionType $ExtensionType `
+  -SubscriptionId $SubscriptionId `
+  -TargetLicenseType $TargetLicenseType `
+  -GrantMissingPermissions
+```
+
+> **Note:** Use `-GrantMissingPermissions` to automatically check and assign any missing required roles before remediation starts.
 
 ## Managed Identity And Roles
 
