@@ -1,0 +1,17 @@
+# Environment variables (may contain Azure credentials)
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# Sample output
+output/
+
+# Logs
+*.log
+npm-debug.log*

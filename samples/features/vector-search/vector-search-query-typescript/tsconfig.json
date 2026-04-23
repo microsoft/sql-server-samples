@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    // @azure/msal-node@5.x packaging bug: dist/index.d.ts imports ../src/*.ts,
+    // pulling raw .ts source into type-checking. skipLibCheck only covers .d.ts.
+    // strictPropertyInitialization disabled to suppress TS2564 from msal-node.
+    // Remove when msal-node ships proper declarations.
+    // Track: https://github.com/AzureAD/microsoft-authentication-library-for-js/issues
+    "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "declaration": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
