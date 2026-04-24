@@ -1,5 +1,5 @@
 -- =======================================================
--- Enable a Table for All and Net Changes Queries Template 
+-- Enable a Table for All and Net Changes Queries Template
 -- =======================================================
 USE <Database_Name,sysname,Database_Name>
 GO

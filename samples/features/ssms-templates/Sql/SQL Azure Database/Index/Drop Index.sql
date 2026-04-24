@@ -1,6 +1,6 @@
---========================================================================
--- Drop index template for Azure SQL Database and Azure SQL Data Warehouse
---========================================================================
+--=======================================================================
+-- Drop index template for Azure SQL Database and Azure Synapse Analytics
+--=======================================================================
 IF EXISTS (
   SELECT *
 	FROM sys.indexes

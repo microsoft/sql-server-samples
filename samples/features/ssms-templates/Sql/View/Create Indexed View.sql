@@ -10,7 +10,7 @@ IF object_id(N'<schema_name, sysname, dbo>.<view_name, sysname, SalesByOrderDate
 	DROP VIEW <schema_name, sysname, dbo>.<view_name, sysname, SalesByOrderDate>
 GO
 
-CREATE VIEW <schema_name, sysname, dbo>.<view_name, sysname, SalesByOrderDate> 
+CREATE VIEW <schema_name, sysname, dbo>.<view_name, sysname, SalesByOrderDate>
 WITH SCHEMABINDING AS
 <select_statement, , SELECT OrderDate, count_big(*) C, SUM(TotalDue) DateTotal FROM Sales.SalesOrderHeader GROUP BY OrderDate>
 

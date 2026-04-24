@@ -95,7 +95,7 @@ INSERT INTO Graph.Customers (
 	ValidFrom,
 	ValidTo
 )
-SELECT 
+SELECT
 	CustomerID,
 	CustomerName,
 	BillToCustomerID,
@@ -128,7 +128,7 @@ SELECT
 	ValidFrom,
 	ValidTo
 FROM OPENROWSET (
-	bulk 'E:\Graph Examples\Graph.Customers.csv', formatfile = 'E:\Graph Examples\Graph.Customers_format.xml' 
+	bulk 'E:\Graph Examples\Graph.Customers.csv', formatfile = 'E:\Graph Examples\Graph.Customers_format.xml'
 ) as temp;
 
 USE master;

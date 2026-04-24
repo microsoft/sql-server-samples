@@ -34,9 +34,9 @@ filename = "AdultCensusIncome.csv"
 
 data_all = spark.read.format('csv')\
     .options(
-        header='true', 
-        inferSchema='true', 
-        ignoreLeadingWhiteSpace='true', 
+        header='true',
+        inferSchema='true',
+        ignoreLeadingWhiteSpace='true',
         ignoreTrailingWhiteSpace='true')\
     .load(filename) #.load(datafile) for local file
 
@@ -46,7 +46,7 @@ print("Number of rows: {},  Number of coulumns : {}".format(data_all.count(), le
 columns_new = [col.replace("-", "_") for col in data_all.columns]
 data_all = data_all.toDF(*columns_new)
 
-data_all.printSchema() 
+data_all.printSchema()
 data_all.show(5)
 
 # choose feature columns and the label column for training.
@@ -80,7 +80,7 @@ print("train and test datasets saved to {} and {}".format(train_data_path, test_
 train_read = spark.read.orc(train_data_path)
 test_read = spark.read.orc(test_data_path)
 
-assert train_read.schema == train.schema and train_read.count() == train.count() 
+assert train_read.schema == train.schema and train_read.count() == train.count()
 assert test_read.schema == test.schema and test_read.count() == test.count()
 
 ###############################################################################
@@ -105,7 +105,7 @@ for idx,key in enumerate(dtypes):
     if dtypes[key] == "string":
         featureCol = "-".join([key, "encoded"])
         featureCols.append(featureCol)
-        
+
         tmpCol = "-".join([key, "tmp"])
         si_xvars.append(StringIndexer(inputCol=key, outputCol=tmpCol, handleInvalid="skip")) #, handleInvalid="keep"
         ohe_xvars.append(OneHotEncoderEstimator(inputCols=[tmpCol], outputCols=[featureCol]))
@@ -212,8 +212,8 @@ model_final.stages.pop(si_label_index) #si_label
 ## append an IndexToString transformer to the model pipeline to get the original labels
 #labelReverse = IndexToString(inputCol = "label", outputCol = "predIncome") #no need to provide labels
 labelReverse = IndexToString(
-    inputCol = "prediction", 
-    outputCol = "predictedIncome", 
+    inputCol = "prediction",
+    outputCol = "predictedIncome",
     labels = model.stages[si_label_index].labels) #must provide labels (from si_label) otherwise will fail
 model_final.stages.append(labelReverse)
 

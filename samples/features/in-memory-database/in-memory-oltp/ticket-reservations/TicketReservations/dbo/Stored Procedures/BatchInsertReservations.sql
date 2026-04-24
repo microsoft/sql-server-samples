@@ -1,4 +1,4 @@
-﻿-- helper stored procedure to batch reservations 
+﻿-- helper stored procedure to batch reservations
 
 CREATE PROCEDURE BatchInsertReservations(@ServerTransactions int, @RowsPerTransaction int, @ThreadID int)
 AS

@@ -17,6 +17,12 @@ var sampleDb = new Sequelize(sampleDbName, userName, password, {
     }
 });
 
+var Polygon = sampleDB.define(
+    type: Sequelize.STRING,
+    coordinates: Sequelize.GEOMETRY.ARRAY,
+    geometry: Sequelize.ARRAY,
+);
+
 // Define the 'User' model
 var User = sampleDb.define('user', {
     firstName: Sequelize.STRING,

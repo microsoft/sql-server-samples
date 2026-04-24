@@ -40,17 +40,18 @@ BEGIN
             SET @Latitude = 37.78352 + RAND() * 30;
             SET @Longitude = -122.4169 + RAND() * 40;
 
-            SET @IsCompressed = CASE WHEN @TimeCounter < '20160101' THEN 1 ELSE 0 END;
+            SET @IsCompressed = CASE WHEN @TimeCounter < '20220101' THEN 1 ELSE 0 END;
 
             SET @FullSensorData = N'{"Recordings": '
               + N'['
               + N'{"type":"Feature", "geometry": {"type":"Point", "coordinates":['
               + CAST(@Longitude AS nvarchar(20)) + N',' + CAST(@Latitude AS nvarchar(20))
               + N'] }, "properties":{"rego":"' + STRING_ESCAPE(@VehicleRegistration, N'json')
-              + N'","sensor":"' + CAST(@SensorCounter + 1 AS nvarchar(20))
+              + N'","sensor":' + CAST(@SensorCounter + 1 AS nvarchar(20))
               + N',"when":"' + CONVERT(nvarchar(30), @TimeCounter, 126)
               + N'","temp":' + CAST(@Temperature AS nvarchar(20))
-              + N'}} ]';
+              + N'}} ]'
+              + N'}';
 
             INSERT Warehouse.VehicleTemperatures
                 (VehicleRegistration, ChillerSensorNumber,

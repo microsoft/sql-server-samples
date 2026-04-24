@@ -2,8 +2,8 @@
 AS
 SELECT	o.OrderID, o.OrderDate, o.CustomerPurchaseOrderNumber,
 		o.ExpectedDeliveryDate, o.PickingCompletedWhen,
-		o.CustomerID, c.CustomerName, c.PhoneNumber, c.FaxNumber, c.WebsiteURL, 
-		DeliveryLocation = JSON_QUERY((SELECT 
+		o.CustomerID, c.CustomerName, c.PhoneNumber, c.FaxNumber, c.WebsiteURL,
+		DeliveryLocation = JSON_QUERY((SELECT
 				[type] = 'Feature',
 				[geometry.type] = 'Point',
 				[geometry.coordinates] = JSON_QUERY(CONCAT('[',c.DeliveryLocation.Long,',',c.DeliveryLocation.Lat ,']')),

@@ -11,7 +11,7 @@ namespace ProductCatalog.Controllers
     {
         private ProductCatalogContext _context;
         private readonly ILogger<ProductCatalogController> _logger;
-        
+
         public ProductCatalogController (ProductCatalogContext context, ILogger<ProductCatalogController> logger)
         {
             _logger = logger;

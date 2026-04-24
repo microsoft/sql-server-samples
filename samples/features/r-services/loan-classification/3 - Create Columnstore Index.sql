@@ -1,7 +1,7 @@
 USE [LendingClub]
 GO
 
-UPDATE [dbo].[LoanStats] 
+UPDATE [dbo].[LoanStats]
 SET [is_bad] = (CASE WHEN loan_status IN ('Late (16-30 days)', 'Late (31-120 days)', 'Default', 'Charged Off') THEN 1 ELSE 0 END);
 
 CREATE NONCLUSTERED COLUMNSTORE INDEX [ncci_LoanStats] ON [dbo].[LoanStats]

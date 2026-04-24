@@ -9,11 +9,11 @@ select min(DateModified) from History.Product;
 select ProductID, Name, Color, Size, Price, Quantity
 from Product;
 
---Go back in time and show the list of products. 
+--Go back in time and show the list of products.
 select ProductID, Name, Color, Size, Price, Quantity
 from Product FOR SYSTEM_TIME AS OF '2015-07-28 13:20:00';
 
---Show the difference between current version of the product with ID 17 and version that existed in past. 
+--Show the difference between current version of the product with ID 17 and version that existed in past.
 select *
 from dbo.diff_Product(17, '2015-07-28 13:20:00');
 
@@ -42,7 +42,7 @@ order by DateModified desc;
 --Restore product. Overwrite the latest version with the verison that was valid last year.
 exec RestoreProduct 17, '2015-11-07 03:40:09';
 
---Return history of the product with id 17 and verify that it current version and '2015-11-07 03:40:09' version are identical.  
+--Return history of the product with id 17 and verify that it current version and '2015-11-07 03:40:09' version are identical.
 select ProductID, Name, Color, Size, Price, Quantity, DateModified, ValidTo
 from Product FOR SYSTEM_TIME ALL
 where productid = 17

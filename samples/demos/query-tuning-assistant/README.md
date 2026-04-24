@@ -1,4 +1,4 @@
-This is a repro package to demonstrate how to upgrade a database compatibility level using Query Tuning Assistant. 
+This is a repro package to demonstrate how to upgrade a database compatibility level using Query Tuning Assistant.
 This feature is using telemetry from the Query Store feature we launched with Azure SQL Database and SQL Server 2016 to detect upgrade-related regressions.
 
 This repro assumes the following:
@@ -16,7 +16,7 @@ This repro assumes the following:
 
 4. When requested to run a baseline collection, run PreUpgrade.cmd to customize the AdventureWorksDW2012 database and start the demo. Run it to completion...
 
-5. After its completed, continue QTA workflow. 
+5. After its completed, continue QTA workflow.
 
 6. When requested to re-run the same workload, run PostUpgrade.cmd. Run it to completion...
 

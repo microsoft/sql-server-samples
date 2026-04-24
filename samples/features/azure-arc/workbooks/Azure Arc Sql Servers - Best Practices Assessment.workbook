@@ -1,0 +1,759 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Azure Arc SQL Servers - Best Practices Assessment"
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{LogAnalitycsWorkpace}"
+        ],
+        "parameters": [
+          {
+            "id": "5ccbaa77-2a42-4a07-a877-b5a3a6297703",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "f932fba5-395b-423d-a9b0-538714e1e553",
+            "version": "KqlParameterItem/1.0",
+            "name": "LogAnalitycsWorkpace",
+            "type": 5,
+            "query": "where type =~ 'microsoft.operationalinsights/workspaces'\r\n| project id",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": []
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources",
+            "value": "/subscriptions/df77550b-74e4-4b51-a312-a1116f915de8/resourceGroups/RG-LAWS/providers/Microsoft.OperationalInsights/workspaces/LAWS-PRO-01"
+          },
+          {
+            "id": "95f19603-3001-41ca-8340-621f3887a3b3",
+            "version": "KqlParameterItem/1.0",
+            "name": "ServerName",
+            "type": 2,
+            "description": "Azure Arc ServerName",
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "SqlAssessment_CL\r\n| extend asmt = parse_csv(RawData)\r\n| extend TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\")\r\n| where TargetType == \"Server\"\r\n| extend ServerName = replace_string(tostring(asmt[7]),\"\\\\\",\"#\")\r\n| distinct ServerName",
+            "crossComponentResources": [
+              "{LogAnalitycsWorkpace}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "queryType": 0,
+            "resourceType": "microsoft.operationalinsights/workspaces",
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "9a4fed8e-66a1-4149-a9e5-e3df62e95407",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "label": "Time Range",
+            "type": 4,
+            "isRequired": true,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                },
+                {
+                  "durationMs": 5184000000
+                },
+                {
+                  "durationMs": 7776000000
+                }
+              ]
+            },
+            "value": {
+              "durationMs": 2592000000
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "parameters - 7"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SqlAssessment_CL\r\n| extend asmt = parse_csv(RawData)\r\n| extend\r\n    AsmtId=tostring(asmt[1]),\r\n    CheckId=tostring(asmt[2]),\r\n    DisplayString=asmt[3],\r\n    Description=tostring(asmt[4]),\r\n    HelpLink=asmt[5],\r\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\r\n    TargetName=tostring(asmt[7]), \r\n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\r\n    Message=tostring(asmt[9]),\r\n    TagsArr=split(tostring(asmt[10]), \",\"),\r\n    Sev = toint(asmt[8])\r\n    | order by CheckId, _ResourceId\r\n    | join kind=inner\r\n    (\r\n    SqlAssessment_CL\r\n    | extend asmt = parse_csv(RawData)\r\n    | extend\r\n        AsmtId=tostring(asmt[1])   \r\n    | summarize arg_max(TimeGenerated, *) by _ResourceId\r\n    | project AsmtId\r\n    ) on AsmtId\r\n    |where Sev >= 0   \r\n    and TargetType == \"Server\"\r\n    | extend ServerName = case(TargetType == \"Server\", tostring(asmt[7]), tostring(split(tostring(asmt[7]),\":\",0)[0]))\r\n    | extend ServerNameFilter = replace_string(ServerName,\"\\\\\",\"#\")\r\n    | where ServerNameFilter in ({ServerName})\r\n    | order by Sev, CheckId\r\n    | summarize count() by TargetName \r\n",
+        "size": 3,
+        "title": "Issues by server",
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalitycsWorkpace}"
+        ],
+        "visualization": "piechart",
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Protected",
+              "color": "green"
+            },
+            {
+              "seriesName": "Unknown",
+              "color": "gray"
+            },
+            {
+              "seriesName": "Not Protected",
+              "color": "redBright"
+            }
+          ]
+        }
+      },
+      "customWidth": "33",
+      "name": "query - 4 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SqlAssessment_CL\r\n| extend asmt = parse_csv(RawData)\r\n| extend\r\n    AsmtId=tostring(asmt[1]),\r\n    CheckId=tostring(asmt[2]),\r\n    DisplayString=asmt[3],\r\n    Description=tostring(asmt[4]),\r\n    HelpLink=asmt[5],\r\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\r\n    TargetName=tostring(asmt[7]), \r\n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\r\n    Message=tostring(asmt[9]),\r\n    TagsArr=split(tostring(asmt[10]), \",\"),\r\n    Sev = toint(asmt[8])\r\n    | order by CheckId, _ResourceId\r\n    | join kind=inner\r\n    (\r\n    SqlAssessment_CL\r\n    | extend asmt = parse_csv(RawData)\r\n    | extend\r\n        AsmtId=tostring(asmt[1])   \r\n    | summarize arg_max(TimeGenerated, *) by _ResourceId\r\n    | project AsmtId\r\n    ) on AsmtId\r\n    |where Sev >= 0   \r\n    and TargetType == \"Database\"\r\n    | extend ServerName = case(TargetType == \"Server\", tostring(asmt[7]), tostring(split(tostring(asmt[7]),\":\",0)[0]))\r\n    | extend ServerNameFilter = replace_string(ServerName,\"\\\\\",\"#\")\r\n    | where ServerNameFilter in ({ServerName})\r\n    | order by Sev, CheckId\r\n    | summarize count() by TargetName \r\n",
+        "size": 3,
+        "title": "Issues by Database",
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalitycsWorkpace}"
+        ],
+        "visualization": "piechart"
+      },
+      "customWidth": "33",
+      "name": "query - 4 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SqlAssessment_CL\r\n| extend asmt = parse_csv(RawData)\r\n| extend\r\n    AsmtId=tostring(asmt[1]),\r\n    CheckId=tostring(asmt[2]),\r\n    DisplayString=asmt[3],\r\n    Description=tostring(asmt[4]),\r\n    HelpLink=asmt[5],\r\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\r\n    TargetName=tostring(asmt[7]), \r\n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\r\n    Message=tostring(asmt[9]),\r\n    TagsArr=split(tostring(asmt[10]), \",\"),\r\n    Sev = toint(asmt[8])\r\n    | order by CheckId, _ResourceId\r\n    | join kind=inner\r\n    (\r\n    SqlAssessment_CL\r\n    | extend asmt = parse_csv(RawData)\r\n    | extend\r\n        AsmtId=tostring(asmt[1])\r\n    | summarize arg_max(TimeGenerated, *) by _ResourceId\r\n    | project AsmtId\r\n    ) on AsmtId\r\n    | where Sev >= 0\r\n    | extend TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\")\r\n    | extend ServerName = case(TargetType == \"Server\", tostring(asmt[7]), tostring(split(tostring(asmt[7]),\":\",0)[0]))\r\n    | extend ServerNameFilter = replace_string(ServerName,\"\\\\\",\"#\")\r\n    | where ServerNameFilter in ({ServerName})\r\n    | summarize count() by Severity, Sev\r\n    | order by Sev",
+        "size": 3,
+        "title": "Issues by severity",
+        "timeContextFromParameter": "TimeRange",
+        "exportFieldName": "Severity",
+        "exportParameterName": "severity",
+        "exportDefaultValue": "",
+        "showExportToExcel": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalitycsWorkpace}"
+        ],
+        "visualization": "table",
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Severity",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "max": 40,
+                "palette": "coldHot"
+              }
+            },
+            {
+              "columnMatch": "Sev",
+              "formatter": 8,
+              "formatOptions": {
+                "min": 0,
+                "max": 40,
+                "palette": "coldHot"
+              }
+            }
+          ]
+        },
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Medium",
+              "color": "orange"
+            },
+            {
+              "seriesName": "Low",
+              "color": "blue"
+            },
+            {
+              "seriesName": "High",
+              "color": "redBright"
+            },
+            {
+              "seriesName": "Information",
+              "color": "blueDark"
+            }
+          ],
+          "ySettings": {
+            "numberFormatSettings": {
+              "unit": 0,
+              "options": {
+                "style": "decimal",
+                "useGrouping": true
+              }
+            }
+          }
+        }
+      },
+      "customWidth": "50",
+      "name": "query - 4"
+    },
+    {
+      "type": 1,
+      "content": {
+        "json": "<img align=\"left\" src=\"https://code.benco.io/icon-collection/azure-icons/Azure-Arc.svg\" alt=\"drawing\" style=\"width:150px;\"/>\r\n<img align=\"right\" src=\"https://code.benco.io/icon-collection/azure-icons/SQL-Server.svg\" alt=\"drawing\" style=\"width:150px;\"/>"
+      },
+      "customWidth": "33",
+      "name": "text - 9"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "\r\nSqlAssessment_CL\r\n| extend asmt = parse_csv(RawData)\r\n| extend\r\n    AsmtId=tostring(asmt[1]),\r\n    CheckId=tostring(asmt[2]),\r\n    DisplayString=asmt[3],\r\n    Description=tostring(asmt[4]),\r\n    HelpLink=asmt[5],\r\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\r\n    TargetName=tostring(asmt[7]), \r\n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\r\n    Message=tostring(asmt[9]),\r\n    TagsArr=split(tostring(asmt[10]), \",\"),\r\n    Sev = toint(asmt[8])\r\n    | order by CheckId, _ResourceId\r\n    | join kind=inner\r\n    (\r\n    SqlAssessment_CL\r\n    | extend asmt = parse_csv(RawData)\r\n    | extend\r\n        AsmtId=tostring(asmt[1])   \r\n    | summarize arg_max(TimeGenerated, *) by _ResourceId\r\n    | project AsmtId\r\n    ) on AsmtId\r\n    |where Sev >= 0\r\n    | extend ServerName = case(TargetType == \"Server\", tostring(asmt[7]), tostring(split(tostring(asmt[7]),\":\",0)[0]))\r\n    | extend ServerNameFilter = replace_string(ServerName,\"\\\\\",\"#\")\r\n    | where ServerNameFilter in ({ServerName})\r\n    and Severity == \"{severity}\"\r\n    | extend SQLInstance = iff(TargetType == \"Database\",case(ServerName contains \"\\\\\",strcat(split(tolower(_ResourceId),\"microsoft.hybridcompute\")[0],\"Microsoft.AzureArcData/SqlServerInstances/\",replace_string(ServerName, \"\\\\\",\"_\")),strcat(split(tolower(_ResourceId),\"microsoft.hybridcompute\")[0],\"Microsoft.AzureArcData/SqlServerInstances/\",replace_string(ServerName, \"\\\\\",\"_\"))),\"\")\r\n    | extend Database = iff(TargetType == \"Database\",case(ServerName contains \"\\\\\",strcat(split(tolower(_ResourceId),\"microsoft.hybridcompute\")[0],\"Microsoft.AzureArcData/SqlServerInstances/\",replace_string(ServerName, \"\\\\\",\"_\"),\"/Databases/\",tostring(split(TargetName,\":\")[1])),strcat(split(tolower(_ResourceId),\"microsoft.hybridcompute\")[0],\"Microsoft.AzureArcData/SqlServerInstances/\",replace_string(ServerName, \"\\\\\",\"_\"),\"/Databases/\",tostring(split(TargetName,\":\")[1]))),\"\")\r\n    | order by Sev, CheckId\r\n    | project TimeGenerated,TargetType, ArcServer =_ResourceId, SQLInstance, Database, HelpLink, Sev, Severity, CheckId, Description, AsmtId\r\n",
+        "size": 0,
+        "showAnalytics": true,
+        "title": "Issues by Severity Level: {severity}",
+        "timeContextFromParameter": "TimeRange",
+        "exportedParameters": [
+          {
+            "fieldName": "Description",
+            "parameterName": "Description",
+            "parameterType": 1
+          },
+          {
+            "fieldName": "Message",
+            "parameterName": "Message",
+            "parameterType": 1
+          }
+        ],
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "{LogAnalitycsWorkpace}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "TimeGenerated",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "22.7143ch"
+              }
+            },
+            {
+              "columnMatch": "TargetType",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "icons",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Server",
+                    "representation": "resource",
+                    "text": "{0}{1}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "ResourceFlat",
+                    "text": "{0}"
+                  }
+                ],
+                "customColumnWidthSetting": "14.7143ch"
+              }
+            },
+            {
+              "columnMatch": "ArcServer",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "16.1429ch"
+              }
+            },
+            {
+              "columnMatch": "SQLInstance",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "23.5714ch"
+              }
+            },
+            {
+              "columnMatch": "Database",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "31.2857ch"
+              }
+            },
+            {
+              "columnMatch": "HelpLink",
+              "formatter": 5
+            },
+            {
+              "columnMatch": "Sev",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "9ch"
+              }
+            },
+            {
+              "columnMatch": "Severity",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "icons",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "High",
+                    "representation": "Sev0",
+                    "text": "{0}"
+                  },
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Medium",
+                    "representation": "Sev1",
+                    "text": "{0}"
+                  },
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Low",
+                    "representation": "Sev2",
+                    "text": "{0}"
+                  },
+                  {
+                    "operator": "==",
+                    "thresholdValue": "Information",
+                    "representation": "Sev3",
+                    "text": "{0}"
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "success",
+                    "text": "{0}{1}"
+                  }
+                ],
+                "customColumnWidthSetting": "16.5ch"
+              }
+            },
+            {
+              "columnMatch": "CheckId",
+              "formatter": 18,
+              "formatOptions": {
+                "linkColumn": "HelpLink",
+                "linkTarget": "Url",
+                "thresholdsOptions": "icons",
+                "thresholdsGrid": [
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "Hyperlink",
+                    "text": "{0}{1}"
+                  }
+                ],
+                "customColumnWidthSetting": "16ch"
+              }
+            },
+            {
+              "columnMatch": "Description",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "86.5714ch"
+              }
+            }
+          ],
+          "rowLimit": 500,
+          "filter": true,
+          "labelSettings": [
+            {
+              "columnId": "SQLInstance",
+              "label": "SQL Instance"
+            }
+          ]
+        }
+      },
+      "name": "query - 8"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "{LogAnalitycsWorkpace}"
+        ],
+        "parameters": [
+          {
+            "id": "ced45d66-52da-4f9c-b473-6781309a78cc",
+            "version": "KqlParameterItem/1.0",
+            "name": "CheckId",
+            "type": 2,
+            "isRequired": true,
+            "query": "\r\nSqlAssessment_CL\r\n| extend asmt = parse_csv(RawData)\r\n| extend\r\n    AsmtId=tostring(asmt[1]),\r\n    CheckId=tostring(asmt[2]),\r\n    DisplayString=asmt[3],\r\n    Description=tostring(asmt[4]),\r\n    HelpLink=asmt[5],\r\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\r\n    TargetName=tostring(asmt[7]), \r\n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\r\n    Message=tostring(asmt[9]),\r\n    TagsArr=split(tostring(asmt[10]), \",\"),\r\n    Sev = toint(asmt[8])\r\n    | order by CheckId, _ResourceId\r\n    | join kind=inner\r\n    (\r\n    SqlAssessment_CL\r\n    | extend asmt = parse_csv(RawData)\r\n    | extend\r\n        AsmtId=tostring(asmt[1])   \r\n    | summarize arg_max(TimeGenerated, *) by _ResourceId\r\n    | project AsmtId\r\n    ) on AsmtId\r\n    |where Sev >= 0\r\n    | extend ServerName = case(TargetType == \"Server\", tostring(asmt[7]), tostring(split(tostring(asmt[7]),\":\",0)[0]))\r\n    | extend ServerNameFilter = replace_string(ServerName,\"\\\\\",\"#\")\r\n    | where ServerNameFilter in ({ServerName})\r\n    and Severity == \"{severity}\"\r\n    | distinct (CheckId)\r\n|order by CheckId asc\r\n\r\n\r\n   ",
+            "crossComponentResources": [
+              "{LogAnalitycsWorkpace}"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::1"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 2592000000
+            },
+            "defaultValue": "value::1",
+            "queryType": 0,
+            "resourceType": "microsoft.operationalinsights/workspaces"
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "paarameter_CheckId"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "SqlAssessment_CL\r\n| extend asmt = parse_csv(RawData)\r\n| extend\r\n    AsmtId=tostring(asmt[1]),\r\n    CheckId=tostring(asmt[2]),\r\n    DisplayString=asmt[3],\r\n    Description=tostring(asmt[4]),\r\n    HelpLink=asmt[5],\r\n    TargetType=case(asmt[6] == 1, \"Server\", asmt[6] == 2, \"Database\", \"\"),\r\n    TargetName=tostring(asmt[7]), \r\n    Severity=case(asmt[8] == 30, \"High\", asmt[8] == 20, \"Medium\", asmt[8] == 10, \"Low\", asmt[8] == 0, \"Information\", asmt[8] == 1, \"Warning\", asmt[8] == 2, \"Critical\", \"Passed\"),\r\n    Message=tostring(asmt[9]),\r\n    TagsArr=split(tostring(asmt[10]), \",\"),\r\n    Sev = toint(asmt[8])\r\n    | order by CheckId, _ResourceId\r\n    | join kind=inner\r\n    (\r\n    SqlAssessment_CL\r\n    | extend asmt = parse_csv(RawData)\r\n    | extend\r\n        AsmtId=tostring(asmt[1])   \r\n    | summarize arg_max(TimeGenerated, *) by _ResourceId\r\n    | project AsmtId\r\n    ) on AsmtId\r\n    | extend ServerName = case(TargetType == \"Server\", tostring(asmt[7]), tostring(split(tostring(asmt[7]),\":\",0)[0]))\r\n    | extend ServerNameFilter = replace_string(ServerName,\"\\\\\",\"#\")\r\n    | where ServerNameFilter in ({ServerName})\r\n    | where CheckId == \"{CheckId}\"\r\n    |where Sev >= 0\r\n    | order by Sev, CheckId\r\n| project TimeGenerated, CheckId,Display = DisplayString,TargetName,Severity,TargetType,Description,Message,HelpLink,TagsArr",
+              "size": 0,
+              "timeContextFromParameter": "TimeRange",
+              "exportedParameters": [
+                {
+                  "fieldName": "Description",
+                  "parameterName": "Description",
+                  "parameterType": 1
+                },
+                {
+                  "fieldName": "Message",
+                  "parameterName": "Message",
+                  "parameterType": 1
+                },
+                {
+                  "fieldName": "HelpLink",
+                  "parameterName": "HelpLink",
+                  "parameterType": 1
+                },
+                {
+                  "fieldName": "TagsArr",
+                  "parameterName": "TagsArr",
+                  "parameterType": 1
+                }
+              ],
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "{LogAnalitycsWorkpace}"
+              ],
+              "gridSettings": {
+                "formatters": [
+                  {
+                    "columnMatch": "TimeGenerated",
+                    "formatter": 0,
+                    "formatOptions": {
+                      "customColumnWidthSetting": "21.2857ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "CheckId",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "linkColumn": "HelpLink",
+                      "linkTarget": "Url",
+                      "linkLabel": "",
+                      "linkIsContextBlade": false,
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "Hyperlink",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "customColumnWidthSetting": "21.5714ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "Display",
+                    "formatter": 0,
+                    "formatOptions": {
+                      "customColumnWidthSetting": "42.2857ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "TargetName",
+                    "formatter": 0,
+                    "formatOptions": {
+                      "customColumnWidthSetting": "26.7143ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "Severity",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "High",
+                          "representation": "Sev0",
+                          "text": "{0}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Medium",
+                          "representation": "Sev1",
+                          "text": "{0}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Low",
+                          "representation": "Sev2",
+                          "text": "{0}"
+                        },
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Information",
+                          "representation": "Sev3",
+                          "text": "{0}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "success",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "customColumnWidthSetting": "11.1429ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "TargetType",
+                    "formatter": 18,
+                    "formatOptions": {
+                      "thresholdsOptions": "icons",
+                      "thresholdsGrid": [
+                        {
+                          "operator": "==",
+                          "thresholdValue": "Server",
+                          "representation": "resource",
+                          "text": "{0}{1}"
+                        },
+                        {
+                          "operator": "Default",
+                          "thresholdValue": null,
+                          "representation": "ResourceFlat",
+                          "text": "{0}{1}"
+                        }
+                      ],
+                      "customColumnWidthSetting": "16ch"
+                    }
+                  },
+                  {
+                    "columnMatch": "Description",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "Message",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "HelpLink",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "TagsArr",
+                    "formatter": 5
+                  },
+                  {
+                    "columnMatch": "DisplayString",
+                    "formatter": 0,
+                    "formatOptions": {
+                      "customColumnWidthSetting": "46.2857ch"
+                    }
+                  }
+                ]
+              }
+            },
+            "customWidth": "65",
+            "name": "query - 0"
+          },
+          {
+            "type": 12,
+            "content": {
+              "version": "NotebookGroup/1.0",
+              "groupType": "editable",
+              "items": [
+                {
+                  "type": 12,
+                  "content": {
+                    "version": "NotebookGroup/1.0",
+                    "groupType": "editable",
+                    "title": " Description",
+                    "items": [
+                      {
+                        "type": 1,
+                        "content": {
+                          "json": "{Description}",
+                          "style": "info"
+                        },
+                        "name": "Description",
+                        "styleSettings": {
+                          "showBorder": true
+                        }
+                      }
+                    ]
+                  },
+                  "name": "Description"
+                },
+                {
+                  "type": 12,
+                  "content": {
+                    "version": "NotebookGroup/1.0",
+                    "groupType": "editable",
+                    "title": " Message",
+                    "items": [
+                      {
+                        "type": 1,
+                        "content": {
+                          "json": "{Message}",
+                          "style": "warning"
+                        },
+                        "name": "text - 1"
+                      }
+                    ]
+                  },
+                  "name": "Message"
+                },
+                {
+                  "type": 12,
+                  "content": {
+                    "version": "NotebookGroup/1.0",
+                    "groupType": "editable",
+                    "title": "Tags",
+                    "items": [
+                      {
+                        "type": 1,
+                        "content": {
+                          "json": "{TagsArr}"
+                        },
+                        "name": "Tags"
+                      }
+                    ]
+                  },
+                  "name": "Tags"
+                },
+                {
+                  "type": 12,
+                  "content": {
+                    "version": "NotebookGroup/1.0",
+                    "groupType": "editable",
+                    "title": " Help Link",
+                    "items": [
+                      {
+                        "type": 1,
+                        "content": {
+                          "json": "{HelpLink}"
+                        },
+                        "name": "text - 2"
+                      }
+                    ]
+                  },
+                  "name": "HelpLink"
+                }
+              ]
+            },
+            "customWidth": "35",
+            "conditionalVisibility": {
+              "parameterName": "Message",
+              "comparison": "isNotEqualTo",
+              "value": ""
+            },
+            "name": "Details",
+            "styleSettings": {
+              "showBorder": true
+            }
+          }
+        ]
+      },
+      "name": "Issues"
+    }
+  ],
+  "fallbackResourceIds": [
+    "azure monitor"
+  ],
+  "fromTemplateId": "sentinel-UserWorkbook",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

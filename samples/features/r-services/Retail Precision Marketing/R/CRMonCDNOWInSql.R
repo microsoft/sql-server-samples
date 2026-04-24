@@ -1,5 +1,5 @@
 ################################################################
-# Title: CRM Demo in-SQL 
+# Title: CRM Demo in-SQL
 # Author: Microsoft
 # Date: Dec, 2015
 #################################################################
@@ -14,9 +14,9 @@ connectionString <- "Driver=SQL Server;
 
 RFMData <- RxSqlServerData(connectionString=connectionString,
                            table="RFM_Result")
-        
-cc <- RxInSqlServer(connectionString=connectionString, 
-                    autoCleanup=FALSE, 
+
+cc <- RxInSqlServer(connectionString=connectionString,
+                    autoCleanup=FALSE,
                     consoleOutput=TRUE)
 
 rxSetComputeContext(cc)
@@ -29,7 +29,7 @@ rxGetInfo(RFMData, getVarInfo=T, numRows=3)
 
 rxHistogram(~R, data=RFMData, xNumTicks=20)
 rxHistogram(~F, data=RFMData, rowSelection=F < 30, xNumTicks=20)
-rxHistogram(~M, data=RFMData, rowSelection=M < 200, xNumTicks=20)  
+rxHistogram(~M, data=RFMData, rowSelection=M < 200, xNumTicks=20)
 
 # Count frequency of each RFMscore Level
 
@@ -38,13 +38,13 @@ results <- rxResultsDF(tmp)
 results <- results[results$Counts != 0, ]
 results[order(results$Counts, decreasing=TRUE), ]
 
-# Step 2: K-means Clustering 
+# Step 2: K-means Clustering
 
 KmeansData <- RxSqlServerData(connectionString=connectionString,
                               table = "Kmeans_Result")
 
-md.km <- rxKmeans(formula=~R+F+M+R_Score+F_Score+M_Score, 
-		  data=RFMData, 
+md.km <- rxKmeans(formula=~R+F+M+R_Score+F_Score+M_Score,
+		  data=RFMData,
  	          outFile=KmeansData,
 		  numClusters=8,
 		  algorithm="lloyd",
@@ -113,7 +113,7 @@ TestData <- RxSqlServerData(connectionString=connectionString,
 
 rxSplit(RFMVIPTrainTestData, outFilesBase=RFMVIPTrainTestData,
         splitByFactor='urv', overwrite=T, reportProgress=1)
- 
+
 ## Built our Logistic Regression Model with IsVIP as response
 
 r1<- rxLogit(IsVIP~R+F+M,
@@ -124,7 +124,7 @@ r1<- rxLogit(IsVIP~R+F+M,
 
 ## r1:stepwise selection shows that Monetary, Recency are significant.
 ## Build our Logistic Regression Model
-             
+
 r2 <- rxLogit(IsVIP~R+F,
               data=RFMVIPData, covCoef=TRUE)
 summary(r2)
@@ -132,8 +132,8 @@ summary(r2)
 ## Predict our Logistic Model on our test Dataset
 
 LogisticPred.xdf <- file.path(output.path,"LogisticPred.xdf")
-p2 <- rxPredict(r2, data=test.xdf, outData=LogisticPred.xdf, 
-                writeModelVars=TRUE, extraVarsToWrite="ID", 
+p2 <- rxPredict(r2, data=test.xdf, outData=LogisticPred.xdf,
+                writeModelVars=TRUE, extraVarsToWrite="ID",
                 computeResiduals=TRUE, computeStdErr=TRUE,
                 interval="confidence", predVarNames='LogitPredict',
                 overwrite=TRUE)
@@ -182,7 +182,7 @@ title(main="RFM-based Decision Tree on CDNOW Data",line=3)
 # Prediction
 
 DTreePred.xdf<-file.path(output.path,"DTreePred.xdf")
-rxPredict(d1, data=test.xdf, outData=DTreePred.xdf, 
+rxPredict(d1, data=test.xdf, outData=DTreePred.xdf,
           writeModelVars=TRUE, extraVarsToWrite="ID",
           computeResiduals=T, overwrite=TRUE)
 
@@ -194,7 +194,7 @@ write.table(DTreePredInfoTop10$data, file=DTreePredInfoTop10.txt, sep=" ")
 
 DTreePred <- rxXdfToDataFrame(file=DTreePred.xdf)
 
-sqlSave(channel, DTreePred, rownames=FALSE, append=FALSE, 
+sqlSave(channel, DTreePred, rownames=FALSE, append=FALSE,
         varTypes=list(numeric="float",
                       integer="int",
                       Date="date"))

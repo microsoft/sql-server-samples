@@ -2,8 +2,8 @@
 -- Ratio to Total
 -- =============================================
 
-With 
-		Member [Measures].[RatioToTotal] AS 
+With
+		Member [Measures].[RatioToTotal] AS
 		'[Measures].<measure_name, mdx_name,> /
 		( [Measures].<measure_name, mdx_name,>, <hierarchy_name, mdx_name,>.<all_member, mdx_name,> )',
 		Format_String = 'Percent'

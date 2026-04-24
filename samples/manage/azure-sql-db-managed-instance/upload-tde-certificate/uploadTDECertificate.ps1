@@ -9,7 +9,7 @@ $password = $parameters['password']
 
 $Assem = @()
 
-$Source = @" 
+$Source = @"
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -321,9 +321,9 @@ namespace CL
 
 "@
 
-Add-Type -ReferencedAssemblies $Assem -TypeDefinition $Source -Language CSharp -ErrorAction SilentlyContinue  
+Add-Type -ReferencedAssemblies $Assem -TypeDefinition $Source -Language CSharp -ErrorAction SilentlyContinue
 
-function EnsureLogin () 
+function EnsureLogin ()
 {
     $context = Get-AzureRmContext
     If( $null -eq $context.Subscription)
@@ -454,7 +454,7 @@ Write-Host "Adding TDE certificate."
 Try
 {
     Add-AzureRmSqlManagedInstanceTransparentDataEncryptionCertificate -ResourceGroupName $resourceGroupName -ManagedInstanceName $managedInstanceName -PrivateBlob $securePrivateBlob -Password $securePassword -ErrorAction Stop | Out-Null
-    Write-Host "TDE certificate added." -ForegroundColor Green 
+    Write-Host "TDE certificate added." -ForegroundColor Green
 }
 Catch
 {

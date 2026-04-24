@@ -24,9 +24,9 @@ CREATE TABLE Posts (
 GO
 DELETE Blogs;
 GO
-INSERT INTO Blogs (Url, Tags, Owner) VALUES 
-('http://blogs.msdn.com/dotnet', '[".Net", "Core", "C#"]','{"Name":"John","Surname":"Doe","Email":"john.doe@contoso.com"}'), 
-('http://blogs.msdn.com/webdev', '[".Net", "Core", "ASP.NET"]','{"Name":"Jane","Surname":"Doe","Email":"jane@contoso.com"}'), 
+INSERT INTO Blogs (Url, Tags, Owner) VALUES
+('http://blogs.msdn.com/dotnet', '[".Net", "Core", "C#"]','{"Name":"John","Surname":"Doe","Email":"john.doe@contoso.com"}'),
+('http://blogs.msdn.com/webdev', '[".Net", "Core", "ASP.NET"]','{"Name":"Jane","Surname":"Doe","Email":"jane@contoso.com"}'),
 ('http://blogs.msdn.com/visualstudio', '[".Net", "VS"]','{"Name":"Jack","Surname":"Doe","Email":"jack.doe@contoso.com"}'),
 ('https://blogs.msdn.microsoft.com/sqlserverstorageengine/', '["SQL Server"]','{"Name":"Mike","Surname":"Doe","Email":"mike.doe@contoso.com"}')
 

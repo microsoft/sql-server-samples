@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="165" height="43" viewBox="0 0 165 43">
+    <g transform="translate(-42 -35)">
+        <text transform="translate(42 64)" style="fill:#00999a;font-size:29px;font-family:Audiowide-Regular,Audiowide">
+            <tspan x="0" y="0">CONTOSO</tspan>
+        </text>
+        <text transform="translate(43 75)" style="fill:#4f4f4f;font-size:10px;font-family:Cousine;letter-spacing:.44em">
+            <tspan x="0" y="0">RENEWABLE ENERGY</tspan>
+        </text>
+    </g>
+</svg>

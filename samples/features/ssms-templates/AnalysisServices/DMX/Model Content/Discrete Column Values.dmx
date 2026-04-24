@@ -1,12 +1,12 @@
 // ==========================
 //	Discrete Column Values
 //
-//  Returns all values of a 
-//  DISCRETE column.  For 
+//  Returns all values of a
+//  DISCRETE column.  For
 //  DISCRETIZED columns, use
-//  the Continuous Column 
+//  the Continuous Column
 //  Values template.
 // ==========================
 
-SELECT DISTINCT [<column,name,MyColumn>] 
+SELECT DISTINCT [<column,name,MyColumn>]
 FROM [<mining model,name,MyModel>]

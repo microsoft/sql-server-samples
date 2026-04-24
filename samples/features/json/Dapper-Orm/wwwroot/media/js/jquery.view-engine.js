@@ -1,16 +1,16 @@
 ﻿/*
 * File:        jquery.view-engine.js
 * Version:     1.0.1
-* Author:      Jovan Popovic 
-* 
+* Author:      Jovan Popovic
+*
 * Copyright 2017 Jovan Popovic, all rights reserved.
 *
 * This source file is free software, under either the GPL v2 license or a
 * BSD style license, as supplied with this software.
-* 
-* This source file is distributed in the hope that it will be useful, but 
-* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
-* or FITNESS FOR A PARTICULAR PURPOSE. 
+*
+* This source file is distributed in the hope that it will be useful, but
+* WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+* or FITNESS FOR A PARTICULAR PURPOSE.
 *
 * This file contains implementation of the JQuery templating engine that load JSON
 * objects into the HTML code. It is based on Alexandre Caprais notemplate plugin
@@ -35,7 +35,7 @@
                 $("<option/>")
                     .attr("value", aoValues[i].value || aoValues[i])
                     .text(aoValues[i].text || aoValues[i])
-                    .attr("selected", aoValues[i].selected)  
+                    .attr("selected", aoValues[i].selected)
                     .appendTo($(nSelect));
             }
         }
@@ -110,11 +110,11 @@
                         loadSelect(element, value, name);
                     }
                 break;
-                
+
                 case 'option':
                     var $option = $(element);
                     // value can be object {value,text,selected} or scalar
-                    $option.attr("value", value.value || value); 
+                    $option.attr("value", value.value || value);
                     $option.text(value.text || value.value || value);
                     if (value.selected)
                         $option.attr("selected", true);
@@ -210,7 +210,7 @@
                     setElementValue(domNode, data, name);
                     return;
                 } else
-                 {  
+                 {
                     // Clone the element that will be used as template (e.g. <li> or <tr>)
                     var template = $(domNode).clone(true);
                     for (var i = data.length - 1; i > 0 ; i--){
@@ -259,7 +259,7 @@
             properties.onLoading();
             bind(obj, this);
             properties.onLoaded();
-            
+
         });
     };
 })(jQuery);

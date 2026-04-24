@@ -94,10 +94,10 @@
                     </li>
                     }
                     <li><a href="~/Contact">Contact</a></li>
-                </ul>                
+                </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <p class="navbar-text navbar-right">Hello @User.Identity.Name   
+                    <p class="navbar-text navbar-right">Hello @User.Identity.Name
                     <a href="/SignOut" class="btn btn-default btn-xs">
                         <span class="glyphicon glyphicon-log-out"></span> Log out
                     </a>

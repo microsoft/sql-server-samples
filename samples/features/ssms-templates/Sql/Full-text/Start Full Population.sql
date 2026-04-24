@@ -2,7 +2,7 @@
 -- Full-text start population template
 -- =============================================
 IF EXISTS(
-	SELECT * 
+	SELECT *
 	  FROM sys.fulltext_indexes
       JOIN sys.tables
         ON sys.tables.object_id = sys.fulltext_indexes.object_id

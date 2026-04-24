@@ -2,7 +2,7 @@
 
 This is a Microsoft SQL Server Reporting Services RSS script that migrates content from one Reporting Services server to another.
 
-Run the script with the rs.exe utility.  Rs.exe is installed by Reporting Services. 
+Run the script with the rs.exe utility.  Rs.exe is installed by Reporting Services.
 
 For details about rs.exe see: https://docs.microsoft.com/sql/reporting-services/tools/rs-exe-utility-ssrs
 
@@ -25,9 +25,9 @@ The script supports report server versions SQL Server 2008 R2 and later and Powe
 ## Additional info
 
 The virtual folder structure presented to the user in SharePoint might be different
-from the physical structure that is used by this script. 
+from the physical structure that is used by this script.
 
-Open http://servername/_vti_bin/reportserver in a browser to see the non-virtual folder structure. 
+Open http://servername/_vti_bin/reportserver in a browser to see the non-virtual folder structure.
 
 This is helpful for setting SrcFolder and SnkFolder to something other than "/" for a server in SharePoint integrated mode.
 

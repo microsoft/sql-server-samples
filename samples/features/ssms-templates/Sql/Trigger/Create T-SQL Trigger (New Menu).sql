@@ -2,8 +2,8 @@
 -- Template generated from Template Explorer using:
 -- Create Trigger (New Menu).SQL
 --
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
+-- Use the Specify Values for Template Parameters
+-- command (Ctrl-Shift-M) to fill in the parameter
 -- values below.
 --
 -- See additional Create Trigger templates for more
@@ -21,10 +21,10 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE TRIGGER <Schema_Name, sysname, Schema_Name>.<Trigger_Name, sysname, Trigger_Name> 
-   ON  <Schema_Name, sysname, Schema_Name>.<Table_Name, sysname, Table_Name> 
+CREATE TRIGGER <Schema_Name, sysname, Schema_Name>.<Trigger_Name, sysname, Trigger_Name>
+   ON  <Schema_Name, sysname, Schema_Name>.<Table_Name, sysname, Table_Name>
    AFTER <Data_Modification_Statements, , INSERT,DELETE,UPDATE>
-AS 
+AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.

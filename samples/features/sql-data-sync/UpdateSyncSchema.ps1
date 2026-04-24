@@ -18,7 +18,7 @@ $TablesAndColumnsToRemoveList = [System.Collections.ArrayList]::new($TablesAndCo
 $TempFile = $env:TEMP+"\syncSchema.json"
 
 ##login to Azure account
-login-azurermaccount 
+login-azurermaccount
 
 ##select the subscription
 select-azurermsubscription -SubscriptionId $SubscriptionId
@@ -80,7 +80,7 @@ if ($RefreshDatabaseSchema)
     While ($TimeoutTimeSpan.TotalSeconds -le $TimeoutInSeconds)
     {
         Start-Sleep -s 10
-    
+
         if ($MemberName -eq "")
         {
             $DatabaseSchema = Get-AzureRmSqlSyncSchema -SyncGroupName $SyncGroupName `

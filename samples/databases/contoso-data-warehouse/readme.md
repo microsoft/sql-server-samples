@@ -1,6 +1,6 @@
 # Contoso Retail Data Warehouse
 
-Loads data from a public Azure Storage Blob into the Contoso Retail Data Warehouse schema in Azure SQL Data Warehouse. 
+Loads data from a public Azure Storage Blob into the Contoso Retail Data Warehouse schema in Azure SQL Data Warehouse.
 
 <!-- Add a diagram if you have it -->
 
@@ -27,7 +27,7 @@ Loads data from a public Azure Storage Blob into the Contoso Retail Data Warehou
 1. **Workload:** data warehouse
 1. **Programming Language:** T-SQL
 1. **Authors:** jrj;barbkess
-1. **Update history:** 
+1. **Update history:**
 
 <a name=before-you-begin></a>
 
@@ -38,12 +38,12 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 <!-- Examples -->
-2. Visual Studio 2015 (or higher) with the latest SSDT installed
+1. Visual Studio 2015 (or higher) with the latest SSDT installed
 
 **Azure prerequisites:**
 
 <!-- Examples -->
-1. A database in Azure SQL Data Warehouse 
+1. A database in Azure SQL Data Warehouse
 
 <a name=run-this-sample></a>
 
@@ -54,7 +54,7 @@ To run this sample, you need the following prerequisites.
 1. From Visual Studio, open the SQL Server Object Explorer and connect to your SQL Data Warehouse database.
 
 2. Open a new query window and run the T-SQL code from there.
- 
+
 
 <a name=sample-details></a>
 

@@ -2,10 +2,10 @@
 
 DROP TABLE IF EXISTS #tmpObjects;
 
-CREATE TABLE #tmpObjects (ObjectName sysname, 
-	ColumnName sysname, 
-	ColumnType sysname, 
-	DefinedTypeSize smallint, 
+CREATE TABLE #tmpObjects (ObjectName sysname,
+	ColumnName sysname,
+	ColumnType sysname,
+	DefinedTypeSize smallint,
 	ActualMaxBytes smallint,
 	UTF8BytesNeeded smallint,
 	[isdone] bit,
@@ -20,7 +20,7 @@ FROM sys.columns AS SC
 INNER JOIN sys.types AS ST ON SC.user_type_id = ST.user_type_id
 INNER JOIN sys.tables AS STbl ON STbl.[object_id] = SC.[object_id]
 INNER JOIN sys.schemas AS SS ON STbl.[schema_id] = SS.[schema_id]
-WHERE STbl.[type] = 'U' 
+WHERE STbl.[type] = 'U'
 	AND STbl.is_ms_shipped = 0
 	--AND STbl.temporal_type IN (0,1)
 	AND ST.system_type_id IN (167, 175, 231, 239)
@@ -31,18 +31,18 @@ WHERE STbl.[type] = 'U'
 DECLARE @OName sysname, @CName sysname, @CurrBytes smallint, @UTF8Bytes smallint, @sqlcmd NVARCHAR(4000), @params NVARCHAR(60), @cnt int, @maxcnt int
 
 SELECT @maxcnt = COUNT(*) FROM #tmpObjects;
-SET @cnt = 0 
+SET @cnt = 0
 SET @params = '@CurrBytesOut smallint OUTPUT, @UTF8BytesOut smallint OUTPUT'
 
 WHILE @cnt < @maxcnt
 BEGIN
 	SELECT TOP 1 @OName = ObjectName, @CName = ColumnName FROM #tmpObjects WHERE isdone = 0
-	SELECT @sqlcmd = 'SELECT @CurrBytesOut = MAX(DATALENGTH(' + @CName + ')), @UTF8BytesOut = MAX(DATALENGTH(CAST(' + @CName + ' AS VARCHAR(4000)) COLLATE Latin1_General_100_CI_AI_SC_UTF8)) FROM ' + @OName; 
+	SELECT @sqlcmd = 'SELECT @CurrBytesOut = MAX(DATALENGTH(' + @CName + ')), @UTF8BytesOut = MAX(DATALENGTH(CAST(' + @CName + ' AS VARCHAR(4000)) COLLATE Latin1_General_100_CI_AI_SC_UTF8)) FROM ' + @OName + ' WITH (NOLOCK)';
 
 	EXEC sp_executesql @sqlcmd, @params, @CurrBytesOut = @CurrBytes OUTPUT, @UTF8BytesOut = @UTF8Bytes OUTPUT
 
 	UPDATE #tmpObjects
-	SET ActualMaxBytes = @CurrBytes, UTF8BytesNeeded = @UTF8Bytes, isdone = 1 
+	SET ActualMaxBytes = @CurrBytes, UTF8BytesNeeded = @UTF8Bytes, isdone = 1
 	WHERE ObjectName = @OName AND ColumnName = @CName
 
 	SET @cnt = @cnt + 1

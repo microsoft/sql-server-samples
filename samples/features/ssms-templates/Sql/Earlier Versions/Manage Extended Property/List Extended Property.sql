@@ -1,10 +1,10 @@
 -- =============================================
--- List extended property 
+-- List extended property
 -- =============================================
 SELECT * FROM ::fn_listextendedproperty(
-	N'<property_name, sysname, n1>', 
-	N'<level0type, , user>', N'<level0name, sysname, dbo>', 
-	N'<level1type, , table>', N'<level1name, sysname, authors>', 
+	N'<property_name, sysname, n1>',
+	N'<level0type, , user>', N'<level0name, sysname, dbo>',
+	N'<level1type, , table>', N'<level1name, sysname, authors>',
 	N'<level2type, , column>', N'<level2name, sysname, au_id>')
 GO
 

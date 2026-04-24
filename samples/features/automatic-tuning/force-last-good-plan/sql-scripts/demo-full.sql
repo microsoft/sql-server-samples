@@ -146,7 +146,7 @@ FROM sys.dm_db_tuning_recommendations
             [recommended plan_id] int '$.recommendedPlanId'
           ) as planForceDetails;
 
-		  
+		
 -- 5. Recommendation is in "Verifying" state, but the last good plan is forced, so the query will be faster:
 EXEC sp_executesql N'select avg([UnitPrice]*[Quantity])
 						from Sales.OrderLines

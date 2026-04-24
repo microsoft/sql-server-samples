@@ -36,7 +36,7 @@ This Windows Forms sample application built on .NET Framework 4.6 demonstrates t
 
 7. Build the app for release and run it. Do not use the debugger, as that will slow down the app.
 
-8. Start the workload with the **Start** button, and run for a while to show perf profile. Then press the **Regress** button to introduce the problem and observe the throughput going down. 
+8. Start the workload with the **Start** button, and run for a while to show perf profile. Then press the **Regress** button to introduce the problem and observe the throughput going down.
 
 9. Run for a while to show perf profile of regressed workload, and then press the **Auto Tuning** button and observe the system going back to a previously good plan captured by Query Store, and throughput is restored to initial Baseline status. You can tweak aspects of the workload (e.g., number of threads) through the configuration form accessed using the "Options" menu. No need to recompile or restart the application.
 

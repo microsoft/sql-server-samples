@@ -17,7 +17,7 @@ Feature: Developer chooses no code generation
       class NewClassSpec extends ObjectBehavior
       {
           function it_is_initializable()
-          { 
+          {
               $this->shouldBeAnInstanceOf('NoCodeGeneration\NewClass');
           }
       }
@@ -44,7 +44,7 @@ Feature: Developer chooses no code generation
       class NewClassSpec extends ObjectBehavior
       {
           function it_is_initializable()
-          { 
+          {
               $this->shouldBeAnInstanceOf('NoCodeGeneration\NewClass');
           }
       }
@@ -71,7 +71,7 @@ Feature: Developer chooses no code generation
       class NewClassSpec extends ObjectBehavior
       {
           function it_is_initializable()
-          { 
+          {
               $this->shouldBeAnInstanceOf('NoCodeGeneration\NewClass');
           }
       }

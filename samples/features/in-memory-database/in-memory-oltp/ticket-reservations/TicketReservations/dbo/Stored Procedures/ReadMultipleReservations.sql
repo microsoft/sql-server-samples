@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE ReadMultipleReservations(@ServerTransactions int, @RowsPerTransaction int, @ThreadID int)
 AS
-BEGIN 
+BEGIN
 	DECLARE @tranCount int = 0;
 	DECLARE @CurrentSeq int = 0;
 	DECLARE @Sum int = 0;

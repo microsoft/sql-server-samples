@@ -2,8 +2,8 @@
 -- Create database on multiple filegroups
 -- =============================================
 IF EXISTS (
-  SELECT * 
-    FROM sys.databases 
+  SELECT *
+    FROM sys.databases
    WHERE name = N'<database_name, sysname, sample_database>'
 )
   DROP DATABASE <database_name, sysname, sample_database>

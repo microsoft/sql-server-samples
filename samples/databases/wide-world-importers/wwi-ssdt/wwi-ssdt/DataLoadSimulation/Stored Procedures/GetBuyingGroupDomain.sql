@@ -12,12 +12,12 @@ Notes:
 
 Usage:
   DECLARE @myDomain AS NVARCHAR(256)
-  EXEC [DataLoadSimulation].[GetBuyingGroupDomain] 
+  EXEC [DataLoadSimulation].[GetBuyingGroupDomain]
       @BuyingGroup = 'Woodgrove Bank'
     , @WebDomain   = @myWebDomain OUTPUT
     , @EmailDomain = @myEmailDomain OUTPUT
   SELECT @myURL
-  
+
 */
 
   DECLARE @urls AS TABLE ( BuyingGroupName NVARCHAR(50)

@@ -6,7 +6,7 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@SupplierCategory)
 		WITH (SupplierCategoryName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Purchasing.SupplierCategories.SupplierCategoryID = @SupplierCategoryID
 
 END

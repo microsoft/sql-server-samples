@@ -1,10 +1,10 @@
 ﻿--====================================================================
 -- Step 1: Sample Analytical Queries - While the Data Ingestion is going on
 --====================================================================
-	-- Query the In-Memory OLTP Table for all the latest Safety Telemetry Events 
+	-- Query the In-Memory OLTP Table for all the latest Safety Telemetry Events
 	SELECT	EventID,
 			EventMessage,
-			City, 
+			City,
 			OutsideTemperature,
 			EngineTemperature,
 			Speed,
@@ -24,7 +24,7 @@
 	WHERE	EventCategoryId = 2; -- Safety Event
 	 	
 	-- Query the Temporal Disk based Table for ALL Telemetry data for a specific car	
-	SELECT	* 
+	SELECT	*
 	FROM	EventsHistory
 	WHERE	AutoID = 50;
 

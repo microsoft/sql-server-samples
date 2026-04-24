@@ -28,7 +28,7 @@ go
 
  select @loop = 0
  begin tran
-	 while (@loop < 100000) 
+	 while (@loop < 100000)
 	 begin
 		select @accountkey = @loop
 		select @accountdescription = 'accountdesc ' + convert(varchar(20), @accountkey)
@@ -58,7 +58,7 @@ create table ncci_target (
 	AccountCodeAlternatekey 	int)
 
 create clustered index idx_ci_ncci_target on  ncci_target (accountkey)
-create nonclustered columnstore index idxncci_ncci_target on 
+create nonclustered columnstore index idxncci_ncci_target on
 		ncci_target (accountkey, accountdescription, accounttype, accountcodealternatekey)
 		with (compression_delay= 0)
 
@@ -72,7 +72,7 @@ create table ncci_target_delay (
 	AccountCodeAlternatekey 	int)
 
 create clustered index idx_ci_ncci_target_delay on  ncci_target_delay (accountkey)
-create nonclustered columnstore index idxncci_ncci_target_delay on 
+create nonclustered columnstore index idxncci_ncci_target_delay on
 		ncci_target_delay (accountkey, accountdescription, accounttype, accountcodealternatekey)
 		with (compression_delay= 30)
 
@@ -90,8 +90,8 @@ go 12
 
 
 -- look at rowgroups
-select object_name(object_id), * 
-from sys.dm_db_column_store_row_group_physical_stats 
+select object_name(object_id), *
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id ('ncci_target') or object_id=object_id('ncci_target_delay')
 
 -- manual

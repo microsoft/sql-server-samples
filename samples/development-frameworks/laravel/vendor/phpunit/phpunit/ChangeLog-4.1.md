@@ -17,7 +17,7 @@ All notable changes of the PHPUnit 4.1 release series are documented in this fil
 
 ### Fixed
 
-* Fixed [#529](https://github.com/sebastianbergmann/phpunit/issues/529): Tests missed in execution when another test extends from it 
+* Fixed [#529](https://github.com/sebastianbergmann/phpunit/issues/529): Tests missed in execution when another test extends from it
 * Fixed [#1149](https://github.com/sebastianbergmann/phpunit/issues/1149): Test swallows output buffer when run in a separate process
 * Fixed [#1336](https://github.com/sebastianbergmann/phpunit/issues/1336): Problem in process isolation with global variables that contain an object which contains a string which contains multiple backslashes
 * Fixed [#1337](https://github.com/sebastianbergmann/phpunit/issues/1337): Data Provider with `\` at the end of the name breaks with process isolation

@@ -6,7 +6,7 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@StockGroup)
 		WITH (StockGroupName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Warehouse.StockGroups.StockGroupID = @StockGroupID
 
 END

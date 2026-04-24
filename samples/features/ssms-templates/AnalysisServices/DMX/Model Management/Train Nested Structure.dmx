@@ -11,7 +11,7 @@ INSERT INTO MINING STRUCTURE [<mining structure,name,MyStructure>]
 SHAPE {	
   OPENQUERY([<datasource,name,MyDataSource>],'<case query,string,SELECT * FROM MyTable>') }
 APPEND
-( 
+(
   {OPENQUERY([<datasource,name,MyDataSource>],'<nested query,string,SELECT * FROM MyNestedTable>')
 }
 RELATE [<case key,col ref,ID>] TO [<foriegn key,col ref,ID>]

@@ -1,0 +1,53 @@
+.Home {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  .turbine-wrap {
+    position: absolute;
+  }
+  .grid {
+    width: 120%;
+    position: absolute;
+    top: 10vw;
+    left: -20%;
+  }
+  .line-issue {
+    position: absolute;
+    top: 23vw;
+    left: 44.2vw;
+    height: 3vw;
+  }
+  .alert {
+    top: 18vw;
+    left: 48vw;
+    width: 13vw;
+    border: 1px solid #00999A;
+    position: absolute;
+    background: white;
+    padding: 0.8vw;
+    h3 {
+      font-size: 0.9vw;
+      font-family: SegoeUISemiBold;
+      color: #00999A;
+      margin: 0;
+    }
+    p {
+      font-size: 0.8vw;
+      font-family: SegoeUISemiLight;
+      color: #777777;
+    }
+    button {
+      color: white;
+      background: #00999A;
+      border: none;
+      border-radius: 5px;
+      width: 60px;
+      height: 20px;
+      font-family: SegoeUISemiBold;
+      font-size: 10px;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+}

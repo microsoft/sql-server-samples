@@ -22,6 +22,6 @@ AS BEGIN	UPDATE Application.Countries SET
 					Continent nvarchar(30) N'strict $.Continent',
 					Region nvarchar(30) N'strict $.Region',
 					Subregion nvarchar(30) N'strict $.Subregion') as json
-			WHERE 
+			WHERE
 				Application.Countries.CountryID = @CountryID
 END

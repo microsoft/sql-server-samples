@@ -21,3 +21,6 @@ connection.on('connect', function(err) {
     console.log('Connected');
   }
 });
+
+// Initialize the connection.
+connection.connect();

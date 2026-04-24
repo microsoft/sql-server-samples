@@ -10,9 +10,9 @@ go
 
 CREATE DATABASE [ncci]
  CONTAINMENT = NONE
- ON  PRIMARY 
+ ON  PRIMARY
 ( NAME = N'ncci_data', FILENAME = N'C:\data\ncci_Data.mdf' , SIZE = 102400KB , MAXSIZE = 5GB, FILEGROWTH = 1024000KB )
- LOG ON 
+ LOG ON
 ( NAME = N'ncci_log', FILENAME = N'C:\data\ncci_Log.ldf ' , SIZE = 52400KB , MAXSIZE = 5GB , FILEGROWTH = 102400KB )
 GO
 
@@ -70,7 +70,7 @@ begin
 			set @accountkey = convert (int, RAND ()*1000)
 			set @orderstatus = 5
 			
-			set @orderstatusdesc  = 
+			set @orderstatusdesc  =
 			case @orderstatus
 				WHEN 0 THEN  'Order Started'
 				WHEN 1 THEN  'Order Closed'
@@ -102,7 +102,7 @@ CREATE NONCLUSTERED COLUMNSTORE INDEX orders_ncci ON orders  (accountkey, custom
 
 -- look at the rowgroups
 select object_name(object_id), index_id, row_group_id, delta_store_hobt_id, state_desc, total_rows, trim_reason_desc, transition_to_compressed_state_desc
-from sys.dm_db_column_store_row_group_physical_stats 
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('orders')
 
 
@@ -133,7 +133,7 @@ begin
 			set @orderstatus = convert (smallint, RAND()*5)
 			if (@orderstatus = 5) set @orderstatus = 4
 
-			set @orderstatusdesc  = 
+			set @orderstatusdesc  =
 			case @orderstatus
 				WHEN 0 THEN  'Order Started'
 				WHEN 1 THEN  'Order Closed'
@@ -162,7 +162,7 @@ select count(*) from orders
 
 -- look at the rowgroups
 select object_name(object_id), index_id, row_group_id, delta_store_hobt_id, state_desc, total_rows, trim_reason_desc, transition_to_compressed_state_desc
-from sys.dm_db_column_store_row_group_physical_stats 
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('orders')
 
 
@@ -178,7 +178,7 @@ select top 5 customername, sum (PurchasePrice), Avg (PurchasePrice)
 from orders
 where purchaseprice > 90.0 and OrderStatus=5
 group by customername
- 
+
  -- a complex query without NCCI
 select top 5 customername, sum (PurchasePrice), Avg (PurchasePrice)
 from orders
@@ -241,7 +241,7 @@ begin
 				set @accountkey = convert (int, RAND ()*1000000)
 				set @orderstatus = 5
 					
-				set @orderstatusdesc  = 
+				set @orderstatusdesc  =
 				case @orderstatus
 					WHEN 0 THEN  'Order Started'
 					WHEN 1 THEN  'Order Closed'
@@ -263,7 +263,7 @@ end
 go
 
 
-CREATE NONCLUSTERED COLUMNSTORE INDEX orders_filtered_ncci 
+CREATE NONCLUSTERED COLUMNSTORE INDEX orders_filtered_ncci
 ON orders_filtered  (accountkey, customername, purchaseprice, orderstatus)
 where orderstatus = 5
 
@@ -271,12 +271,12 @@ select * from sys.indexes where object_id=object_id('orders_filtered')
 
 -- look at the rowgroups
 select object_name(object_id), index_id, row_group_id, delta_store_hobt_id, state_desc, total_rows, trim_reason_desc, transition_to_compressed_state_desc
-from sys.dm_db_column_store_row_group_physical_stats 
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('orders_filtered')
 
 
 select sum (total_rows)
-from sys.dm_db_column_store_row_group_physical_stats 
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('orders_filtered')
 
 -- set stats off
@@ -307,7 +307,7 @@ begin
 			set @orderstatus = convert (smallint, RAND()*5)
 			if (@orderstatus = 5) set @orderstatus = 4
 			
-			set @orderstatusdesc  = 
+			set @orderstatusdesc  =
 			case @orderstatus
 				WHEN 0 THEN  'Order Started'
 				WHEN 1 THEN  'Order Closed'
@@ -331,16 +331,16 @@ go
 
 
 -- START the demo here
-select count(*) As [Total Rows] from orders_filtered 
-select count(*) AS [Closed Orders] from orders_filtered where OrderStatus = 5 
+select count(*) As [Total Rows] from orders_filtered
+select count(*) AS [Closed Orders] from orders_filtered where OrderStatus = 5
 
 select sum (total_rows)
-from sys.dm_db_column_store_row_group_physical_stats 
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('orders_filtered')
 
 -- look at the rowgroups
 select object_name(object_id), index_id, row_group_id, delta_store_hobt_id, state_desc, total_rows, trim_reason_desc, transition_to_compressed_state_desc
-from sys.dm_db_column_store_row_group_physical_stats 
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('orders_filtered')
 
 
@@ -365,7 +365,7 @@ select top 5 customername, sum (PurchasePrice), Avg (PurchasePrice)
 from orders_filtered
 where purchaseprice > 90.0 and OrderStatus = 5
 group by customername
- 
+
 
 
 -- a more complex query without NCCI
@@ -420,13 +420,13 @@ end
 go
 
 
---create NCCI 
-CREATE NONCLUSTERED COLUMNSTORE INDEX orders_filtered2_NCCI 
-ON orders_filtered2 (accountkey, accountdescription, unitsold)  where accountkey > 0 
+--create NCCI
+CREATE NONCLUSTERED COLUMNSTORE INDEX orders_filtered2_NCCI
+ON orders_filtered2 (accountkey, accountdescription, unitsold)  where accountkey > 0
 
 -- look at the row groups
-select * 
-from sys.dm_db_column_store_row_group_physical_stats 
+select *
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('orders_filtered2')
 
 select * from sys.index_columns  where object_id = object_id('orders_filtered2')
@@ -436,7 +436,7 @@ select * from sys.index_columns  where object_id = object_id('orders_filtered2')
 sELECT segment_id, object_name(p.object_id), s.column_id,  s.segment_id, s.min_data_id, s.max_data_id, s.encoding_type
 FROM sys.column_store_segments s, sys.partitions p
 where object_id = object_id('orders_filtered2') and
-p.hobt_id = s.hobt_id 
+p.hobt_id = s.hobt_id
 
 -- show the query plan with filtered index
 -- since there is no index to filter, it will do a table scan

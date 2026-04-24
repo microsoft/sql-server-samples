@@ -6,7 +6,7 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@PackageType)
 		WITH (PackageTypeName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Warehouse.PackageTypes.PackageTypeID = @PackageTypeID
 
 END

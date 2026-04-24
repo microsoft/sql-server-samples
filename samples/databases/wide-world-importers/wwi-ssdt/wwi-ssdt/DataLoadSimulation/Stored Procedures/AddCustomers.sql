@@ -1,5 +1,5 @@
-﻿-- Note this procedure is not included in the regular build, it 
--- is called during the post deployment process. 
+﻿-- Note this procedure is not included in the regular build, it
+-- is called during the post deployment process.
 -- This is due to the fact it updates temporal tables, and SSDT
 -- will throw up an error when this occurs, despite the fact we
 -- have procedures to deactivate the temporal tables and reactivate
@@ -74,7 +74,7 @@ BEGIN
     DECLARE @EmailAddress            AS NVARCHAR(256)
     DECLARE @phoneLast4              AS NVARCHAR(4)
     DECLARE @faxLast4                AS NVARCHAR(4)
-    
+
     WHILE @Counter < @NumberOfCustomersToAdd
     BEGIN
       EXEC [DataLoadSimulation].[GetFicticiousName]
@@ -99,24 +99,24 @@ BEGIN
         , @WebDomain         = @BGWebDomain           OUTPUT
         , @EmailDomain       = @BGEmailDomain         OUTPUT
         , @CustomerName      = @CustomerName          OUTPUT
-      
+
       SET @CustomerID = NEXT VALUE FOR Sequences.CustomerID;
-      EXEC [DataLoadSimulation].[GetRandomCustomerCategory] 
+      EXEC [DataLoadSimulation].[GetRandomCustomerCategory]
         @RandomCustomerCategoryID = @CustomerCategoryID OUTPUT
-      
+
       SET @CreditLimit = CEILING(RAND() * 30) * 100 + 1000;
 
-      EXEC [DataLoadSimulation].[GetRandomStreet] 
+      EXEC [DataLoadSimulation].[GetRandomStreet]
         @randomStreet = @DeliveryAddressLine1  OUTPUT;
-      EXEC [DataLoadSimulation].[GetRandomSecondaryAddress] 
+      EXEC [DataLoadSimulation].[GetRandomSecondaryAddress]
         @randomSecondaryAddress = @DeliveryAddressLine2  OUTPUT
 
-      EXEC [DataLoadSimulation].[GetRandomStreet] 
+      EXEC [DataLoadSimulation].[GetRandomStreet]
         @randomStreet = @PostalAddressLine1 OUTPUT;
-      EXEC [DataLoadSimulation].[GetRandomSecondaryAddress] 
+      EXEC [DataLoadSimulation].[GetRandomSecondaryAddress]
         @randomSecondaryAddress = @PostalAddressLine2 OUTPUT
-      
-      EXEC [DataLoadSimulation].[GetBogativePostalCode] 
+
+      EXEC [DataLoadSimulation].[GetBogativePostalCode]
           @CityID = @CityID
         , @PostalCode = @DeliveryPostalCode OUTPUT
       SET @PostalPostalCode = @DeliveryPostalCode;
@@ -126,11 +126,11 @@ BEGIN
       SET @EmailAddress = @EmailTo + @BGEmailDomain
 
       -- Generate random phone numbers
-      EXEC [DataLoadSimulation].[GetBogativePhoneNumber] 
+      EXEC [DataLoadSimulation].[GetBogativePhoneNumber]
           @AreaCode = @AreaCode
         , @PhoneNumber = @PhoneNumber OUTPUT
 
-      EXEC [DataLoadSimulation].[GetBogativePhoneNumber] 
+      EXEC [DataLoadSimulation].[GetBogativePhoneNumber]
           @AreaCode = @AreaCode
         , @PhoneNumber = @FaxNumber OUTPUT
 

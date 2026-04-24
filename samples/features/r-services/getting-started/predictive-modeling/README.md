@@ -15,7 +15,7 @@ This sample shows how to create a predictive model in R and operationalize it wi
 ## About this sample
 
 Predictive modeling is a powerful way to add intelligence to your application. It enables applications to predict outcomes against new data.
-The act of incorporating predictive analytics into your applications involves two major phases: 
+The act of incorporating predictive analytics into your applications involves two major phases:
 model training and model operationalization.
 
 In this sample, you will learn how to create a predictive model in R and operationalize it with SQL Server 2016.

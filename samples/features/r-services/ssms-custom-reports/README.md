@@ -61,23 +61,23 @@ Custom reports for R Services allow you to perform the following tasks from Obje
 
 ### R Services - Configuration.rdl
 
-This report can be used to view the installation settings of R Services and properties of the R runtime. You can also use this report to configure R Services after installation.  
+This report can be used to view the installation settings of R Services and properties of the R runtime. You can also use this report to configure R Services after installation.
 
 ### R Services - Packages.rdl
 
-This report lists the R packages installed on the SQL Server instance and properties like version, name.    
+This report lists the R packages installed on the SQL Server instance and properties like version, name.
 
 ### R Services - Resource Usage.rdl
 
-This report can be used to view the CPU, Memory, IO consumption of SQL Server & R scripts execution. You can also view the memory setting of external resource pools.      
+This report can be used to view the CPU, Memory, IO consumption of SQL Server & R scripts execution. You can also view the memory setting of external resource pools.
 
 ### R Services - Extended Events.rdl
 
-This report can be used to view the extended events that are available to get more insights into R scripts execution.       
+This report can be used to view the extended events that are available to get more insights into R scripts execution.
 
 ### R Services - Execution Statistics.rdl
 
-This report can be used to view the execution statistics of R services. For example, you can get the total number of R scripts executions, number of parallel executions and frequently used RevoScaleR functions.       
+This report can be used to view the execution statistics of R services. For example, you can get the total number of R scripts executions, number of parallel executions and frequently used RevoScaleR functions.
 
 <a name=related-links></a>
 

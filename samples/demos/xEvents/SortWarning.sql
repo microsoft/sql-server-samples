@@ -1,9 +1,9 @@
 -- Sort Spill
 
 -- Create xEvent session
-DROP EVENT SESSION [SortSpills] ON SERVER 
+DROP EVENT SESSION [SortSpills] ON SERVER
 GO
-CREATE EVENT SESSION [SortSpills] ON SERVER 
+CREATE EVENT SESSION [SortSpills] ON SERVER
 ADD EVENT sqlserver.sort_warning(
     ACTION(sqlserver.database_name,sqlserver.is_system,sqlserver.plan_handle,sqlserver.query_hash,sqlserver.query_hash_signed,sqlserver.query_plan_hash,sqlserver.query_plan_hash_signed,sqlserver.session_nt_username,sqlserver.sql_text))
 ADD TARGET package0.event_file(SET filename=N'C:\IP\Tiger\TR23\Demos\Demo 1.1 - Spills\SortSpills.xel',max_file_size=(50),max_rollover_files=(2))
@@ -12,8 +12,8 @@ GO
 
 USE AdventureWorks2014
 --USE AdventureWorks2016CTP3
-GO 
---Execute  
+GO
+--Execute
 DBCC FREEPROCCACHE
 GO
 ALTER EVENT SESSION [SortSpills] ON SERVER STATE = START

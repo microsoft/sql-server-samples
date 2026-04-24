@@ -3,10 +3,10 @@ GO
 
 BEGIN TRANSACTION
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT [Application].Cities (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo) 
+INSERT [Application].Cities (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo)
 VALUES (34972, 'Vacaville', [DataLoadSimulation].[GetStateProvinceID] ('CA'), 0xe6100000010c7cff3053a42d4340a8b34934377f5ec0, 92428, 1, @CurrentDateTime, @EndOfTime)
      , (35074, 'Valparaiso', [DataLoadSimulation].[GetStateProvinceID] ('FL'), 0xe6100000010c6581c0142f823e40ba71e6b22ca055c0, 5036, 1, @CurrentDateTime, @EndOfTime)
      , (35075, 'Valsetz', [DataLoadSimulation].[GetStateProvinceID] ('OR'), 0xe6100000010c8d768137496b46408db38e4fede95ec0, NULL, 1, @CurrentDateTime, @EndOfTime)

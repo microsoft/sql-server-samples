@@ -13,7 +13,7 @@ CREATE TABLE [dbo].[models](
 	[model] [varbinary](max) NOT NULL,
 	[create_time] [datetime2](7) NULL DEFAULT (sysdatetime()),
 	[created_by] [nvarchar](500) NULL DEFAULT (suser_sname()),
-	PRIMARY KEY CLUSTERED 
+	PRIMARY KEY CLUSTERED
 	(
 	[language],
 	[model_name]
@@ -31,11 +31,11 @@ CREATE OR ALTER VIEW product_reviews_training_data
 AS
 SELECT TOP(CAST( ( SELECT COUNT(*) FROM   product_reviews)*.9 AS INT))
 		CAST(pr_review_content AS NVARCHAR(4000)) AS pr_review_content,
-		CASE 
-			WHEN pr_review_rating <3 THEN 1 
-			WHEN pr_review_rating =3 THEN 2 
-			ELSE 3 
-		END AS tag 
+		CASE
+			WHEN pr_review_rating <3 THEN 1
+			WHEN pr_review_rating =3 THEN 2
+			ELSE 3
+		END AS tag
 FROM   product_reviews;
 GO
 
@@ -43,11 +43,11 @@ CREATE OR ALTER VIEW product_reviews_test_data
 AS
 SELECT TOP(CAST( ( SELECT COUNT(*) FROM   product_reviews)*.1 AS INT))
 		CAST(pr_review_content AS NVARCHAR(4000)) AS pr_review_content,
-		CASE 
-			WHEN pr_review_rating <3 THEN 1 
-			WHEN pr_review_rating =3 THEN 2 
-			ELSE 3 
-		END AS tag 
+		CASE
+			WHEN pr_review_rating <3 THEN 1
+			WHEN pr_review_rating =3 THEN 2
+			ELSE 3
+		END AS tag
 FROM   product_reviews;
 GO
 
@@ -75,7 +75,7 @@ import pickle
 ## Defining the tag column as a categorical type
 training_data["tag"] = training_data["tag"].astype("category")
 
-## Create a machine learning model for multiclass text classification. 
+## Create a machine learning model for multiclass text classification.
 ## We are using a text featurizer function to split the text in features of 2-word chunks
 model = rx_logistic_regression(formula = "tag ~ features", data = training_data, method = "multiClass", ml_transforms=[
                         featurize_text(language="English",
@@ -91,10 +91,10 @@ modelbin = pickle.dumps(model)
 					  , @script = @train_script
 					  , @input_data_1 = N'SELECT * FROM product_reviews_training_data'
 					  , @input_data_1_name = N'training_data'
-					  , @params  = N'@modelbin varbinary(max) OUTPUT' 
+					  , @params  = N'@modelbin varbinary(max) OUTPUT'
 					  , @modelbin = @model OUTPUT;
 
-	--Save model to DB Table				  
+	--Save model to DB Table				
 	DELETE FROM dbo.models WHERE model_name = 'rx_logistic_regression' and language = 'Python';
 	INSERT INTO dbo.models (language, model_name, model) VALUES('Python', 'rx_logistic_regression', @model);
 END;
@@ -127,7 +127,7 @@ BEGIN
 	--The Python script we want to execute
 	SET @prediction_script = N'
 from microsoftml import rx_predict
-from revoscalepy import rx_data_step 
+from revoscalepy import rx_data_step
 import pickle
 
 ## The input data from the query in  @input_data_1 is populated in test_data
@@ -136,7 +136,7 @@ import pickle
 ## Unserialize the model
 model = pickle.loads(model_bin)
 
-## Use the rx_logistic_regression model 
+## Use the rx_logistic_regression model
 predictions = rx_predict(model = model, data = test_data, extra_vars_to_write = ["tag", "pr_review_content"], overwrite = True)
 
 ## Converting to output data set
@@ -159,7 +159,7 @@ GO
 --***************************************************************************************************
 -- STEP 6 Execute the multi class prediction using the model we trained earlier
 --***************************************************************************************************
-EXECUTE [dbo].[predict_review_sentiment] 
+EXECUTE [dbo].[predict_review_sentiment]
 GO
 
 

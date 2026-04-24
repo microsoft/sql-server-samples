@@ -1,10 +1,10 @@
 -- =============================================
 -- Declare and using an UPDATE cursor
 -- =============================================
-DECLARE <@variable_1, sysname, @v1> <datatype_for_variable_1, sysname, varchar(20)>, 
+DECLARE <@variable_1, sysname, @v1> <datatype_for_variable_1, sysname, varchar(20)>,
 	<@variable_2, sysname, @v2> <datatype_for_variable_2, sysname, varchar(40)>
 
-DECLARE	<cursor_name, sysname, test_cursor> CURSOR 
+DECLARE	<cursor_name, sysname, test_cursor> CURSOR
 FOR SELECT <column_1, sysname, au_fname>, <column_2, sysname, au_lname> FROM <table_name, sysname, pubs.dbo.authors>
 FOR UPDATE of <column_1, sysname, au_fname>
 

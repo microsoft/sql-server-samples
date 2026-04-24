@@ -52,7 +52,7 @@ return array(
     // In PHP 5.4+, PsySH will default to your `cli.pager` ini setting. If this
     // is not set, it falls back to `less`. It is recommended that you set up
     // `cli.pager` in your `php.ini` with your preferred output pager.
-    // 
+    //
     // If you are running PHP 5.3, or if you want to use a different pager only
     // for Psy shell sessions, you can override it here.
     'pager' => 'more',

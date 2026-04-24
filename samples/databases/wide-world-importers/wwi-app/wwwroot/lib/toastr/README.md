@@ -178,7 +178,7 @@ toastr.options.progressBar = true;
 ### rtl
 Flip the toastr to be displayed properly for right-to-left languages.
 ```js
-toastr.options.rtl = true; 
+toastr.options.rtl = true;
 ```
 
 ## Building Toastr

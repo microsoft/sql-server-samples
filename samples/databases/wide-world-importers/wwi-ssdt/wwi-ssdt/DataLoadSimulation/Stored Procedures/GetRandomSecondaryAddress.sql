@@ -5,7 +5,7 @@ BEGIN
 /*
 Notes:
   This procedure will randomly select a street name from the table
-  variable loaded herein. 
+  variable loaded herein.
 
   While it would be preferable to have implemented this as a function,
   the NEWID mechanism needed to make this work are not allowed within
@@ -45,7 +45,7 @@ Usage:
        , ('')
        , ('')
        ;
-  
+
   DECLARE @sa AS NVARCHAR(20)
   SELECT TOP 1 @sa = secondAddress FROM @seconaryAddress ORDER BY NEWID()
   IF LEN(@sa) > 0
@@ -53,7 +53,7 @@ Usage:
   ELSE
     SET @randomSecondaryAddress = ''
 
-  RETURN 
+  RETURN
 
 END;
 

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[InsertMeterMeasurement] 
+﻿CREATE PROCEDURE [dbo].[InsertMeterMeasurement]
 	@Batch AS dbo.udtMeterMeasurement READONLY,
 	@BatchSize INT
 

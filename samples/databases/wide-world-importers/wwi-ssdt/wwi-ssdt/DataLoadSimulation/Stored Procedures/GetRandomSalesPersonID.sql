@@ -18,13 +18,13 @@ Usage:
 
 */
 
-  SELECT TOP 1 
+  SELECT TOP 1
          @RandomSalesPersonID = PersonID
     FROM [Application].[People]
    WHERE IsSalesperson <> 0
      AND ValidTo = '99991231 23:59:59.9999999'
    ORDER BY NEWID()
-  
+
   RETURN
 
 END

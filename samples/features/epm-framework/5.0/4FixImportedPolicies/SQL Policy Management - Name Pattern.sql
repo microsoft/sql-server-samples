@@ -1,15 +1,15 @@
 /*
-This Sample Code is provided for the purpose of illustration only and is not intended to be used in a production environment.  
-THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, 
-INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-We grant You a nonexclusive, royalty-free right to use and modify the Sample Code and to reproduce and distribute 
-the object code form of the Sample Code, provided that You agree: 
-(i) to not use Our name, logo, or trademarks to market Your software product in which the Sample Code is embedded; 
-(ii) to include a valid copyright notice on Your software product in which the Sample Code is embedded; and 
-(iii) to indentify, hold harmless, and defend Us and Our suppliers from and against any claims or lawsuits, 
+This Sample Code is provided for the purpose of illustration only and is not intended to be used in a production environment.
+THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+We grant You a nonexclusive, royalty-free right to use and modify the Sample Code and to reproduce and distribute
+the object code form of the Sample Code, provided that You agree:
+(i) to not use Our name, logo, or trademarks to market Your software product in which the Sample Code is embedded;
+(ii) to include a valid copyright notice on Your software product in which the Sample Code is embedded; and
+(iii) to indentify, hold harmless, and defend Us and Our suppliers from and against any claims or lawsuits,
 including attorneys' fees, that arise or result from the use or distribution of the Sample Code.
 
-Please note: None of the conditions outlined in the disclaimer above will supersede the terms and 
+Please note: None of the conditions outlined in the disclaimer above will supersede the terms and
 conditions contained within the Premier Customer Services Description.
 
 */
@@ -19,21 +19,21 @@ GO
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 --POLICY CATEGORY: Name Pattern
-DECLARE @policy_category_id int;  
+DECLARE @policy_category_id int;
 
-SELECT @policy_category_id = policy_category_id FROM dbo.syspolicy_policy_categories where name = N'Name_Pattern' 
+SELECT @policy_category_id = policy_category_id FROM dbo.syspolicy_policy_categories where name = N'Name_Pattern'
 
 IF (@policy_category_id IS NULL)
 BEGIN
-	EXEC msdb.dbo.sp_syspolicy_add_policy_category  
-	  @name = N'Name_Pattern'  
+	EXEC msdb.dbo.sp_syspolicy_add_policy_category
+	  @name = N'Name_Pattern'
 	, @mandate_database_subscriptions = 1
-	, @policy_category_id = @policy_category_id OUTPUT;  
+	, @policy_category_id = @policy_category_id OUTPUT;
 END
 
 SELECT @policy_category_id as NEW_policy_category_id
 
-GO  
+GO
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------
 --DELETE ALL POLICIES
@@ -41,22 +41,22 @@ DECLARE @policy_id INT
 
 DECLARE  CURSOR_POLICIES_TO_DELETE CURSOR FAST_FORWARD FOR
 	SELECT policy_id FROM dbo.syspolicy_policies P
-	INNER JOIN dbo.syspolicy_policy_categories PC 
+	INNER JOIN dbo.syspolicy_policy_categories PC
 		ON P.policy_category_id = PC.policy_category_id
 	WHERE PC.[name] = N'Name_Pattern'
 
-OPEN CURSOR_POLICIES_TO_DELETE  
+OPEN CURSOR_POLICIES_TO_DELETE
 
-FETCH NEXT FROM CURSOR_POLICIES_TO_DELETE   
-INTO @policy_id 
+FETCH NEXT FROM CURSOR_POLICIES_TO_DELETE
+INTO @policy_id
 
-WHILE @@FETCH_STATUS = 0  
-BEGIN  
+WHILE @@FETCH_STATUS = 0
+BEGIN
 	EXEC msdb.dbo.sp_syspolicy_delete_policy @policy_id=@policy_id
 
-    FETCH NEXT FROM CURSOR_POLICIES_TO_DELETE   
-    INTO @policy_id  
-END   
+    FETCH NEXT FROM CURSOR_POLICIES_TO_DELETE
+    INTO @policy_id
+END
 CLOSE CURSOR_POLICIES_TO_DELETE
 DEALLOCATE CURSOR_POLICIES_TO_DELETE
 
@@ -72,13 +72,13 @@ DECLARE @target_set_id INT
 DECLARE  CURSOR_OBJECTS_SETS_TO_DELETE CURSOR FAST_FORWARD FOR
 	SELECT object_set_id FROM dbo.syspolicy_object_sets where is_system = 0
 
-OPEN CURSOR_OBJECTS_SETS_TO_DELETE  
+OPEN CURSOR_OBJECTS_SETS_TO_DELETE
 
-FETCH NEXT FROM CURSOR_OBJECTS_SETS_TO_DELETE   
-INTO @object_set_id 
+FETCH NEXT FROM CURSOR_OBJECTS_SETS_TO_DELETE
+INTO @object_set_id
 
-WHILE @@FETCH_STATUS = 0  
-BEGIN  
+WHILE @@FETCH_STATUS = 0
+BEGIN
 	BEGIN TRY
 		
 		EXEC msdb.dbo.sp_syspolicy_delete_object_set @object_set_id=@object_set_id
@@ -95,9 +95,9 @@ BEGIN
 		PRINT ERROR_MESSAGE()
 	END CATCH
 
-    FETCH NEXT FROM CURSOR_OBJECTS_SETS_TO_DELETE   
-    INTO @object_set_id  
-END   
+    FETCH NEXT FROM CURSOR_OBJECTS_SETS_TO_DELETE
+    INTO @object_set_id
+END
 CLOSE CURSOR_OBJECTS_SETS_TO_DELETE
 DEALLOCATE CURSOR_OBJECTS_SETS_TO_DELETE
 
@@ -112,13 +112,13 @@ DECLARE @condition_id INT
 DECLARE  CURSOR_CONDITIONS_TO_DELETE CURSOR FAST_FORWARD FOR
 	SELECT condition_id FROM dbo.syspolicy_conditions where is_system = 0
 
-OPEN CURSOR_CONDITIONS_TO_DELETE  
+OPEN CURSOR_CONDITIONS_TO_DELETE
 
-FETCH NEXT FROM CURSOR_CONDITIONS_TO_DELETE   
-INTO @condition_id 
+FETCH NEXT FROM CURSOR_CONDITIONS_TO_DELETE
+INTO @condition_id
 
-WHILE @@FETCH_STATUS = 0  
-BEGIN  
+WHILE @@FETCH_STATUS = 0
+BEGIN
 	BEGIN TRY
 		EXEC msdb.dbo.sp_syspolicy_delete_condition @condition_id=@condition_id
 		SELECT 'DELETE @condition_id', @condition_id
@@ -127,9 +127,9 @@ BEGIN
 		PRINT ERROR_MESSAGE()
 	END CATCH
 
-    FETCH NEXT FROM CURSOR_CONDITIONS_TO_DELETE   
-    INTO @condition_id  
-END   
+    FETCH NEXT FROM CURSOR_CONDITIONS_TO_DELETE
+    INTO @condition_id
+END
 CLOSE CURSOR_CONDITIONS_TO_DELETE
 DEALLOCATE CURSOR_CONDITIONS_TO_DELETE
 
@@ -991,6 +991,6 @@ GO
 
 
 SELECT P.policy_id, P.name, PC.name FROM dbo.syspolicy_policies P
-INNER JOIN dbo.syspolicy_policy_categories PC 
+INNER JOIN dbo.syspolicy_policy_categories PC
 	ON P.policy_category_id = PC.policy_category_id
 WHERE PC.[name] = N'Name_Pattern'

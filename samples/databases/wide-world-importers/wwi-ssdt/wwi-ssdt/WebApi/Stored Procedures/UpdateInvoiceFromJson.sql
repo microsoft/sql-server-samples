@@ -33,7 +33,7 @@ AS BEGIN	UPDATE Sales.Invoices SET
 					TotalChillerItems int,
 					DeliveryRun nvarchar(5),
 					RunPosition nvarchar(5)) as json
-			WHERE 
+			WHERE
 				Sales.Invoices.InvoiceID = @InvoiceID
 
 END

@@ -36,7 +36,7 @@ ALTER TABLE Product
 	DROP COLUMN IF EXISTS ValidTo
 
 ALTER TABLE Product
-	ADD ValidTo datetime2(0) NOT NULL 
+	ADD ValidTo datetime2(0) NOT NULL
 		CONSTRAINT Product_ValidTo_EndTime DEFAULT ('9999-12-31 23:59:59')
 
 GO
@@ -70,7 +70,7 @@ GO
 
 drop procedure if exists dbo.GetProducts
 go
-create procedure dbo.GetProducts as 
+create procedure dbo.GetProducts as
 begin
 
 	select Product.ProductID, Product.Name, Product.Color, Product.Price, Product.Quantity,
@@ -87,7 +87,7 @@ GO
 
 drop procedure if exists dbo.GetProductsAsOf
 go
-create procedure dbo.GetProductsAsOf (@date datetime2) as 
+create procedure dbo.GetProductsAsOf (@date datetime2) as
 begin
 
 	select Product.ProductID, Product.Name, Product.Color, Product.Price, Product.Quantity,
@@ -105,7 +105,7 @@ GO
 GO
 drop procedure if exists dbo.RestoreProduct
 GO
-create procedure dbo.RestoreProduct (@productid int, @date datetime2) as 
+create procedure dbo.RestoreProduct (@productid int, @date datetime2) as
 begin
 
 	MERGE Product

@@ -61,7 +61,7 @@
       </Fields>
       <Query>
         <DataSourceName>PolicyDW</DataSourceName>
-        <CommandText>SELECT     p.policy_id, c.name AS cName, p.name AS pName, p.date_created, p.created_by, p.date_modified, p.modified_by, p.description, p.help_text, p.help_link, p.is_enabled, 
+        <CommandText>SELECT     p.policy_id, c.name AS cName, p.name AS pName, p.date_created, p.created_by, p.date_modified, p.modified_by, p.description, p.help_text, p.help_link, p.is_enabled,
                       c.policy_category_id
 FROM         msdb.dbo.syspolicy_policies AS p INNER JOIN
                       msdb.dbo.syspolicy_policy_categories AS c ON p.policy_category_id = c.policy_category_id

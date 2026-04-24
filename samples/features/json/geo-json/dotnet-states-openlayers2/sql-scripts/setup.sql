@@ -9,10 +9,10 @@
  WHEN 'POINT' THEN
  '"type": "Point","coordinates":' +
  REPLACE(REPLACE(REPLACE(REPLACE(@geo.ToString(),'POINT ',''),'(','['),')',']'),' ',',')
- WHEN 'POLYGON' THEN 
+ WHEN 'POLYGON' THEN
  '"type": "Polygon","coordinates":' +
  '[' + REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@geo.ToString(),'POLYGON ',''),'(','['),')',']'),'], ',']],['),', ','],['),' ',',') + ']'
- WHEN 'MULTIPOLYGON' THEN 
+ WHEN 'MULTIPOLYGON' THEN
  '"type": "MultiPolygon","coordinates":' +
  '[' + REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@geo.ToString(),'MULTIPOLYGON ',''),'(','['),')',']'),'], ',']],['),', ','],['),' ',',') + ']'
  WHEN 'MULTIPOINT' THEN

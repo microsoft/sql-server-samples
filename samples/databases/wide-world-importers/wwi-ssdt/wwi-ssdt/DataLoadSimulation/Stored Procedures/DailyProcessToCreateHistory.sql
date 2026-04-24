@@ -2,16 +2,16 @@
 CREATE PROCEDURE [DataLoadSimulation].[DailyProcessToCreateHistory]
     @StartDate                           date
   , @EndDate                             date
-  , @AverageNumberOfCustomerOrdersPerDay int = 60
+  , @AverageNumberOfCustomerOrdersPerDay int = 30
   , @SaturdayPercentageOfNormalWorkDay   int
   , @SundayPercentageOfNormalWorkDay     int
   , @UpdateCustomFields                  bit
   , @IsSilentMode                        bit
   , @AreDatesPrinted                     bit
-  , @MinYearlyGrowthPercent              int = 10
-  , @MaxYearlyGrowthPercent              int = 20
-  , @MinSeasonalVariationPercent         int = 30
-  , @MaxSeasonalVariationPercent         int = 50
+  , @MinYearlyGrowthPercent              int = -5
+  , @MaxYearlyGrowthPercent              int = 15
+  , @MinSeasonalVariationPercent         int = -10
+  , @MaxSeasonalVariationPercent         int = 30
   , @MaxDailyVariationPercent            int = 20
 
 AS
@@ -35,10 +35,11 @@ BEGIN
 	-- verify whether orders exist, and if so, compute the avg number of customer orders in the last year
 	IF EXISTS (SELECT 1 FROM Sales.Orders)
 	BEGIN
-		SELECT @OldNumberOfCustomerOrders=	AVG(t.OrderCount) 
-		FROM (SELECT COUNT(*) AS OrderCount FROM Sales.Orders 
+		SELECT @OldNumberOfCustomerOrders=	AVG(t.OrderCount)
+		FROM (SELECT COUNT(*) AS OrderCount FROM Sales.Orders
 			WHERE DATEPART(year,OrderDate) = DATEPART(year,(SELECT MAX(OrderDate) FROM Sales.Orders))
 				AND DATEPART(weekday,OrderDate) NOT IN (1,7)
+				AND BackorderOrderID IS NULL
 			GROUP BY OrderDate) t
 	END
 	ELSE
@@ -53,8 +54,8 @@ BEGIN
 	DECLARE @MaxSeasonalVariationPercent int = 25
 	DECLARE @MinYearlyGrowthPercent int = 3
 	DECLARE @MaxYearlyGrowthPercent int = 30
-	declare @StartDate date = '20130101'
-	declare @EndDate date = '20180101'
+	declare @StartDate date = '20200101'
+	declare @EndDate date = '20230101'
 	declare @CurrentDateTime datetime2 = @StartDate
 	declare @MaxDailyVariationPercent int = 5
 
@@ -74,18 +75,18 @@ BEGIN
 			IF NOT EXISTS (SELECT 1 FROM DataLoadSimulation.SeasonVariation WHERE [Year]=@CurrentYear and Season=@CurrentSeason)
 			BEGIN
 				-- compute seasonal variation
-				DECLARE @SeasonalVariation float 
+				DECLARE @SeasonalVariation float
 				SET @SeasonalVariation = 1 + (@MinSeasonalVariationPercent + RAND() * CAST(@MaxSeasonalVariationPercent - @MinSeasonalVariationPercent AS float))/100
 				IF @CurrentSeason % 2 = 1
 					SET @SeasonalVariation = 1/@SeasonalVariation
 
-				INSERT DataLoadSimulation.SeasonVariation ([Year], [Season], YearlyVariation, SeasonalVariation) 
+				INSERT DataLoadSimulation.SeasonVariation ([Year], [Season], YearlyVariation, SeasonalVariation)
 				VALUES (@CurrentYear, @CurrentSeason, @YearlyVariation, @SeasonalVariation)
 			END
 			SET @CurrentSeason += 1
 		END
 		SET @CurrentYear += 1
-	END 
+	END
 	--select * from DataLoadSimulation.SeasonVariation
 
 
@@ -113,7 +114,7 @@ BEGIN
 		-- compute effect of yearly growth on day at hand
 		DECLARE @YearlyEffect float = 1+CAST((@YearlyVariation-1) AS float)*(CAST((DATEDIFF(day, DATEFROMPARTS(@CurrentYear-1, 12, 31), @CurrentDateTime)) AS float)/183)
 
-		DECLARE @DailyEffect float = RAND() 
+		DECLARE @DailyEffect float = RAND()
 		IF @DailyEffect < 0.5
 			SET @DailyEffect = 0-@DailyEffect
 			
@@ -143,11 +144,11 @@ BEGIN
 			-- one transaction per day
 			BEGIN TRAN
 			SET @DateMessage = N'Processing '
-							 + SUBSTRING(DATENAME(weekday, @CurrentDateTime), 1,3) 
-							 + N' ' 
+							 + SUBSTRING(DATENAME(weekday, @CurrentDateTime), 1,3)
+							 + N' '
 							 + CONVERT(nvarchar(20), @CurrentDateTime, 107)
 							 + N' '
-							 + CAST(DATEDIFF(DAY, @CurrentDateTime, @EndDate) AS NVARCHAR) 
+							 + CAST(DATEDIFF(DAY, @CurrentDateTime, @EndDate) AS NVARCHAR)
 							 + N' Days Remaining '
 							 ;
 
@@ -179,7 +180,7 @@ BEGIN
 			-- compute effect of yearly growth on day at hand
 			DECLARE @YearlyEffect float = 1+CAST((@YearlyVariation-1) AS float)*(CAST((DATEDIFF(day, DATEFROMPARTS(@CurrentYear-1, 12, 31), @CurrentDateTime)) AS float)/183)
 
-			DECLARE @DailyEffect float = RAND() 
+			DECLARE @DailyEffect float = RAND()
 			IF @DailyEffect < 0.5
 				SET @DailyEffect = 0-@DailyEffect
 			
@@ -366,7 +367,7 @@ BEGIN
 			EXEC DataLoadSimulation.MakeTemporalChanges @CurrentDateTime, @StartingWhen, @EndOfTime, @IsSilentMode;
 
 		-- Record delivery van temperatures
-			IF @CurrentDateTime >= '20160101'
+			IF @CurrentDateTime >= '20220101'
 			BEGIN
 				IF @IsSilentMode = 0
 				BEGIN
@@ -377,7 +378,7 @@ BEGIN
 			END;
 
 		-- Record cold room temperatures
-			IF @CurrentDateTime >= '20151220'
+			IF @CurrentDateTime >= '20211220'
 			BEGIN
 				IF @IsSilentMode = 0
 				BEGIN

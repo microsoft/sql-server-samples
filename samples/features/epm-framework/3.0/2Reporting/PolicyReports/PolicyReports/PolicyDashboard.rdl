@@ -135,9 +135,9 @@ WHERE CategoryName IN (@CategoryName)
 AND (EvaluatedServer IN (SELECT	server_name
 		FROM policy.pfn_ServerGroupInstances(@ServerGroupName))
 OR @ServerGroupName = '')
-AND (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, @DateMonth))+1, CAST(DateAdd(Month, -6, @DateMonth) AS DATE)) 
+AND (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, @DateMonth))+1, CAST(DateAdd(Month, -6, @DateMonth) AS DATE))
 AND EvaluationDateTime &lt; DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,@DateMonth)+1,0))
-OR (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, GETDATE()))+1, CAST(DateAdd(Month, -6, GETDATE()) AS DATE)) 
+OR (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, GETDATE()))+1, CAST(DateAdd(Month, -6, GETDATE()) AS DATE))
 AND @DateMonth = '1900-01-01'))</CommandText>
         <QueryParameters>
           <QueryParameter Name="@CategoryName">
@@ -166,14 +166,14 @@ AND @DateMonth = '1900-01-01'))</CommandText>
       </Fields>
       <Query>
         <DataSourceName>PolicyDW</DataSourceName>
-        <CommandText>SELECT CASE 
-	WHEN EXISTS 
-		(SELECT * 
-		FROM policy.v_PolicyHistory_LastEvaluation iple 
-		WHERE iple.EvaluatedServer = ple.EvaluatedServer 
-		AND iple.PolicyResult = 'fail') 
+        <CommandText>SELECT CASE
+	WHEN EXISTS
+		(SELECT *
+		FROM policy.v_PolicyHistory_LastEvaluation iple
+		WHERE iple.EvaluatedServer = ple.EvaluatedServer
+		AND iple.PolicyResult = 'fail')
 	THEN 'Out of Compliance'
-	ELSE 'In Compliance' 
+	ELSE 'In Compliance'
 	END AS InstanceStatus
 	, EvaluatedServer
 FROM policy.v_PolicyHistory ple
@@ -1123,7 +1123,7 @@ SUM(IIF(Fields!PolicyResult.Value="FAIL", 1, 0))/COUNT(Fields!PolicyResult.Value
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=SUM(SWITCH(Fields!PolicyResult.Value= "FAIL", 1, 
+                              <Value>=SUM(SWITCH(Fields!PolicyResult.Value= "FAIL", 1,
 Fields!PolicyResult.Value= "ERROR", 1,
 Fields!PolicyResult.Value= "PASS", 0))</Value>
                               <Style />
@@ -1162,7 +1162,7 @@ Fields!PolicyResult.Value= "PASS", 0))</Value>
                               <Value>=Fields!EvaluatedPolicy.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Red", 
+                                <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Red",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                               </Style>
@@ -1214,7 +1214,7 @@ Fields!PolicyResult.Value = "PASS", "Black")</Color>
                               <Value>=Fields!PolicyResult.Value</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
-                                <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Red", 
+                                <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Red",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                               </Style>
@@ -1270,7 +1270,7 @@ Fields!PolicyResult.Value = "PASS", "Black")</Color>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <Format>g</Format>
-                                <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Red", 
+                                <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Red",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                               </Style>

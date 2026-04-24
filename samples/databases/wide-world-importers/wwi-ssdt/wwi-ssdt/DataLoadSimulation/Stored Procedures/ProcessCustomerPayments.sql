@@ -20,7 +20,7 @@ BEGIN
     --                                     FROM [Application].People
     --                                     WHERE IsEmployee <> 0
     --                                     ORDER BY NEWID());
-    DECLARE @StaffMemberPersonID INT 
+    DECLARE @StaffMemberPersonID INT
     EXEC [DataLoadSimulation].[GetRandomEmployeePerson]
       @EmployeePersonID = @StaffMemberPersonID OUTPUT
 

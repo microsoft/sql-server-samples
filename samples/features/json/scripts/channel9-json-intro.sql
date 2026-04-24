@@ -21,7 +21,7 @@ N'{
 
 ----> Get a value from "Name" key
 --SELECT JSON_VALUE(@json, '$.Name')
-  
+
 
 ----> Get a value from "Born.Dob" path
 -- SELECT JSON_VALUE(@json, '$.Born.DoB')
@@ -39,7 +39,7 @@ N'{
 --SELECT JSON_VALUE(@json, '$.name')
 
 
-----> It will fail because $.Bio is bigger than 8K. 
+----> It will fail because $.Bio is bigger than 8K.
 ----  Without strict it would return null.
 --SELECT JSON_VALUE(@json, 'strict $.Bio')
 
@@ -50,7 +50,7 @@ N'{
 
 ----> JSON_QUERY returns content of the object
 --SELECT JSON_QUERY(@json, '$.Born')
- 
+
 
 ----> JSON_QUERY will fail because $.Name is not an object.
 --SELECT JSON_QUERY(@json, 'strict $.Name')
@@ -77,7 +77,7 @@ N'{
 
 
 
-----> Get all fields from a JSON: 
+----> Get all fields from a JSON:
 --SELECT * FROM OPENJSON(@json)
 
 
@@ -90,7 +90,7 @@ N'{
 --SELECT * FROM OPENJSON(@json, '$.Teams')
 
 
- 
+
 --SELECT value FROM OPENJSON(@json) WHERE [key] = 'Bio'
 
 

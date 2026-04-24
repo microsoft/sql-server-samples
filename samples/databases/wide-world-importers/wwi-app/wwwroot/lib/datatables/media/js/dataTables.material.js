@@ -164,7 +164,7 @@ DataTable.ext.renderer.pageButton.material = function ( settings, host, idx, but
 	};
 
 	// IE9 throws an 'unknown error' if document.activeElement is used
-	// inside an iframe or frame. 
+	// inside an iframe or frame.
 	var activeEl;
 
 	try {

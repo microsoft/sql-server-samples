@@ -31,7 +31,7 @@ namespace FlgpWwiDemo
         public void ConfigureServices(IServiceCollection services)
         {
             string ConnString = Configuration["ConnectionStrings:Wwi"];
-            
+
             // Adding data access services/components.
             services.AddTransient<IQueryMapper>(
                 sp => new QueryMapper(new SqlConnection(ConnString))

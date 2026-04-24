@@ -8,5 +8,5 @@
         localStorage.User = $(this).text();
     });
 
-    $("span.UserGreeting").text(localStorage.User);    
+    $("span.UserGreeting").text(localStorage.User);
 });

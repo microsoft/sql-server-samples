@@ -1,4 +1,4 @@
-Pull Requests for bug fixes should be made against the current release branch (1.2). 
+Pull Requests for bug fixes should be made against the current release branch (1.2).
 
 Pull Requests for new features should be made against master.
 

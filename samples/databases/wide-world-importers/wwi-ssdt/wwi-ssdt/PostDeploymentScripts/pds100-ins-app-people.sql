@@ -1,12 +1,12 @@
 ﻿PRINT 'Inserting Application.People'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT [Application].People 
-  (PersonID, FullName, PreferredName, IsPermittedToLogon, LogonName, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesperson, UserPreferences, PhoneNumber, FaxNumber, EmailAddress, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT [Application].People
+  (PersonID, FullName, PreferredName, IsPermittedToLogon, LogonName, IsExternalLogonProvider, HashedPassword, IsSystemUser, IsEmployee, IsSalesperson, UserPreferences, PhoneNumber, FaxNumber, EmailAddress, LastEditedBy, ValidFrom, ValidTo)
+VALUES
   (1,'Data Conversion Only', 'Data Conversion Only', 0,'NO LOGON', 0, NULL, 0, 0, 0, '{ "theme": "defaultblue", "layout": "default", "dateformat": "m/d/yy", "timezoneoffset": "-8", "favoritesondashboard": "true" }', NULL, NULL, NULL, 1, @CurrentDateTime, @EndOfTime)
 , (2,'Kayla Woodcock', 'Kayla', 1,'kaylaw@wideworldimporters.com', 0, 0xC0A5B201368FD43B8EC1CDC0F7E5A9D43884CEAABB24331160F8FCA3486B543F, 1, 1, 1, '{ "theme": "defaultblue", "layout": "default", "dateformat": "m/d/yy", "timezoneoffset": "-8", "favoritesondashboard": "true" }', '(415) 555-0102', '(415) 555-0103', 'kaylaw@wideworldimporters.com', 1, @CurrentDateTime, @EndOfTime)
 , (3,'Hudson Onslow', 'Hudson', 1,'hudsono@wideworldimporters.com', 0, 0xFCA9E8036F1D1FAE2C227DF6545FD5B86964137321530735A2A7ACF68652E52B, 1, 1, 1, '{ "theme": "defaultblue", "layout": "default", "dateformat": "m/d/yy", "timezoneoffset": "-8", "favoritesondashboard": "true" }', '(415) 555-0102', '(415) 555-0103', 'hudsono@wideworldimporters.com', 1, @CurrentDateTime, @EndOfTime)

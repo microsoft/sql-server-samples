@@ -51,5 +51,5 @@ We'll now create the machine learning model, use the model to predict results on
 1. Wait for the “Kernel” and the target context (“Attach to”) to be populated. Set the “Kernel” to **PySpark3** and “Attach to” needs to be the IP address of your big data cluster endpoint.
 
 1. Run each cell in the Notebook sequentially using Azure Data Studio.
-   
+
 1. The machine learning model would be persisted as /spark_ml/AdultCensus.mml.

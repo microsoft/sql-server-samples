@@ -26,7 +26,7 @@ AS BEGIN	UPDATE Sales.SpecialDeals SET
 					DiscountAmount decimal(18,2),
 					DiscountPercentage decimal(18,3),
 					UnitPrice decimal(18,2)) as json
-			WHERE 
+			WHERE
 				Sales.SpecialDeals.SpecialDealID = @SpecialDealID
 
 END

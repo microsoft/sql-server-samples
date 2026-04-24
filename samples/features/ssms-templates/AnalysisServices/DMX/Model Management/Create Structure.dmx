@@ -6,7 +6,7 @@ CREATE MINING STRUCTURE [<mining structure,name,MyStructure>]
 (
 	<key column, col def, [ID] LONG KEY>,
 	<column definition list,col def list,>
-) 
-[WITH HOLDOUT (<holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES> 
-[OR <holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES>]) 
+)
+[WITH HOLDOUT (<holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES>
+[OR <holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES>])
 [REPEATABLE(<holdout-seed>)]]

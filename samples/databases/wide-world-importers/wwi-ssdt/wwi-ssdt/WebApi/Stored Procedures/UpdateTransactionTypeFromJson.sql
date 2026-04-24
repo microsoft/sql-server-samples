@@ -6,7 +6,7 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@TransactionType)
 		WITH (TransactionTypeName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Application.TransactionTypes.TransactionTypeID = @TransactionTypeID
 
 END

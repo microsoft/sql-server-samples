@@ -1,4 +1,4 @@
-# CURL in SQL Server using CLR 
+# CURL in SQL Server using CLR
 SQL Server Database Engine doesn't have built-in functions that would enable you to send information to some API using `http://` protocol. If you need to call some REST endpoint or a web hook from the T-SQL code, you will need to use `WebClient` or `WebRequest` classes from .Net framework and expose them as a T-SQL function or procedure.
 
 One of the most popular tools for calling an API on `http:` endpoints is [curl](https://curl.haxx.se). This code sample demonstrates how to create CLR User-Defined function/procedure that provides CURL-like functionalities in T-SQL.
@@ -16,7 +16,7 @@ One of the most popular tools for calling an API on `http:` endpoints is [curl](
 
 <a name=about-this-sample></a>
 
-## About this sample 
+## About this sample
 1. **Applies to:** SQL Server 2005+ Enterprise / Developer / Evaluation Edition, Azure SQL Database (Managed Instance)
 2. **Key features:**
     - CLR
@@ -109,7 +109,7 @@ exec curl.XPOST @H = @hkey, @d = @body, @url = @endpoint;
 <a name=disclaimers></a>
 
 ## Disclaimers
-The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample. 
+The code included in this sample is not intended to be a set of best practices on how to build scalable enterprise grade applications. This is beyond the scope of this sample.
 
 ## Appendix
 

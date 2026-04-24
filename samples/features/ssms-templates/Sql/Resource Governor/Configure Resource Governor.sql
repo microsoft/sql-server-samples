@@ -2,13 +2,13 @@
 -- Template generated from Template Explorer using:
 -- Configure Resource Governor.sql
 --
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
+-- Use the Specify Values for Template Parameters
+-- command (Ctrl-Shift-M) to fill in the parameter
 -- values below.
 --
--- This template creates "admin" workload group 
+-- This template creates "admin" workload group
 -- which uses "admin" resource pool and creates
--- corresponding classifier function which puts 
+-- corresponding classifier function which puts
 -- sysadmins in such group
 -- ================================================
 -- Classifier functions for the Resource Governor must
@@ -55,8 +55,8 @@ GO
 -- TODO
 -- Create additional workload groups here
 
-CREATE FUNCTION <Classifier_UDF_Name, sysname, [dbo].[rgClassifier]>() 
-RETURNS sysname 
+CREATE FUNCTION <Classifier_UDF_Name, sysname, [dbo].[rgClassifier]>()
+RETURNS sysname
 WITH SCHEMABINDING
 AS
 BEGIN
@@ -76,8 +76,8 @@ END
 GO
 
 -- Set the classifier function for Resource Governor
-ALTER RESOURCE GOVERNOR 
-WITH ( 
+ALTER RESOURCE GOVERNOR
+WITH (
 	CLASSIFIER_FUNCTION = <Classifier_UDF_Name, sysname, [dbo].[rgClassifier]>
 )
 GO

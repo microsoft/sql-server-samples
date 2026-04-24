@@ -22,7 +22,7 @@
 
 -- 1.1.2. (optional) Create credential with Azure Blob SAS
 --
--- CREATE DATABASE SCOPED CREDENTIAL MyAzureBlobStorageCredential 
+-- CREATE DATABASE SCOPED CREDENTIAL MyAzureBlobStorageCredential
 -- WITH IDENTITY = 'SHARED ACCESS SIGNATURE',
 -- SECRET = 'sv=2015-12-11&ss=b&srt=sco&sp=rwac&se=2017-02-01T00:55:34Z&st=2016-12-29T16:55:34Z&spr=https&sig=copyFromAzurePortal';
 -- NOTE: DO NOT PUT FIRST CHARACTER '?'' IN SECRET!!!
@@ -36,8 +36,8 @@
 
 -- Create external data source with the URL of the Blob storage Account and associated credential (if it is not public).
 CREATE EXTERNAL DATA SOURCE MyAzureBlobStorage
-WITH (	TYPE = BLOB_STORAGE, 
-		LOCATION = 'https://sqlchoice.blob.core.windows.net/sqlchoice/samples/load-from-azure-blob-storage', 
+WITH (	TYPE = BLOB_STORAGE,
+		LOCATION = 'https://sqlchoice.blob.core.windows.net/sqlchoice/samples/load-from-azure-blob-storage',
 --		CREDENTIAL= MyAzureBlobStorageCredential	--> CREDENTIAL is not required if a blob storage is public!
 );
 
@@ -72,7 +72,7 @@ WITH (	DATA_SOURCE = 'MyAzureBlobStorage',
 		FORMAT='CSV', CODEPAGE = 65001, --UTF-8 encoding
 		FIRSTROW=2,
                 ROWTERMINATOR = '0x0a',
-		TABLOCK); 
+		TABLOCK);
 
 -- 2.2. INSERT file exported using bcp.exe into Product table
 BULK INSERT Product
@@ -80,17 +80,17 @@ FROM 'product.bcp'
 WITH (	DATA_SOURCE = 'MyAzureBlobStorage',
 		FORMATFILE='product.fmt',
 		FORMATFILE_DATA_SOURCE = 'MyAzureBlobStorage',
-		TABLOCK); 
+		TABLOCK);
 
 -- 2.3. Read rows from product.dat file using format file and insert it into Product table
-INSERT INTO Product WITH (TABLOCK) (Name, Color, Price, Size, Quantity, Data, Tags) 
+INSERT INTO Product WITH (TABLOCK) (Name, Color, Price, Size, Quantity, Data, Tags)
 SELECT Name, Color, Price, Size, Quantity, Data, Tags
 FROM OPENROWSET(BULK 'product.bcp',
 				DATA_SOURCE = 'MyAzureBlobStorage',
 				FORMATFILE='product.fmt',
-				FORMATFILE_DATA_SOURCE = 'MyAzureBlobStorage') as products; 
+				FORMATFILE_DATA_SOURCE = 'MyAzureBlobStorage') as products;
 
--- 2.4. Query remote file 
+-- 2.4. Query remote file
 SELECT Color, count(*)
 FROM OPENROWSET(BULK 'product.bcp',
 				DATA_SOURCE = 'MyAzureBlobStorage',

@@ -24,7 +24,7 @@ namespace ReactCommentsApp.Controllers
         {
             await SqlPipe.Stream("select * from Comments FOR JSON PATH", Response.Body, "[]");
         }
-    
+
         // POST api/comment
         [HttpPost]
         public async Task Post(string author, string text)

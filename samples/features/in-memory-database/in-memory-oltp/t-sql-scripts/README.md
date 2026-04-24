@@ -47,7 +47,7 @@ Script to add In-Memory Analytics (Columnstore) to the AdventureWorksLT sample d
 
 **[clustered_columnstore_sample_queries.sql](clustered_columnstore_sample_queries.sql)**
 
-T-SQL queries accompanying the In-Memory Analytics (Columnstore) sample in the AdventureWorksLT sample database for Azure SQL Database. 
+T-SQL queries accompanying the In-Memory Analytics (Columnstore) sample in the AdventureWorksLT sample database for Azure SQL Database.
 
 <a name=related-links></a>
 

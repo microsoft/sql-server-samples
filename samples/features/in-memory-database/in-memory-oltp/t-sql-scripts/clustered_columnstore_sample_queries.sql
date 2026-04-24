@@ -1,15 +1,15 @@
 /*************************************************************************
- This sample targets DataWarehouse workload. We recommend using clustered 
+ This sample targets DataWarehouse workload. We recommend using clustered
  columnstore index for large tables (million+) rows and traditional rowstore
  for tables of size < 1 million rows. The examples here are based on star schema
- consisting of FACT and DIMENSION tables.The examples hi-light the both the 
+ consisting of FACT and DIMENSION tables.The examples hi-light the both the
  storage savings and performance enhancements available in Azure SQL DB
 
  We have two fact tables FactResellerSalesXL_CCI and FactResellerSalesXL_PageCompressed.
  They are identical except one table is based on clustered columnstore index
  and other table is regular rowstore table with PAGE compression
 
- Note: A Pre-requisite is following the instructions in the document: 
+ Note: A Pre-requisite is following the instructions in the document:
  https://docs.microsoft.com/en-us/azure/sql-database/sql-database-in-memory#2-install-the-in-memory-analytics-sample
 *************************************************************************
 */
@@ -18,7 +18,7 @@
 /*************************************************************************************
 STEP 1 - Space comparison between CCI and PAGE compressed table
 **********************************************************************************/
--- How about space? Data space is much smaller. One key point to note is that PAGE compression can 
+-- How about space? Data space is much smaller. One key point to note is that PAGE compression can
 -- compress 2-4x. The difference is less as we have a Primary Key on the table that creates a Unique Non-clustered index
 -- The actual data compression savings will depend upon the data and the schema
 sp_spaceused 'FactResellerSalesXL_CCI'
@@ -78,7 +78,7 @@ SET STATISTICS TIME OFF
 GO
 
 
--- This is the same Prior query on a table with a Clustered Columnstore index CCI 
+-- This is the same Prior query on a table with a Clustered Columnstore index CCI
 -- The comparison numbers are even more dramatic the larger the table is, this is a 11 million row table only.
 SET STATISTICS IO ON
 SET STATISTICS TIME ON
@@ -112,7 +112,7 @@ GO
 STEP 3 - Constraints
 *********************************************************************************
 */
--- SQL 2014 did not support foreign Key constraints.. 
+-- SQL 2014 did not support foreign Key constraints..
 -- Validate there are constraints on this table
 SELECT * FROM sys.indexes WHERE object_id = object_id('FactResellerSalesXL_CCI')
 SELECT * FROM sys.foreign_keys WHERE parent_object_id = object_id('FactResellerSalesXL_CCI')
@@ -317,7 +317,7 @@ GO
 
 
 /*************************************************************************************
-STEP 8 - Non-Clustered Indexes ( btree)  on top of Clustered columnstore index 
+STEP 8 - Non-Clustered Indexes ( btree)  on top of Clustered columnstore index
 **********************************************************************************/
 -- What abount narrow lookups
 -- See missing index for this Plan
@@ -342,7 +342,7 @@ GO
 
 
 /* Now create the missing index */
-CREATE NONCLUSTERED INDEX IndFactResellerSalesXL_CCI_NCI 
+CREATE NONCLUSTERED INDEX IndFactResellerSalesXL_CCI_NCI
 ON [dbo].[FactResellerSalesXL_CCI] ([ProductKey])
 INCLUDE ([SalesAmount],[OrderDate])
 GO
@@ -370,7 +370,7 @@ GO
 DROP INDEX IF EXISTS [FactResellerSales_CCI].IndFactResellerSales_CCI_NCI;
 
 /*************************************************************************************
-STEP 9 - Read Committed Snapshot Isolation 
+STEP 9 - Read Committed Snapshot Isolation
 **********************************************************************************/
 -- RCSI now supported now, which means you can have CCI on AlwaysOn secondaries
 -- Note this may be blocked if you have other connections opened
@@ -440,7 +440,7 @@ SELECT TOP 400000 * FROM FactResellerSalesXL_CCI
 
 
 -- check the rowgroups created.
--- you will notice each  thread creates its own delta rowgroup. The compressed rowgproup will only be created 
+-- you will notice each  thread creates its own delta rowgroup. The compressed rowgproup will only be created
 -- if number of rows inserted by a thread is > 100k
 SELECT * FROM sys.dm_db_column_store_row_group_physical_stats
 WHERE object_id = object_id('FactResellerSalesXL_CCI_temp')
@@ -459,7 +459,7 @@ SELECT * FROM sys.dm_db_column_store_row_group_physical_stats
 WHERE object_id = object_id('FactResellerSalesXL_CCI_temp')
 
 
--- Now delete a subset of rows 
+-- Now delete a subset of rows
 DELETE FactResellerSalesXL_CCI_temp WHERE productkey % 2 = 0
 
 -- run the following DMV to note the deleted rows
@@ -469,10 +469,10 @@ WHERE object_id = object_id('FactResellerSalesXL_CCI_temp')
 
 -- we will now run REORG command to defragement the columnstore index by removing deleted rows
 -- This will MERGE smaller rowgroups into larger rowgroups and also reclaim space from the deleted rows
--- http://blogs.msdn.com/b/sqlcat/archive/2015/08/17/sql-2016-columnstore-row-group-merge-policy-and-index-maintenance-improvements.aspx 
+-- http://blogs.msdn.com/b/sqlcat/archive/2015/08/17/sql-2016-columnstore-row-group-merge-policy-and-index-maintenance-improvements.aspx
 ALTER INDEX cci_temp on FactResellerSalesXL_CCI_temp REORGANIZE
 
--- Validate the new rowgroups that were merged 
+-- Validate the new rowgroups that were merged
 -- Note only look at the COMPRESSED rowgroup.
 SELECT * FROM sys.dm_db_column_store_row_group_physical_stats
 WHERE object_id = object_id('FactResellerSalesXL_CCI_temp')

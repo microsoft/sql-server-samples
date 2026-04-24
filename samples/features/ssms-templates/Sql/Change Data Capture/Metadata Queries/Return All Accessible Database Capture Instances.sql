@@ -5,8 +5,8 @@ USE <Database_Name,sysname,Database_Name>
 GO
 
 DECLARE @capture_instances table (
-		source_schema           sysname,    
-		source_table            sysname,    
+		source_schema           sysname,
+		source_table            sysname,
 		capture_instance		sysname,	
 		object_id			int,		
 		source_object_id		int,		
@@ -16,10 +16,10 @@ DECLARE @capture_instances table (
 		has_drop_pending		bit		NULL,		
 		role_name			sysname	NULL,	
 		index_name			sysname	NULL,	
-		filegroup_name		sysname	NULL,				 
+		filegroup_name		sysname	NULL,				
 		create_date			datetime,	
-		index_column_list		nvarchar(max) NULL, 
-		captured_column_list	nvarchar(max)) 
+		index_column_list		nvarchar(max) NULL,
+		captured_column_list	nvarchar(max))
 
 INSERT INTO @capture_instances
 EXEC [sys].[sp_cdc_help_change_data_capture]

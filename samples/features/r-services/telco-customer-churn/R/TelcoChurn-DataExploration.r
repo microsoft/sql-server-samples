@@ -46,7 +46,7 @@ ggplot(data = myData,
                bw = "SJ",
                colour = NA) +
   geom_rug(colour = "salmon") +
-  theme_minimal() 
+  theme_minimal()
 
 #boxplot of age by churn
 ggplot(data = myData,
@@ -66,8 +66,8 @@ ggplot(data = myData,
                  bw = "SJ",
                  colour = NA) +
     geom_rug(colour = "salmon") +
-    theme_minimal() 
- 
+    theme_minimal()
+
 #boxplot of annualincome by churn
 ggplot(data = myData,
        aes(x = reorder(churn, - annualincome),

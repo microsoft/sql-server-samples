@@ -213,7 +213,7 @@
 
             var skipFromDataAttr = f.attrFromInputWithName($form, name, 'data-skip-falsy');
             if (skipFromDataAttr != null) {
-                return skipFromDataAttr !== 'false'; // any value is true, except if explicitly using 'false' 
+                return skipFromDataAttr !== 'false'; // any value is true, except if explicitly using 'false'
             }
 
             var optForFields = opts.skipFalsyValuesForFields;

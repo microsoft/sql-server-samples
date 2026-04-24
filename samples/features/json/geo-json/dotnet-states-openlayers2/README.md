@@ -1,4 +1,4 @@
-# ASP.NET Core Spatial application that uses SQL/JSON functionalities 
+# ASP.NET Core Spatial application that uses SQL/JSON functionalities
 
 This project contains an example implementation of ASP.NET Core application that shows how to display spatial data from SQL Database on the web page. Web page is shown in the following picture:
 
@@ -49,7 +49,7 @@ To run this sample, you need the following prerequisites.
 
 1. Download source code from SQL Server GitHub account.
 
-2. Get [WideWorldImporters](https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importers-v1.0) database and restore it on your SQL Server instance. 
+2. Get [WideWorldImporters](https://github.com/Microsoft/sql-server-samples/releases/tag/wide-world-importers-v1.0) database and restore it on your SQL Server instance.
 
 3. From SQL Server Management Studio or Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute [sql-scripts/setup.sql](sql-scripts/setup.sql) script that will create [db.AsGeoJSON() TSQL function](https://blogs.msdn.microsoft.com/sqlserverstorageengine/2016/01/13/returning-spatial-data-in-geojson-format-part-2/#comments). This function will convert spatial values to GeoJSON format.
 
@@ -83,9 +83,9 @@ If your database is hosted on Azure you can add something like:
 
 ### Build and run sample
 
-1. Open command prompt in project root folder and run **dotnet restore** and **dotnet build** commands from the root folder of application. If you are using Visual Studio, you can build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu. 
+1. Open command prompt in project root folder and run **dotnet restore** and **dotnet build** commands from the root folder of application. If you are using Visual Studio, you can build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu.
 
-2. Run the sample app using **dotnet run** executed in the command prompt of the project root folder. As an alternative you can use F5 or Ctrl+F5 in Visual Studio 2015.  
+2. Run the sample app using **dotnet run** executed in the command prompt of the project root folder. As an alternative you can use F5 or Ctrl+F5 in Visual Studio 2015.
   1. Open /index.html Url to get all US states from WWI database,
   2. Click on any state to see more info in popup, and larger towns in side map.
 
@@ -94,7 +94,7 @@ If your database is hosted on Azure you can add something like:
 ## Sample details
 
 This sample application shows how to display US states on a map using OpenLayers2 component. Front-end code is implemented using JavaScript, JQuery, and OpenLayers.
-Server-side code is implemented using ASP.NET Core Web API. Server-side code server AJAX requests sent from client page get spatial data from WWI database in GeoJSON format and return GeoJSON response to the client. 
+Server-side code is implemented using ASP.NET Core Web API. Server-side code server AJAX requests sent from client page get spatial data from WWI database in GeoJSON format and return GeoJSON response to the client.
 SQL Server FOR JSON clause and custom AsGeoJSON() function are used to format states and towns from database in GeoJSON format.
 
 <a name=disclaimers></a>
@@ -107,7 +107,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 - [OpenLayers2](http://openlayers.org/two/).

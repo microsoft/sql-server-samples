@@ -1,30 +1,30 @@
 /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas. Dual MIT/BSD license */
 /*! NOTE: If you're already including a window.matchMedia polyfill via Modernizr or otherwise, you don't need this part */
 window.matchMedia = window.matchMedia || (function(doc, undefined){
-  
+
   var bool,
       docElem  = doc.documentElement,
       refNode  = docElem.firstElementChild || docElem.firstChild,
       // fakeBody required for <FF4 when executed in <head>
       fakeBody = doc.createElement('body'),
       div      = doc.createElement('div');
-  
+
   div.id = 'mq-test-1';
   div.style.cssText = "position:absolute;top:-100em";
   fakeBody.style.background = "none";
   fakeBody.appendChild(div);
-  
+
   return function(q){
-    
+
     div.innerHTML = '&shy;<style media="'+q+'"> #mq-test-1 { width: 42px; }</style>';
-    
+
     docElem.insertBefore(fakeBody, refNode);
-    bool = div.offsetWidth == 42;  
+    bool = div.offsetWidth == 42;
     docElem.removeChild(fakeBody);
-    
+
     return { matches: bool, media: q };
   };
-  
+
 })(document);
 
 
@@ -149,11 +149,11 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 					
 				for( ; j < eql; j++ ){
 					thisq	= eachq[ j ];
-					mediastyles.push( { 
+					mediastyles.push( {
 						media	: thisq.split( "(" )[ 0 ].match( /(only\s+)?([a-zA-Z]+)\s?/ ) && RegExp.$2 || "all",
 						rules	: rules.length - 1,
 						hasquery: thisq.indexOf("(") > -1,
-						minw	: thisq.match( /\(min\-width:[\s]*([\s]*[0-9\.]+)(px|em)[\s]*\)/ ) && parseFloat( RegExp.$1 ) + ( RegExp.$2 || "" ), 
+						minw	: thisq.match( /\(min\-width:[\s]*([\s]*[0-9\.]+)(px|em)[\s]*\)/ ) && parseFloat( RegExp.$1 ) + ( RegExp.$2 || "" ),
 						maxw	: thisq.match( /\(max\-width:[\s]*([\s]*[0-9\.]+)(px|em)[\s]*\)/ ) && parseFloat( RegExp.$1 ) + ( RegExp.$2 || "" )
 					} );
 				}	
@@ -199,7 +199,7 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 			return ret;
 		},
 		
-		//cached container for 1em value, populated the first time it's needed 
+		//cached container for 1em value, populated the first time it's needed
 		eminpx,
 		
 		//enable/disable styles
@@ -264,13 +264,13 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 				//this caused crashes in IE in a number of circumstances, such as when the HTML element had a bg image set, so appending beforehand seems best. Thanks to @dvelyk for the initial research on this one!
 				head.insertBefore( ss, lastLink.nextSibling );
 				
-				if ( ss.styleSheet ){ 
+				if ( ss.styleSheet ){
 		        	ss.styleSheet.cssText = css;
-		        } 
+		        }
 		        else {
 					ss.appendChild( doc.createTextNode( css ) );
 		        }
-		        
+		
 				//push to appendedEls to track for later removal
 				appendedEls.push( ss );
 			}
@@ -293,7 +293,7 @@ window.matchMedia = window.matchMedia || (function(doc, undefined){
 			}
 			req.send( null );
 		},
-		//define ajax obj 
+		//define ajax obj
 		xmlHttp = (function() {
 			var xmlhttpmethod = false;	
 			try {

@@ -73,7 +73,7 @@ $(function () {
                     {
                         toastr.success("Product is successfully restored.");
                     }, false);
-                
+
             })
     });
 });
@@ -123,7 +123,7 @@ function format(d) {
 
         var sTemplateTr = '<tr class="auditrow"><td class="Name"></td></td><td class="Color"></td><td class="Price"></td><td class="Quantity"></td><td class="DateModified"><td class="ValidTo"></td><td><a class="ProductID DateModified restore" href="api/Product/restore">Restore<span class="ui-icon ui-icon-arrowthick-1-n" style="display:inline-block"></span></a></td></tr>';
         var innerTab = '', htAuditTrail = '';
-        
+
         for (i = 0; i < d.ProductHistory.length; i++) {
             var ver = d.ProductHistory[i];
             if (new Date(ver.ValidTo).getYear() > 8000)

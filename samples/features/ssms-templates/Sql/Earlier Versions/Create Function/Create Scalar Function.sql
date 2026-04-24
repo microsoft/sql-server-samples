@@ -1,14 +1,14 @@
 -- =============================================
 -- Create scalar function (FN)
 -- =============================================
-IF EXISTS (SELECT * 
-	   FROM   sysobjects 
+IF EXISTS (SELECT *
+	   FROM   sysobjects
 	   WHERE  name = N'<scalar_function_name, sysname, test_function>')
 	DROP FUNCTION <scalar_function_name, sysname, test_function>
 GO
 
-CREATE FUNCTION <scalar_function_name, sysname, test_function> 
-	(<@param1, sysname, @p1> <data_type_for_param1, , int>, 
+CREATE FUNCTION <scalar_function_name, sysname, test_function>
+	(<@param1, sysname, @p1> <data_type_for_param1, , int>,
 	 <@param2, sysname, @p2> <data_type_for_param2, , int>)
 RETURNS <function_data_type, ,int>
 AS
@@ -24,8 +24,8 @@ GO
 -- =============================================
 -- Example to execute function
 -- =============================================
-SELECT <owner, , dbo>.<scalar_function_name, sysname, test_function> 
-	(<value_for_@param1, , 1>, 
+SELECT <owner, , dbo>.<scalar_function_name, sysname, test_function>
+	(<value_for_@param1, , 1>,
 	 <value_for_@param2, , 2>)
 GO
 

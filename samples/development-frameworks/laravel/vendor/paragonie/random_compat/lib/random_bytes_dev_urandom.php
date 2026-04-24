@@ -1,22 +1,22 @@
 <?php
 /**
- * Random_* Compatibility Library 
+ * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
- * 
+ *
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2015 Paragon Initiative Enterprises
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -33,14 +33,14 @@ if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
 /**
  * Unless open_basedir is enabled, use /dev/urandom for
  * random numbers in accordance with best practices
- * 
+ *
  * Why we use /dev/urandom and not /dev/random
  * @ref http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers
- * 
+ *
  * @param int $bytes
- * 
+ *
  * @throws Exception
- * 
+ *
  * @return string
  */
 function random_bytes($bytes)
@@ -66,10 +66,10 @@ function random_bytes($bytes)
         if (!empty($fp)) {
             /**
              * stream_set_read_buffer() does not exist in HHVM
-             * 
+             *
              * If we don't set the stream's read buffer to 0, PHP will
              * internally buffer 8192 bytes, which can waste entropy
-             * 
+             *
              * stream_set_read_buffer returns 0 on success
              */
             if (function_exists('stream_set_read_buffer')) {
@@ -97,8 +97,8 @@ function random_bytes($bytes)
 
     /**
      * This if() block only runs if we managed to open a file handle
-     * 
-     * It does not belong in an else {} block, because the above 
+     *
+     * It does not belong in an else {} block, because the above
      * if (empty($fp)) line is logic that should only be run once per
      * page load.
      */
@@ -110,7 +110,7 @@ function random_bytes($bytes)
          * We use fread() in a loop to protect against partial reads
          */
         do {
-            $read = fread($fp, $remaining); 
+            $read = fread($fp, $remaining);
             if ($read === false) {
                 /**
                  * We cannot safely read from the file. Exit the
@@ -125,7 +125,7 @@ function random_bytes($bytes)
             $remaining -= RandomCompat_strlen($read);
             $buf .= $read;
         } while ($remaining > 0);
-        
+
         /**
          * Is our result valid?
          */

@@ -30,7 +30,7 @@ The sample script [data-pool/data-ingestion-sql.sql](data-pool/data-ingestion-sq
 
 ## __[data-virtualization](data-virtualization/)__
 
-SQL Server 2019 or SQL Server 2019 big data cluster can use PolyBase external tables to connect to other data sources. 
+SQL Server 2019 or SQL Server 2019 big data cluster can use PolyBase external tables to connect to other data sources.
 
 ### External table over Generic ODBC data source
 The [data-virtualization/generic-odbc](data-virtualization/generic-odbc) folder contains samples that demonstrate how to query data in MySQL & PostgreSQL using external tables and generic ODBC data source. The generic ODBC data soruce can be used only in SQL Server 2019 on Windows.

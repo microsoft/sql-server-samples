@@ -1,8 +1,8 @@
 /*
 To install the pretrained model in SQL Server, open an elevated CMD promtp:
-1. Navigate to the SQL Server installation path: 
+1. Navigate to the SQL Server installation path:
 C:\<SQL SERVER Installation path>\Microsoft SQL Server\140\Setup Bootstrap\SQL2017\x64
-2. Run the following command: 
+2. Run the following command:
 RSetup.exe /install /component MLM /<version>/language 1033 /destdir <SQL_DB_instance_folder>\PYTHON_SERVICES\Lib\site-packages\microsoftml\mxLibs
 Example:
 RSetup.exe /install /component MLM /version 9.2.0.24 /language 1033 /destdir "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES\Lib\site-packages\microsoftml\mxLibs"
@@ -16,16 +16,16 @@ GO
 --******************************************************************************************************************
 -- STEP 1 Stored procedure that uses a pretrained model to determine sentiment of a text, such as a product review
 --******************************************************************************************************************
-CREATE OR ALTER PROCEDURE [dbo].[get_sentiment] 
+CREATE OR ALTER PROCEDURE [dbo].[get_sentiment]
 (@text NVARCHAR(MAX))
 AS
 BEGIN
 	DECLARE	@script nvarchar(max);
 
 	--Check that text is not empty
-	IF NULLIF(@text, '') is null 
+	IF NULLIF(@text, '') is null
 	BEGIN
-		THROW 50001, 'Please specify a text value to be analyzed.', 1; 
+		THROW 50001, 'Please specify a text value to be analyzed.', 1;
 		RETURN
 	END
 
@@ -55,7 +55,7 @@ sentiment_scores["Sentiment"] = sentiment_scores.scores.apply(lambda score: "Pos
 				WITH RESULT SETS (("Text" NVARCHAR(MAX),"Score" FLOAT, "Sentiment" NVARCHAR(30)));			
 
 END
-				  
+				
 GO
 
 --******************************************************************************************************************

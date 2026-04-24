@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft Corporation.-->
+<!--Licensed under the MIT License-->
+<model xmlns="smlif.xsd">
+  <_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">DMF:Name</_locTag>
+    <_locTag _loc="locData">DMF:Description</_locTag>
+    <_locTag _loc="locData">DMF:Condition</_locTag>
+    <_locTag _loc="locData">DMF:ObjectSet</_locTag>
+    <_locTag _loc="locData">DMF:RootCondition</_locTag>
+    <_locTag _loc="locData">DMF:PolicyCategory</_locTag>
+    <_locTag _loc="locData">DMF:HelpText</_locTag>
+  </_locDefinition>
+  <identity>
+    <name>urn:uuid:96fe1236-abf6-4a57-b54d-e9baab394fd1</name>
+    <baseURI>http://documentcollection/</baseURI>
+  </identity>
+  <xs:bufferSchema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <definitions xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+      <document>
+        <docinfo>
+          <aliases>
+            <alias>/system/schema/DMF</alias>
+          </aliases>
+          <sfc:version DomainVersion="3" />
+        </docinfo>
+        <data>
+          <xs:schema targetNamespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+            <xs:element name="Policy">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ObjectSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Condition">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="PolicyCategory">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSetLevel">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <DMF:bufferData xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08">
+              <instances xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Policy/Last Successful Backup Date</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Policy xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:PolicyCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Safe Last Backup Date</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyCondition>
+                      <DMF:PolicyObjectSet>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyObjectSet>
+                      <DMF:PolicyPolicyCategory>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Maintenance</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyPolicyCategory>
+                      <DMF:Name type="string">Last Successful Backup Date</DMF:Name>
+                      <DMF:Description type="string">
+                        Checks whether a database has recent backups. Scheduling regular backups is important for protecting your databases against data loss from a variety of failures.&lt;?char 13?&gt;
+                        &lt;?char 13?&gt;
+                        The appropriate frequency for backing up data depends on the recovery model of the database, on business requirements regarding potential data loss, and on how frequently the database is updated. In a frequently updated database, the amount of work-loss exposure increases relatively quickly between backups.&lt;?char 13?&gt;
+                        &lt;?char 13?&gt;
+                        The best practice is to perform backups frequently enough to protect databases against data loss. The simple recovery model and full recovery model both require data backups. The full recovery model also requires log backups, which should be taken more often than data backups. For either recovery model, you can supplement your full backups with differential backups to efficiently reduce the risk of data loss. For a database that uses the full recovery model, Microsoft recommends that you take frequent log backups. For a production database that contains critical data, log backups would typically be taken every one to fifteen minutes. Note: The recommended method for scheduling backups is a database maintenance plan. &lt;?char 13?&gt;
+                      </DMF:Description>
+                      <DMF:Condition type="string">Safe Last Backup Date</DMF:Condition>
+                      <DMF:ObjectSet type="string">Last Successful Backup Date_ObjectSet</DMF:ObjectSet>
+                      <DMF:PolicyCategory type="string">Microsoft Best Practices: Maintenance</DMF:PolicyCategory>
+                      <DMF:Enabled type="boolean">false</DMF:Enabled>
+                      <DMF:AutomatedPolicyEvaluationMode type="AutomatedPolicyEvaluationMode">None</DMF:AutomatedPolicyEvaluationMode>
+                      <DMF:HelpText type="string" />
+                      <DMF:HelpLink type="string">http://go.microsoft.com/fwlink/?LinkId=116361</DMF:HelpLink>
+                      <DMF:ActiveEndDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveEndDate>
+                      <DMF:ActiveStartDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveStartDate>
+                    </DMF:Policy>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:ObjectSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:TargetSets>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:TargetSets>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Last Successful Backup Date_ObjectSet</DMF:Name>
+                      <DMF:Facet type="string">IDatabaseMaintenanceFacet</DMF:Facet>
+                    </DMF:ObjectSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Safe Last Backup Date</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">
+                        &lt;Operator&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;OpType&gt;GE&lt;/OpType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;Attribute&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;DateTime&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;Name&gt;LastBackupDate&lt;/Name&gt;&lt;?char 13?&gt;
+                        &lt;/Attribute&gt;&lt;?char 13?&gt;
+                        &lt;Function&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;DateTime&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;FunctionType&gt;DateAdd&lt;/FunctionType&gt;&lt;?char 13?&gt;
+                        &lt;ReturnType&gt;DateTime&lt;/ReturnType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;3&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;Constant&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+                        &lt;Value&gt;day&lt;/Value&gt;&lt;?char 13?&gt;
+                        &lt;/Constant&gt;&lt;?char 13?&gt;
+                        &lt;Constant&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;ObjType&gt;System.Int32&lt;/ObjType&gt;&lt;?char 13?&gt;
+                        &lt;Value&gt;-1&lt;/Value&gt;&lt;?char 13?&gt;
+                        &lt;/Constant&gt;&lt;?char 13?&gt;
+                        &lt;Function&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;DateTime&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;FunctionType&gt;GetDate&lt;/FunctionType&gt;&lt;?char 13?&gt;
+                        &lt;ReturnType&gt;DateTime&lt;/ReturnType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;0&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;/Function&gt;&lt;?char 13?&gt;
+                        &lt;/Function&gt;&lt;?char 13?&gt;
+                        &lt;/Operator&gt;
+                      </DMF:Expression>
+                      <DMF:Name type="string">Safe Last Backup Date</DMF:Name>
+                      <DMF:Description type="string">Confirms that the database was backed up within the last day.</DMF:Description>
+                      <DMF:Facet type="string">IDatabaseMaintenanceFacet</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Maintenance</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:PolicyCategory xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Microsoft Best Practices: Maintenance</DMF:Name>
+                    </DMF:PolicyCategory>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet/TargetSet/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Levels>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:Levels>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:Enabled type="boolean">true</DMF:Enabled>
+                    </DMF:TargetSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSetLevel xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Last Successful Backup Date__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:LevelName type="string">Database</DMF:LevelName>
+                      <DMF:Condition type="string" />
+                    </DMF:TargetSetLevel>
+                  </data>
+                </document>
+              </instances>
+            </DMF:bufferData>
+          </xs:schema>
+        </data>
+      </document>
+    </definitions>
+  </xs:bufferSchema>
+</model>

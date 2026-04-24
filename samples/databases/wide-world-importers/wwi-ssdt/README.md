@@ -17,7 +17,7 @@ A pre-created version of the database is available for download as part of the l
 ## About this sample
 
 <!-- Delete the ones that don't apply -->
-1. **Applies to:** SQL Server 2016 (or higher), Azure SQL Database 
+1. **Applies to:** SQL Server 2016 (or higher), Azure SQL Database
 1. **Key features:** Core database features
 1. **Workload:** OLTP
 1. **Programming Language:** Transact-SQL

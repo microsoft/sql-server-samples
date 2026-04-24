@@ -1,4 +1,4 @@
-# ASP.NET Core Product Catalog application that uses new SQL Server/Azure SQL Db functionalities 
+# ASP.NET Core Product Catalog application that uses new SQL Server/Azure SQL Db functionalities
 
 This project contains an example implementation of ASP.NET Core application that shows how to implement product catalog SQL Server/Azure SQL Db functionalities.
 - JSON functionalities are used to implement Web API that provides data to client HTML application,
@@ -51,7 +51,7 @@ To run this sample, you need the following prerequisites.
 
 4. Locate **appsettings.json** file in the project, change connection string to reference your database (default value ProductCatalog database on local instance with integrated security), and build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
 
-5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.
 
 Open /index.html Url to get all products from database. Add edit and delete products in table. Use green (+) button to see all changes that are made in rows. Restore some of the previous version. Use slider to go back in time (to the left side). Restore some version from history. Edit any product and validate that company information are masked. Log-in as some of the companies and verify that only product for the current company are displayed.
 
@@ -63,7 +63,7 @@ Front-end code is implemented using JQuery/JQuery UI libraries, and JQuery DataT
 Server-side code is implemented using ASP.NET Core Web API with JSON functionalities that format results from database and de-serialize JSON request from the client-side.
 SQL Server Temporal feature is used to track history, sow snapshots of data in some point in time in the past, and to restore previous versions of product.
 Data masking-feature is used to mask company information.
-Row-level security is used to isolate company data. 
+Row-level security is used to isolate company data.
 
 <a name=disclaimers></a>
 
@@ -75,7 +75,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 [.Net Core download](https://www.microsoft.com/net/core#windows)
 [JQuery DataTables with row expansion](https://datatables.net/examples/api/row_details.html).
 [JQuery UI Slider](https://jqueryui.com/slider/)

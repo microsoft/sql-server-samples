@@ -2,12 +2,12 @@
 -- Periods to Date
 -- =============================================
 
-With 
-		Member [Measures].[PeriodsToDate] AS 
+With
+		Member [Measures].[PeriodsToDate] AS
 		'Sum (
 		  PeriodsToDate ( <hierarchy_level, mdx_name,>, <hierarchy_name, mdx_name,>.CurrentMember ),
 		  [Measures].<measure_name, mdx_name,>
-		)'  
+		)'
 		
 Select	{[Measures].<measure_name, mdx_name,>, [Measures].[PeriodsToDate]} on Columns,
 		<column_axis, mdx_set,> on Rows

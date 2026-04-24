@@ -15,8 +15,8 @@ Usage:
   DECLARE @DelivMethodId INT
 
   SELECT TOP 1
-         @DelivMethodId = DeliveryMethodID 
-    FROM [Application].DeliveryMethods 
+         @DelivMethodId = DeliveryMethodID
+    FROM [Application].DeliveryMethods
    WHERE DeliveryMethodName = @DeliveryMethodName
      AND ValidTo = '99991231 23:59:59.9999999'
 

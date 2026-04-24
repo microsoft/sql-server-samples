@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <style>
+            body {background-color: black;}
+           p,h1, label {font-family: "Century Gothic", Gadget, sans-serif; color: white; }
+           p,h3, label {font-family: "Century Gothic", Gadget, sans-serif; color: white; }
+           tr:nth-child(odd) { background-color:  rgb(58, 57, 57); border: 0px; font-weight: bold }
+           tr, th {vertical-align: middle; font-family: "Century Gothic", "Arial", Gadget, sans-serif; border: 0px; padding: 15px; color: white; }
+           td {vertical-align: middle; font-family: "Century Gothic", "Arial", Gadget, sans-serif; border: 0px; width: 200px; padding: 5px}
+           td:hover, td.selected {background-color: #b9b9b9 }
+           input { margin-bottom: 5px;  width: 10%;}
+           #form-group label { display: inline-block;width: 150px; }
+        </style>
+    </head>
+
+    <script>
+        $("td").click(function(){
+            $(this).addClass("selected").siblings().removeClass("selected");
+        });
+    </script>
+    <p style="text-align: right ;">Hello <br> Pieter Vanhove </br></p>
+
+    <center>
+        <img src="img/ball.jpg" width="650">
+
+    <body>
+        <p style="text-align: center ;">Pieter Vanhove</p>
+        <p id="betting">
+
+            <form action="/placebet" id="formMakeBet" method="get">
+                <!--
+                <div id='form-group'>
+                    <label for="flname">Your Name:&nbsp;</label>
+                    <input type="text" id="flname" name="flname" required>
+                </div>
+                -->
+                <div id='form-group'>
+                    <label for="betamount">Bet Amount:&nbsp;</label>
+                    <input type="text" id="betamount" name="betamount" required>
+                </div>
+                <table border=1>
+                </center>
+                    <!-- <tr>
+                        <th>Home Country</th>
+                        <th>Home Country Odds</th>
+                        <th>Draw Odds</th>
+                        <th>Visiting Country</th>
+                        <th>Visiting Country Odds</th>
+                        <th>Game Date</th>
+                    </tr> -->
+
+<!-- Stuff below is added by C# code -->

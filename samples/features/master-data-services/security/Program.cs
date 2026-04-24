@@ -18,9 +18,9 @@ namespace Security
 {
     class Program
     {
-        // MDS service client proxy object. 
+        // MDS service client proxy object.
         private static ServiceClient clientProxy;
-        // MDS URL. 
+        // MDS URL.
         private static string mdsURL = @"http://{0}/{1}/Service/Service.svc";
 
         static void Main(string[] args)
@@ -53,12 +53,12 @@ namespace Security
 
                 mdsURL = string.Format(mdsURL, hostName, applicationName);
 
-                // Creates a service proxy. 
+                // Creates a service proxy.
                 clientProxy = GetClientProxy(mdsURL);
 
                 // Check if Exclude Metadata Model Permissions flag is set.
                 // When Metadata Model's GUID in the target MDS application is different from the one in the source MDS application, the import of the security information fails.
-                // To avoid this issue the user can exclude Metadata Model Permissions. 
+                // To avoid this issue the user can exclude Metadata Model Permissions.
                 // The user can use Model Deployment to create other models with the same GUIDs as the source MDS application.
                 bool excludeMetadataPermission = false;
 
@@ -92,13 +92,13 @@ namespace Security
         // Creates MDS service client proxy.
         private static ServiceClient GetClientProxy(string targetURL)
         {
-            // Creates an endpoint address using the URL. 
+            // Creates an endpoint address using the URL.
             System.ServiceModel.EndpointAddress endptAddress = new System.ServiceModel.EndpointAddress(targetURL);
 
-            // Creates and configures the WS Http binding. 
+            // Creates and configures the WS Http binding.
             System.ServiceModel.WSHttpBinding wsBinding = new System.ServiceModel.WSHttpBinding();
 
-            // Creates and returns the client proxy. 
+            // Creates and returns the client proxy.
             return new ServiceClient(wsBinding, endptAddress);
         }
 
@@ -119,7 +119,7 @@ namespace Security
         }
 
         // Gets security information and exports it into the files.
-        // excludeMetadataPermission indicates if model privileges for Metadata are exluded.  
+        // excludeMetadataPermission indicates if model privileges for Metadata are exluded.
         private static void ExportSecurityInformation(bool excludeMetadataPermission, string fileName)
         {
             // Gets security information.
@@ -139,13 +139,13 @@ namespace Security
 
             System.Collections.ObjectModel.Collection<User> users = principalGetResponse.Principals.Users;
 
-            // Exclude model privileges for Metadata when excludeMetadataPermission is true. 
+            // Exclude model privileges for Metadata when excludeMetadataPermission is true.
             if (excludeMetadataPermission)
             {
                 foreach (User anUser in users)
                 {
                     System.Collections.ObjectModel.Collection<ModelPrivilege> tempModelPrivileges = new System.Collections.ObjectModel.Collection<ModelPrivilege>{};
-                    
+
                     // Exclude model privileges for Metadata (internal id = 1).
                     foreach (ModelPrivilege aPrivilege in anUser.SecurityPrivilege.ModelPrivileges)
                     {
@@ -168,7 +168,7 @@ namespace Security
 
             System.Collections.ObjectModel.Collection<Group> groups = principalGetGroupResponse.Principals.Groups;
 
-            // Exclude model privileges for Metadata when excludeMetadataPermission is true. 
+            // Exclude model privileges for Metadata when excludeMetadataPermission is true.
             if (excludeMetadataPermission)
             {
                 foreach (Group aGroup in groups)
@@ -199,7 +199,7 @@ namespace Security
             using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
                 XmlDictionaryWriter xmlWriter = XmlDictionaryWriter.CreateBinaryWriter(fs);
-                
+
                 // Serializes the security information.
                 serializer.Serialize(xmlWriter, securityInformation);
                 fs.Flush();
@@ -208,7 +208,7 @@ namespace Security
         }
 
         // Imports the security information from the files.
-        // excludeMetadataPermission indicates if model privileges for Metadata are exluded.  
+        // excludeMetadataPermission indicates if model privileges for Metadata are exluded.
         private static void ImportSecurityInformation(bool excludeMetadataPermission, string fileName)
         {
             // Deserialization.
@@ -230,7 +230,7 @@ namespace Security
             users = securityInformation.Users;
             groups = securityInformation.Groups;
 
-            // Exclude model privileges for Metadata when excludeMetadataPermission is true. 
+            // Exclude model privileges for Metadata when excludeMetadataPermission is true.
             if (excludeMetadataPermission)
             {
                 foreach (User anUser in users)
@@ -250,7 +250,7 @@ namespace Security
                 }
             }
 
-            // Exclude model privileges for Metadata when excludeMetadataPermission is true. 
+            // Exclude model privileges for Metadata when excludeMetadataPermission is true.
             if (excludeMetadataPermission)
             {
                 foreach (Group aGroup in groups)
@@ -282,22 +282,22 @@ namespace Security
                 principalRequest.Principals.Groups.Add(aGroup);
             }
 
-            // Creates groups and their security principals. 
-            // Create groups before users since some of the users may belong to one of the groups and reference the group object.   
+            // Creates groups and their security principals.
+            // Create groups before users since some of the users may belong to one of the groups and reference the group object.
             // Note that the security information assumes that GUIDs for objects such as Models are the same.
             MessageResponse response = clientProxy.SecurityPrincipalsClone(principalRequest);
             HandleOperationErrors(response.OperationResult);
 
             principalRequest.Principals.Groups = new System.Collections.ObjectModel.Collection<Group> { };
             principalRequest.Principals.Users = new System.Collections.ObjectModel.Collection<User> { };
-            
+
             // Sets user objects.
             foreach (User aUser in users)
             {
                 principalRequest.Principals.Users.Add(aUser);
             }
 
-            // Creates users and their security principals. 
+            // Creates users and their security principals.
             response = clientProxy.SecurityPrincipalsClone(principalRequest);
             HandleOperationErrors(response.OperationResult);
         }

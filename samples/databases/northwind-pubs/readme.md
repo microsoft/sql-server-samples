@@ -1,6 +1,6 @@
 # Northwind and pubs sample databases for Microsoft SQL Server
 
-This folder contains scripts to create and load the *Northwind* and *pubs* sample databases.
+This folder contains scripts to create and load the *Northwind* (`instnwnd.sql`) and *pubs* (`instpubs.sql`) sample databases.
 
 These scripts were originally created for SQL Server 2000.
 

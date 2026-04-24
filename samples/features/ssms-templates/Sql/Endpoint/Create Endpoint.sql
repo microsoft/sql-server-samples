@@ -4,30 +4,30 @@
 USE <Database_Name, SYSNAME, Database_Name>
 GO
 
----------------------------------------------------------------------------- 
+----------------------------------------------------------------------------
 -- First create a stored procedure that will be exposed as a web service
----------------------------------------------------------------------------- 
+----------------------------------------------------------------------------
 IF EXISTS (
-  SELECT * 
-    FROM INFORMATION_SCHEMA.ROUTINES 
+  SELECT *
+    FROM INFORMATION_SCHEMA.ROUTINES
    WHERE SPECIFIC_SCHEMA = N'<Schema_Name, sysname, Schema_Name>'
-     AND SPECIFIC_NAME = N'<Procedure_Name, sysname, Procedure_Name>' 
+     AND SPECIFIC_NAME = N'<Procedure_Name, sysname, Procedure_Name>'
 )
    DROP PROCEDURE <Schema_Name, sysname, Schema_Name>.<Procedure_Name, sysname, Procedure_Name>
 GO
 
 CREATE PROCEDURE <Schema_Name, sysname, Schema_Name>.<Procedure_Name, sysname, Procedure_Name>
 	(@msg NVARCHAR(256))
-AS 
+AS
 	SELECT @msg AS message
 GO
 
 
----------------------------------------------------------------------------- 
+----------------------------------------------------------------------------
 -- Then, create the HTTP endpoint to expose hello_world_proc as a webmethod
----------------------------------------------------------------------------- 
+----------------------------------------------------------------------------
 IF EXISTS (
-	SELECT name from sys.http_endpoints 
+	SELECT name from sys.http_endpoints
 	WHERE name = N'<endpoint_name, SYSNAME, endpoint_name>'
 )
 	DROP ENDPOINT <endpoint_name, SYSNAME, endpoint_name>

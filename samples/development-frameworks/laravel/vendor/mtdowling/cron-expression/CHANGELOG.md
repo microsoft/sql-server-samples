@@ -7,7 +7,7 @@
 
 ## [1.1.0] - 2015-01-26
 ### Added
-- Support for non-hourly offset timezones 
+- Support for non-hourly offset timezones
 - Checks for valid expressions
 ### Changed
 - Max Iterations no longer hardcoded for `getRunDate()`

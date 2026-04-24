@@ -22,7 +22,7 @@ GO
 -- Our goal is finding the similar products to the one he/she is
 -- looking at based on the behavior of other customers
 
--- We will use the counts to prioritize the recommendations 
+-- We will use the counts to prioritize the recommendations
 -- that is the simplest possible algorithm for a recommendation service
 -- In reality more complex filters are applied on top, for example text
 -- analysis of the product reviews to arrive at similarly measures

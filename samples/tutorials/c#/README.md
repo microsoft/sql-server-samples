@@ -1,4 +1,12 @@
-# Developing applications with C# and SQL Server 
+---
+page_type: sample
+languages:
+- csharp
+products:
+- azure-sql-database	
+---
+
+# Developing applications with C# and SQL Server
 
 Pick a platform below to get started:
 * [macOS](https://github.com/Microsoft/sql-server-samples/tree/master/samples/tutorials/c%23/macOS)

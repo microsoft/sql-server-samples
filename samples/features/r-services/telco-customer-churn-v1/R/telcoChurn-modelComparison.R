@@ -21,12 +21,12 @@ train_df <- rxDataStep(inData = train_table)
 test_df <- rxDataStep(inData = test_table)
 
 ####################################################################################################
-## Random forest modeling with randomForest on the data frame 
+## Random forest modeling with randomForest on the data frame
 ####################################################################################################
 library(randomForest)
 
 ## Train model
-system.time({ 
+system.time({
 forest_model <- randomForest(churn ~ .,
                              data = train_df,
                              ntree = 8,
@@ -66,7 +66,7 @@ rxrocCurve(data = pred_df,
            predicted = "randomForest_Probability")
 
 ####################################################################################################
-## Extreme gradient boost modeling with xgboost on the data frame 
+## Extreme gradient boost modeling with xgboost on the data frame
 ####################################################################################################
 library(Matrix)
 library(xgboost)
@@ -118,7 +118,7 @@ rxrocCurve(data = pred_df,
            predicted = "xgboost_Probability")
 
 ####################################################################################################
-## Decision forest modeling with rxDForest on SQL data source 
+## Decision forest modeling with rxDForest on SQL data source
 ####################################################################################################
 
 ## Train model

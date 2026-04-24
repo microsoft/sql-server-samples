@@ -1,8 +1,8 @@
 // ==========================
-// Singleton Prediction 
+// Singleton Prediction
 // ==========================
 
-SELECT <select list,expr list,*> FROM [<mining model,name,MyModel>] 
+SELECT <select list,expr list,*> FROM [<mining model,name,MyModel>]
 NATURAL PREDICTION JOIN
 (SELECT '<value,string,>' AS [<column,name,MyColumn>], ...)
 AS [<input alias,alias,t>]

@@ -9,7 +9,7 @@
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE SERVICE [<service-name, sysname, test_service>] 
-AUTHORIZATION <owner-name ,database-user  ,dbo> 
+CREATE SERVICE [<service-name, sysname, test_service>]
+AUTHORIZATION <owner-name ,database-user  ,dbo>
 ON QUEUE <queue-name, sysname, test_queue>
 ([DEFAULT])

@@ -13,7 +13,7 @@ local <- RxLocalParallel()
 rxOptions(reportProgress = 0)
 
 ####################################################################################################
-##Method 1: Prepare the raw, training and testing data sets all in SQL database 
+##Method 1: Prepare the raw, training and testing data sets all in SQL database
 ####################################################################################################
 col_info <- list(age = list(type = "integer"),
                 annualincome = list(type = "integer"),
@@ -162,7 +162,7 @@ table(testData$churn)
 
 library(unbalanced)
 myvars <- names(trainData) %in% c("churn")
-SMOTEData <- ubSMOTE(X = trainData[!myvars], Y = trainData$churn, perc.over = 200, k = 3, perc.under = 500, verbose = TRUE) 
+SMOTEData <- ubSMOTE(X = trainData[!myvars], Y = trainData$churn, perc.over = 200, k = 3, perc.under = 500, verbose = TRUE)
 newSMOTEData <- cbind(SMOTEData$X, SMOTEData$Y)
 colnames(newSMOTEData)
 names(newSMOTEData)[names(newSMOTEData) == "SMOTEData$Y"] <- "churn"

@@ -96,7 +96,7 @@ $(document).ready(function () {
             var product = JSON.stringify($form.serializeJSON({ checkboxUncheckedValue: "false", parseAll: true }));
             ctrl.saveProduct(productId, product);
     });
-    
+
     $('body').on("click", "#submitAddButton",
     function (e) {
         e.preventDefault();
@@ -104,7 +104,7 @@ $(document).ready(function () {
         var product = JSON.stringify($form.serializeJSON({ checkboxUncheckedValue: "false", parseAll: true }));
         ctrl.saveProduct(null, product);
     });
-    
+
     $('body').on("click", "#submitAddButton2",
     function (e) {
         e.preventDefault();

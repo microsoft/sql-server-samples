@@ -7,7 +7,7 @@
 ####################################################################################################
 ## Settings
 # In order to run this script, you need to set the values of the parameters in this section to your
-# own values. 
+# own values.
 ####################################################################################################
 
 ## SQL database and login credentials. Please change this part to your own values.
@@ -107,8 +107,8 @@ trainTable <- "edw_cdr_train"
 testTable <- "edw_cdr_test"
 predTable <- "edw_cdr_pred"
 
-## Data preparation. 
-# We now delete unnecessary columns, clean missing values, remove duplicate rows, 
+## Data preparation.
+# We now delete unnecessary columns, clean missing values, remove duplicate rows,
 # but more importantly, split the raw data into training and testing data sets followed by SMOTE.
 system.time({
     dataPreparation(sqlSettings, trainTable, testTable)
@@ -129,7 +129,7 @@ rxSummary( ~ churn, data = testDataSQL)
 ####################################################################################################	
 ## Train model
 ####################################################################################################
-## Switch to sql compute context. 
+## Switch to sql compute context.
 # From now on, all the executions will be done in the SQL server
 rxSetComputeContext(sqlCompute)
 

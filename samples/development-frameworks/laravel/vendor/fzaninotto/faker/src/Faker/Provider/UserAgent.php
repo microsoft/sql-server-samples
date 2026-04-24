@@ -104,7 +104,7 @@ class UserAgent extends \Faker\Provider\Base
         } else {
             $ver = mt_rand(4, 5) . '.0.' . mt_rand(1, 5);
         }
-        
+
         $mobileDevices = array(
             'iPhone; CPU iPhone OS',
             'iPad; CPU OS'
@@ -118,7 +118,7 @@ class UserAgent extends \Faker\Provider\Base
 
         return "Mozilla/5.0 " . static::randomElement($platforms);
     }
-    
+
 
     /**
      * Generate Opera user agent

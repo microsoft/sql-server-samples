@@ -44,7 +44,7 @@ DECLARE @i int = 1, @start datetime
 SELECT @start = GETDATE()
 WHILE @i < 1000000
 BEGIN
-    INSERT INTO dbo.Inserts_UTF16 (col1) 
+    INSERT INTO dbo.Inserts_UTF16 (col1)
 	SELECT REPLICATE(CONCAT(
 	  CHAR(FLOOR(65 + (RAND() * 25))),
 	  CHAR(FLOOR(65 + (RAND() * 25))),
@@ -67,7 +67,7 @@ SET NOCOUNT ON;
 BEGIN TRAN
 DECLARE @i int = 1, @start datetime
 SELECT @start = GETDATE()
-INSERT INTO dbo.Inserts_UTF8 (col1) 
+INSERT INTO dbo.Inserts_UTF8 (col1)
 SELECT col1 FROM dbo.Inserts_UTF16;
 SELECT DATEDIFF(s, @start, GETDATE()) AS 'Inserts_UTF8'
 COMMIT

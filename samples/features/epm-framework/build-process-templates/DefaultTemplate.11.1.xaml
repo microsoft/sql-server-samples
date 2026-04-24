@@ -52,7 +52,7 @@
     </mtbw:ProcessParameterMetadataCollection>
   </this:Process.Metadata>
   <this:Process.SupportedReasons>All</this:Process.SupportedReasons>
-  <this:Process.BuildProcessVersion>11.0</this:Process.BuildProcessVersion>  
+  <this:Process.BuildProcessVersion>11.0</this:Process.BuildProcessVersion>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
   <Sequence mtbwt:BuildTrackingParticipant.Importance="None">
     <Sequence.Variables>

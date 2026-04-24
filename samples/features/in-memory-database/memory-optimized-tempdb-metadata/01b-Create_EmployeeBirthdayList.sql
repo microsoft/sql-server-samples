@@ -10,7 +10,7 @@ BEGIN
 
 	INSERT #Birthdays (BusinessEntityID)
 	SELECT BusinessEntityID
-	FROM HumanResources.Employee 
+	FROM HumanResources.Employee
 	WHERE MONTH(BirthDate) = @month
 
 	SELECT p.FirstName, p.LastName, a.AddressLine1, a.AddressLine2, a.City, sp.StateProvinceCode, a.PostalCode

@@ -1,6 +1,6 @@
 ####################################################################################################
 ## Title: Telco Customer Churn
-## Description: Data Preparation 
+## Description: Data Preparation
 ## Author: Microsoft
 ## Note: Prepare the training and testing data sets by pre-processing and spliting on raw data
 ####################################################################################################
@@ -13,10 +13,10 @@ dataPreparation <- function(sqlSettings, trainTable, testTable) {
     dataVars <- dataVars[!dataVars %in% c("year", "month")]
     dataVars <- paste(dataVars, collapse = ", ")
     dataQuery <- paste("select", dataVars, "from", inputTable)
-    
+
     ## Create sql server data sources
-    inputDataSQL = RxSqlServerData(sqlQuery = dataQuery, 
-                                   connectionString = sqlConnString, 
+    inputDataSQL = RxSqlServerData(sqlQuery = dataQuery,
+                                   connectionString = sqlConnString,
                                    colInfo = cdrColInfo)
     trainDataSQL <- RxSqlServerData(connectionString = sqlConnString,
                                    table = trainTable,
@@ -30,7 +30,7 @@ dataPreparation <- function(sqlSettings, trainTable, testTable) {
 }
 
 preProcess <- function(inData, outData1, outData2) {
-    ## Clean missing data 
+    ## Clean missing data
     ## Remove duplicate rows
     cdrDF <- rxDataStep(inData = inData,
                         removeMissings = TRUE,
@@ -48,8 +48,8 @@ preProcess <- function(inData, outData1, outData2) {
                          overwrite = TRUE)
     trainFile <- splitFile[[2]]
     testFile <- splitFile[[1]]
-    
-    ## SMOTE on training data 
+
+    ## SMOTE on training data
     trainDF <- rxDataStep(inData = trainFile, varsToDrop = c("ind"))
     testDF <- rxDataStep(inData = testFile, varsToDrop = c("ind"))
 
@@ -62,7 +62,7 @@ preProcess <- function(inData, outData1, outData2) {
     smotetrainDF <- cbind(smotetrain$X, smotetrain$Y)
     names(smotetrainDF)[names(smotetrainDF) == "smotetrain$Y"] <- "churn"
     trainDF <- smotetrainDF
-  
+
     ## Load final training data and testing data into SQL
     rxDataStep(inData = trainDF, outFile = outData1, overwrite = TRUE)
     rxDataStep(inData = testDF, outFile = outData2, overwrite = TRUE)

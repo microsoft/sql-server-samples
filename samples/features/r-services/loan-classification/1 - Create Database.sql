@@ -4,102 +4,102 @@ GO
 /****** Object:  Database [LendingClub]    Script Date: 12/29/2016 9:29:37 PM ******/
 CREATE DATABASE [LendingClub]
  CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'LendingClubData', FILENAME = N'C:\Tiger\DATA\LendingClub.mdf' , SIZE = 19210240KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536MB ), 
+ ON  PRIMARY
+( NAME = N'LendingClubData', FILENAME = N'C:\Tiger\DATA\LendingClub.mdf' , SIZE = 19210240KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536MB ),
  FILEGROUP [InMemOLTP] CONTAINS MEMORY_OPTIMIZED_DATA  DEFAULT
 ( NAME = N'InMem', FILENAME = N'C:\Tiger\DATA\InMem' , MAXSIZE = UNLIMITED)
- LOG ON 
+ LOG ON
 ( NAME = N'LendingClubLog', FILENAME = N'C:\Tiger\DATA\LendingClub_log.ldf' , SIZE = 512MB , MAXSIZE = 2048GB , FILEGROWTH = 64MB )
 GO
 
 ALTER DATABASE [LendingClub] SET COMPATIBILITY_LEVEL = 130
 GO
 
-ALTER DATABASE [LendingClub] SET ANSI_NULL_DEFAULT OFF 
+ALTER DATABASE [LendingClub] SET ANSI_NULL_DEFAULT OFF
 GO
 
-ALTER DATABASE [LendingClub] SET ANSI_NULLS OFF 
+ALTER DATABASE [LendingClub] SET ANSI_NULLS OFF
 GO
 
-ALTER DATABASE [LendingClub] SET ANSI_PADDING OFF 
+ALTER DATABASE [LendingClub] SET ANSI_PADDING OFF
 GO
 
-ALTER DATABASE [LendingClub] SET ANSI_WARNINGS OFF 
+ALTER DATABASE [LendingClub] SET ANSI_WARNINGS OFF
 GO
 
-ALTER DATABASE [LendingClub] SET ARITHABORT OFF 
+ALTER DATABASE [LendingClub] SET ARITHABORT OFF
 GO
 
-ALTER DATABASE [LendingClub] SET AUTO_CLOSE OFF 
+ALTER DATABASE [LendingClub] SET AUTO_CLOSE OFF
 GO
 
-ALTER DATABASE [LendingClub] SET AUTO_SHRINK OFF 
+ALTER DATABASE [LendingClub] SET AUTO_SHRINK OFF
 GO
 
-ALTER DATABASE [LendingClub] SET AUTO_UPDATE_STATISTICS ON 
+ALTER DATABASE [LendingClub] SET AUTO_UPDATE_STATISTICS ON
 GO
 
-ALTER DATABASE [LendingClub] SET CURSOR_CLOSE_ON_COMMIT OFF 
+ALTER DATABASE [LendingClub] SET CURSOR_CLOSE_ON_COMMIT OFF
 GO
 
-ALTER DATABASE [LendingClub] SET CURSOR_DEFAULT  GLOBAL 
+ALTER DATABASE [LendingClub] SET CURSOR_DEFAULT  GLOBAL
 GO
 
-ALTER DATABASE [LendingClub] SET CONCAT_NULL_YIELDS_NULL OFF 
+ALTER DATABASE [LendingClub] SET CONCAT_NULL_YIELDS_NULL OFF
 GO
 
-ALTER DATABASE [LendingClub] SET NUMERIC_ROUNDABORT OFF 
+ALTER DATABASE [LendingClub] SET NUMERIC_ROUNDABORT OFF
 GO
 
-ALTER DATABASE [LendingClub] SET QUOTED_IDENTIFIER OFF 
+ALTER DATABASE [LendingClub] SET QUOTED_IDENTIFIER OFF
 GO
 
-ALTER DATABASE [LendingClub] SET RECURSIVE_TRIGGERS OFF 
+ALTER DATABASE [LendingClub] SET RECURSIVE_TRIGGERS OFF
 GO
 
-ALTER DATABASE [LendingClub] SET  ENABLE_BROKER 
+ALTER DATABASE [LendingClub] SET  ENABLE_BROKER
 GO
 
-ALTER DATABASE [LendingClub] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+ALTER DATABASE [LendingClub] SET AUTO_UPDATE_STATISTICS_ASYNC OFF
 GO
 
-ALTER DATABASE [LendingClub] SET DATE_CORRELATION_OPTIMIZATION OFF 
+ALTER DATABASE [LendingClub] SET DATE_CORRELATION_OPTIMIZATION OFF
 GO
 
-ALTER DATABASE [LendingClub] SET TRUSTWORTHY OFF 
+ALTER DATABASE [LendingClub] SET TRUSTWORTHY OFF
 GO
 
-ALTER DATABASE [LendingClub] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+ALTER DATABASE [LendingClub] SET ALLOW_SNAPSHOT_ISOLATION OFF
 GO
 
-ALTER DATABASE [LendingClub] SET PARAMETERIZATION SIMPLE 
+ALTER DATABASE [LendingClub] SET PARAMETERIZATION SIMPLE
 GO
 
-ALTER DATABASE [LendingClub] SET READ_COMMITTED_SNAPSHOT OFF 
+ALTER DATABASE [LendingClub] SET READ_COMMITTED_SNAPSHOT OFF
 GO
 
-ALTER DATABASE [LendingClub] SET HONOR_BROKER_PRIORITY OFF 
+ALTER DATABASE [LendingClub] SET HONOR_BROKER_PRIORITY OFF
 GO
 
-ALTER DATABASE [LendingClub] SET RECOVERY SIMPLE 
+ALTER DATABASE [LendingClub] SET RECOVERY SIMPLE
 GO
 
-ALTER DATABASE [LendingClub] SET  MULTI_USER 
+ALTER DATABASE [LendingClub] SET  MULTI_USER
 GO
 
-ALTER DATABASE [LendingClub] SET PAGE_VERIFY CHECKSUM  
+ALTER DATABASE [LendingClub] SET PAGE_VERIFY CHECKSUM
 GO
 
-ALTER DATABASE [LendingClub] SET DB_CHAINING OFF 
+ALTER DATABASE [LendingClub] SET DB_CHAINING OFF
 GO
 
-ALTER DATABASE [LendingClub] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+ALTER DATABASE [LendingClub] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF )
 GO
 
-ALTER DATABASE [LendingClub] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+ALTER DATABASE [LendingClub] SET TARGET_RECOVERY_TIME = 60 SECONDS
 GO
 
-ALTER DATABASE [LendingClub] SET DELAYED_DURABILITY = DISABLED 
+ALTER DATABASE [LendingClub] SET DELAYED_DURABILITY = DISABLED
 GO
 
 ALTER DATABASE [LendingClub] SET QUERY_STORE = OFF
@@ -132,7 +132,7 @@ GO
 ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET QUERY_OPTIMIZER_HOTFIXES = PRIMARY;
 GO
 
-ALTER DATABASE [LendingClub] SET  READ_WRITE 
+ALTER DATABASE [LendingClub] SET  READ_WRITE
 GO
 
 USE [LendingClub]
@@ -259,7 +259,7 @@ CREATE TABLE [dbo].[LoanStatsStaging]
 	[total_bc_limit] [int] NULL,
 	[total_il_high_credit_limit] [int] NULL,
 
-INDEX [LoanStats_index] NONCLUSTERED HASH 
+INDEX [LoanStats_index] NONCLUSTERED HASH
 (
 	[id]
 )WITH ( BUCKET_COUNT = 2000000)
@@ -384,7 +384,7 @@ CREATE TABLE [dbo].[LoanStats](
 	[total_bc_limit] [int] NULL,
 	[total_il_high_credit_limit] [int] NULL,
 	[is_bad] int NULL,
- CONSTRAINT [PK__LoanStat] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK__LoanStat] PRIMARY KEY CLUSTERED
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -522,7 +522,7 @@ BEGIN
 			   ,[total_bal_ex_mort]
 			   ,[total_bc_limit]
 			   ,[total_il_high_credit_limit])
-	SELECT DISTINCT 
+	SELECT DISTINCT
 			    [member_id]
 			   ,[loan_amnt]
 			   ,[funded_amnt]
@@ -649,10 +649,10 @@ GO
 
 CREATE TABLE [dbo].[LoanStatsPredictions]
 (
-	[is_bad_Pred] [float] NULL, 
+	[is_bad_Pred] [float] NULL,
 	[id] [int] NULL
 
-INDEX [LoanStats_index] NONCLUSTERED HASH 
+INDEX [LoanStats_index] NONCLUSTERED HASH
 (
 	[id]
 )WITH ( BUCKET_COUNT = 2000000)
@@ -666,10 +666,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[LoanPredictionsWhatIf]
 (
-	[is_bad_Pred] [float] NULL, 
+	[is_bad_Pred] [float] NULL,
 	[id] [int] NULL
 
-INDEX [LoanStats_index] NONCLUSTERED HASH 
+INDEX [LoanStats_index] NONCLUSTERED HASH
 (
 	[id]
 )WITH ( BUCKET_COUNT = 2000000)
@@ -688,7 +688,7 @@ CREATE TABLE [dbo].[RunTimeStats]
 	[RunTime] [datetime] NOT NULL,
 	[Operation] [varchar](255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 
-INDEX [RunTimeStats_index] NONCLUSTERED HASH 
+INDEX [RunTimeStats_index] NONCLUSTERED HASH
 (
 	[SessionID]
 )WITH ( BUCKET_COUNT = 32)
@@ -719,13 +719,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Stored procedure for scoring loans for the base predictions
-CREATE PROCEDURE [dbo].[ScoreLoans] 
+CREATE PROCEDURE [dbo].[ScoreLoans]
 @start bigint,
 @end bigint
-AS  
-BEGIN  
+AS
+BEGIN
 
-  -- Declare the variables to get the input data and the scoring model 
+  -- Declare the variables to get the input data and the scoring model
   DECLARE @inquery nvarchar(max) = N'SELECT id,revol_util, int_rate, mths_since_last_record, annual_inc_joint, dti_joint, total_rec_prncp, all_util, is_bad FROM [dbo].[LoanStats]  where [id] >= ' + CAST(@start as varchar(255)) + 'and [id] <= ' + CAST(@end as varchar(255));
   DECLARE @model varbinary(max) = (SELECT TOP 1 [model] FROM [dbo].[models])
 
@@ -733,11 +733,11 @@ BEGIN
   INSERT INTO [dbo].[RunTimeStats] VALUES (@@SPID, GETDATE(),'Start')
 
   -- Score the loans and store them in a table
-  INSERT INTO [dbo].[LoanStatsPredictions]   
-  EXEC sp_execute_external_script 
+  INSERT INTO [dbo].[LoanStatsPredictions]
+  EXEC sp_execute_external_script
   @language = N'R',
-  @script = N'  
-  rfModel <- unserialize(as.raw(model));  
+  @script = N'
+  rfModel <- unserialize(as.raw(model));
   OutputDataSet<-rxPredict(rfModel, data = InputDataSet, extraVarsToWrite = c("id"))
   ',
   @input_data_1 = @inquery,
@@ -747,7 +747,7 @@ BEGIN
   -- Log end of processing time
   INSERT INTO [dbo].[RunTimeStats] VALUES (@@SPID, GETDATE(),'End')
 
-END  
+END
 GO
 
 
@@ -757,25 +757,25 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Stored procedure to in
-CREATE PROCEDURE [dbo].[ScoreLoansWhatIf] 
+CREATE PROCEDURE [dbo].[ScoreLoansWhatIf]
 @start bigint,
 @end bigint,
 @incr float
-AS  
-BEGIN  
+AS
+BEGIN
 
-  -- Declare the variables to get the input data and the scoring model 
+  -- Declare the variables to get the input data and the scoring model
   DECLARE @inquery nvarchar(max) = N'SELECT id,revol_util, (int_rate+ ' + CAST (@Incr as varchar(5)) + ') as int_rate, mths_since_last_record, annual_inc_joint, dti_joint, total_rec_prncp, all_util,is_bad FROM [dbo].[LoanStats]  where [id] >= ' + CAST(@start as varchar(255)) + 'and [id] <= ' + CAST(@end as varchar(255));
   DECLARE @model varbinary(max) = (SELECT TOP 1 [model] FROM [dbo].[models])
 
   -- Log beginning of processing time
   INSERT INTO [dbo].[RunTimeStats] VALUES (@@SPID, GETDATE(),'Start')
 
-  INSERT INTO [dbo].[LoanPredictionsWhatIf]   
-  EXEC sp_execute_external_script 
+  INSERT INTO [dbo].[LoanPredictionsWhatIf]
+  EXEC sp_execute_external_script
   @language = N'R',
-  @script = N'  
-  rfModel <- unserialize(as.raw(model));  
+  @script = N'
+  rfModel <- unserialize(as.raw(model));
   OutputDataSet<-rxPredict(rfModel, data = InputDataSet, extraVarsToWrite = c("id"))
   ',
   @input_data_1 = @inquery,
@@ -786,7 +786,7 @@ BEGIN
   INSERT INTO [dbo].[RunTimeStats] VALUES (@@SPID, GETDATE(),'End')
 
 
-END  
+END
 
 GO
 

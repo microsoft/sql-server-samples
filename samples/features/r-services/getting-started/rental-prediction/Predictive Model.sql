@@ -66,7 +66,7 @@ AS
 BEGIN
 	DECLARE @rx_model varbinary(max) = (select model from rental_rx_models where model_name = @model);
 
-	EXEC sp_execute_external_script 
+	EXEC sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
 require("RevoScaleR");
@@ -83,7 +83,7 @@ OutputDataSet <- cbind(rental_predictions[1],rental_predictions[2], rental_predi
 	, @params = N'@rx_model varbinary(max)'
 	, @rx_model = @rx_model
 	with result sets (("RentalCount_Predicted" float, "RentalCount_Actual" float,"Month" float,"Day" float,"WeekDay" float,"Snow" float,"Holiday" float, "Year" float));
-			  
+			
 END;
 GO
 
@@ -121,14 +121,14 @@ CREATE PROCEDURE predict_rentalcount_new (@model VARCHAR(100),@q NVARCHAR(MAX))
 AS
 BEGIN
     DECLARE @rx_model VARBINARY(MAX) = (SELECT model FROM rental_rx_models WHERE model_name = @model);
-    EXECUTE sp_execute_external_script 
+    EXECUTE sp_execute_external_script
         @language = N'R'
         , @script = N'
             require("RevoScaleR");
 
             #The InputDataSet contains the new data passed to this stored proc. We will use this data to predict.
             rentals = InputDataSet;
-            
+
         #Convert types to factors
             rentals$Holiday = factor(rentals$Holiday);
             rentals$Snow = factor(rentals$Snow);
@@ -144,7 +144,7 @@ BEGIN
                 , @params = N'@rx_model varbinary(max)'
                 , @rx_model = @rx_model
                 WITH RESULT SETS (("RentalCount_Predicted" FLOAT));
-   
+
 END;
 GO
 
@@ -155,13 +155,13 @@ GO
 
 
 -------------- STEP 8 - Getting predictions from an Application ----------------------------------
--- Create stored procedure that returns predictions as JSON 
+-- Create stored procedure that returns predictions as JSON
 -- This stored procedure is going to be called from our application
 DROP PROCEDURE IF EXISTS get_rental_predictions;
 GO
 CREATE PROCEDURE get_rental_predictions (@year int)
-AS 
-SELECT 
+AS
+SELECT
  "Year",
  RentalCount_Predicted ,
  RentalCount_Actual ,
@@ -170,10 +170,10 @@ SELECT
  "WeekDay" ,
  "Snow",
  "Holiday"
- FROM rental_predictions 
+ FROM rental_predictions
  WHERE Year = @year
  FOR JSON PATH, root('data')
- 
+
 RETURN
 GO
 

@@ -1,15 +1,15 @@
-﻿/*----------------------------------------------------------------------------------  
-Copyright (c) Microsoft Corporation. All rights reserved.  
-  
-THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,   
-EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES   
-OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-----------------------------------------------------------------------------------  
-The example companies, organizations, products, domain names,  
-e-mail addresses, logos, people, places, and events depicted  
-herein are fictitious.  No association with any real company,  
-organization, product, domain name, email address, logo, person,  
-places, or events is intended or should be inferred.  
+﻿/*----------------------------------------------------------------------------------
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+----------------------------------------------------------------------------------
+The example companies, organizations, products, domain names,
+e-mail addresses, logos, people, places, and events depicted
+herein are fictitious.  No association with any real company,
+organization, product, domain name, email address, logo, person,
+places, or events is intended or should be inferred.
 
 */
 
@@ -24,20 +24,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/*----------------------------------------------------------------------------------  
+/*----------------------------------------------------------------------------------
 High Level Scenario:
-This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate 
-and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Smart Grid scenario where multiple 
+This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate
+and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Smart Grid scenario where multiple
 IoT power meters are constantly sending electricity usage measurements to the database.
 
 Details:
-This code sample simulates an IoT Smart Grid scenario where multiple IoT power meters are sending electricity usage measurements to a SQL Server memory optimized database. 
-The Data Generator, that can be started either from the Console or the Windows Form client, produces a data generated spike to simulate a 
-shock absorber scenario: https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/. 
-Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter. 
-It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table. 
-In addition to the in-memory features, the sample is offloading historical values to a Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and 
-Power BI: https://powerbi.microsoft.com/en-us/desktop/ for data visualization. 
+This code sample simulates an IoT Smart Grid scenario where multiple IoT power meters are sending electricity usage measurements to a SQL Server memory optimized database.
+The Data Generator, that can be started either from the Console or the Windows Form client, produces a data generated spike to simulate a
+shock absorber scenario: https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/.
+Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter.
+It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table.
+In addition to the in-memory features, the sample is offloading historical values to a Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and
+Power BI: https://powerbi.microsoft.com/en-us/desktop/ for data visualization.
 */
 namespace ConsoleClient
 {
@@ -51,7 +51,7 @@ namespace ConsoleClient
         static int meters;
         static int batchSize;
         static int commandTimeout;
-        static int rpsFrequency;    
+        static int rpsFrequency;
         static int numberOfDataLoadTasks;
         static int numberOfOffLoadTasks;
         static int deleteBatchSize;
@@ -198,7 +198,7 @@ namespace ConsoleClient
 
                 // Initialize Timers
                 rpsTimer.Interval = rpsFrequency;
-                
+
                 if (batchSize <= 0) throw new SqlDataGeneratorException("The Batch Size cannot be less or equal to zero.");
 
                 if (numberOfDataLoadTasks <= 0) throw new SqlDataGeneratorException("Number Of Tasks cannot be less or equal to zero.");
@@ -215,7 +215,7 @@ namespace ConsoleClient
         static void rpsTimer_Tick(object sender, ElapsedEventArgs e)
         {
             try
-            {                
+            {
                 double rps = dataGenerator.Rps;
                 if (dataGenerator.IsRunning)
                 {

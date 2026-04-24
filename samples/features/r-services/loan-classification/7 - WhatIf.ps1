@@ -4,7 +4,7 @@
 # Counter values
 $StartCtr = 1
 $Increment = 250000
-$EndCtr = $Increment 
+$EndCtr = $Increment
 $FinalCount = 1195907
 
 # Server name
@@ -35,7 +35,7 @@ Write-Host "Starting parallel jobs to score " $count "loans" -ForegroundColor Ye
 while ($EndCtr -le $FinalCount)
 {
     $SqlScript = [ScriptBlock]::Create("Invoke-Sqlcmd -ServerInstance `"" + $vServerName + "`" -Query `"EXEC [dbo].[ScoreLoansWhatIf] " + $StartCtr + "," + $EndCtr + "," + $IntRate + "`" -Database `"$vDatabaseName`"")
-    Start-Job -ScriptBlock $SqlScript 
+    Start-Job -ScriptBlock $SqlScript
     $StartCtr += $Increment
     $EndCtr += $Increment
 }
@@ -43,7 +43,7 @@ while ($EndCtr -le $FinalCount)
 # Wait till jobs complete
 while (Get-Job -State Running)
 {
-       
+
     Start-Sleep 1
 }
 

@@ -2,11 +2,11 @@
     "schemaVersion": "1.0",
     "version": "1.2",
 	"name": "Custom Ruleset 2",
-    "rules":[ 
+    "rules":[
         {
             "id": "DBSpaceAvailable",
             "itemType": "override",
-            "threshold": 50
+            "threshold": .50
         }
     ]
 }

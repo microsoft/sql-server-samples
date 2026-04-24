@@ -18,13 +18,13 @@ namespace ProductCatalog.Controllers
         {
             this.connection = connection;
         }
-        
+
         // GET api/Product
         [HttpGet]
         public void Get()
         {
-            var QUERY = 
-@"select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags 
+            var QUERY =
+@"select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags
     from Product
     FOR JSON PATH";
 
@@ -36,12 +36,12 @@ namespace ProductCatalog.Controllers
         public void Get(int id)
         {
             connection.QueryInto(Response.Body,
-                @"select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags 
+                @"select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags
                     from Product
                     where ProductID = @id
                     FOR JSON PATH, WITHOUT_ARRAY_WRAPPER", new { id }, defaultOutput: "{}");
         }
-    
+
         // POST api/Product
         [HttpPost]
         public async Task Post()

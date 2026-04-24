@@ -41,7 +41,7 @@ class MethodNodeSpec extends ObjectBehavior
     {
         $this->setReturnsReference();
         $this->returnsReference()->shouldReturn(true);
-    } 
+    }
 
     function it_should_be_settable_as_static_through_setter()
     {

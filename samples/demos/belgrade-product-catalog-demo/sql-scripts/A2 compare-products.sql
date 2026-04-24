@@ -10,7 +10,7 @@ from OPENJSON(
 select [key] as [Column], value
 from OPENJSON(
 		(select * from Product FOR SYSTEM_TIME AS OF '2015-07-28 13:20:00'
-		where ProductID = 17 
+		where ProductID = 17
 		FOR JSON PATH, WITHOUT_ARRAY_WRAPPER))
 
 

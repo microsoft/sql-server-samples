@@ -62,7 +62,7 @@ BEGIN
             @o_id           bigint,
             @o_total        decimal(9,2),
             @o_dts          datetime
-          
+
 
     SELECT  @c_f_name   = C_F_NAME,
             @c_l_name   = C_L_NAME,
@@ -83,7 +83,7 @@ BEGIN
             OL_PRICE
     FROM    dbo.OrderLines
     WHERE   OL_O_ID = @o_id
-        
+
     SELECT  @c_f_name,
             @c_l_name,
             @c_email
@@ -108,7 +108,7 @@ BEGIN
     FROM    dbo.Products
     WHERE   PR_TYPE = @REQ_TYPE
     ORDER   BY PR_PRICE ASC
-   
+
 END
 
 GO
@@ -172,7 +172,7 @@ BEGIN
 
     --insert an Order record to claim the O_ID
     INSERT INTO dbo.Orders (O_C_ID, O_TOTAL, O_DTS, O_FM_DTS) VALUES (@C_ID, 0, GETDATE(), @NullDate)
-    
+
     -- get the inserted order id
     SELECT  @order_id   = SCOPE_IDENTITY()
 
@@ -188,7 +188,7 @@ BEGIN
 					@PR_Qty	    = @OL_PR_QTY_1,
                     @PR_Price   = PR_PRICE
             FROM    dbo.Products
-            WHERE   PR_ID       = @OL_PR_ID_1                     
+            WHERE   PR_ID       = @OL_PR_ID_1
 
             IF @@ROWCOUNT > 0
             BEGIN
@@ -204,7 +204,7 @@ BEGIN
 					@PR_Qty	= @OL_PR_QTY_2,
                     @PR_Price   = PR_PRICE
             FROM    dbo.Products
-            WHERE   PR_ID       = @OL_PR_ID_2 
+            WHERE   PR_ID       = @OL_PR_ID_2
 
             IF @@ROWCOUNT > 0
             BEGIN
@@ -220,7 +220,7 @@ BEGIN
 					@PR_Qty	= @OL_PR_QTY_3,
                     @PR_Price   = PR_PRICE
             FROM    dbo.Products
-            WHERE   PR_ID       = @OL_PR_ID_3 
+            WHERE   PR_ID       = @OL_PR_ID_3
 
             IF @@ROWCOUNT > 0
             BEGIN
@@ -236,7 +236,7 @@ BEGIN
 					@PR_Qty	= @OL_PR_QTY_4,
                     @PR_Price   = PR_PRICE
             FROM    dbo.Products
-            WHERE   PR_ID       = @OL_PR_ID_4 
+            WHERE   PR_ID       = @OL_PR_ID_4
 
             IF @@ROWCOUNT > 0
             BEGIN
@@ -252,7 +252,7 @@ BEGIN
 					@PR_Qty	= @OL_PR_QTY_5,
                     @PR_Price   = PR_PRICE
             FROM    dbo.Products
-            WHERE   PR_ID       = @OL_PR_ID_5 
+            WHERE   PR_ID       = @OL_PR_ID_5
 
             IF @@ROWCOUNT > 0
             BEGIN

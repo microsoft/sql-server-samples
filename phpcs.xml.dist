@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<ruleset name="MS SQL Server Examples">
+    <description>The coding standard for MS SQL Server PHP Examples.</description>
+
+    <!-- Folders & files to be checked -->
+    <file>samples/tutorials/php</file>
+
+    <!-- File extensions to be checked -->
+    <arg name="extensions" value="php"/>
+
+    <!-- PSR-2 base standard -->
+    <rule ref="PSR2"/>
+
+    <!-- Disable code style sniff on side effects -->
+    <rule ref="PSR1">
+        <exclude name="PSR1.Files.SideEffects"/>
+    </rule>
+
+    <!-- General sniffs -->
+    <rule ref="Generic.Files.LineLength"/>
+    <rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
+    <rule ref="Squiz.Commenting.FunctionCommentThrowTag"/>
+    <rule ref="Squiz.Classes.LowercaseClassKeywords"/>
+    <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
+    <rule ref="Generic.CodeAnalysis.ForLoopWithTestFunctionCall"/>
+    <rule ref="Generic.CodeAnalysis.JumbledIncrementer"/>
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+    <rule ref="Squiz.Commenting.DocCommentAlignment"/>
+    <rule ref="Generic.Formatting.NoSpaceAfterCast"/>
+    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
+    <rule ref="Generic.PHP.DeprecatedFunctions"/>
+    <rule ref="Squiz.PHP.DisallowSizeFunctionsInLoops"/>
+    <rule ref="Squiz.PHP.Eval"/>
+    <rule ref="Generic.PHP.ForbiddenFunctions"/>
+    <rule ref="Squiz.PHP.NonExecutableCode"/>
+    <rule ref="Squiz.Classes.ClassFileName"/>
+    <rule ref="Squiz.Scope.MemberVarScope"/>
+    <rule ref="Squiz.Scope.StaticThisUsage"/>
+    <rule ref="Squiz.WhiteSpace.CastSpacing"/>
+    <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
+    <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+    <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
+    <rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+    <rule ref="Squiz.WhiteSpace.ScopeClosingBrace"/>
+    <rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
+        <properties>
+            <property name="equalsSpacing" value="1"/>
+        </properties>
+    </rule>
+
+</ruleset>

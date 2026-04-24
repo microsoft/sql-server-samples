@@ -3,5 +3,5 @@
 // ==========================
 
 EXPORT MINING MODEL [<mining model,name,MyModel>]
-    TO '<file,file name,C:\MyModel.dmb>' 
+    TO '<file,file name,C:\MyModel.dmb>'
 	WITH DEPENDENCIES, PASSWORD='<password, string,>'

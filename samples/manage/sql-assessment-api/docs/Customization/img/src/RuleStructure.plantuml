@@ -1,0 +1,29 @@
+@startjson
+{
+    "itemType": "<b>definition</b> | <b>override</b>",
+    "id": "<i>Check ID(s) or tags</i>",
+    "target?": {
+        "type": "<b>Server</b> | <b>Database</b>",
+        "version": "<i>Version pattern</i>",
+        "…": "…"
+    },
+    "targetFilter?": {
+        "type": "<b>Server</b> | <b>Database</b>",
+        "version": "<i>Version pattern</i>",
+        "…": "…"
+    },
+    "tags?": ["Tag 1", "Tag 2", "…"],
+    "displayName?": "<i>Short descriptive name</i>",
+    "description?": "<i>Long description</i>",
+    "message?": "<i>Message template</i>",
+    "level?": "<b>Information</b> | <b>Low</b> | <b>Medium</b> | <b>High</b>",
+    "helpLink?": "<i>Hyperlink to an article</i>",
+    "probes?": [
+        "<i>Probe ref 1</i>",
+        "<i>Probe ref 2</i>",
+        "…"
+    ],
+    "condition?": "<i>Condition expression</i>",
+    "<i>parameter 1</i>": "<i>param 1 value</i>"
+}
+@endjson

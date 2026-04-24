@@ -12,11 +12,11 @@
   <script src="/media/js/jquery.js"></script>
   <script src="https://code.jquery.com/qunit/qunit-2.5.0.js"></script>
   <script>
-  
+
   QUnit.test( "Product list", assert => {
 
     var done = assert.async();
-    
+
     $.ajax('/api/Product', {dataType: "json"})
       .done(response=>{
           assert.notEqual( null, response.data, "Return data object in response." );
@@ -38,7 +38,7 @@ QUnit.test( "Product details", assert => {
     });
   });
 
-  
+
 QUnit.test( "Create product",  assert => {
 
 var done = assert.async();
@@ -53,7 +53,7 @@ var done = assert.async();
       done();
   });
 });
-  
+
   </script>
 </body>
 </html>

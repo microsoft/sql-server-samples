@@ -1,46 +1,46 @@
 
--- Use PolyBase to load public data from Azure blob storage into the Contoso Retail Data Warehouse schema.
+-- Use PolyBase to load public data from Azure Blob Storage into the Contoso Retail Data Warehouse schema.
 --
 -- This script:
--- 
+--
 -- 1. Configures PolyBase for loading from a public blob storage container.
 -- 2. Loads the data into columnstore indexes
 -- 3. Performs optimizations after the load is finished.
 --
 -- Before you begin:
 -- To run this tutorial, you need an Azure account that already has a SQL Data Warehouse database.
--- If you don't already have this, see 
--- http://azure.microsoft.com/documentation/articles/sql-data-warehouse-get-started-provision.md 
+-- If you don't already have this, see
+-- http://azure.microsoft.com/documentation/articles/sql-data-warehouse-get-started-provision.md
 --
--- For more explanation about the loading process, this article on azure.microsoft.com 
+-- For more explanation about the loading process, this article on azure.microsoft.com
 -- loads a small set of the Contoso data and explains the process in more detail.
 -- http://azure.microsoft.com/documentation/articles/sql-data-warehouse-load-from-azure-blob-storage-with-polybase.md
 
 
 -- Create an external data source
--- TYPE: HADOOP - PolyBase uses Hadoop APIs to access data in Azure blob storage.
+-- TYPE: HADOOP - PolyBase uses Hadoop APIs to access data in Azure Blob Storage.
 -- LOCATION: Provide Azure storage account name and blob container name.
 -- CREDENTIAL: Provide the credential created in the previous step.
 
 CREATE EXTERNAL DATA SOURCE AzureStorage_west_public
-WITH 
-(  
-    TYPE = Hadoop 
+WITH
+(
+    TYPE = Hadoop
 ,   LOCATION = 'wasbs://contosoretaildw-tables@contosoretaildw.blob.core.windows.net/'
-); 
+);
 GO
 
--- The data is stored in text files in Azure blob storage, and each field is separated with a delimiter. 
--- Run this [CREATE EXTERNAL FILE FORMAT][] command to specify the format of the data in the text files. 
+-- The data is stored in text files in Azure Blob Storage, and each field is separated with a delimiter.
+-- Run this [CREATE EXTERNAL FILE FORMAT][] command to specify the format of the data in the text files.
 -- he Contoso data is uncompressed and pipe delimited.
 
-CREATE EXTERNAL FILE FORMAT TextFileFormat 
-WITH 
+CREATE EXTERNAL FILE FORMAT TextFileFormat
+WITH
 (   FORMAT_TYPE = DELIMITEDTEXT
 ,	FORMAT_OPTIONS	(   FIELD_TERMINATOR = '|'
 					,	STRING_DELIMITER = ''
 					,	DATE_FORMAT		 = 'yyyy-MM-dd HH:mm:ss.fff'
-					,	USE_TYPE_DEFAULT = FALSE 
+					,	USE_TYPE_DEFAULT = FALSE
 					)
 );
 GO
@@ -51,12 +51,12 @@ CREATE SCHEMA [asb];
 GO
 
 
--- Now let's create the external tables. All we are doing here is defining column names and data types, 
--- and binding them to the location and format of the Azure blob storage files. The location is the folder 
+-- Now let's create the external tables. All we are doing here is defining column names and data types,
+-- and binding them to the location and format of the Azure Blob Storage files. The location is the folder
 -- under the root directory of the Azure Storage Blob.
 
 --DimAccount
-CREATE EXTERNAL TABLE [asb].DimAccount 
+CREATE EXTERNAL TABLE [asb].DimAccount
 (
 	[AccountKey] [int] NOT NULL,
 	[ParentAccountKey] [int] NULL,
@@ -72,18 +72,18 @@ CREATE EXTERNAL TABLE [asb].DimAccount
 	[LoadDate] [datetime] NULL,
 	[UpdateDate] [datetime] NULL
 )
-WITH 
+WITH
 (
-    LOCATION='/DimAccount/' 
+    LOCATION='/DimAccount/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimChannel
-CREATE EXTERNAL TABLE [asb].DimChannel 
+CREATE EXTERNAL TABLE [asb].DimChannel
 (
 	[ChannelKey] [int] NOT NULL,
 	[ChannelLabel] [nvarchar](100) NOT NULL,
@@ -95,16 +95,16 @@ CREATE EXTERNAL TABLE [asb].DimChannel
 )
 WITH
 (
-    LOCATION='/DimChannel/' 
+    LOCATION='/DimChannel/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimCurrency
-CREATE EXTERNAL TABLE [asb].DimCurrency 
+CREATE EXTERNAL TABLE [asb].DimCurrency
 (
 	[CurrencyKey] [int] NOT NULL,
 	[CurrencyLabel] [nvarchar](10) NOT NULL,
@@ -116,7 +116,7 @@ CREATE EXTERNAL TABLE [asb].DimCurrency
 )
 WITH
 (
-    LOCATION='/DimCurrency/' 
+    LOCATION='/DimCurrency/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -125,7 +125,7 @@ WITH
 ;
 
 --DimCustomer
-CREATE EXTERNAL TABLE [asb].DimCustomer 
+CREATE EXTERNAL TABLE [asb].DimCustomer
 (
 	[CustomerKey] [int]  NOT NULL,
 	[GeographyKey] [int] NOT NULL,
@@ -159,7 +159,7 @@ CREATE EXTERNAL TABLE [asb].DimCustomer
 )
 WITH
 (
-    LOCATION='/DimCustomer/' 
+    LOCATION='/DimCustomer/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -202,16 +202,16 @@ CREATE EXTERNAL TABLE [asb].DimDate
 )
 WITH
 (
-    LOCATION='/DimDate/' 
+    LOCATION='/DimDate/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimEmployee
-CREATE EXTERNAL TABLE [asb].DimEmployee 
+CREATE EXTERNAL TABLE [asb].DimEmployee
 (
 	[EmployeeKey] [int]  NOT NULL,
 	[ParentEmployeeKey] [int] NULL,
@@ -243,16 +243,16 @@ CREATE EXTERNAL TABLE [asb].DimEmployee
 )
 WITH
 (
-    LOCATION='/DimEmployee/' 
+    LOCATION='/DimEmployee/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimEntity
-CREATE EXTERNAL TABLE [asb].DimEntity 
+CREATE EXTERNAL TABLE [asb].DimEntity
 (
 	[EntityKey] [int] NOT NULL,
 	[EntityLabel] [nvarchar](100) NULL,
@@ -270,16 +270,16 @@ CREATE EXTERNAL TABLE [asb].DimEntity
 )
 WITH
 (
-    LOCATION='/DimEntity/' 
+    LOCATION='/DimEntity/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimGeography
-CREATE EXTERNAL TABLE [asb].DimGeography 
+CREATE EXTERNAL TABLE [asb].DimGeography
 (
 	[GeographyKey] [int] NOT NULL,
 	[GeographyType] [nvarchar](50) NOT NULL,
@@ -294,16 +294,16 @@ CREATE EXTERNAL TABLE [asb].DimGeography
 )
 WITH
 (
-    LOCATION='/DimGeography/' 
+    LOCATION='/DimGeography/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimMachine
-CREATE EXTERNAL TABLE [asb].DimMachine 
+CREATE EXTERNAL TABLE [asb].DimMachine
 (
 	[MachineKey] [int] NOT NULL,
 	[MachineLabel] [nvarchar](100) NULL,
@@ -326,14 +326,14 @@ CREATE EXTERNAL TABLE [asb].DimMachine
 )
 WITH
 (
-    LOCATION='/DimMachine/' 
+    LOCATION='/DimMachine/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimOutage
 CREATE EXTERNAL TABLE [asb].DimOutage (
 	[OutageKey] [int]  NOT NULL,
@@ -350,14 +350,14 @@ CREATE EXTERNAL TABLE [asb].DimOutage (
 )
 WITH
 (
-    LOCATION='/DimOutage/' 
+    LOCATION='/DimOutage/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimProduct
 CREATE EXTERNAL TABLE [asb].DimProduct (
 	[ProductKey] [int] NOT NULL,
@@ -395,14 +395,14 @@ CREATE EXTERNAL TABLE [asb].DimProduct (
 )
 WITH
 (
-    LOCATION='/DimProduct/' 
+    LOCATION='/DimProduct/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimProductCategory
 CREATE EXTERNAL TABLE [asb].DimProductCategory (
 	[ProductCategoryKey] [int]  NOT NULL,
@@ -415,14 +415,14 @@ CREATE EXTERNAL TABLE [asb].DimProductCategory (
 )
 WITH
 (
-    LOCATION='/DimProductCategory/' 
+    LOCATION='/DimProductCategory/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimProductSubcategory
 CREATE EXTERNAL TABLE [asb].DimProductSubcategory (
 	[ProductSubcategoryKey] [int]  NOT NULL,
@@ -436,14 +436,14 @@ CREATE EXTERNAL TABLE [asb].DimProductSubcategory (
 )
 WITH
 (
-    LOCATION='/DimProductSubcategory/' 
+    LOCATION='/DimProductSubcategory/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimPromotion
 CREATE EXTERNAL TABLE [asb].DimPromotion (
 	[PromotionKey] [int]  NOT NULL,
@@ -463,15 +463,15 @@ CREATE EXTERNAL TABLE [asb].DimPromotion (
 )
 WITH
 (
-    LOCATION='/DimPromotion/' 
+    LOCATION='/DimPromotion/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
- 
+
+
 --DimSalesTerritory
 CREATE EXTERNAL TABLE [asb].DimSalesTerritory (
 	[SalesTerritoryKey] [int]  NOT NULL,
@@ -492,14 +492,14 @@ CREATE EXTERNAL TABLE [asb].DimSalesTerritory (
 )
 WITH
 (
-    LOCATION='/DimSalesTerritory/' 
+    LOCATION='/DimSalesTerritory/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --DimScenario
 CREATE EXTERNAL TABLE [asb].DimScenario (
 	[ScenarioKey] [int] NOT NULL,
@@ -512,7 +512,7 @@ CREATE EXTERNAL TABLE [asb].DimScenario (
 )
 WITH
 (
-    LOCATION='/DimScenario/' 
+    LOCATION='/DimScenario/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -521,7 +521,7 @@ WITH
 ;
 
 --DimStore
-CREATE EXTERNAL TABLE [asb].DimStore 
+CREATE EXTERNAL TABLE [asb].DimStore
 (
 	[StoreKey] [int] NOT NULL,
 	[GeographyKey] [int] NOT NULL,
@@ -551,7 +551,7 @@ CREATE EXTERNAL TABLE [asb].DimStore
 )
 WITH
 (
-    LOCATION='/DimStore/' 
+    LOCATION='/DimStore/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -560,7 +560,7 @@ WITH
 ;
 
 --FactExchangeRate
-CREATE EXTERNAL TABLE [asb].FactExchangeRate 
+CREATE EXTERNAL TABLE [asb].FactExchangeRate
 (
 	[ExchangeRateKey] [int]  NOT NULL,
 	[CurrencyKey] [int] NOT NULL,
@@ -573,14 +573,14 @@ CREATE EXTERNAL TABLE [asb].FactExchangeRate
 )
 WITH
 (
-    LOCATION='/FactExchangeRate/' 
+    LOCATION='/FactExchangeRate/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --FactInventory
 CREATE EXTERNAL TABLE [asb].FactInventory (
 	[InventoryKey] [int]  NOT NULL,
@@ -602,7 +602,7 @@ CREATE EXTERNAL TABLE [asb].FactInventory (
 )
 WITH
 (
-    LOCATION='/FactInventory/' 
+    LOCATION='/FactInventory/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -623,7 +623,7 @@ CREATE EXTERNAL TABLE [asb].FactITMachine (
 )
 WITH
 (
-    LOCATION='/FactITMachine/' 
+    LOCATION='/FactITMachine/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -633,7 +633,7 @@ WITH
 
 
 --FactITSLA
-CREATE EXTERNAL TABLE [asb].FactITSLA 
+CREATE EXTERNAL TABLE [asb].FactITSLA
 (
 	[ITSLAkey] [int]  NOT NULL,
 	[DateKey] [datetime] NOT NULL,
@@ -649,7 +649,7 @@ CREATE EXTERNAL TABLE [asb].FactITSLA
 )
 WITH
 (
-    LOCATION='/FactITSLA/' 
+    LOCATION='/FactITSLA/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -658,7 +658,7 @@ WITH
 ;
 
 --FactOnlineSales
-CREATE EXTERNAL TABLE [asb].FactOnlineSales 
+CREATE EXTERNAL TABLE [asb].FactOnlineSales
 (
 	[OnlineSalesKey] [int]  NOT NULL,
 	[DateKey] [datetime] NOT NULL,
@@ -684,16 +684,16 @@ CREATE EXTERNAL TABLE [asb].FactOnlineSales
 )
 WITH
 (
-    LOCATION='/FactOnlineSales/' 
+    LOCATION='/FactOnlineSales/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --FactSales
-CREATE EXTERNAL TABLE [asb].FactSales 
+CREATE EXTERNAL TABLE [asb].FactSales
 (
 	[SalesKey] [int]  NOT NULL,
 	[DateKey] [datetime] NOT NULL,
@@ -717,7 +717,7 @@ CREATE EXTERNAL TABLE [asb].FactSales
 )
 WITH
 (
-    LOCATION='/FactSales/' 
+    LOCATION='/FactSales/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -743,16 +743,16 @@ CREATE EXTERNAL TABLE [asb].FactSalesQuota (
 )
 WITH
 (
-    LOCATION='/FactSalesQuota/' 
+    LOCATION='/FactSalesQuota/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
 ,   REJECT_VALUE = 0
 )
 ;
- 
+
 --FactStrategyPlan
-CREATE EXTERNAL TABLE [asb].FactStrategyPlan 
+CREATE EXTERNAL TABLE [asb].FactStrategyPlan
 (
 	[StrategyPlanKey] [int]  NOT NULL,
 	[Datekey] [datetime] NOT NULL,
@@ -768,7 +768,7 @@ CREATE EXTERNAL TABLE [asb].FactStrategyPlan
 )
 WITH
 (
-    LOCATION='/FactStrategyPlan/' 
+    LOCATION='/FactStrategyPlan/'
 ,   DATA_SOURCE = AzureStorage_west_public
 ,   FILE_FORMAT = TextFileFormat
 ,   REJECT_TYPE = VALUE
@@ -779,8 +779,8 @@ WITH
 
 -- Load the data with CTAS
 --
--- The easiest and most efficient way to load data from Azure blob storage is to usu
--- Create Table As Select (CTAS). Loading with CTAS leverages the strongly typed 
+-- The easiest and most efficient way to load data from Azure Blob Storage is to usu
+-- Create Table As Select (CTAS). Loading with CTAS leverages the strongly typed
 -- external tables you have just created.
 
 -- Create a new schema
@@ -822,8 +822,8 @@ CREATE TABLE [cso].[FactExchangeRate]      WITH (DISTRIBUTION = HASH([ExchangeRa
 
 
 -- Track the load progress
--- 
--- You can track the progress of your load using the `[sys].[dm_pdw_exec_requests]` dynamic management view (DMV). 
+--
+-- You can track the progress of your load using the `[sys].[dm_pdw_exec_requests]` dynamic management view (DMV).
 -- To see all requests
 -- SELECT * FROM sys.dm_pdw_exec_requests;
 --
@@ -832,12 +832,12 @@ CREATE TABLE [cso].[FactExchangeRate]      WITH (DISTRIBUTION = HASH([ExchangeRa
 --   WHERE r.label = "FactSales";
 --
 -- Optimize columnstore compression
--- By default, SQL Data Warehouse stores the table as a clustered columnstore index. 
+-- By default, SQL Data Warehouse stores the table as a clustered columnstore index.
 -- After a load completes, some of the data rows might not be compressed into the columnstore.
 -- There's a variety of reasons why this can happen. To learn more, see ... .
 --
 -- To optimize query performance and columnstore compression after a load, rebuild the table to force
--- the columnstore index to compress all the rows. 
+-- the columnstore index to compress all the rows.
 
 SELECT GETDATE();
 GO
@@ -869,15 +869,15 @@ ALTER INDEX ALL ON [cso].[FactExchangeRate]         REBUILD;
 
 
 -- Optimize statistics
--- It is best to create single-column statistics immediately after a load. There are some choices for statistics. -- For example, if you create single-column statistics on every column it might take a long time to rebuild 
+-- It is best to create single-column statistics immediately after a load. There are some choices for statistics. -- For example, if you create single-column statistics on every column it might take a long time to rebuild
 -- statistics. If you know certain columns are not going to be in query predicates, you could skip creating
 -- statistics on those columns.
 --
--- If you decide to create single-column statistics on every column, you can use stored procedure code 
+-- If you decide to create single-column statistics on every column, you can use stored procedure code
 -- sample `prc_sqldw_create_stats` in the [statistics][] article.
 --
--- This example is a good starting point for creating statistics. It creates single-column statistics on each 
--- column in the dimension table, and on each joining column in the fact tables. You can always add single or 
+-- This example is a good starting point for creating statistics. It creates single-column statistics on each
+-- column in the dimension table, and on each joining column in the fact tables. You can always add single or
 -- multi-column statistics to other fact table columns later on.
 --
 

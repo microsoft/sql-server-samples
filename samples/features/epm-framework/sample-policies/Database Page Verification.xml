@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft Corporation.-->
+<!--Licensed under the MIT License-->
+<model xmlns="smlif.xsd">
+  <_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">DMF:Name</_locTag>
+    <_locTag _loc="locData">DMF:Description</_locTag>
+    <_locTag _loc="locData">DMF:Condition</_locTag>
+    <_locTag _loc="locData">DMF:ObjectSet</_locTag>
+    <_locTag _loc="locData">DMF:RootCondition</_locTag>
+    <_locTag _loc="locData">DMF:PolicyCategory</_locTag>
+    <_locTag _loc="locData">DMF:HelpText</_locTag>
+  </_locDefinition>
+  <identity>
+    <name>urn:uuid:96fe1236-abf6-4a57-b54d-e9baab394fd1</name>
+    <baseURI>http://documentcollection/</baseURI>
+  </identity>
+  <xs:bufferSchema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <definitions xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+      <document>
+        <docinfo>
+          <aliases>
+            <alias>/system/schema/DMF</alias>
+          </aliases>
+          <sfc:version DomainVersion="3" />
+        </docinfo>
+        <data>
+          <xs:schema targetNamespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+            <xs:element name="Policy">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ObjectSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Condition">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="PolicyCategory">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSetLevel">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <DMF:bufferData xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08">
+              <instances xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Policy/Database Page Verification</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Policy xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:PolicyCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Page Verify Checksum</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyCondition>
+                      <DMF:PolicyObjectSet>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyObjectSet>
+                      <DMF:PolicyPolicyCategory>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Maintenance</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyPolicyCategory>
+                      <DMF:Name type="string">Database Page Verification</DMF:Name>
+                      <DMF:Description type="string">Checks if the PAGE_VERIFY database option is not set to CHECKSUM to provide a high level of data-file integrity. When CHECKSUM is enabled for the PAGE_VERIFY database option, the SQL Server Database Engine calculates a checksum over the contents of the whole page, and stores the value in the page header when a page is written to disk. When the page is read from disk, the checksum is recomputed and compared to the checksum value that is stored in the page header. This helps provide a high level of data-file integrity.</DMF:Description>
+                      <DMF:Condition type="string">Page Verify Checksum</DMF:Condition>
+                      <DMF:ObjectSet type="string">Database Page Verification_ObjectSet</DMF:ObjectSet>
+                      <DMF:PolicyCategory type="string">Microsoft Best Practices: Maintenance</DMF:PolicyCategory>
+                      <DMF:Enabled type="boolean">false</DMF:Enabled>
+                      <DMF:AutomatedPolicyEvaluationMode type="AutomatedPolicyEvaluationMode">None</DMF:AutomatedPolicyEvaluationMode>
+                      <DMF:HelpText type="string" />
+                      <DMF:HelpLink type="string">http://go.microsoft.com/fwlink/?LinkId=116333</DMF:HelpLink>
+                      <DMF:ActiveEndDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveEndDate>
+                      <DMF:ActiveStartDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveStartDate>
+                    </DMF:Policy>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:ObjectSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:TargetSets>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:TargetSets>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Database Page Verification_ObjectSet</DMF:Name>
+                      <DMF:Facet type="string">IDatabaseMaintenanceFacet</DMF:Facet>
+                    </DMF:ObjectSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Page Verify Checksum</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">
+                        &lt;Operator&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;Attribute&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;Name&gt;PageVerify&lt;/Name&gt;&lt;?char 13?&gt;
+                        &lt;/Attribute&gt;&lt;?char 13?&gt;
+                        &lt;Constant&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;ObjType&gt;Microsoft.SqlServer.Management.Smo.PageVerify&lt;/ObjType&gt;&lt;?char 13?&gt;
+                        &lt;Value&gt;Checksum&lt;/Value&gt;&lt;?char 13?&gt;
+                        &lt;/Constant&gt;&lt;?char 13?&gt;
+                        &lt;/Operator&gt;
+                      </DMF:Expression>
+                      <DMF:Name type="string">Page Verify Checksum</DMF:Name>
+                      <DMF:Description type="string">Confirms that the PAGE_VERIFY database option set to CHECKSUM.</DMF:Description>
+                      <DMF:Facet type="string">IDatabaseMaintenanceFacet</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Maintenance</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:PolicyCategory xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Microsoft Best Practices: Maintenance</DMF:Name>
+                    </DMF:PolicyCategory>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet/TargetSet/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Levels>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:Levels>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:Enabled type="boolean">true</DMF:Enabled>
+                    </DMF:TargetSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSetLevel xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Database Page Verification__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:LevelName type="string">Database</DMF:LevelName>
+                      <DMF:Condition type="string" />
+                    </DMF:TargetSetLevel>
+                  </data>
+                </document>
+              </instances>
+            </DMF:bufferData>
+          </xs:schema>
+        </data>
+      </document>
+    </definitions>
+  </xs:bufferSchema>
+</model>

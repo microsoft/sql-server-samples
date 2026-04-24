@@ -282,7 +282,7 @@ class PSR0Locator implements ResourceLocatorInterface
 
     /**
      * @param $path
-     * 
+     *
      * @return null|string
      */
     private function findSpecClassname($path)

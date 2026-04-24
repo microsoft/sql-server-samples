@@ -2,7 +2,7 @@ USE sales
 GO
 
 -- Create external table in a data pool in SQL Server 2019 big data cluster.
--- The SqlDataPool data source is a special data source that is available in 
+-- The SqlDataPool data source is a special data source that is available in
 -- any new database in SQL Master instance. This is used to reference the
 -- data pool in a SQL Server 2019 big data cluster.
 --

@@ -23,7 +23,7 @@
             });
 
     var $formCustomer = $("#EditCustomerForm");
-    
+
     o('CustomerCategories')
         .select('CustomerCategoryID,CustomerCategoryName')
         .get(categories => $("#CustomerCategoryID", $formCustomer).view(categories));
@@ -58,7 +58,7 @@
                     toastr.error('An error occured while trying to get the customer.')
                 );
         });
-    
+
     $("button#cancel-customer-edit").on("click",
         e => {
             $("body").trigger("close-customer-edit");

@@ -5,7 +5,7 @@ $(function () {
       boundy,
       xsize = 200,
       ysize = 200;
-  
+
   $("#crop-picture").Jcrop({
     aspectRatio: xsize / ysize,
     onSelect: updateCoords,

@@ -1,12 +1,12 @@
 ﻿PRINT 'Inserting Application.TransactionTypes'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT [Application].TransactionTypes 
-  (TransactionTypeID, TransactionTypeName, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT [Application].TransactionTypes
+  (TransactionTypeID, TransactionTypeName, LastEditedBy, ValidFrom, ValidTo)
+VALUES
   (1,'Customer Invoice', 1, @CurrentDateTime, @EndOfTime)
 , (2,'Customer Credit Note', 1, @CurrentDateTime, @EndOfTime)
 , (3,'Customer Payment Received', 1, @CurrentDateTime, @EndOfTime)

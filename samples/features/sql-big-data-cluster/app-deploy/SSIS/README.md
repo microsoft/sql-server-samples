@@ -24,7 +24,7 @@ To run this sample, you need the following prerequisites.
 
 1. SQL Server big data cluster CTP 2.3 or later.
 2. `azdata`. Refer to [installing azdata](https://docs.microsoft.com/en-us/sql/big-data-cluster/deploy-install-azdata?view=sqlallproducts-allversions) document on setting up the `azdata` and connecting to a SQL Server big data cluster.
-3. Optional: to see the SSIS package itself, install Visual Studio 2017 if you don't have it already. After that download and install [SSDT](https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-2017#ssdt-for-vs-2017-standalone-installer). 
+3. Optional: to see the SSIS package itself, install Visual Studio 2017 if you don't have it already. After that download and install [SSDT](https://docs.microsoft.com/en-us/sql/ssdt/download-sql-server-data-tools-ssdt?view=sql-server-2017#ssdt-for-vs-2017-standalone-installer).
 4. Optional: install [SSMS](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-2017) if it is not already installed.
 
 <a name=run-this-sample></a>
@@ -32,7 +32,7 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 1. Clone or download this sample on your computer.
-2. Log in to the SQL Server big data cluster using the command below using the IP address of the `controller-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
+2. Log in to the SQL Server big data cluster using the command below using the IP address of the `controller-svc-external` in your cluster. If you are not familiar with `azdata` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
 
     ```bash
     azdata login -e https://<ip-address-of-controller-svc-external>:30080 -u <user-name>
@@ -49,7 +49,7 @@ To run this sample, you need the following prerequisites.
     Once the app is listed as `Ready` the job should run within a minute.
     You can check if the backup is created by running:
     ```bash
-    kubectl -n [your namespace] exec -it mssql-master-pool-0 -c mssql-server -- /bin/bash -c "ls /var/opt/mssql/data/*.DWConfigbak"
+    kubectl -n [your namespace] exec -it master-0 -c mssql-server -- /bin/bash -c "ls /var/opt/mssql/data/*.DWConfigbak"
     ```
     You should see a backup being created for every run of the job, with a maximum of 60 backups since the SSIS package cleans up backups older than one hour.
     You can use any of the `.DWConfigbak` files to restore the database.
@@ -65,7 +65,7 @@ To run this sample, you need the following prerequisites.
 
 ## Sample details
 
-Please open to [Visual Studio solution](back-up-db.sln) to see the SSIS package. 
+Please open to [Visual Studio solution](back-up-db.sln) to see the SSIS package.
 
 ### Spec file
 Here is the spec file for this application. This sample uses the `SSIS` runtime and does not specify any `inputs` or `outputs`. Next to that, the spec file in this example specifies `options` and `schedule`:
@@ -80,7 +80,7 @@ name: back-up-db
 version: v1
 runtime: SSIS
 entrypoint: ./back-up-db.dtsx
-options: /REP V /CONN "MasterSQL"\;"\"Data Source=service-master-pool;User ID=sa;Initial Catalog=master;Password=[SA_PASSWORD]\""
+options: /REP V /CONN "MasterSQL"\;"\"Data Source=master-svc;User ID=sa;Initial Catalog=master;Password=[SA_PASSWORD]\""
 schedule: "*/1 * * * *"
 ```
 
@@ -89,4 +89,4 @@ schedule: "*/1 * * * *"
 ## Related Links
 For more information, see these articles:
 
-[How to deploy and app on SQL Server 2019 big data cluster (preview)](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions)
+[How to deploy and app on SQL Server 2019 big data cluster](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps)

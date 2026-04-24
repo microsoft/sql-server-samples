@@ -1,4 +1,4 @@
-# ASP.NET Core Product Catalog application that uses SQL/Temporal and JSON functionalities 
+# ASP.NET Core Product Catalog application that uses SQL/Temporal and JSON functionalities
 
 This project contains an example of a simple ASP.NET Core product catalog web application that enables you to browse the current list of products, and also to see the state of products in any point in time in the history.
 
@@ -66,7 +66,7 @@ If database is hosted on Azure you can add something like:
 
 5. Build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
 
-6. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+6. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.
   1. Open /index.html Url to get all products from database,
   2. Use expand buttons to see history of products,
   3. Restore some of the previous version using restore link,
@@ -91,7 +91,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 [.Net Core download](https://www.microsoft.com/net/core#windows)
 [JQuery DataTables with row expansion](https://datatables.net/examples/api/row_details.html).
 [JQuery UI Slider](https://jqueryui.com/slider/)

@@ -9,7 +9,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @CurrentMaximumDate date = COALESCE((SELECT MAX(OrderDate) FROM Sales.Orders), '20121231');
+    DECLARE @CurrentMaximumDate date = COALESCE((SELECT MAX(OrderDate) FROM Sales.Orders), '20191231');
     DECLARE @StartingDate date = DATEADD(day, 1, @CurrentMaximumDate);
     DECLARE @EndingDate date = CAST(DATEADD(day, -1, SYSDATETIME()) AS date);
 

@@ -16,7 +16,7 @@ GO
 DROP SCHEMA IF EXISTS CURL;
 GO
 
---Drop "trusted assembly flag" if it is set 
+--Drop "trusted assembly flag" if it is set
 
 DECLARE @hash VARBINARY(64);
 
@@ -24,27 +24,26 @@ SELECT @hash = hash
 FROM sys.trusted_assemblies ta
 WHERE ta.description = N'SqlClrCurl'
 
-EXEC sp_drop_trusted_assembly @hash;
+if (@hash is not null)
+	EXEC sp_drop_trusted_assembly @hash;
 GO
 
 --Drop the assembly if it already exists
 DROP ASSEMBLY IF EXISTS SqlClrCurl;
 GO
 
-
+DECLARE @assembly VARBINARY(MAX) = <#= "0x" + BitConverter.ToString(System.IO.File.ReadAllBytes(this.Host.ResolvePath("bin\\Release\\SqlClrCurl.dll"))).Replace("-","")  #>
 DECLARE @hash VARBINARY(64);
-SELECT @hash = HASHBYTES('SHA2_512', BulkColumn)
-FROM OPENROWSET(BULK '<#= this.Host.ResolvePath("bin\\Release\\SqlClrCurl.dll") #>', SINGLE_BLOB) AS assembly_content
+SELECT @hash = HASHBYTES('SHA2_512', @assembly)
 
-IF(@hash IS NOT NULL)
+IF(not exists (select * from sys.trusted_assemblies where hash = @hash))
 	EXEC sp_add_trusted_assembly @hash, N'SqlClrCurl'
 ELSE
-	PRINT 'Cannot create hash for assembly!'
-GO
+	print 'Hash already exists'
 
 --Create the assembly
 CREATE ASSEMBLY SqlClrCurl
-FROM '<#= this.Host.ResolvePath("bin\\Release\\SqlClrCurl.dll") #>'
+FROM @assembly
 WITH PERMISSION_SET = EXTERNAL_ACCESS;
 GO
 

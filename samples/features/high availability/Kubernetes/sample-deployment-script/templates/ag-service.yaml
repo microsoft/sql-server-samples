@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: 
+  name:
   namespace: default
 spec:
   ports:
@@ -10,4 +10,4 @@ spec:
     port: 1433
   selector:
     type: sqlservr
-  type: 
+  type:

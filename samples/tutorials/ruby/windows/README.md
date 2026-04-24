@@ -1,6 +1,6 @@
 # Connect to SQL using Ruby on Windows
 
-Ruby sample code that runs on a Windows computer to connect to an Azure SQL Database. 
+Ruby sample code that runs on a Windows computer to connect to an Azure SQL Database.
 
 ### Contents
 
@@ -26,7 +26,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. Ruby 
+1. Ruby
 	- [Go the Ruby download page](http://rubyinstaller.org/downloads/) and download the appropriate 2.1.x installer. For example if you are on a 64 bit machine, download the **Ruby 2.1.6 (x64)** installer.
 	- Once the installer is downloaded, do the following:
 
@@ -55,7 +55,7 @@ To run this sample, you need the following prerequisites.
 			ruby dk.rb install
 			```
 
-3. tiny_tds 
+3. tiny_tds
 	- Navigate to C:\DevKit and run the following command from your terminal. This will install TinyTDS on your machine.
 
 	```
@@ -64,15 +64,15 @@ To run this sample, you need the following prerequisites.
 
 **Azure prerequisites:**
 
-1. An AdventureWorks sample database: 
+1. An AdventureWorks sample database:
 
 	- The Ruby sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
 	
 ## Run this sample
 
-1. From your command prompt, update the connection string details in the Ruby file with your own username, password, and hostname. 
+1. From your command prompt, update the connection string details in the Ruby file with your own username, password, and hostname.
 
-2. Run the code sample by running the below in your terminal: 
+2. Run the code sample by running the below in your terminal:
 
 	```
 	ruby sample_ruby_win.rb
@@ -82,12 +82,12 @@ To run this sample, you need the following prerequisites.
 
 ## Sample details
 
-The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement.
 
 ### Additional notes for using TinyTDS with Azure
 
 It is recommend the following settings when using TinyTDS with Azure.
-   
+
    ```
 	SET ANSI_NULLS ON
 	SET CURSOR_CLOSE_ON_COMMIT OFF

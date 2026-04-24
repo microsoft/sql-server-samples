@@ -19,6 +19,6 @@ The database consists of the following tables
 - **edw\_cdr\_train**- Training data
 - **edw\_cdr\_test** - Test data
 - **edw\_cdr\_test\_pred** - Predicted results
- 
+
 
 ----------

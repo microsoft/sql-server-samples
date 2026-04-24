@@ -2,11 +2,11 @@
 -- Moving Average - Fixed
 -- =============================================
 
-With 
-		Member [Measures].[Fixed Moving Average] As 
-		'Avg ( 
-		  { ParallelPeriod (<time_hierarchy_level, mdx_name,>, <time_periods, constant,>, 
-							<time_hierarchy, mdx_name,>.CurrentMember 
+With
+		Member [Measures].[Fixed Moving Average] As
+		'Avg (
+		  { ParallelPeriod (<time_hierarchy_level, mdx_name,>, <time_periods, constant,>,
+							<time_hierarchy, mdx_name,>.CurrentMember
 	    ) : <time_hierarchy, mdx_name,>.CurrentMember }, [Measures].<measure_name, mdx_name,> )'
 
 Select	{[Measures].<measure_name, mdx_name,>, [Measures].[Fixed Moving Average]} on Columns,

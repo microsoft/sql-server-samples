@@ -18,7 +18,7 @@
     <DataSet Name="Feature_Settings">
       <Query>
         <DataSourceName>SqlConnection</DataSourceName>
-        <CommandText>/* 
+        <CommandText>/*
    Retrieve the R Services installation setting &amp; configuration options:
    Implied Authentication Configuration is checked by verifying if login exists for SQLRUserGroup
 */
@@ -70,12 +70,12 @@ begin
 		   , @script = N'
 	# Retrieve properties like R.home, libPath &amp; default packages
 	OutputDataSet &lt;- data.frame(
-	  property_name = c("R.home", "libPaths", "defaultPackages"), 
+	  property_name = c("R.home", "libPaths", "defaultPackages"),
 	  property_value = c(R.home(), .libPaths(), paste(getOption("defaultPackages"), collapse=", "))
 	)
 	# Transform R version properties to data.frame
 	OutputDataSet &lt;- rbind(OutputDataSet, data.frame(
-	  property_name = names(R.version), 
+	  property_name = names(R.version),
 	  property_value = matrix(unlist(R.version), nrow = length(R.version), byrow = TRUE),
 	  stringsAsFactors = FALSE)
 	)

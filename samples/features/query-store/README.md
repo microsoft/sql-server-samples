@@ -13,15 +13,15 @@ Restore AdventureWorks2016_EXT database from the provided BAK at https://github.
 After restoring the database AdventureWorks2016_EXT, go to Properties / Query Store tab, turn ON Query Store, and configure it according to best practices in https://docs.microsoft.com/sql/relational-databases/performance/best-practice-with-the-query-store.
 
 ![Query Store in SSMS](./QS_SSMS.png)
- 
-Use docs content to walk through main config settings: https://docs.microsoft.com//sql/relational-databases/performance/best-practice-with-the-query-store#Configure 
+
+Use docs content to walk through main config settings: https://docs.microsoft.com//sql/relational-databases/performance/best-practice-with-the-query-store#Configure
 
 ### How Query Store Works
 Open ShowBasics.sql script and execute queries individually:
 -	Run simple `SELECT * FROM` Part
 -	Show where query ends in sys.query_store_query_text, sys.query_store_query, sys.query_store_plan, sys.query_store_runtime_stats
 -	Use custom view `vw_QueryStoreCompileInfo` to get info more easily. The main point here is: people can write their own scripts combining Query Store views
--	Execute the same user query from the proc, using sp_executesql, trigger and show that containing object defines query identity in QDS (each instance of the same query text becomes separate query that can be monitored and tuned independently) 
+-	Execute the same user query from the proc, using sp_executesql, trigger and show that containing object defines query identity in QDS (each instance of the same query text becomes separate query that can be monitored and tuned independently)
 -	Show what happens with query that gets auto-parametrized. It cannot be searched using the original query text because QDS stores query as parametrized. Hopefully, sys.fn_stmt_sql_handle_from_sql_stmt can be used to track down query using original query text
 -	Run `vw_QueryStoreRuntimeInfo` (again custom view) to show main runtime stats combined with query/plan info
 
@@ -36,7 +36,7 @@ Open ShowBasics.sql script and execute queries individually:
 2.	Open “Auto-Param Analysis.sql” and run queries from groups (1) and (2). What we see is:
 a.	Large number of queries / plan entries, small number of different query/plan hashes indicates queries that are not parametrized although they are good candidates
 b.	Relatively big compile time shows that system wastes resources on compilation instead of execution
-3.	Open SSMS Top Resource Consuming queries – if you increase number of presented queries to 50 you’ll see that majority of queries has similar /negligible consumption – there’s nothing user can optimize/tune. This is what we call “death by a thousand of cuts” 
+3.	Open SSMS Top Resource Consuming queries – if you increase number of presented queries to 50 you’ll see that majority of queries has similar /negligible consumption – there’s nothing user can optimize/tune. This is what we call “death by a thousand of cuts”
 4.	Run (3) query to see query text pattern – it becomes obvious that queries differ only by provided literal value
 5.	If you run (1) you’ll notice that numbers do not change although workload is running. (4) gives us the answer – Query Store went to READ_ONLY due to large number of queries / plans. This is another point you should make: ad-hoc queries are not bad for SQL Server & execution but also for Query Store as it goes to RO mode which means we do not operate with latest facts!
 6.	Run (5) to parametrize query and clear Query Store. Workload is still running!

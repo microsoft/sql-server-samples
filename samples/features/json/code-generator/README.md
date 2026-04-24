@@ -59,7 +59,7 @@ GO
 
 declare @SchemaName sysname = 'Application'		--> Name of the table where we want to insert JSON
 declare @TableName sysname = 'Countries'		--> Name of the table schema where we want to insert JSON
-declare @JsonColumns nvarchar(max) = '||'	--> List of pipe-separated NVARCHAR(MAX) column names that contain JSON text, e.g. '|AdditionalContactInfo|Demographics|' 
+declare @JsonColumns nvarchar(max) = '||'	--> List of pipe-separated NVARCHAR(MAX) column names that contain JSON text, e.g. '|AdditionalContactInfo|Demographics|'
 declare @IgnoredColumns nvarchar(max) = N'LastEditedBy' --> List of comma-separated columns that should not be imported
 
 
@@ -72,7 +72,7 @@ GO
 
 declare @SchemaName sysname = 'Application'		--> Name of the table where we want to insert JSON
 declare @TableName sysname = 'Cities'		--> Name of the table schema where we want to insert JSON
-declare @JsonColumns nvarchar(max) = '||'	--> List of pipe-separated NVARCHAR(MAX) column names that contain JSON text, e.g. '|AdditionalContactInfo|Demographics|' 
+declare @JsonColumns nvarchar(max) = '||'	--> List of pipe-separated NVARCHAR(MAX) column names that contain JSON text, e.g. '|AdditionalContactInfo|Demographics|'
 declare @IgnoredColumns nvarchar(max) = N'Location,LastEditedBy' --> List of comma-separated columns that should not be imported
 
 
@@ -96,7 +96,7 @@ CREATE TABLE dbo.Product(
 	Color nvarchar(15) NULL,
 	Size nvarchar(5) NULL,
 	Price money NOT NULL,
-	[Special JSON chars: " \ / 
+	[Special JSON chars: " \ /
 			] int NULL,
 	[Special sql chars [[ " ]]
 		] int NULL,
@@ -108,7 +108,7 @@ GO
 
 declare @SchemaName sysname = 'dbo'		--> Name of the table where we want to insert JSON
 declare @TableName sysname = 'Product'		--> Name of the table schema where we want to insert JSON
-declare @JsonColumns nvarchar(max) = '|Data|Tags|'	--> List of pipe-separated NVARCHAR(MAX) column names that contain JSON text, e.g. '|AdditionalContactInfo|Demographics|' 
+declare @JsonColumns nvarchar(max) = '|Data|Tags|'	--> List of pipe-separated NVARCHAR(MAX) column names that contain JSON text, e.g. '|AdditionalContactInfo|Demographics|'
 declare @IgnoredColumns nvarchar(max) = N'DateCreated' --> List of comma-separated columns that should not be imported
 
 print (codegen.GenerateJsonCreateProcedure('dbo', @SchemaName, @TableName, @JsonColumns, @IgnoredColumns))
@@ -135,19 +135,19 @@ AS BEGIN
 
 	Declare @ret nvarchar(max) = '
     SET XACT_ABORT ON;
- 
-    DECLARE @HelpMessage nvarchar(max) = N''JSON '+ @Table +' data is invalid. 
+
+    DECLARE @HelpMessage nvarchar(max) = N''JSON '+ @Table +' data is invalid.
 Execute SELECT TOP 1 * FROM ' + @Table + ' FOR JSON PATH to see an example of required JSON structure.'';
-              
+
     IF ISJSON('+ @JsonParam + ') = 0
     BEGIN
         PRINT @HelpMessage;
         THROW 51000, N'''+ @JsonParam + ' must be valid JSON data'', 1;
         RETURN 1;
     END;
- 
+
     BEGIN TRY
-        
+
         BEGIN TRAN;
 		
 		';
@@ -171,18 +171,18 @@ AS BEGIN
             PRINT N''Warning: No valid '+@Table+' data found'';
             PRINT @HelpMessage;
         END;
- 
+
         COMMIT;
- 
+
     END TRY
     BEGIN CATCH
         PRINT @HelpMessage;
 		PRINT ERROR_MESSAGE();
-        
+
         THROW 51000, N''Valid JSON was supplied but does not match the '+@Table+' array structure'', 2;
-        
+
         IF XACT_STATE() <> 0 ROLLBACK TRAN;
- 
+
         RETURN 1;
     END CATCH;
 ';

@@ -75,7 +75,7 @@ namespace ProductCatalog
 
             //// Add framework services.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-           
+
             services.AddLogging();
             services.AddSession();
             services.AddMvc();
@@ -87,7 +87,7 @@ namespace ProductCatalog
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
-            
+
             app.UseSession();
             app.UseStaticFiles();
             app.UseMvc(routes =>
@@ -96,7 +96,7 @@ namespace ProductCatalog
                     name: "default",
                     template: "{controller=ProductCatalog}/{action=Index}");
             });
-            
+
         }
 
         /// <summary>

@@ -14,5 +14,5 @@ SELECT q.*, m.tran_end_time AS COMMIT_TIME
 FROM cdc.fn_cdc_get_all_changes_<capture_instance,sysname,capture_instance>
   (@from_lsn, @to_lsn, N'all') q
 INNER JOIN cdc.lsn_time_mapping m
-	ON q.__$start_lsn = m.start_lsn  
+	ON q.__$start_lsn = m.start_lsn
 GO

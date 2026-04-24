@@ -2,16 +2,16 @@
 -- Moving Average - Variable
 -- =============================================
 
-With 
-		Member [Measures].[Variable Moving Average] As 
+With
+		Member [Measures].[Variable Moving Average] As
 		'Avg(
-		   <hierarchy_name, mdx_name,>.CurrentMember.Lag( 
+		   <hierarchy_name, mdx_name,>.CurrentMember.Lag(
 			 Case
-			 When <hierarchy_name, mdx_name,>.CurrentMember.Level IS <level_name, mdx_name,> 
+			 When <hierarchy_name, mdx_name,>.CurrentMember.Level IS <level_name, mdx_name,>
 		     Then <lag_constant, constant,>
-			 When <hierarchy_name, mdx_name,>.CurrentMember.Level IS <level_name, mdx_name,> 
+			 When <hierarchy_name, mdx_name,>.CurrentMember.Level IS <level_name, mdx_name,>
 			 Then <lag_constant, constant,>
-			 When <hierarchy_name, mdx_name,>.CurrentMember.Level IS <level_name, mdx_name,> 
+			 When <hierarchy_name, mdx_name,>.CurrentMember.Level IS <level_name, mdx_name,>
 			 Then <lag_constant, constant,>
 		     Else 0
 		     End

@@ -17,40 +17,40 @@ Get started quickly with developing applications in C# on SLES with SQL Server
 
 ## About this sample
 
-- **Applies to:** SQL Server 2016 (or higher) 
-- **Workload:** 
+- **Applies to:** SQL Server 2016 (or higher)
+- **Workload:**
     - CRUD with .NET Core
     - CRUD with Entity Framework Core
     - Performance improvements with Columnstore
 - **Programming Language:** C#
-- **Authors:** ajlam 
+- **Authors:** ajlam
 
 <a name=before-you-begin></a>
 
 ## Before you begin
 
-To run this sample, you need the following prerequisites. 
+To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 (or higher) 
+1. SQL Server 2016 (or higher)
 2. .NET Core 2.0
 3. Entity Framework Core 2.0
 4. A text editor
 
 ## Run this sample
 
-1. Select the specific tutorial you want to run through. 
+1. Select the specific tutorial you want to run through.
 
-2. From your favorite text editor, open the Program.cs file corresponding to the tutorial you wish to run through. Update the connection string username and password with your own. 
+2. From your favorite text editor, open the Program.cs file corresponding to the tutorial you wish to run through. Update the connection string username and password with your own.
 
-3. From your terminal, change directories to the tutorial folder (ex. SqlServerSample) you're running through. Restore the .NET Core dependencies by performing the following command: 
+3. From your terminal, change directories to the tutorial folder (ex. SqlServerSample) you're running through. Restore the .NET Core dependencies by performing the following command:
 
     ```
     dotnet restore
     ```
 
-4. Run the program by performing the following command: 
+4. Run the program by performing the following command:
 
     ```
     dotnet run

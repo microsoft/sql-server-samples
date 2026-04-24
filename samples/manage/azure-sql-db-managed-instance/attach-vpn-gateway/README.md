@@ -33,7 +33,7 @@ To run this sample, you need the following prerequisites.
 2. Azure PowerShell Az module
 
 **Linux prerequisites**
-1. strongSwan 
+1. strongSwan
 
 **Azure prerequisites:**
 
@@ -56,7 +56,7 @@ $parameters = @{
     certificateNamePrefix  = '<certificateNamePrefix>'
     }
 
-Invoke-Command -ScriptBlock ([Scriptblock]::Create((iwr ($scriptUrlBase+'/attachVPNGateway.ps1?t='+ [DateTime]::Now.Ticks)).Content)) -ArgumentList $parameters, $scriptUrlBase 
+Invoke-Command -ScriptBlock ([Scriptblock]::Create((iwr ($scriptUrlBase+'/attachVPNGateway.ps1?t='+ [DateTime]::Now.Ticks)).Content)) -ArgumentList $parameters, $scriptUrlBase
 
 ```
 

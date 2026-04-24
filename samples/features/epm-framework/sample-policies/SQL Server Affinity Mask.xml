@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft Corporation.-->
+<!--Licensed under the MIT License-->
+<model xmlns="smlif.xsd">
+  <_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">DMF:Name</_locTag>
+    <_locTag _loc="locData">DMF:Description</_locTag>
+    <_locTag _loc="locData">DMF:Condition</_locTag>
+    <_locTag _loc="locData">DMF:ObjectSet</_locTag>
+    <_locTag _loc="locData">DMF:RootCondition</_locTag>
+    <_locTag _loc="locData">DMF:PolicyCategory</_locTag>
+    <_locTag _loc="locData">DMF:HelpText</_locTag>
+  </_locDefinition>
+  <identity>
+    <name>urn:uuid:96fe1236-abf6-4a57-b54d-e9baab394fd1</name>
+    <baseURI>http://documentcollection/</baseURI>
+  </identity>
+  <xs:bufferSchema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <definitions xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+      <document>
+        <docinfo>
+          <aliases>
+            <alias>/system/schema/DMF</alias>
+          </aliases>
+          <sfc:version DomainVersion="3" />
+        </docinfo>
+        <data>
+          <xs:schema targetNamespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+            <xs:element name="Policy">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ObjectSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Condition">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="PolicyCategory">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <DMF:bufferData xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08">
+              <instances xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Policy/SQL Server Affinity Mask</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Policy xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:PolicyCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Affinity Mask Default</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyCondition>
+                      <DMF:PolicyObjectSet>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/SQL Server Affinity Mask__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyObjectSet>
+                      <DMF:PolicyPolicyCategory>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Performance</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyPolicyCategory>
+                      <DMF:Name type="string">SQL Server Affinity Mask</DMF:Name>
+                      <DMF:Description type="string">
+                        Checks an instance of SQL Server for setting, affinity mask to its default value 0, since in most cases, the Microsoft Windows 2000 or Windows Server 2003 default affinity provides the best performance. &lt;?char 13?&gt;
+                        &lt;?char 13?&gt;
+                        Confirms whether the setting affinity mask of server is set to zero.&lt;?char 13?&gt;
+                      </DMF:Description>
+                      <DMF:Condition type="string">Affinity Mask Default</DMF:Condition>
+                      <DMF:ObjectSet type="string">SQL Server Affinity Mask_ObjectSet</DMF:ObjectSet>
+                      <DMF:PolicyCategory type="string">Microsoft Best Practices: Performance</DMF:PolicyCategory>
+                      <DMF:Enabled type="boolean">false</DMF:Enabled>
+                      <DMF:AutomatedPolicyEvaluationMode type="AutomatedPolicyEvaluationMode">None</DMF:AutomatedPolicyEvaluationMode>
+                      <DMF:HelpText type="string" />
+                      <DMF:HelpLink type="string">http://go.microsoft.com/fwlink/?LinkId=116357</DMF:HelpLink>
+                      <DMF:ActiveEndDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveEndDate>
+                      <DMF:ActiveStartDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveStartDate>
+                    </DMF:Policy>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/SQL Server Affinity Mask__ObjectSet</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:ObjectSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:TargetSets>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/SQL Server Affinity Mask__ObjectSet/TargetSet/Server</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:TargetSets>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">SQL Server Affinity Mask_ObjectSet</DMF:Name>
+                      <DMF:Facet type="string">IServerPerformanceFacet</DMF:Facet>
+                    </DMF:ObjectSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Affinity Mask Default</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">
+                        &lt;Operator&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;Attribute&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;Name&gt;AffinityMask&lt;/Name&gt;&lt;?char 13?&gt;
+                        &lt;/Attribute&gt;&lt;?char 13?&gt;
+                        &lt;Constant&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;ObjType&gt;System.Int32&lt;/ObjType&gt;&lt;?char 13?&gt;
+                        &lt;Value&gt;0&lt;/Value&gt;&lt;?char 13?&gt;
+                        &lt;/Constant&gt;&lt;?char 13?&gt;
+                        &lt;/Operator&gt;
+                      </DMF:Expression>
+                      <DMF:Name type="string">Affinity Mask Default</DMF:Name>
+                      <DMF:Description type="string">Confirms whether the setting affinity mask of server is set to zero.</DMF:Description>
+                      <DMF:Facet type="string">IServerPerformanceFacet</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Performance</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:PolicyCategory xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Microsoft Best Practices: Performance</DMF:Name>
+                    </DMF:PolicyCategory>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/SQL Server Affinity Mask__ObjectSet/TargetSet/Server</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/SQL Server Affinity Mask__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server</DMF:TargetTypeSkeleton>
+                      <DMF:Enabled type="boolean">true</DMF:Enabled>
+                    </DMF:TargetSet>
+                  </data>
+                </document>
+              </instances>
+            </DMF:bufferData>
+          </xs:schema>
+        </data>
+      </document>
+    </definitions>
+  </xs:bufferSchema>
+</model>

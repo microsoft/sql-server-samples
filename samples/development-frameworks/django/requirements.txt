@@ -1,11 +1,11 @@
-django ~> 1.11.15
+django>=2.2.24
 dj-database-url==0.3.0
 dj-static==0.0.6
 gunicorn==19.6.0
 Unipath==1.0
 python-decouple==3
-Pillow==3.3.2
+Pillow>=8.2.0
 Markdown==2.6.6
-bleach==1.4.3
+bleach>=3.3.0
 django-pyodbc-azure==1.9.6.0
 whitenoise==3.2

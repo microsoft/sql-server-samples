@@ -40,13 +40,13 @@ SELECT * FROM vw_QueryStoreCompileInfo
 WHERE query_sql_text = 'SELECT * FROM Part'
 
 /*Finally trigger*/
-DROP TRIGGER IF EXISTS dbo.OnPartInsert 
+DROP TRIGGER IF EXISTS dbo.OnPartInsert
 GO
 
-CREATE TRIGGER dbo.OnPartInsert 
-   ON  dbo.Part 
+CREATE TRIGGER dbo.OnPartInsert
+   ON  dbo.Part
    AFTER INSERT
-AS 
+AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -72,13 +72,13 @@ WHERE query_sql_text = 'SELECT * FROM Part = 5'
 
 SELECT * FROM sys.query_store_query_text;
 
-/*Try sys.fn_stmt_sql_handle_from_sql_stmt this instead*/ 
-SELECT * FROM sys.fn_stmt_sql_handle_from_sql_stmt 
+/*Try sys.fn_stmt_sql_handle_from_sql_stmt this instead*/
+SELECT * FROM sys.fn_stmt_sql_handle_from_sql_stmt
 ('SELECT * FROM Part WHERE PartId = 5', NULL)
 
 /*Changed searched criteria*/
 SELECT V.* FROM vw_QueryStoreCompileInfo V
-JOIN sys.fn_stmt_sql_handle_from_sql_stmt 
+JOIN sys.fn_stmt_sql_handle_from_sql_stmt
 ('SELECT * FROM Part WHERE PartId = 5', NULL) F
 ON V.statement_sql_handle = F.statement_sql_handle
 
@@ -88,7 +88,7 @@ WHERE query_sql_text = 'SELECT * FROM Part'
 ORDER BY start_time DESC
 
 SELECT * FROM vw_QueryStoreRuntimeInfo V
-JOIN sys.fn_stmt_sql_handle_from_sql_stmt 
+JOIN sys.fn_stmt_sql_handle_from_sql_stmt
 ('SELECT * FROM Part WHERE PartId = 5', NULL) F
 ON V.statement_sql_handle = F.statement_sql_handle
 ORDER BY start_time DESC

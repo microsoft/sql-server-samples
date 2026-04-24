@@ -11,8 +11,8 @@
 namespace MetadataSample.MDSTestService {
     using System.Runtime.Serialization;
     using System;
-    
-    
+   
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DataContractBase", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -132,10 +132,10 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Annotation))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.International))]
     public partial class DataContractBase : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
+       
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
+       
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -145,9 +145,9 @@ namespace MetadataSample.MDSTestService {
                 this.extensionDataField = value;
             }
         }
-        
+       
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
+       
         protected void RaisePropertyChanged(string propertyName) {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
@@ -155,19 +155,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="OperationResult", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class OperationResult : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Error> ErrorsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Guid RequestIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Error> Errors {
             get {
@@ -180,7 +180,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Guid RequestId {
             get {
@@ -194,22 +194,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Error", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Error : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ErrorContext ContextField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Code {
             get {
@@ -222,7 +222,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ErrorContext Context {
             get {
@@ -235,7 +235,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -249,22 +249,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ErrorContext", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class ErrorContext : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FullyQualifiedNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ObjectType TypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string FullyQualifiedName {
             get {
@@ -277,7 +277,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -290,7 +290,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ObjectType Type {
             get {
@@ -304,7 +304,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Identifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -316,16 +316,16 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberIdentifier))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchyContextIdentifier))]
     public partial class Identifier : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Guid IdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int InternalIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Guid Id {
             get {
@@ -338,7 +338,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Name {
             get {
@@ -351,7 +351,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
         public int InternalId {
             get {
@@ -365,7 +365,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ModelContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -375,10 +375,10 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberAttributeIdentifier))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchyContextIdentifier))]
     public partial class ModelContextIdentifier : MetadataSample.MDSTestService.Identifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -392,7 +392,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -400,10 +400,10 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberTypeContextIdentifier))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberAttributeIdentifier))]
     public partial class EntityContextIdentifier : MetadataSample.MDSTestService.ModelContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier EntityId {
             get {
@@ -417,17 +417,17 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MemberTypeContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberAttributeIdentifier))]
     public partial class MemberTypeContextIdentifier : MetadataSample.MDSTestService.EntityContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberType MemberTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberType MemberType {
             get {
@@ -441,16 +441,16 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MemberAttributeIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class MemberAttributeIdentifier : MetadataSample.MDSTestService.MemberTypeContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberIdentifier MemberIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberIdentifier MemberId {
             get {
@@ -464,18 +464,18 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MemberIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class MemberIdentifier : MetadataSample.MDSTestService.Identifier {
-        
+       
         private string CodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberType MemberTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         public string Code {
             get {
@@ -488,7 +488,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberType MemberType {
             get {
@@ -502,16 +502,16 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DerivedHierarchyContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class DerivedHierarchyContextIdentifier : MetadataSample.MDSTestService.ModelContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier DerivedHierarchyIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier DerivedHierarchyId {
             get {
@@ -525,26 +525,26 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EditionExpiredMessage", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class EditionExpiredMessage : MetadataSample.MDSTestService.DataContractBase {
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MemberKey", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class MemberKey : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MemberCodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MemberIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string MemberCode {
             get {
@@ -557,7 +557,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int MemberId {
             get {
@@ -571,22 +571,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="StagingUnbatchedCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class StagingUnbatchedCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier SourceSystemIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -599,7 +599,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier SourceSystemId {
             get {
@@ -612,7 +612,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier VersionId {
             get {
@@ -626,25 +626,25 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="StagingBatch", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class StagingBatch : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier BatchIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingBatchError> ErrorsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.StagingBatchInformation InformationField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> MembersField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier BatchId {
             get {
@@ -657,7 +657,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingBatchError> Errors {
             get {
@@ -670,7 +670,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.StagingBatchInformation Information {
             get {
@@ -683,7 +683,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> Members {
             get {
@@ -697,40 +697,40 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="StagingBatchError", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class StagingBatchError : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier AttributeIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ErrorCodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberIdentifier MemberIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MessageField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TargetCodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<MetadataSample.MDSTestService.RelationshipType> TargetTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier AttributeId {
             get {
@@ -743,7 +743,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier EntityId {
             get {
@@ -756,7 +756,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string ErrorCode {
             get {
@@ -769,7 +769,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier HierarchyId {
             get {
@@ -782,7 +782,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberIdentifier MemberId {
             get {
@@ -795,7 +795,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Message {
             get {
@@ -808,7 +808,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string TargetCode {
             get {
@@ -821,7 +821,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<MetadataSample.MDSTestService.RelationshipType> TargetType {
             get {
@@ -834,7 +834,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier VersionId {
             get {
@@ -848,58 +848,58 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="StagingBatchInformation", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class StagingBatchInformation : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier BatchIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime LastRunEndDateField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime LastRunStartDateField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MemberAttributeErrorCountField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MemberAttributeTotalCountField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MemberErrorCountField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MemberRelationshipErrorCountField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MemberRelationshipTotalCountField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int MemberTotalCountField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ModelNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier PriorBatchIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier SourceIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.StagingBatchStatus StatusField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int VersionIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string VersionNameField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier BatchId {
             get {
@@ -912,7 +912,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime LastRunEndDate {
             get {
@@ -925,7 +925,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime LastRunStartDate {
             get {
@@ -938,7 +938,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int MemberAttributeErrorCount {
             get {
@@ -951,7 +951,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int MemberAttributeTotalCount {
             get {
@@ -964,7 +964,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int MemberErrorCount {
             get {
@@ -977,7 +977,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int MemberRelationshipErrorCount {
             get {
@@ -990,7 +990,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int MemberRelationshipTotalCount {
             get {
@@ -1003,7 +1003,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int MemberTotalCount {
             get {
@@ -1016,7 +1016,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string ModelName {
             get {
@@ -1029,7 +1029,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier PriorBatchId {
             get {
@@ -1042,7 +1042,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier SourceId {
             get {
@@ -1055,7 +1055,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.StagingBatchStatus Status {
             get {
@@ -1068,7 +1068,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int VersionId {
             get {
@@ -1081,7 +1081,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string VersionName {
             get {
@@ -1095,28 +1095,28 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityMembers", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class EntityMembers : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<MetadataSample.MDSTestService.MemberType> MemberTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Member> MembersField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier EntityId {
             get {
@@ -1129,7 +1129,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<MetadataSample.MDSTestService.MemberType> MemberType {
             get {
@@ -1142,7 +1142,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Member> Members {
             get {
@@ -1155,7 +1155,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -1168,7 +1168,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier VersionId {
             get {
@@ -1182,37 +1182,37 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Member", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Member : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Attribute> AttributesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Collection> CollectionsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberIdentifier MemberIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Parent> ParentsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<MetadataSample.MDSTestService.SecurityPermission> SecurityPermissionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TransactionAnnotationField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ValidationStatus ValidationStatusField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Attribute> Attributes {
             get {
@@ -1225,7 +1225,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -1238,7 +1238,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Collection> Collections {
             get {
@@ -1251,7 +1251,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberIdentifier MemberId {
             get {
@@ -1264,7 +1264,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Parent> Parents {
             get {
@@ -1277,7 +1277,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<MetadataSample.MDSTestService.SecurityPermission> SecurityPermission {
             get {
@@ -1290,7 +1290,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public string TransactionAnnotation {
             get {
@@ -1303,7 +1303,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ValidationStatus ValidationStatus {
             get {
@@ -1317,7 +1317,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Attribute", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -1560,19 +1560,19 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.International))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Version))]
     public partial class Attribute : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TransactionAnnotationField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AttributeValueType TypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private object ValueField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -1585,7 +1585,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public string TransactionAnnotation {
             get {
@@ -1598,7 +1598,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AttributeValueType Type {
             get {
@@ -1611,7 +1611,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public object Value {
             get {
@@ -1625,31 +1625,31 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AuditInfo", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class AuditInfo : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime CreatedDateTimeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier CreatedUserIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier CreatedVersionIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime UpdatedDateTimeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier UpdatedUserIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier UpdatedVersionIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime CreatedDateTime {
             get {
@@ -1662,7 +1662,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier CreatedUserId {
             get {
@@ -1675,7 +1675,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier CreatedVersionId {
             get {
@@ -1688,7 +1688,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime UpdatedDateTime {
             get {
@@ -1701,7 +1701,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier UpdatedUserId {
             get {
@@ -1714,7 +1714,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier UpdatedVersionId {
             get {
@@ -1728,25 +1728,25 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Collection", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Collection : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberIdentifier CollectionIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool RemoveField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SortOrderField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private decimal WeightField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.MemberIdentifier CollectionId {
             get {
@@ -1759,7 +1759,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool Remove {
             get {
@@ -1772,7 +1772,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int SortOrder {
             get {
@@ -1785,7 +1785,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public decimal Weight {
             get {
@@ -1799,25 +1799,25 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Parent", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Parent : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberIdentifier ParentIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<MetadataSample.MDSTestService.RelationshipType> RelationshipTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SortOrderField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier HierarchyId {
             get {
@@ -1830,7 +1830,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.MemberIdentifier ParentId {
             get {
@@ -1843,7 +1843,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<MetadataSample.MDSTestService.RelationshipType> RelationshipType {
             get {
@@ -1856,7 +1856,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int SortOrder {
             get {
@@ -1870,22 +1870,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FileAttribute", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class FileAttribute : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] ContentField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ContentTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public byte[] Content {
             get {
@@ -1898,7 +1898,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string ContentType {
             get {
@@ -1911,7 +1911,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Name {
             get {
@@ -1925,40 +1925,40 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ExportView", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class ExportView : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier DerivedHierarchyIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsDirtyField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int LevelsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier VersionFlagIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ExportViewFormat ViewFormatField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier DerivedHierarchyId {
             get {
@@ -1971,7 +1971,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier EntityId {
             get {
@@ -1984,7 +1984,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -1997,7 +1997,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsDirty {
             get {
@@ -2010,7 +2010,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int Levels {
             get {
@@ -2023,7 +2023,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -2036,7 +2036,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier VersionFlagId {
             get {
@@ -2049,7 +2049,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier VersionId {
             get {
@@ -2062,7 +2062,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ExportViewFormat ViewFormat {
             get {
@@ -2076,43 +2076,43 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Metadata", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Metadata : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeGroup> AttributeGroupsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute> AttributesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchy> DerivedHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchyLevel> DerivedHierarchyLevelsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Entity> EntitiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy> ExplicitHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMemberType> MemberTypesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Model> ModelsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.VersionFlag> VersionFlagsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Version> VersionsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeGroup> AttributeGroups {
             get {
@@ -2125,7 +2125,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute> Attributes {
             get {
@@ -2138,7 +2138,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchy> DerivedHierarchies {
             get {
@@ -2151,7 +2151,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchyLevel> DerivedHierarchyLevels {
             get {
@@ -2164,7 +2164,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Entity> Entities {
             get {
@@ -2177,7 +2177,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy> ExplicitHierarchies {
             get {
@@ -2190,7 +2190,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMemberType> MemberTypes {
             get {
@@ -2203,7 +2203,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Model> Models {
             get {
@@ -2216,7 +2216,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.VersionFlag> VersionFlags {
             get {
@@ -2229,7 +2229,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Version> Versions {
             get {
@@ -2243,7 +2243,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MdmDataContractOfMemberTypeContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -2251,16 +2251,16 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MetadataAttribute))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeGroup))]
     public partial class MdmDataContractOfMemberTypeContextIdentifier : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberTypeContextIdentifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PermissionType PermissionField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -2273,7 +2273,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberTypeContextIdentifier Identifier {
             get {
@@ -2286,7 +2286,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.PermissionType Permission {
             get {
@@ -2300,58 +2300,58 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MetadataAttribute", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class MetadataAttribute : MetadataSample.MDSTestService.MdmDataContractOfMemberTypeContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<MetadataSample.MDSTestService.AttributeType> AttributeTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ChangeTrackingGroupField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AttributeDataType DataTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<int> DataTypeInformationField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int DisplayWidthField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier DomainEntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool DomainEntityIsFlatField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PermissionType DomainEntityPermissionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FullyQualifiedNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier InputMaskIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsCodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsReadOnlyField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsSystemField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SortOrderField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Nullable<MetadataSample.MDSTestService.AttributeType> AttributeType {
             get {
@@ -2364,7 +2364,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ChangeTrackingGroup {
             get {
@@ -2377,7 +2377,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.AttributeDataType DataType {
             get {
@@ -2390,7 +2390,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<int> DataTypeInformation {
             get {
@@ -2403,7 +2403,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int DisplayWidth {
             get {
@@ -2416,7 +2416,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier DomainEntityId {
             get {
@@ -2429,7 +2429,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool DomainEntityIsFlat {
             get {
@@ -2442,7 +2442,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.PermissionType DomainEntityPermission {
             get {
@@ -2455,7 +2455,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string FullyQualifiedName {
             get {
@@ -2468,7 +2468,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier InputMaskId {
             get {
@@ -2481,7 +2481,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsCode {
             get {
@@ -2494,7 +2494,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsName {
             get {
@@ -2507,7 +2507,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsReadOnly {
             get {
@@ -2520,7 +2520,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsSystem {
             get {
@@ -2533,7 +2533,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int SortOrder {
             get {
@@ -2547,28 +2547,28 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AttributeGroup", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class AttributeGroup : MetadataSample.MDSTestService.MdmDataContractOfMemberTypeContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute> AttributesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FullNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsNameCodeFrozenField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsSystemField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SortOrderField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute> Attributes {
             get {
@@ -2581,7 +2581,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string FullName {
             get {
@@ -2594,7 +2594,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public bool IsNameCodeFrozen {
             get {
@@ -2607,7 +2607,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public bool IsSystem {
             get {
@@ -2620,7 +2620,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public int SortOrder {
             get {
@@ -2634,7 +2634,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MdmDataContractOfModelContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -2644,16 +2644,16 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Version))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchy))]
     public partial class MdmDataContractOfModelContextIdentifier : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ModelContextIdentifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PermissionType PermissionField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -2666,7 +2666,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ModelContextIdentifier Identifier {
             get {
@@ -2679,7 +2679,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.PermissionType Permission {
             get {
@@ -2693,37 +2693,37 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Entity", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Entity : MetadataSample.MDSTestService.MdmDataContractOfModelContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int CodeGenerationSeedField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy> ExplicitHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsBaseField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsCodeGenerationEnabledField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsFlatField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsSystemField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMemberType> MemberTypesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string StagingNameField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public int CodeGenerationSeed {
             get {
@@ -2736,7 +2736,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy> ExplicitHierarchies {
             get {
@@ -2749,7 +2749,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsBase {
             get {
@@ -2762,7 +2762,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public bool IsCodeGenerationEnabled {
             get {
@@ -2775,7 +2775,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsFlat {
             get {
@@ -2788,7 +2788,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsSystem {
             get {
@@ -2801,7 +2801,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMemberType> MemberTypes {
             get {
@@ -2814,7 +2814,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string StagingName {
             get {
@@ -2828,23 +2828,23 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MdmDataContractOfEntityContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExplicitHierarchy))]
     public partial class MdmDataContractOfEntityContextIdentifier : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.EntityContextIdentifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PermissionType PermissionField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -2857,7 +2857,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.EntityContextIdentifier Identifier {
             get {
@@ -2870,7 +2870,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.PermissionType Permission {
             get {
@@ -2884,19 +2884,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ExplicitHierarchy", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class ExplicitHierarchy : MetadataSample.MDSTestService.MdmDataContractOfEntityContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FullyQualifiedNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsMandatoryField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string FullyQualifiedName {
             get {
@@ -2909,7 +2909,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsMandatory {
             get {
@@ -2923,7 +2923,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MdmDataContractOfIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -2932,16 +2932,16 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemSetting))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMemberType))]
     public partial class MdmDataContractOfIdentifier : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PermissionType PermissionField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -2954,7 +2954,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -2967,7 +2967,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.PermissionType Permission {
             get {
@@ -2981,34 +2981,34 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Model", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Model : MetadataSample.MDSTestService.MdmDataContractOfIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchy> DerivedHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Entity> EntitiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy> ExplicitHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsAdministratorField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsSystemField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.VersionFlag> VersionFlagsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Version> VersionsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchy> DerivedHierarchies {
             get {
@@ -3021,7 +3021,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Entity> Entities {
             get {
@@ -3034,7 +3034,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy> ExplicitHierarchies {
             get {
@@ -3047,7 +3047,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsAdministrator {
             get {
@@ -3060,7 +3060,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsSystem {
             get {
@@ -3073,7 +3073,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.VersionFlag> VersionFlags {
             get {
@@ -3086,7 +3086,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Version> Versions {
             get {
@@ -3100,22 +3100,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="VersionFlag", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class VersionFlag : MetadataSample.MDSTestService.MdmDataContractOfModelContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier AssignedVersionIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsCommittedOnlyField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier AssignedVersionId {
             get {
@@ -3128,7 +3128,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -3141,7 +3141,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsCommittedOnly {
             get {
@@ -3155,31 +3155,31 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Version", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Version : MetadataSample.MDSTestService.MdmDataContractOfModelContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier CopiedFromVersionIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.VersionValidationStatus ValidationStatusField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier VersionFlagIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int VersionNumberField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.VersionStatus VersionStatusField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier CopiedFromVersionId {
             get {
@@ -3192,7 +3192,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -3205,7 +3205,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.VersionValidationStatus ValidationStatus {
             get {
@@ -3218,7 +3218,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier VersionFlagId {
             get {
@@ -3231,7 +3231,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int VersionNumber {
             get {
@@ -3244,7 +3244,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.VersionStatus VersionStatus {
             get {
@@ -3258,43 +3258,43 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SystemSetting", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SystemSetting : MetadataSample.MDSTestService.MdmDataContractOfIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AttributeDataType DataTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DisplayNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int DisplaySequenceField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsVisibleField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MaxValueField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MinValueField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AttributeType SettingTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SettingValueField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SystemDomainList SystemDomainListField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AttributeDataType DataType {
             get {
@@ -3307,7 +3307,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -3320,7 +3320,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string DisplayName {
             get {
@@ -3333,7 +3333,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int DisplaySequence {
             get {
@@ -3346,7 +3346,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsVisible {
             get {
@@ -3359,7 +3359,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string MaxValue {
             get {
@@ -3372,7 +3372,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string MinValue {
             get {
@@ -3385,7 +3385,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AttributeType SettingType {
             get {
@@ -3398,7 +3398,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string SettingValue {
             get {
@@ -3411,7 +3411,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.SystemDomainList SystemDomainList {
             get {
@@ -3425,22 +3425,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SystemDomainList", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SystemDomainList : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string CodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainListItem> ItemsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Code {
             get {
@@ -3453,7 +3453,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainListItem> Items {
             get {
@@ -3466,7 +3466,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Name {
             get {
@@ -3480,22 +3480,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SystemDomainListItem", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SystemDomainListItem : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ListGroupField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ValueField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ListGroup {
             get {
@@ -3508,7 +3508,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Name {
             get {
@@ -3521,7 +3521,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Value {
             get {
@@ -3535,25 +3535,25 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityMemberType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class EntityMemberType : MetadataSample.MDSTestService.MdmDataContractOfIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeGroup> AttributeGroupsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute> AttributesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberType TypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeGroup> AttributeGroups {
             get {
@@ -3566,7 +3566,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute> Attributes {
             get {
@@ -3579,7 +3579,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier EntityId {
             get {
@@ -3592,7 +3592,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.MemberType Type {
             get {
@@ -3606,25 +3606,25 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DerivedHierarchy", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class DerivedHierarchy : MetadataSample.MDSTestService.MdmDataContractOfModelContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool AnchorNullRecursionsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FullyQualifiedNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsRecursiveField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchyLevel> LevelsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool AnchorNullRecursions {
             get {
@@ -3637,7 +3637,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string FullyQualifiedName {
             get {
@@ -3650,7 +3650,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsRecursive {
             get {
@@ -3663,7 +3663,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchyLevel> Levels {
             get {
@@ -3677,23 +3677,23 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MdmDataContractOfDerivedHierarchyContextIdentifier", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchyLevel))]
     public partial class MdmDataContractOfDerivedHierarchyContextIdentifier : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.DerivedHierarchyContextIdentifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PermissionType PermissionField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -3706,7 +3706,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.DerivedHierarchyContextIdentifier Identifier {
             get {
@@ -3719,7 +3719,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.PermissionType Permission {
             get {
@@ -3733,37 +3733,37 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DerivedHierarchyLevel", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class DerivedHierarchyLevel : MetadataSample.MDSTestService.MdmDataContractOfDerivedHierarchyContextIdentifier {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DisplayNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ForeignEntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ForeignIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.HierarchyItemType ForeignTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsRecursiveField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsVisibleField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int LevelNumberField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberType MemberTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string DisplayName {
             get {
@@ -3776,7 +3776,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ForeignEntityId {
             get {
@@ -3789,7 +3789,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ForeignId {
             get {
@@ -3802,7 +3802,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.HierarchyItemType ForeignType {
             get {
@@ -3815,7 +3815,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsRecursive {
             get {
@@ -3828,7 +3828,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsVisible {
             get {
@@ -3841,7 +3841,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int LevelNumber {
             get {
@@ -3854,7 +3854,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberType MemberType {
             get {
@@ -3868,43 +3868,43 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MetadataResultOptions", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class MetadataResultOptions : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType AttributeGroupsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType AttributesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType DerivedHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType DerivedHierarchyLevelsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType EntitiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType ExplicitHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType MemberTypesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType ModelsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType VersionFlagsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType VersionsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType AttributeGroups {
             get {
@@ -3917,7 +3917,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType Attributes {
             get {
@@ -3930,7 +3930,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType DerivedHierarchies {
             get {
@@ -3943,7 +3943,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType DerivedHierarchyLevels {
             get {
@@ -3956,7 +3956,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType Entities {
             get {
@@ -3969,7 +3969,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType ExplicitHierarchies {
             get {
@@ -3982,7 +3982,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType MemberTypes {
             get {
@@ -3995,7 +3995,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType Models {
             get {
@@ -4008,7 +4008,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType VersionFlags {
             get {
@@ -4021,7 +4021,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ResultType Versions {
             get {
@@ -4035,46 +4035,46 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MetadataSearchCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class MetadataSearchCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> AttributeGroupsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> AttributesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> DerivedHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> DerivedHierarchyLevelsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> EntitiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> ExplicitHierarchiesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberType> MemberTypesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> ModelsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SearchOption SearchOptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> VersionFlagsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> VersionsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> AttributeGroups {
             get {
@@ -4087,7 +4087,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Attributes {
             get {
@@ -4100,7 +4100,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> DerivedHierarchies {
             get {
@@ -4113,7 +4113,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> DerivedHierarchyLevels {
             get {
@@ -4126,7 +4126,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Entities {
             get {
@@ -4139,7 +4139,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> ExplicitHierarchies {
             get {
@@ -4152,7 +4152,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberType> MemberTypes {
             get {
@@ -4165,7 +4165,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Models {
             get {
@@ -4178,7 +4178,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.SearchOption SearchOption {
             get {
@@ -4191,7 +4191,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> VersionFlags {
             get {
@@ -4204,7 +4204,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Versions {
             get {
@@ -4218,16 +4218,16 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SystemSettingsGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SystemSettingsGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier GroupField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier Group {
             get {
@@ -4241,28 +4241,28 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SystemSettingGroup", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SystemSettingGroup : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DisplayNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int DisplaySequenceField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSetting> SystemSettingsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -4275,7 +4275,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string DisplayName {
             get {
@@ -4288,7 +4288,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int DisplaySequence {
             get {
@@ -4301,7 +4301,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -4314,7 +4314,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSetting> SystemSettings {
             get {
@@ -4328,22 +4328,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SystemDomainListGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SystemDomainListGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ListCodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<int> ListGroupField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ListOptionField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string ListCode {
             get {
@@ -4356,7 +4356,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<int> ListGroup {
             get {
@@ -4369,7 +4369,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string ListOption {
             get {
@@ -4383,19 +4383,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SystemPropertyValue", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SystemPropertyValue : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SystemPropertyType SystemPropertyTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ValueField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.SystemPropertyType SystemPropertyType {
             get {
@@ -4408,7 +4408,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Value {
             get {
@@ -4422,19 +4422,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SecurityPrincipals", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SecurityPrincipals : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Group> GroupsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.User> UsersField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Group> Groups {
             get {
@@ -4447,7 +4447,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.User> Users {
             get {
@@ -4461,34 +4461,34 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Group", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class Group : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.GroupType GroupTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SIDField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SecurityPrivileges SecurityPrivilegeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> UserAssignmentsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -4501,7 +4501,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -4514,7 +4514,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.GroupType GroupType {
             get {
@@ -4527,7 +4527,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -4540,7 +4540,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string SID {
             get {
@@ -4553,7 +4553,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.SecurityPrivileges SecurityPrivilege {
             get {
@@ -4566,7 +4566,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> UserAssignments {
             get {
@@ -4580,22 +4580,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SecurityPrivileges", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SecurityPrivileges : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.FunctionPrivilege> FunctionPrivilegesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.HierarchyMemberPrivilege> HierarchyMemberPrivilegesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ModelPrivilege> ModelPrivilegesField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.FunctionPrivilege> FunctionPrivileges {
             get {
@@ -4608,7 +4608,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.HierarchyMemberPrivilege> HierarchyMemberPrivileges {
             get {
@@ -4621,7 +4621,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ModelPrivilege> ModelPrivileges {
             get {
@@ -4635,31 +4635,31 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FunctionPrivilege", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class FunctionPrivilege : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.FunctionalArea FunctionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsAuthorizedField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier PrincipalIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PrincipalType PrincipalTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -4672,7 +4672,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.FunctionalArea Function {
             get {
@@ -4685,7 +4685,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -4698,7 +4698,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsAuthorized {
             get {
@@ -4711,7 +4711,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier PrincipalId {
             get {
@@ -4724,7 +4724,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.PrincipalType PrincipalType {
             get {
@@ -4738,49 +4738,49 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="HierarchyMemberPrivilege", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class HierarchyMemberPrivilege : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.HierarchyType HierarchyTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsModelAdministratorField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberIdentifier MemberIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Permission PermissionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier PrincipalIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PrincipalType PrincipalTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -4793,7 +4793,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier EntityId {
             get {
@@ -4806,7 +4806,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier HierarchyId {
             get {
@@ -4819,7 +4819,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.HierarchyType HierarchyType {
             get {
@@ -4832,7 +4832,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -4845,7 +4845,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsModelAdministrator {
             get {
@@ -4858,7 +4858,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberIdentifier MemberId {
             get {
@@ -4871,7 +4871,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -4884,7 +4884,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Permission Permission {
             get {
@@ -4897,7 +4897,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier PrincipalId {
             get {
@@ -4910,7 +4910,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.PrincipalType PrincipalType {
             get {
@@ -4923,7 +4923,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier VersionId {
             get {
@@ -4937,40 +4937,40 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ModelPrivilege", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class ModelPrivilege : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsModelAdministratorField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ObjectIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ModelObjectType ObjectTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Permission PermissionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier PrincipalIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PrincipalType PrincipalTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -4983,7 +4983,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -4996,7 +4996,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool IsModelAdministrator {
             get {
@@ -5009,7 +5009,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -5022,7 +5022,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier ObjectId {
             get {
@@ -5035,7 +5035,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ModelObjectType ObjectType {
             get {
@@ -5048,7 +5048,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Permission Permission {
             get {
@@ -5061,7 +5061,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier PrincipalId {
             get {
@@ -5074,7 +5074,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.PrincipalType PrincipalType {
             get {
@@ -5088,46 +5088,46 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="User", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class User : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DisplayNameField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailAddressField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.EmailFormat EmailFormatField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> GroupPrivilegesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime LastLogOnField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool LoggedInField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string SIDField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SecurityPrivileges SecurityPrivilegeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -5140,7 +5140,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -5153,7 +5153,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string DisplayName {
             get {
@@ -5166,7 +5166,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string EmailAddress {
             get {
@@ -5179,7 +5179,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.EmailFormat EmailFormat {
             get {
@@ -5192,7 +5192,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> GroupPrivileges {
             get {
@@ -5205,7 +5205,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -5218,7 +5218,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime LastLogOn {
             get {
@@ -5231,7 +5231,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool LoggedIn {
             get {
@@ -5244,7 +5244,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string SID {
             get {
@@ -5257,7 +5257,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.SecurityPrivileges SecurityPrivilege {
             get {
@@ -5271,19 +5271,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SecuritySet", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SecuritySet : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SecurityPrincipals PrincipalField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SecurityPrivileges PrivilegeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.SecurityPrincipals Principal {
             get {
@@ -5296,7 +5296,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.SecurityPrivileges Privilege {
             get {
@@ -5310,37 +5310,37 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SecurityPrincipalsCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SecurityPrincipalsCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool AllField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType FunctionPrivilegeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType HierarchyMemberPrivilegeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> IdentifiersField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType ModelPrivilegeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType ResultTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.SecurityResolutionType SecurityResolutionTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PrincipalType TypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public bool All {
             get {
@@ -5353,7 +5353,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ResultType FunctionPrivilege {
             get {
@@ -5366,7 +5366,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ResultType HierarchyMemberPrivilege {
             get {
@@ -5379,7 +5379,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Identifiers {
             get {
@@ -5392,7 +5392,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ResultType ModelPrivilege {
             get {
@@ -5405,7 +5405,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ResultType ResultType {
             get {
@@ -5418,7 +5418,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.SecurityResolutionType SecurityResolutionType {
             get {
@@ -5431,7 +5431,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.PrincipalType Type {
             get {
@@ -5445,19 +5445,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SecurityPrincipalsDeleteCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SecurityPrincipalsDeleteCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> GroupsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> UsersField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Groups {
             get {
@@ -5470,7 +5470,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Users {
             get {
@@ -5484,22 +5484,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SecurityPrivilegesGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SecurityPrivilegesGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.FunctionPrivilegesCriteria FunctionPrivilegesCriteriaField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.HierarchyMemberPrivilegesCriteria HierarchyMemberPrivilegesCriteriaField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ModelPrivilegesCriteria ModelPrivilegesCriteriaField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.FunctionPrivilegesCriteria FunctionPrivilegesCriteria {
             get {
@@ -5512,7 +5512,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.HierarchyMemberPrivilegesCriteria HierarchyMemberPrivilegesCriteria {
             get {
@@ -5525,7 +5525,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.ModelPrivilegesCriteria ModelPrivilegesCriteria {
             get {
@@ -5539,28 +5539,28 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="FunctionPrivilegesCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class FunctionPrivilegesCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> IdentifiersField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsAuthorizedField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier PrincipalIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PrincipalType PrincipalTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType ResultTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Identifiers {
             get {
@@ -5573,7 +5573,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public bool IsAuthorized {
             get {
@@ -5586,7 +5586,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier PrincipalId {
             get {
@@ -5599,7 +5599,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.PrincipalType PrincipalType {
             get {
@@ -5612,7 +5612,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ResultType ResultType {
             get {
@@ -5626,43 +5626,43 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="HierarchyMemberPrivilegesCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class HierarchyMemberPrivilegesCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.HierarchyType HierarchyTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> IdentifiersField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string MemberCodeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Permission PermissionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier PrincipalIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PrincipalType PrincipalTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType ResultTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier EntityId {
             get {
@@ -5675,7 +5675,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier HierarchyId {
             get {
@@ -5688,7 +5688,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.HierarchyType HierarchyType {
             get {
@@ -5701,7 +5701,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Identifiers {
             get {
@@ -5714,7 +5714,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string MemberCode {
             get {
@@ -5727,7 +5727,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -5740,7 +5740,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Permission Permission {
             get {
@@ -5753,7 +5753,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier PrincipalId {
             get {
@@ -5766,7 +5766,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.PrincipalType PrincipalType {
             get {
@@ -5779,7 +5779,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ResultType ResultType {
             get {
@@ -5793,34 +5793,34 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ModelPrivilegesCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class ModelPrivilegesCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> IdentifiersField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier ObjectIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Permission PermissionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier PrincipalIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.PrincipalType PrincipalTypeField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.ResultType ResultTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Identifiers {
             get {
@@ -5833,7 +5833,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier ModelId {
             get {
@@ -5846,7 +5846,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier ObjectId {
             get {
@@ -5859,7 +5859,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Permission Permission {
             get {
@@ -5872,7 +5872,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.Identifier PrincipalId {
             get {
@@ -5885,7 +5885,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.PrincipalType PrincipalType {
             get {
@@ -5898,7 +5898,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.ResultType ResultType {
             get {
@@ -5912,22 +5912,22 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SecurityPrivilegesDeleteCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class SecurityPrivilegesDeleteCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> FunctionPrivilegesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> HierarchyMemberPrivilegesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> ModelPrivilegesField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> FunctionPrivileges {
             get {
@@ -5940,7 +5940,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> HierarchyMemberPrivileges {
             get {
@@ -5953,7 +5953,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> ModelPrivileges {
             get {
@@ -5967,19 +5967,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BusinessRulesPalette", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class BusinessRulesPalette : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionGroup> BRActionGroupsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionGroup> BRConditionGroupsField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionGroup> BRActionGroups {
             get {
@@ -5992,7 +5992,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionGroup> BRConditionGroups {
             get {
@@ -6006,19 +6006,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRActionGroup", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class BRActionGroup : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionComponent> BRActionComponentsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionComponent> BRActionComponents {
             get {
@@ -6031,7 +6031,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Name {
             get {
@@ -6045,7 +6045,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRItemTypeComponent", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -6053,16 +6053,16 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRConditionComponent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRActionComponent))]
     public partial class BRItemTypeComponent : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAttributeTypeInfo> CompatibleAttributeTypesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string DescriptionField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.BRItemType ItemTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAttributeTypeInfo> CompatibleAttributeTypes {
             get {
@@ -6075,7 +6075,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
             get {
@@ -6088,7 +6088,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.BRItemType ItemType {
             get {
@@ -6102,19 +6102,19 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRAttributeTypeInfo", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class BRAttributeTypeInfo : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeDataType> AttributeDataTypesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AttributeType AttributeTypeField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeDataType> AttributeDataTypes {
             get {
@@ -6127,7 +6127,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AttributeType AttributeType {
             get {
@@ -6141,33 +6141,33 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRConditionComponent", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class BRConditionComponent : MetadataSample.MDSTestService.BRItemTypeComponent {
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRActionComponent", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class BRActionComponent : MetadataSample.MDSTestService.BRItemTypeComponent {
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRConditionGroup", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class BRConditionGroup : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionComponent> BRConditionComponentsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionComponent> BRConditionComponents {
             get {
@@ -6180,7 +6180,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Name {
             get {
@@ -6194,25 +6194,25 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BusinessRules", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
     [System.SerializableAttribute()]
     public partial class BusinessRules : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAction> BRActionsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionTreeNode> BRConditionTreeNodesField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRCondition> BRConditionsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BusinessRule> BusinessRulesMemberField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAction> BRActions {
             get {
@@ -6225,7 +6225,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionTreeNode> BRConditionTreeNodes {
             get {
@@ -6238,7 +6238,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRCondition> BRConditions {
             get {
@@ -6251,7 +6251,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(Name="BusinessRules", EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BusinessRule> BusinessRulesMember {
             get {
@@ -6265,7 +6265,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRItem", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -6508,28 +6508,28 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.International))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Version))]
     public partial class BRItem : MetadataSample.MDSTestService.DataContractBase {
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.MemberTypeContextIdentifier BusinessRuleIdField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private MetadataSample.MDSTestService.BRItemType OperatorField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.ObjectModel.Collection<object> PostfixArgumentsField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SequenceField;
-        
+       
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string TextField;
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.AuditInfo AuditInfo {
             get {
@@ -6542,7 +6542,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.MemberTypeContextIdentifier BusinessRuleId {
             get {
@@ -6555,7 +6555,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public MetadataSample.MDSTestService.Identifier Identifier {
             get {
@@ -6568,7 +6568,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public MetadataSample.MDSTestService.BRItemType Operator {
             get {
@@ -6581,7 +6581,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         public System.Collections.ObjectModel.Collection<object> PostfixArguments {
             get {
@@ -6594,7 +6594,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int Sequence {
             get {
@@ -6607,7 +6607,7 @@ namespace MetadataSample.MDSTestService {
                 }
             }
         }
-        
+       
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Text {
             get {
@@ -6621,7 +6621,7 @@ namespace MetadataSample.MDSTestService {
             }
         }
     }
-    
+   
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="BRCondition", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
@@ -6664,9543 +6664,4 @@ namespace MetadataSample.MDSTestService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Collection))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Parent>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Parent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPermission))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExportView))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExportViewFormat))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExportView>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Metadata))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfMemberTypeContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.PermissionType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MetadataAttribute))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeDataType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchy>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchy))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfModelContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchyLevel>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchyLevel))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfDerivedHierarchyContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyItemType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Entity>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Entity))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExplicitHierarchy))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfEntityContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMemberType>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMemberType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Model>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Model))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.VersionFlag>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.VersionFlag))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Version>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Version))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.VersionValidationStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.VersionStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MetadataResultOptions))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ResultType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MetadataSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberType>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SearchOption))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemSettingsGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSettingGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemSettingGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSetting>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemSetting))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemDomainList))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainListItem>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemDomainListItem))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemDomainListGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainList>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemPropertyValue>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemPropertyValue))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemPropertyType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrincipals))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Group>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Group))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.GroupType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrivileges))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.FunctionPrivilege>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.FunctionPrivilege))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.FunctionalArea))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.PrincipalType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.HierarchyMemberPrivilege>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMemberPrivilege))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Permission))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ModelPrivilege>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelPrivilege))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelObjectType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.User>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.User))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EmailFormat))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecuritySet))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrincipalsCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityResolutionType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrincipalsDeleteCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrivilegesGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.FunctionPrivilegesCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMemberPrivilegesCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelPrivilegesCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrivilegesDeleteCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BREntityMemberType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BusinessRulesPalette))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRActionGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionComponent>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRActionComponent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRItemTypeComponent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAttributeTypeInfo>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeTypeInfo))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeDataType>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRItemType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRConditionComponent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRConditionGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionComponent>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BusinessRules))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAction>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAction))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRItem))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeArgumentBase))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRPropertyName))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeValueArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRDomainBasedAttributeArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRFreeformArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRHierarchyArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRBlankArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRFreeformArgument>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionTreeNode>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRConditionTreeNode))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRCondition>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.LogicalOperator))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BusinessRule>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BusinessRule))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRDeleteCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRResultOptions))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRPublishCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Knowledgebase>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Knowledgebase))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataQualityDomain>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DataQualityDomain))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DomainType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MatchingPolicy))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingRule>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MatchingRule))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingCriterion>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataSourceFieldMapping>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DataSourceFieldMapping))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.PrerequisiteMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.WeightedMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DateMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SimilarMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StringMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExactMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByDifferenceMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByPercentageMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.OperationStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TabularData))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularColumnDefinition>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TabularColumnDefinition))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularDataRow>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TabularDataRow))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMembersGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DisplayType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberReturnOption))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SortDirection))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMembersInformation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMembersGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMembers))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ParentChild>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ParentChild))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelMembersGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelMembersResultCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMembersCopyCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberSourceTarget>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberSourceTarget))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityStagingImportType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityStagingGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityStagingBatch>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityStagingBatch))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingResultCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingDataStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingBatch>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingUnbatchedInformation>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingUnbatchedInformation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TransactionSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TransactionType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Transaction>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Transaction))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ReplacementId>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ReplacementId))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationSummaryItem>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationSummaryItem))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationIssue>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationIssue))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationProcessCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationProcessOptions))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationProcessResult))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Annotation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<object>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<System.Guid>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<int>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.International))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Version))]
-    public partial class BRCondition : MetadataSample.MDSTestService.BRItem {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ConditionTreeNodeIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private object PrefixArgumentField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.Identifier ConditionTreeNodeId {
-            get {
-                return this.ConditionTreeNodeIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ConditionTreeNodeIdField, value) != true)) {
-                    this.ConditionTreeNodeIdField = value;
-                    this.RaisePropertyChanged("ConditionTreeNodeId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public object PrefixArgument {
-            get {
-                return this.PrefixArgumentField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PrefixArgumentField, value) != true)) {
-                    this.PrefixArgumentField = value;
-                    this.RaisePropertyChanged("PrefixArgument");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRAction", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRAction : MetadataSample.MDSTestService.BRItem {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BRAttributeArgument PrefixArgumentField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BRAttributeArgument PrefixArgument {
-            get {
-                return this.PrefixArgumentField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PrefixArgumentField, value) != true)) {
-                    this.PrefixArgumentField = value;
-                    this.RaisePropertyChanged("PrefixArgument");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRArgument", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeValueArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRFreeformArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRHierarchyArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRBlankArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeArgumentBase))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRDomainBasedAttributeArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeArgument))]
-    public partial class BRArgument : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BRPropertyName PropertyNameField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier Identifier {
-            get {
-                return this.IdentifierField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentifierField, value) != true)) {
-                    this.IdentifierField = value;
-                    this.RaisePropertyChanged("Identifier");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BRPropertyName PropertyName {
-            get {
-                return this.PropertyNameField;
-            }
-            set {
-                if ((this.PropertyNameField.Equals(value) != true)) {
-                    this.PropertyNameField = value;
-                    this.RaisePropertyChanged("PropertyName");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRAttributeValueArgument", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRAttributeValueArgument : MetadataSample.MDSTestService.BRArgument {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string AttributeCodeField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AttributeCode {
-            get {
-                return this.AttributeCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributeCodeField, value) != true)) {
-                    this.AttributeCodeField = value;
-                    this.RaisePropertyChanged("AttributeCode");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRFreeformArgument", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRFreeformArgument : MetadataSample.MDSTestService.BRArgument {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ValueField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Value {
-            get {
-                return this.ValueField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ValueField, value) != true)) {
-                    this.ValueField = value;
-                    this.RaisePropertyChanged("Value");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRHierarchyArgument", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRHierarchyArgument : MetadataSample.MDSTestService.BRArgument {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BRAttributeArgument ChildArgumentField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BRAttributeArgument ChildArgument {
-            get {
-                return this.ChildArgumentField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ChildArgumentField, value) != true)) {
-                    this.ChildArgumentField = value;
-                    this.RaisePropertyChanged("ChildArgument");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier HierarchyId {
-            get {
-                return this.HierarchyIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HierarchyIdField, value) != true)) {
-                    this.HierarchyIdField = value;
-                    this.RaisePropertyChanged("HierarchyId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRBlankArgument", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRBlankArgument : MetadataSample.MDSTestService.BRArgument {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRAttributeArgumentBase", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRDomainBasedAttributeArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeArgument))]
-    public partial class BRAttributeArgumentBase : MetadataSample.MDSTestService.BRArgument {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier AttributeIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.Identifier AttributeId {
-            get {
-                return this.AttributeIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributeIdField, value) != true)) {
-                    this.AttributeIdField = value;
-                    this.RaisePropertyChanged("AttributeId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRDomainBasedAttributeArgument", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRDomainBasedAttributeArgument : MetadataSample.MDSTestService.BRAttributeArgumentBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BRAttributeArgument ChildArgumentField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BRAttributeArgument ChildArgument {
-            get {
-                return this.ChildArgumentField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ChildArgumentField, value) != true)) {
-                    this.ChildArgumentField = value;
-                    this.RaisePropertyChanged("ChildArgument");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRAttributeArgument", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRAttributeArgument : MetadataSample.MDSTestService.BRAttributeArgumentBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRFreeformArgument> ChildArgumentsField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRFreeformArgument> ChildArguments {
-            get {
-                return this.ChildArgumentsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ChildArgumentsField, value) != true)) {
-                    this.ChildArgumentsField = value;
-                    this.RaisePropertyChanged("ChildArguments");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRConditionTreeNode", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRConditionTreeNode : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRCondition> BRConditionsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberTypeContextIdentifier BusinessRuleIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionTreeNode> ConditionTreeChildNodesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ConditionTreeParentNodeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier IdentifierField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.LogicalOperator LogicalOperatorField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int SequenceField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.AuditInfo AuditInfo {
-            get {
-                return this.AuditInfoField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AuditInfoField, value) != true)) {
-                    this.AuditInfoField = value;
-                    this.RaisePropertyChanged("AuditInfo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRCondition> BRConditions {
-            get {
-                return this.BRConditionsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BRConditionsField, value) != true)) {
-                    this.BRConditionsField = value;
-                    this.RaisePropertyChanged("BRConditions");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.MemberTypeContextIdentifier BusinessRuleId {
-            get {
-                return this.BusinessRuleIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BusinessRuleIdField, value) != true)) {
-                    this.BusinessRuleIdField = value;
-                    this.RaisePropertyChanged("BusinessRuleId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionTreeNode> ConditionTreeChildNodes {
-            get {
-                return this.ConditionTreeChildNodesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ConditionTreeChildNodesField, value) != true)) {
-                    this.ConditionTreeChildNodesField = value;
-                    this.RaisePropertyChanged("ConditionTreeChildNodes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.Identifier ConditionTreeParentNode {
-            get {
-                return this.ConditionTreeParentNodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ConditionTreeParentNodeField, value) != true)) {
-                    this.ConditionTreeParentNodeField = value;
-                    this.RaisePropertyChanged("ConditionTreeParentNode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier Identifier {
-            get {
-                return this.IdentifierField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentifierField, value) != true)) {
-                    this.IdentifierField = value;
-                    this.RaisePropertyChanged("Identifier");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.LogicalOperator LogicalOperator {
-            get {
-                return this.LogicalOperatorField;
-            }
-            set {
-                if ((this.LogicalOperatorField.Equals(value) != true)) {
-                    this.LogicalOperatorField = value;
-                    this.RaisePropertyChanged("LogicalOperator");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Sequence {
-            get {
-                return this.SequenceField;
-            }
-            set {
-                if ((this.SequenceField.Equals(value) != true)) {
-                    this.SequenceField = value;
-                    this.RaisePropertyChanged("Sequence");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BusinessRule", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BusinessRule : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAction> BRActionsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BRConditionTreeNode BRConditionTreeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescriptionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberTypeContextIdentifier IdentifierField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<System.Guid> NotificationGroupField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<System.Guid> NotificationUserField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PriorityField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string RuleActionTextField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string RuleConditionTextField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BRStatus StatusField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.AuditInfo AuditInfo {
-            get {
-                return this.AuditInfoField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AuditInfoField, value) != true)) {
-                    this.AuditInfoField = value;
-                    this.RaisePropertyChanged("AuditInfo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAction> BRActions {
-            get {
-                return this.BRActionsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BRActionsField, value) != true)) {
-                    this.BRActionsField = value;
-                    this.RaisePropertyChanged("BRActions");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BRConditionTreeNode BRConditionTree {
-            get {
-                return this.BRConditionTreeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BRConditionTreeField, value) != true)) {
-                    this.BRConditionTreeField = value;
-                    this.RaisePropertyChanged("BRConditionTree");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.MemberTypeContextIdentifier Identifier {
-            get {
-                return this.IdentifierField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentifierField, value) != true)) {
-                    this.IdentifierField = value;
-                    this.RaisePropertyChanged("Identifier");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.Guid> NotificationGroup {
-            get {
-                return this.NotificationGroupField;
-            }
-            set {
-                if ((this.NotificationGroupField.Equals(value) != true)) {
-                    this.NotificationGroupField = value;
-                    this.RaisePropertyChanged("NotificationGroup");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.Guid> NotificationUser {
-            get {
-                return this.NotificationUserField;
-            }
-            set {
-                if ((this.NotificationUserField.Equals(value) != true)) {
-                    this.NotificationUserField = value;
-                    this.RaisePropertyChanged("NotificationUser");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Priority {
-            get {
-                return this.PriorityField;
-            }
-            set {
-                if ((this.PriorityField.Equals(value) != true)) {
-                    this.PriorityField = value;
-                    this.RaisePropertyChanged("Priority");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RuleActionText {
-            get {
-                return this.RuleActionTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RuleActionTextField, value) != true)) {
-                    this.RuleActionTextField = value;
-                    this.RaisePropertyChanged("RuleActionText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string RuleConditionText {
-            get {
-                return this.RuleConditionTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RuleConditionTextField, value) != true)) {
-                    this.RuleConditionTextField = value;
-                    this.RaisePropertyChanged("RuleConditionText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BRStatus Status {
-            get {
-                return this.StatusField;
-            }
-            set {
-                if ((this.StatusField.Equals(value) != true)) {
-                    this.StatusField = value;
-                    this.RaisePropertyChanged("Status");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRDeleteCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRDeleteCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<System.Guid> BRConditionTreeNodesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<System.Guid> BRItemsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<System.Guid> BusinessRulesField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<System.Guid> BRConditionTreeNodes {
-            get {
-                return this.BRConditionTreeNodesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BRConditionTreeNodesField, value) != true)) {
-                    this.BRConditionTreeNodesField = value;
-                    this.RaisePropertyChanged("BRConditionTreeNodes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<System.Guid> BRItems {
-            get {
-                return this.BRItemsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BRItemsField, value) != true)) {
-                    this.BRItemsField = value;
-                    this.RaisePropertyChanged("BRItems");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<System.Guid> BusinessRules {
-            get {
-                return this.BusinessRulesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BusinessRulesField, value) != true)) {
-                    this.BusinessRulesField = value;
-                    this.RaisePropertyChanged("BusinessRules");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier AttributeIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> BusinessRuleIdsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BREntityMemberType MemberTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier AttributeId {
-            get {
-                return this.AttributeIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributeIdField, value) != true)) {
-                    this.AttributeIdField = value;
-                    this.RaisePropertyChanged("AttributeId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> BusinessRuleIds {
-            get {
-                return this.BusinessRuleIdsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BusinessRuleIdsField, value) != true)) {
-                    this.BusinessRuleIdsField = value;
-                    this.RaisePropertyChanged("BusinessRuleIds");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BREntityMemberType MemberType {
-            get {
-                return this.MemberTypeField;
-            }
-            set {
-                if ((this.MemberTypeField.Equals(value) != true)) {
-                    this.MemberTypeField = value;
-                    this.RaisePropertyChanged("MemberType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRResultOptions", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRResultOptions : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.ResultType BRActionsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.ResultType BRConditionTreeNodesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.ResultType BRConditionsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.ResultType BusinessRulesField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.ResultType BRActions {
-            get {
-                return this.BRActionsField;
-            }
-            set {
-                if ((this.BRActionsField.Equals(value) != true)) {
-                    this.BRActionsField = value;
-                    this.RaisePropertyChanged("BRActions");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.ResultType BRConditionTreeNodes {
-            get {
-                return this.BRConditionTreeNodesField;
-            }
-            set {
-                if ((this.BRConditionTreeNodesField.Equals(value) != true)) {
-                    this.BRConditionTreeNodesField = value;
-                    this.RaisePropertyChanged("BRConditionTreeNodes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.ResultType BRConditions {
-            get {
-                return this.BRConditionsField;
-            }
-            set {
-                if ((this.BRConditionsField.Equals(value) != true)) {
-                    this.BRConditionsField = value;
-                    this.RaisePropertyChanged("BRConditions");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.ResultType BusinessRules {
-            get {
-                return this.BusinessRulesField;
-            }
-            set {
-                if ((this.BusinessRulesField.Equals(value) != true)) {
-                    this.BusinessRulesField = value;
-                    this.RaisePropertyChanged("BusinessRules");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRPublishCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class BRPublishCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.BREntityMemberType MemberTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.BREntityMemberType MemberType {
-            get {
-                return this.MemberTypeField;
-            }
-            set {
-                if ((this.MemberTypeField.Equals(value) != true)) {
-                    this.MemberTypeField = value;
-                    this.RaisePropertyChanged("MemberType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityMembersGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class EntityMembersGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier AttributeGroupIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> AttributesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<MetadataSample.MDSTestService.DisplayType> DisplayTypeField;
-        
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.HierarchyType HierarchyTypeField;
-        
-        private MetadataSample.MDSTestService.MemberReturnOption MemberReturnOptionField;
-        
-        private System.Nullable<MetadataSample.MDSTestService.MemberType> MemberTypeField;
-        
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        private int PageNumberField;
-        
-        private System.Nullable<int> PageSizeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ParentEntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ParentMemberField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string SearchTermField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier SortColumnIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.SortDirection SortDirectionField;
-        
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier AttributeGroupId {
-            get {
-                return this.AttributeGroupIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributeGroupIdField, value) != true)) {
-                    this.AttributeGroupIdField = value;
-                    this.RaisePropertyChanged("AttributeGroupId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Attributes {
-            get {
-                return this.AttributesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributesField, value) != true)) {
-                    this.AttributesField = value;
-                    this.RaisePropertyChanged("Attributes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<MetadataSample.MDSTestService.DisplayType> DisplayType {
-            get {
-                return this.DisplayTypeField;
-            }
-            set {
-                if ((this.DisplayTypeField.Equals(value) != true)) {
-                    this.DisplayTypeField = value;
-                    this.RaisePropertyChanged("DisplayType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier HierarchyId {
-            get {
-                return this.HierarchyIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HierarchyIdField, value) != true)) {
-                    this.HierarchyIdField = value;
-                    this.RaisePropertyChanged("HierarchyId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.HierarchyType HierarchyType {
-            get {
-                return this.HierarchyTypeField;
-            }
-            set {
-                if ((this.HierarchyTypeField.Equals(value) != true)) {
-                    this.HierarchyTypeField = value;
-                    this.RaisePropertyChanged("HierarchyType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public MetadataSample.MDSTestService.MemberReturnOption MemberReturnOption {
-            get {
-                return this.MemberReturnOptionField;
-            }
-            set {
-                if ((this.MemberReturnOptionField.Equals(value) != true)) {
-                    this.MemberReturnOptionField = value;
-                    this.RaisePropertyChanged("MemberReturnOption");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public System.Nullable<MetadataSample.MDSTestService.MemberType> MemberType {
-            get {
-                return this.MemberTypeField;
-            }
-            set {
-                if ((this.MemberTypeField.Equals(value) != true)) {
-                    this.MemberTypeField = value;
-                    this.RaisePropertyChanged("MemberType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public int PageNumber {
-            get {
-                return this.PageNumberField;
-            }
-            set {
-                if ((this.PageNumberField.Equals(value) != true)) {
-                    this.PageNumberField = value;
-                    this.RaisePropertyChanged("PageNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        public System.Nullable<int> PageSize {
-            get {
-                return this.PageSizeField;
-            }
-            set {
-                if ((this.PageSizeField.Equals(value) != true)) {
-                    this.PageSizeField = value;
-                    this.RaisePropertyChanged("PageSize");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ParentEntityId {
-            get {
-                return this.ParentEntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentEntityIdField, value) != true)) {
-                    this.ParentEntityIdField = value;
-                    this.RaisePropertyChanged("ParentEntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParentMember {
-            get {
-                return this.ParentMemberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentMemberField, value) != true)) {
-                    this.ParentMemberField = value;
-                    this.RaisePropertyChanged("ParentMember");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SearchTerm {
-            get {
-                return this.SearchTermField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SearchTermField, value) != true)) {
-                    this.SearchTermField = value;
-                    this.RaisePropertyChanged("SearchTerm");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier SortColumnId {
-            get {
-                return this.SortColumnIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SortColumnIdField, value) != true)) {
-                    this.SortColumnIdField = value;
-                    this.RaisePropertyChanged("SortColumnId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.SortDirection SortDirection {
-            get {
-                return this.SortDirectionField;
-            }
-            set {
-                if ((this.SortDirectionField.Equals(value) != true)) {
-                    this.SortDirectionField = value;
-                    this.RaisePropertyChanged("SortDirection");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityMembersInformation", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class EntityMembersInformation : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MemberCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PageNumberField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int TotalMemberCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int TotalPagesField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MemberCount {
-            get {
-                return this.MemberCountField;
-            }
-            set {
-                if ((this.MemberCountField.Equals(value) != true)) {
-                    this.MemberCountField = value;
-                    this.RaisePropertyChanged("MemberCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int PageNumber {
-            get {
-                return this.PageNumberField;
-            }
-            set {
-                if ((this.PageNumberField.Equals(value) != true)) {
-                    this.PageNumberField = value;
-                    this.RaisePropertyChanged("PageNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int TotalMemberCount {
-            get {
-                return this.TotalMemberCountField;
-            }
-            set {
-                if ((this.TotalMemberCountField.Equals(value) != true)) {
-                    this.TotalMemberCountField = value;
-                    this.RaisePropertyChanged("TotalMemberCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int TotalPages {
-            get {
-                return this.TotalPagesField;
-            }
-            set {
-                if ((this.TotalPagesField.Equals(value) != true)) {
-                    this.TotalPagesField = value;
-                    this.RaisePropertyChanged("TotalPages");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="HierarchyMembersGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class HierarchyMembersGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool AncestorsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.HierarchyType HierarchyTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MemberTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ParentEntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ParentMemberField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int RowLimitField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string SearchTermField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier UserIdField;
-        
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Ancestors {
-            get {
-                return this.AncestorsField;
-            }
-            set {
-                if ((this.AncestorsField.Equals(value) != true)) {
-                    this.AncestorsField = value;
-                    this.RaisePropertyChanged("Ancestors");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier HierarchyId {
-            get {
-                return this.HierarchyIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HierarchyIdField, value) != true)) {
-                    this.HierarchyIdField = value;
-                    this.RaisePropertyChanged("HierarchyId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.HierarchyType HierarchyType {
-            get {
-                return this.HierarchyTypeField;
-            }
-            set {
-                if ((this.HierarchyTypeField.Equals(value) != true)) {
-                    this.HierarchyTypeField = value;
-                    this.RaisePropertyChanged("HierarchyType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MemberType {
-            get {
-                return this.MemberTypeField;
-            }
-            set {
-                if ((this.MemberTypeField.Equals(value) != true)) {
-                    this.MemberTypeField = value;
-                    this.RaisePropertyChanged("MemberType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ParentEntityId {
-            get {
-                return this.ParentEntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentEntityIdField, value) != true)) {
-                    this.ParentEntityIdField = value;
-                    this.RaisePropertyChanged("ParentEntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParentMember {
-            get {
-                return this.ParentMemberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentMemberField, value) != true)) {
-                    this.ParentMemberField = value;
-                    this.RaisePropertyChanged("ParentMember");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int RowLimit {
-            get {
-                return this.RowLimitField;
-            }
-            set {
-                if ((this.RowLimitField.Equals(value) != true)) {
-                    this.RowLimitField = value;
-                    this.RaisePropertyChanged("RowLimit");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SearchTerm {
-            get {
-                return this.SearchTermField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SearchTermField, value) != true)) {
-                    this.SearchTermField = value;
-                    this.RaisePropertyChanged("SearchTerm");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier UserId {
-            get {
-                return this.UserIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.UserIdField, value) != true)) {
-                    this.UserIdField = value;
-                    this.RaisePropertyChanged("UserId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=9)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=10)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="HierarchyMembers", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class HierarchyMembers : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.HierarchyType HierarchyTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ParentChild> MembersField;
-        
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier HierarchyId {
-            get {
-                return this.HierarchyIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HierarchyIdField, value) != true)) {
-                    this.HierarchyIdField = value;
-                    this.RaisePropertyChanged("HierarchyId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.HierarchyType HierarchyType {
-            get {
-                return this.HierarchyTypeField;
-            }
-            set {
-                if ((this.HierarchyTypeField.Equals(value) != true)) {
-                    this.HierarchyTypeField = value;
-                    this.RaisePropertyChanged("HierarchyType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ParentChild> Members {
-            get {
-                return this.MembersField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MembersField, value) != true)) {
-                    this.MembersField = value;
-                    this.RaisePropertyChanged("Members");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ParentChild", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ParentChild : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier AttributeIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberIdentifier ChildField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ChildEntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.SecurityPermission ChildPermissionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier NextRelationshipIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.HierarchyItemType NextRelationshipTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberIdentifier ParentField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ParentEntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.SecurityPermission ParentPermissionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier RelationshipIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.HierarchyItemType RelationshipTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int SortOrderField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private decimal WeightField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier AttributeId {
-            get {
-                return this.AttributeIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributeIdField, value) != true)) {
-                    this.AttributeIdField = value;
-                    this.RaisePropertyChanged("AttributeId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.AuditInfo AuditInfo {
-            get {
-                return this.AuditInfoField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AuditInfoField, value) != true)) {
-                    this.AuditInfoField = value;
-                    this.RaisePropertyChanged("AuditInfo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.MemberIdentifier Child {
-            get {
-                return this.ChildField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ChildField, value) != true)) {
-                    this.ChildField = value;
-                    this.RaisePropertyChanged("Child");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ChildEntityId {
-            get {
-                return this.ChildEntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ChildEntityIdField, value) != true)) {
-                    this.ChildEntityIdField = value;
-                    this.RaisePropertyChanged("ChildEntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.SecurityPermission ChildPermission {
-            get {
-                return this.ChildPermissionField;
-            }
-            set {
-                if ((this.ChildPermissionField.Equals(value) != true)) {
-                    this.ChildPermissionField = value;
-                    this.RaisePropertyChanged("ChildPermission");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier NextRelationshipId {
-            get {
-                return this.NextRelationshipIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NextRelationshipIdField, value) != true)) {
-                    this.NextRelationshipIdField = value;
-                    this.RaisePropertyChanged("NextRelationshipId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.HierarchyItemType NextRelationshipType {
-            get {
-                return this.NextRelationshipTypeField;
-            }
-            set {
-                if ((this.NextRelationshipTypeField.Equals(value) != true)) {
-                    this.NextRelationshipTypeField = value;
-                    this.RaisePropertyChanged("NextRelationshipType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.MemberIdentifier Parent {
-            get {
-                return this.ParentField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentField, value) != true)) {
-                    this.ParentField = value;
-                    this.RaisePropertyChanged("Parent");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ParentEntityId {
-            get {
-                return this.ParentEntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentEntityIdField, value) != true)) {
-                    this.ParentEntityIdField = value;
-                    this.RaisePropertyChanged("ParentEntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.SecurityPermission ParentPermission {
-            get {
-                return this.ParentPermissionField;
-            }
-            set {
-                if ((this.ParentPermissionField.Equals(value) != true)) {
-                    this.ParentPermissionField = value;
-                    this.RaisePropertyChanged("ParentPermission");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier RelationshipId {
-            get {
-                return this.RelationshipIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RelationshipIdField, value) != true)) {
-                    this.RelationshipIdField = value;
-                    this.RaisePropertyChanged("RelationshipId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.HierarchyItemType RelationshipType {
-            get {
-                return this.RelationshipTypeField;
-            }
-            set {
-                if ((this.RelationshipTypeField.Equals(value) != true)) {
-                    this.RelationshipTypeField = value;
-                    this.RaisePropertyChanged("RelationshipType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SortOrder {
-            get {
-                return this.SortOrderField;
-            }
-            set {
-                if ((this.SortOrderField.Equals(value) != true)) {
-                    this.SortOrderField = value;
-                    this.RaisePropertyChanged("SortOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public decimal Weight {
-            get {
-                return this.WeightField;
-            }
-            set {
-                if ((this.WeightField.Equals(value) != true)) {
-                    this.WeightField = value;
-                    this.RaisePropertyChanged("Weight");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ModelMembersGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ModelMembersGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> EntitiesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> ModelsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> VersionsField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Entities {
-            get {
-                return this.EntitiesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntitiesField, value) != true)) {
-                    this.EntitiesField = value;
-                    this.RaisePropertyChanged("Entities");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Models {
-            get {
-                return this.ModelsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelsField, value) != true)) {
-                    this.ModelsField = value;
-                    this.RaisePropertyChanged("Models");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Versions {
-            get {
-                return this.VersionsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionsField, value) != true)) {
-                    this.VersionsField = value;
-                    this.RaisePropertyChanged("Versions");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ModelMembersResultCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ModelMembersResultCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IncludeCollectionMembersField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IncludeConsolidatedMembersField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IncludeLeafMembersField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IncludeCollectionMembers {
-            get {
-                return this.IncludeCollectionMembersField;
-            }
-            set {
-                if ((this.IncludeCollectionMembersField.Equals(value) != true)) {
-                    this.IncludeCollectionMembersField = value;
-                    this.RaisePropertyChanged("IncludeCollectionMembers");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IncludeConsolidatedMembers {
-            get {
-                return this.IncludeConsolidatedMembersField;
-            }
-            set {
-                if ((this.IncludeConsolidatedMembersField.Equals(value) != true)) {
-                    this.IncludeConsolidatedMembersField = value;
-                    this.RaisePropertyChanged("IncludeConsolidatedMembers");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IncludeLeafMembers {
-            get {
-                return this.IncludeLeafMembersField;
-            }
-            set {
-                if ((this.IncludeLeafMembersField.Equals(value) != true)) {
-                    this.IncludeLeafMembersField = value;
-                    this.RaisePropertyChanged("IncludeLeafMembers");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityMembersCopyCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class EntityMembersCopyCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberSourceTarget> MembersField;
-        
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberSourceTarget> Members {
-            get {
-                return this.MembersField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MembersField, value) != true)) {
-                    this.MembersField = value;
-                    this.RaisePropertyChanged("Members");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MemberSourceTarget", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class MemberSourceTarget : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string SourceMemberCodeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TargetMemberCodeField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SourceMemberCode {
-            get {
-                return this.SourceMemberCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SourceMemberCodeField, value) != true)) {
-                    this.SourceMemberCodeField = value;
-                    this.RaisePropertyChanged("SourceMemberCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TargetMemberCode {
-            get {
-                return this.TargetMemberCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TargetMemberCodeField, value) != true)) {
-                    this.TargetMemberCodeField = value;
-                    this.RaisePropertyChanged("TargetMemberCode");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityStagingGetCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class EntityStagingGetCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IncludeClearedBatchesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PageNumberField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PageSizeField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IncludeClearedBatches {
-            get {
-                return this.IncludeClearedBatchesField;
-            }
-            set {
-                if ((this.IncludeClearedBatchesField.Equals(value) != true)) {
-                    this.IncludeClearedBatchesField = value;
-                    this.RaisePropertyChanged("IncludeClearedBatches");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public int PageNumber {
-            get {
-                return this.PageNumberField;
-            }
-            set {
-                if ((this.PageNumberField.Equals(value) != true)) {
-                    this.PageNumberField = value;
-                    this.RaisePropertyChanged("PageNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public int PageSize {
-            get {
-                return this.PageSizeField;
-            }
-            set {
-                if ((this.PageSizeField.Equals(value) != true)) {
-                    this.PageSizeField = value;
-                    this.RaisePropertyChanged("PageSize");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityStagingBatch", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class EntityStagingBatch : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<int> BatchIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string BatchTagField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ErrorViewField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MemberCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberType MemberTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime ProcessedEndField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime ProcessedStartField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int RowsInErrorField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.StagingBatchStatus StatusField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Nullable<int> BatchId {
-            get {
-                return this.BatchIdField;
-            }
-            set {
-                if ((this.BatchIdField.Equals(value) != true)) {
-                    this.BatchIdField = value;
-                    this.RaisePropertyChanged("BatchId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string BatchTag {
-            get {
-                return this.BatchTagField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BatchTagField, value) != true)) {
-                    this.BatchTagField = value;
-                    this.RaisePropertyChanged("BatchTag");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ErrorView {
-            get {
-                return this.ErrorViewField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ErrorViewField, value) != true)) {
-                    this.ErrorViewField = value;
-                    this.RaisePropertyChanged("ErrorView");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MemberCount {
-            get {
-                return this.MemberCountField;
-            }
-            set {
-                if ((this.MemberCountField.Equals(value) != true)) {
-                    this.MemberCountField = value;
-                    this.RaisePropertyChanged("MemberCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.MemberType MemberType {
-            get {
-                return this.MemberTypeField;
-            }
-            set {
-                if ((this.MemberTypeField.Equals(value) != true)) {
-                    this.MemberTypeField = value;
-                    this.RaisePropertyChanged("MemberType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.DateTime ProcessedEnd {
-            get {
-                return this.ProcessedEndField;
-            }
-            set {
-                if ((this.ProcessedEndField.Equals(value) != true)) {
-                    this.ProcessedEndField = value;
-                    this.RaisePropertyChanged("ProcessedEnd");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.DateTime ProcessedStart {
-            get {
-                return this.ProcessedStartField;
-            }
-            set {
-                if ((this.ProcessedStartField.Equals(value) != true)) {
-                    this.ProcessedStartField = value;
-                    this.RaisePropertyChanged("ProcessedStart");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int RowsInError {
-            get {
-                return this.RowsInErrorField;
-            }
-            set {
-                if ((this.RowsInErrorField.Equals(value) != true)) {
-                    this.RowsInErrorField = value;
-                    this.RaisePropertyChanged("RowsInError");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.StagingBatchStatus Status {
-            get {
-                return this.StatusField;
-            }
-            set {
-                if ((this.StatusField.Equals(value) != true)) {
-                    this.StatusField = value;
-                    this.RaisePropertyChanged("Status");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StagingResultCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class StagingResultCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool AllField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool AttributesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool MembersField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<int> PageSizeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool RelationshipsField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool All {
-            get {
-                return this.AllField;
-            }
-            set {
-                if ((this.AllField.Equals(value) != true)) {
-                    this.AllField = value;
-                    this.RaisePropertyChanged("All");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool Attributes {
-            get {
-                return this.AttributesField;
-            }
-            set {
-                if ((this.AttributesField.Equals(value) != true)) {
-                    this.AttributesField = value;
-                    this.RaisePropertyChanged("Attributes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool Members {
-            get {
-                return this.MembersField;
-            }
-            set {
-                if ((this.MembersField.Equals(value) != true)) {
-                    this.MembersField = value;
-                    this.RaisePropertyChanged("Members");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Nullable<int> PageSize {
-            get {
-                return this.PageSizeField;
-            }
-            set {
-                if ((this.PageSizeField.Equals(value) != true)) {
-                    this.PageSizeField = value;
-                    this.RaisePropertyChanged("PageSize");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool Relationships {
-            get {
-                return this.RelationshipsField;
-            }
-            set {
-                if ((this.RelationshipsField.Equals(value) != true)) {
-                    this.RelationshipsField = value;
-                    this.RaisePropertyChanged("Relationships");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StagingSearchCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class StagingSearchCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.StagingBatchStatus StagingBatchStatusField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatchesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.StagingDataStatus StagingDataStatusField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.StagingBatchStatus StagingBatchStatus {
-            get {
-                return this.StagingBatchStatusField;
-            }
-            set {
-                if ((this.StagingBatchStatusField.Equals(value) != true)) {
-                    this.StagingBatchStatusField = value;
-                    this.RaisePropertyChanged("StagingBatchStatus");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches {
-            get {
-                return this.StagingBatchesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.StagingBatchesField, value) != true)) {
-                    this.StagingBatchesField = value;
-                    this.RaisePropertyChanged("StagingBatches");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.StagingDataStatus StagingDataStatus {
-            get {
-                return this.StagingDataStatusField;
-            }
-            set {
-                if ((this.StagingDataStatusField.Equals(value) != true)) {
-                    this.StagingDataStatusField = value;
-                    this.RaisePropertyChanged("StagingDataStatus");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StagingUnbatchedInformation", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class StagingUnbatchedInformation : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MemberAttributeCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MemberCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MemberRelationshipCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MemberAttributeCount {
-            get {
-                return this.MemberAttributeCountField;
-            }
-            set {
-                if ((this.MemberAttributeCountField.Equals(value) != true)) {
-                    this.MemberAttributeCountField = value;
-                    this.RaisePropertyChanged("MemberAttributeCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MemberCount {
-            get {
-                return this.MemberCountField;
-            }
-            set {
-                if ((this.MemberCountField.Equals(value) != true)) {
-                    this.MemberCountField = value;
-                    this.RaisePropertyChanged("MemberCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MemberRelationshipCount {
-            get {
-                return this.MemberRelationshipCountField;
-            }
-            set {
-                if ((this.MemberRelationshipCountField.Equals(value) != true)) {
-                    this.MemberRelationshipCountField = value;
-                    this.RaisePropertyChanged("MemberRelationshipCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TransactionSearchCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class TransactionSearchCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier AttributeIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<System.DateTime> DateTimeBeginRangeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<System.DateTime> DateTimeEndRangeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ExplicitHierarchyIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberIdentifier MemberIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<MetadataSample.MDSTestService.MemberType> MemberTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NewValueField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PageNumberField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<int> PageSizeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string PriorValueField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string SortColumnField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<MetadataSample.MDSTestService.SortDirection> SortDirectionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<int> TransactionIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<MetadataSample.MDSTestService.TransactionType> TransactionTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier UserIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier AttributeId {
-            get {
-                return this.AttributeIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributeIdField, value) != true)) {
-                    this.AttributeIdField = value;
-                    this.RaisePropertyChanged("AttributeId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> DateTimeBeginRange {
-            get {
-                return this.DateTimeBeginRangeField;
-            }
-            set {
-                if ((this.DateTimeBeginRangeField.Equals(value) != true)) {
-                    this.DateTimeBeginRangeField = value;
-                    this.RaisePropertyChanged("DateTimeBeginRange");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> DateTimeEndRange {
-            get {
-                return this.DateTimeEndRangeField;
-            }
-            set {
-                if ((this.DateTimeEndRangeField.Equals(value) != true)) {
-                    this.DateTimeEndRangeField = value;
-                    this.RaisePropertyChanged("DateTimeEndRange");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ExplicitHierarchyId {
-            get {
-                return this.ExplicitHierarchyIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ExplicitHierarchyIdField, value) != true)) {
-                    this.ExplicitHierarchyIdField = value;
-                    this.RaisePropertyChanged("ExplicitHierarchyId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.MemberIdentifier MemberId {
-            get {
-                return this.MemberIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MemberIdField, value) != true)) {
-                    this.MemberIdField = value;
-                    this.RaisePropertyChanged("MemberId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<MetadataSample.MDSTestService.MemberType> MemberType {
-            get {
-                return this.MemberTypeField;
-            }
-            set {
-                if ((this.MemberTypeField.Equals(value) != true)) {
-                    this.MemberTypeField = value;
-                    this.RaisePropertyChanged("MemberType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string NewValue {
-            get {
-                return this.NewValueField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NewValueField, value) != true)) {
-                    this.NewValueField = value;
-                    this.RaisePropertyChanged("NewValue");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int PageNumber {
-            get {
-                return this.PageNumberField;
-            }
-            set {
-                if ((this.PageNumberField.Equals(value) != true)) {
-                    this.PageNumberField = value;
-                    this.RaisePropertyChanged("PageNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> PageSize {
-            get {
-                return this.PageSizeField;
-            }
-            set {
-                if ((this.PageSizeField.Equals(value) != true)) {
-                    this.PageSizeField = value;
-                    this.RaisePropertyChanged("PageSize");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string PriorValue {
-            get {
-                return this.PriorValueField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PriorValueField, value) != true)) {
-                    this.PriorValueField = value;
-                    this.RaisePropertyChanged("PriorValue");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SortColumn {
-            get {
-                return this.SortColumnField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SortColumnField, value) != true)) {
-                    this.SortColumnField = value;
-                    this.RaisePropertyChanged("SortColumn");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<MetadataSample.MDSTestService.SortDirection> SortDirection {
-            get {
-                return this.SortDirectionField;
-            }
-            set {
-                if ((this.SortDirectionField.Equals(value) != true)) {
-                    this.SortDirectionField = value;
-                    this.RaisePropertyChanged("SortDirection");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> TransactionId {
-            get {
-                return this.TransactionIdField;
-            }
-            set {
-                if ((this.TransactionIdField.Equals(value) != true)) {
-                    this.TransactionIdField = value;
-                    this.RaisePropertyChanged("TransactionId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<MetadataSample.MDSTestService.TransactionType> TransactionType {
-            get {
-                return this.TransactionTypeField;
-            }
-            set {
-                if ((this.TransactionTypeField.Equals(value) != true)) {
-                    this.TransactionTypeField = value;
-                    this.RaisePropertyChanged("TransactionType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.Identifier UserId {
-            get {
-                return this.UserIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.UserIdField, value) != true)) {
-                    this.UserIdField = value;
-                    this.RaisePropertyChanged("UserId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Transaction", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class Transaction : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier AttributeIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime DateField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ExplicitHierarchyIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberIdentifier MemberIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberType MemberTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NewValueField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string PriorValueField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.TransactionType TransactionTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier UserIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier AttributeId {
-            get {
-                return this.AttributeIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AttributeIdField, value) != true)) {
-                    this.AttributeIdField = value;
-                    this.RaisePropertyChanged("AttributeId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.DateTime Date {
-            get {
-                return this.DateField;
-            }
-            set {
-                if ((this.DateField.Equals(value) != true)) {
-                    this.DateField = value;
-                    this.RaisePropertyChanged("Date");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ExplicitHierarchyId {
-            get {
-                return this.ExplicitHierarchyIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ExplicitHierarchyIdField, value) != true)) {
-                    this.ExplicitHierarchyIdField = value;
-                    this.RaisePropertyChanged("ExplicitHierarchyId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((this.IdField.Equals(value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.MemberIdentifier MemberId {
-            get {
-                return this.MemberIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MemberIdField, value) != true)) {
-                    this.MemberIdField = value;
-                    this.RaisePropertyChanged("MemberId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.MemberType MemberType {
-            get {
-                return this.MemberTypeField;
-            }
-            set {
-                if ((this.MemberTypeField.Equals(value) != true)) {
-                    this.MemberTypeField = value;
-                    this.RaisePropertyChanged("MemberType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string NewValue {
-            get {
-                return this.NewValueField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NewValueField, value) != true)) {
-                    this.NewValueField = value;
-                    this.RaisePropertyChanged("NewValue");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string PriorValue {
-            get {
-                return this.PriorValueField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PriorValueField, value) != true)) {
-                    this.PriorValueField = value;
-                    this.RaisePropertyChanged("PriorValue");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.TransactionType TransactionType {
-            get {
-                return this.TransactionTypeField;
-            }
-            set {
-                if ((this.TransactionTypeField.Equals(value) != true)) {
-                    this.TransactionTypeField = value;
-                    this.RaisePropertyChanged("TransactionType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.Identifier UserId {
-            get {
-                return this.UserIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.UserIdField, value) != true)) {
-                    this.UserIdField = value;
-                    this.RaisePropertyChanged("UserId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ReplacementId", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ReplacementId : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int NewIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PriorIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int NewId {
-            get {
-                return this.NewIdField;
-            }
-            set {
-                if ((this.NewIdField.Equals(value) != true)) {
-                    this.NewIdField = value;
-                    this.RaisePropertyChanged("NewId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int PriorId {
-            get {
-                return this.PriorIdField;
-            }
-            set {
-                if ((this.PriorIdField.Equals(value) != true)) {
-                    this.PriorIdField = value;
-                    this.RaisePropertyChanged("PriorId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ValidationSearchCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ValidationSearchCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Nullable<MetadataSample.MDSTestService.MemberType> MemberTypeIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> MembersField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool OmitIssuesListField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool OmitSummaryField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PageNumberField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int PageSizeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string SortColumnField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.SortDirection SortDirectionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier UserIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<MetadataSample.MDSTestService.MemberType> MemberTypeId {
-            get {
-                return this.MemberTypeIdField;
-            }
-            set {
-                if ((this.MemberTypeIdField.Equals(value) != true)) {
-                    this.MemberTypeIdField = value;
-                    this.RaisePropertyChanged("MemberTypeId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> Members {
-            get {
-                return this.MembersField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MembersField, value) != true)) {
-                    this.MembersField = value;
-                    this.RaisePropertyChanged("Members");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool OmitIssuesList {
-            get {
-                return this.OmitIssuesListField;
-            }
-            set {
-                if ((this.OmitIssuesListField.Equals(value) != true)) {
-                    this.OmitIssuesListField = value;
-                    this.RaisePropertyChanged("OmitIssuesList");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool OmitSummary {
-            get {
-                return this.OmitSummaryField;
-            }
-            set {
-                if ((this.OmitSummaryField.Equals(value) != true)) {
-                    this.OmitSummaryField = value;
-                    this.RaisePropertyChanged("OmitSummary");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int PageNumber {
-            get {
-                return this.PageNumberField;
-            }
-            set {
-                if ((this.PageNumberField.Equals(value) != true)) {
-                    this.PageNumberField = value;
-                    this.RaisePropertyChanged("PageNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int PageSize {
-            get {
-                return this.PageSizeField;
-            }
-            set {
-                if ((this.PageSizeField.Equals(value) != true)) {
-                    this.PageSizeField = value;
-                    this.RaisePropertyChanged("PageSize");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public string SortColumn {
-            get {
-                return this.SortColumnField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SortColumnField, value) != true)) {
-                    this.SortColumnField = value;
-                    this.RaisePropertyChanged("SortColumn");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.SortDirection SortDirection {
-            get {
-                return this.SortDirectionField;
-            }
-            set {
-                if ((this.SortDirectionField.Equals(value) != true)) {
-                    this.SortDirectionField = value;
-                    this.RaisePropertyChanged("SortDirection");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.Identifier UserId {
-            get {
-                return this.UserIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.UserIdField, value) != true)) {
-                    this.UserIdField = value;
-                    this.RaisePropertyChanged("UserId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ValidationSummaryItem", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ValidationSummaryItem : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MemberCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.ValidationStatus StatusField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MemberCount {
-            get {
-                return this.MemberCountField;
-            }
-            set {
-                if ((this.MemberCountField.Equals(value) != true)) {
-                    this.MemberCountField = value;
-                    this.RaisePropertyChanged("MemberCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.ValidationStatus Status {
-            get {
-                return this.StatusField;
-            }
-            set {
-                if ((this.StatusField.Equals(value) != true)) {
-                    this.StatusField = value;
-                    this.RaisePropertyChanged("Status");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ValidationIssue", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ValidationIssue : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier BusinessRuleIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier BusinessRuleItemIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescriptionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier HierarchyIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MemberIdentifier MemberIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool NotificationSentField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.AuditInfo AuditInfo {
-            get {
-                return this.AuditInfoField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AuditInfoField, value) != true)) {
-                    this.AuditInfoField = value;
-                    this.RaisePropertyChanged("AuditInfo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier BusinessRuleId {
-            get {
-                return this.BusinessRuleIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BusinessRuleIdField, value) != true)) {
-                    this.BusinessRuleIdField = value;
-                    this.RaisePropertyChanged("BusinessRuleId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier BusinessRuleItemId {
-            get {
-                return this.BusinessRuleItemIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.BusinessRuleItemIdField, value) != true)) {
-                    this.BusinessRuleItemIdField = value;
-                    this.RaisePropertyChanged("BusinessRuleItemId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier HierarchyId {
-            get {
-                return this.HierarchyIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HierarchyIdField, value) != true)) {
-                    this.HierarchyIdField = value;
-                    this.RaisePropertyChanged("HierarchyId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((this.IdField.Equals(value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.MemberIdentifier MemberId {
-            get {
-                return this.MemberIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MemberIdField, value) != true)) {
-                    this.MemberIdField = value;
-                    this.RaisePropertyChanged("MemberId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool NotificationSent {
-            get {
-                return this.NotificationSentField;
-            }
-            set {
-                if ((this.NotificationSentField.Equals(value) != true)) {
-                    this.NotificationSentField = value;
-                    this.RaisePropertyChanged("NotificationSent");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ValidationProcessCriteria", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ValidationProcessCriteria : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier EntityIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> MembersField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier ModelIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.Identifier VersionIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier EntityId {
-            get {
-                return this.EntityIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EntityIdField, value) != true)) {
-                    this.EntityIdField = value;
-                    this.RaisePropertyChanged("EntityId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> Members {
-            get {
-                return this.MembersField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MembersField, value) != true)) {
-                    this.MembersField = value;
-                    this.RaisePropertyChanged("Members");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier ModelId {
-            get {
-                return this.ModelIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ModelIdField, value) != true)) {
-                    this.ModelIdField = value;
-                    this.RaisePropertyChanged("ModelId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public MetadataSample.MDSTestService.Identifier VersionId {
-            get {
-                return this.VersionIdField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.VersionIdField, value) != true)) {
-                    this.VersionIdField = value;
-                    this.RaisePropertyChanged("VersionId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ValidationProcessOptions", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ValidationProcessOptions : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool CommitVersionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool ReturnValidationResultsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool ValidateEntityAsyncField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool CommitVersion {
-            get {
-                return this.CommitVersionField;
-            }
-            set {
-                if ((this.CommitVersionField.Equals(value) != true)) {
-                    this.CommitVersionField = value;
-                    this.RaisePropertyChanged("CommitVersion");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool ReturnValidationResults {
-            get {
-                return this.ReturnValidationResultsField;
-            }
-            set {
-                if ((this.ReturnValidationResultsField.Equals(value) != true)) {
-                    this.ReturnValidationResultsField = value;
-                    this.RaisePropertyChanged("ReturnValidationResults");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        public bool ValidateEntityAsync {
-            get {
-                return this.ValidateEntityAsyncField;
-            }
-            set {
-                if ((this.ValidateEntityAsyncField.Equals(value) != true)) {
-                    this.ValidateEntityAsyncField = value;
-                    this.RaisePropertyChanged("ValidateEntityAsync");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ValidationProcessResult", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ValidationProcessResult : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MembersInvalidCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MembersValidCountField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MembersValidatedCountField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MembersInvalidCount {
-            get {
-                return this.MembersInvalidCountField;
-            }
-            set {
-                if ((this.MembersInvalidCountField.Equals(value) != true)) {
-                    this.MembersInvalidCountField = value;
-                    this.RaisePropertyChanged("MembersInvalidCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MembersValidCount {
-            get {
-                return this.MembersValidCountField;
-            }
-            set {
-                if ((this.MembersValidCountField.Equals(value) != true)) {
-                    this.MembersValidCountField = value;
-                    this.RaisePropertyChanged("MembersValidCount");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MembersValidatedCount {
-            get {
-                return this.MembersValidatedCountField;
-            }
-            set {
-                if ((this.MembersValidatedCountField.Equals(value) != true)) {
-                    this.MembersValidatedCountField = value;
-                    this.RaisePropertyChanged("MembersValidatedCount");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Annotation", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class Annotation : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.AuditInfo AuditInfoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string CommentField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.AuditInfo AuditInfo {
-            get {
-                return this.AuditInfoField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AuditInfoField, value) != true)) {
-                    this.AuditInfoField = value;
-                    this.RaisePropertyChanged("AuditInfo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Comment {
-            get {
-                return this.CommentField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CommentField, value) != true)) {
-                    this.CommentField = value;
-                    this.RaisePropertyChanged("Comment");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((this.IdField.Equals(value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="International", Namespace="http://www.w3.org/2005/09/ws-i18n")]
-    [System.SerializableAttribute()]
-    public partial class International : MetadataSample.MDSTestService.DataContractBase {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string LocaleField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TzField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Locale {
-            get {
-                return this.LocaleField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LocaleField, value) != true)) {
-                    this.LocaleField = value;
-                    this.RaisePropertyChanged("Locale");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Tz {
-            get {
-                return this.TzField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TzField, value) != true)) {
-                    this.TzField = value;
-                    this.RaisePropertyChanged("Tz");
-                }
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ObjectType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum ObjectType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Unknown = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Model = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DerivedHierarchy = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DerivedHierarchyLevel = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Version = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Entity = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Hierarchy = 6,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Attribute = 7,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        AttributeGroup = 8,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        StagingBatch = 9,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        VersionFlag = 10,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        User = 11,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MemberCode = 12,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Annotation = 13,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        BusinessRule = 14,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        BusinessRuleConditionTreeNode = 15,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        BusinessRuleItem = 16,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        BusinessRuleArgument = 17,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Transaction = 18,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MemberId = 19,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ExportView = 20,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UserGroup = 21,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MemberAttribute = 22,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MemberType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum MemberType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Leaf = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Consolidated = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Collection = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Hierarchy = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        CollectionMember = 5,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="RelationshipType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum RelationshipType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        All = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Parent = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Sibling = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StagingBatchStatus", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum StagingBatchStatus : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        All = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        QueuedToRun = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotRunning = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Running = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        QueuedToClear = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Cleared = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        AllExceptCleared = 6,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Completed = 7,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SecurityPermission", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum SecurityPermission : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Deny = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Read = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Update = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Inferred = 99,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ValidationStatus", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum ValidationStatus : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NewAwaitingValidation = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Validating = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ValidationFailed = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ValidationSucceeded = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        AwaitingRevalidation = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        AwaitingDependentMemberRevalidation = 5,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MemberKeyLookupType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum MemberKeyLookupType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MemberCode = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MemberId = 1,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AttributeValueType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum AttributeValueType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        String = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Number = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DateTime = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Domain = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        File = 5,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ExportViewFormat", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum ExportViewFormat : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        LeafAttributes = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ConsolidatedAttributes = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        CollectionAttributes = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Collections = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ExplicitParentChild = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ExplicitLevels = 6,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DerivedParentChild = 7,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DerivedLevels = 8,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PermissionType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum PermissionType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Unknown = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 99,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DenyAccess = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Update = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ReadOnly = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Delete = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Execute = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Control = 6,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AttributeType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum AttributeType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        FreeForm = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Domain = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        System = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        File = 4,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AttributeDataType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum AttributeDataType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Text = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Number = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DateTime = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Link = 6,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="HierarchyItemType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum HierarchyItemType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Entity = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DBA = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Hierarchy = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ConsolidatedDBA = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotApplicable = 4,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="VersionValidationStatus", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum VersionValidationStatus : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotValidated = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Validated = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="VersionStatus", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum VersionStatus : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Open = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Locked = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Committed = 3,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ResultType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum ResultType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        None = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Identifiers = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Details = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SearchOption", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum SearchOption : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UserDefinedObjectsOnly = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        SystemObjectsOnly = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        BothUserDefinedAndSystemObjects = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SystemPropertyType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum SystemPropertyType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DatabaseSchemaVersion = 0,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GroupType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum GroupType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        None = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        InternalGroup = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ActiveDirectoryGroup = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        LocalGroup = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        OtherGroup = 99,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="FunctionalArea", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum FunctionalArea : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        None = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Explorer = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Versions = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ImportExport = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Security = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        SystemAdministration = 5,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PrincipalType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum PrincipalType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        None = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UserAccount = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Group = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="HierarchyType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum HierarchyType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Explicit = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Derived = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Collection = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        All = 3,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Permission", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum Permission : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        None = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Deny = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Update = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ReadOnly = 3,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ModelObjectType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum ModelObjectType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        None = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Model = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Entity = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Attribute = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        AttributeGroup = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ExplicitHierarchy = 6,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DerivedHierarchy = 7,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        LeafMemberType = 8,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ConsolidatedMemberType = 9,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        CollectionMemberType = 10,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EmailFormat", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum EmailFormat : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        HTML = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Text = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SecurityResolutionType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum SecurityResolutionType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        UserAndGroup = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Users = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Effective = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BREntityMemberType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum BREntityMemberType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Leaf = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Consolidated = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRItemType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum BRItemType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsEqual = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsNotEqual = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Contains = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        StartsWith = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        EndsWith = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ContainsSubset = 6,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsGreaterThan = 7,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsGreaterThanOrEqual = 8,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsLessThan = 9,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsLessThanOrEqual = 10,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IsBetween = 11,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DefaultsToValue = 12,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DefaultsToGeneratedValue = 13,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        EqualsValue = 14,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        EqualsConcatenatedValue = 15,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MustBeGreaterThan = 16,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MustBeGreaterThanOrEqual = 17,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MustBeLessThan = 18,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MustBeLessThanOrEqual = 19,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MustBeBetween = 20,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MinimumLength = 21,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MaximumLength = 22,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        AllowableValues = 23,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Unique = 24,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Mandatory = 25,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Invalid = 27,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DefaultsToConcatenatedValue = 28,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MustBeEqual = 29,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ContainsPattern = 30,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MustContainPattern = 31,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        StartSiteWorkflow = 32,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        HasChanged = 33,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRPropertyName", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum BRPropertyName : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Value = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        StartPosition = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RangeLow = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        RangeHigh = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        StartingValue = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        IncrementValue = 6,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Length = 7,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Substring = 8,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Anchor = 9,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="LogicalOperator", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum LogicalOperator : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        And = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Or = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="BRStatus", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum BRStatus : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Undefined = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Active = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Excluded = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PendingActivation = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PendingChanges = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PendingExclusion = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PendingDeletion = 6,
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Knowledgebase", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class Knowledgebase : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescriptionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataQualityDomain> DomainsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private long IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.MatchingPolicy MatchingPolicyField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataQualityDomain> Domains {
-            get {
-                return this.DomainsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DomainsField, value) != true)) {
-                    this.DomainsField = value;
-                    this.RaisePropertyChanged("Domains");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public long Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((this.IdField.Equals(value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.MatchingPolicy MatchingPolicy {
-            get {
-                return this.MatchingPolicyField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MatchingPolicyField, value) != true)) {
-                    this.MatchingPolicyField = value;
-                    this.RaisePropertyChanged("MatchingPolicy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DataQualityDomain", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class DataQualityDomain : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescriptionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.DomainType DomainTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private long IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool IsDefaultField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.DomainType DomainType {
-            get {
-                return this.DomainTypeField;
-            }
-            set {
-                if ((this.DomainTypeField.Equals(value) != true)) {
-                    this.DomainTypeField = value;
-                    this.RaisePropertyChanged("DomainType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public long Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((this.IdField.Equals(value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool IsDefault {
-            get {
-                return this.IsDefaultField;
-            }
-            set {
-                if ((this.IsDefaultField.Equals(value) != true)) {
-                    this.IsDefaultField = value;
-                    this.RaisePropertyChanged("IsDefault");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DomainType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum DomainType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        String = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Date = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Integer = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Decimal = 3,
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MatchingPolicy", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class MatchingPolicy : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingRule> RulesField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingRule> Rules {
-            get {
-                return this.RulesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RulesField, value) != true)) {
-                    this.RulesField = value;
-                    this.RaisePropertyChanged("Rules");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MatchingRule", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class MatchingRule : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescriptionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingCriterion> MatchingCriteriaField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int ThresholdField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingCriterion> MatchingCriteria {
-            get {
-                return this.MatchingCriteriaField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MatchingCriteriaField, value) != true)) {
-                    this.MatchingCriteriaField = value;
-                    this.RaisePropertyChanged("MatchingCriteria");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Threshold {
-            get {
-                return this.ThresholdField;
-            }
-            set {
-                if ((this.ThresholdField.Equals(value) != true)) {
-                    this.ThresholdField = value;
-                    this.RaisePropertyChanged("Threshold");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.PrerequisiteMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.WeightedMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SimilarMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DateMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StringMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByDifferenceMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByPercentageMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExactMatchingCriterion))]
-    public partial class MatchingCriterion : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataSourceFieldMapping> MappingsField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataSourceFieldMapping> Mappings {
-            get {
-                return this.MappingsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MappingsField, value) != true)) {
-                    this.MappingsField = value;
-                    this.RaisePropertyChanged("Mappings");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DataSourceFieldMapping", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class DataSourceFieldMapping : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private long DomainIdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string FieldNameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public long DomainId {
-            get {
-                return this.DomainIdField;
-            }
-            set {
-                if ((this.DomainIdField.Equals(value) != true)) {
-                    this.DomainIdField = value;
-                    this.RaisePropertyChanged("DomainId");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string FieldName {
-            get {
-                return this.FieldNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.FieldNameField, value) != true)) {
-                    this.FieldNameField = value;
-                    this.RaisePropertyChanged("FieldName");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PrerequisiteMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class PrerequisiteMatchingCriterion : MetadataSample.MDSTestService.MatchingCriterion {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="WeightedMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SimilarMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DateMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StringMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByDifferenceMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByPercentageMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExactMatchingCriterion))]
-    public partial class WeightedMatchingCriterion : MetadataSample.MDSTestService.MatchingCriterion {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int DomainWeightField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int DomainWeight {
-            get {
-                return this.DomainWeightField;
-            }
-            set {
-                if ((this.DomainWeightField.Equals(value) != true)) {
-                    this.DomainWeightField = value;
-                    this.RaisePropertyChanged("DomainWeight");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DateMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class DateMatchingCriterion : MetadataSample.MDSTestService.SimilarMatchingCriterion {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int DaysDifferenceField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int MonthsDifferenceField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int YearsDifferenceField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int DaysDifference {
-            get {
-                return this.DaysDifferenceField;
-            }
-            set {
-                if ((this.DaysDifferenceField.Equals(value) != true)) {
-                    this.DaysDifferenceField = value;
-                    this.RaisePropertyChanged("DaysDifference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int MonthsDifference {
-            get {
-                return this.MonthsDifferenceField;
-            }
-            set {
-                if ((this.MonthsDifferenceField.Equals(value) != true)) {
-                    this.MonthsDifferenceField = value;
-                    this.RaisePropertyChanged("MonthsDifference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int YearsDifference {
-            get {
-                return this.YearsDifferenceField;
-            }
-            set {
-                if ((this.YearsDifferenceField.Equals(value) != true)) {
-                    this.YearsDifferenceField = value;
-                    this.RaisePropertyChanged("YearsDifference");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SimilarMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DateMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StringMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByDifferenceMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByPercentageMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericMatchingCriterion))]
-    public partial class SimilarMatchingCriterion : MetadataSample.MDSTestService.WeightedMatchingCriterion {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StringMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class StringMatchingCriterion : MetadataSample.MDSTestService.SimilarMatchingCriterion {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ExactMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class ExactMatchingCriterion : MetadataSample.MDSTestService.WeightedMatchingCriterion {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="NumericByDifferenceMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class NumericByDifferenceMatchingCriterion : MetadataSample.MDSTestService.SimilarMatchingCriterion {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double DifferenceField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Difference {
-            get {
-                return this.DifferenceField;
-            }
-            set {
-                if ((this.DifferenceField.Equals(value) != true)) {
-                    this.DifferenceField = value;
-                    this.RaisePropertyChanged("Difference");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="NumericByPercentageMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class NumericByPercentageMatchingCriterion : MetadataSample.MDSTestService.SimilarMatchingCriterion {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private double PercentageField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Percentage {
-            get {
-                return this.PercentageField;
-            }
-            set {
-                if ((this.PercentageField.Equals(value) != true)) {
-                    this.PercentageField = value;
-                    this.RaisePropertyChanged("Percentage");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="NumericMatchingCriterion", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class NumericMatchingCriterion : MetadataSample.MDSTestService.SimilarMatchingCriterion {
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="OperationStatus", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum OperationStatus : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Invalid = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Pending = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        InProgress = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Success = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Failure = 4,
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TabularData", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class TabularData : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularColumnDefinition> ColumnDefinitionsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularDataRow> RowsField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularColumnDefinition> ColumnDefinitions {
-            get {
-                return this.ColumnDefinitionsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ColumnDefinitionsField, value) != true)) {
-                    this.ColumnDefinitionsField = value;
-                    this.RaisePropertyChanged("ColumnDefinitions");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularDataRow> Rows {
-            get {
-                return this.RowsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RowsField, value) != true)) {
-                    this.RowsField = value;
-                    this.RaisePropertyChanged("Rows");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TabularColumnDefinition", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    public partial class TabularColumnDefinition : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private MetadataSample.MDSTestService.DomainType DomainTypeField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NameField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public MetadataSample.MDSTestService.DomainType DomainType {
-            get {
-                return this.DomainTypeField;
-            }
-            set {
-                if ((this.DomainTypeField.Equals(value) != true)) {
-                    this.DomainTypeField = value;
-                    this.RaisePropertyChanged("DomainType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Name {
-            get {
-                return this.NameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
-                    this.NameField = value;
-                    this.RaisePropertyChanged("Name");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TabularDataRow", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DataContractBase))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.OperationResult))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Error>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Error))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ErrorContext))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Identifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberTypeContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchyContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberAttributeIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ObjectType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberKeyLookupType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberKey>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberKey))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingUnbatchedCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingBatch))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingBatchError>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingBatchError))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.RelationshipType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingBatchInformation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingBatchStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMembers))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Member>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Member))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Attribute>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Attribute))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeValueType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.FileAttribute))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AuditInfo))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Collection>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Collection))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Parent>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Parent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPermission))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExportView))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExportViewFormat))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExportView>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Metadata))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfMemberTypeContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.PermissionType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MetadataAttribute>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MetadataAttribute))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.AttributeDataType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchy>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchy))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfModelContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DerivedHierarchyLevel>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DerivedHierarchyLevel))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfDerivedHierarchyContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyItemType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Entity>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Entity))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExplicitHierarchy>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExplicitHierarchy))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfEntityContextIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMemberType>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMemberType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MdmDataContractOfIdentifier))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Model>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Model))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.VersionFlag>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.VersionFlag))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Version>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Version))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.VersionValidationStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.VersionStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MetadataResultOptions))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ResultType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MetadataSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberType>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SearchOption))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemSettingsGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSettingGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemSettingGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSetting>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemSetting))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemDomainList))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainListItem>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemDomainListItem))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemDomainListGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainList>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemPropertyValue>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemPropertyValue))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SystemPropertyType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrincipals))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Group>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Group))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.GroupType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrivileges))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.FunctionPrivilege>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.FunctionPrivilege))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.FunctionalArea))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.PrincipalType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.HierarchyMemberPrivilege>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMemberPrivilege))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Permission))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ModelPrivilege>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelPrivilege))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelObjectType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.User>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.User))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EmailFormat))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecuritySet))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrincipalsCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityResolutionType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrincipalsDeleteCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrivilegesGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.FunctionPrivilegesCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMemberPrivilegesCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelPrivilegesCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SecurityPrivilegesDeleteCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BREntityMemberType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BusinessRulesPalette))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRActionGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRActionComponent>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRActionComponent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRItemTypeComponent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAttributeTypeInfo>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeTypeInfo))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.AttributeDataType>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRItemType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRConditionComponent))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRConditionGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionComponent>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BusinessRules))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRAction>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAction))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRItem))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeArgumentBase))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRPropertyName))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRAttributeValueArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRDomainBasedAttributeArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRFreeformArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRHierarchyArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRBlankArgument))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRFreeformArgument>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRCondition))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRConditionTreeNode>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRConditionTreeNode))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BRCondition>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.LogicalOperator))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.BusinessRule>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BusinessRule))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRDeleteCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRResultOptions))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.BRPublishCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Knowledgebase>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Knowledgebase))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataQualityDomain>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DataQualityDomain))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DomainType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MatchingPolicy))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingRule>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MatchingRule))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MatchingCriterion>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataSourceFieldMapping>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DataSourceFieldMapping))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.PrerequisiteMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.WeightedMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DateMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SimilarMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StringMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ExactMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByDifferenceMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericByPercentageMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.NumericMatchingCriterion))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.OperationStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TabularData))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularColumnDefinition>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TabularColumnDefinition))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.TabularDataRow>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMembersGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.DisplayType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberReturnOption))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.SortDirection))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMembersInformation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMembersGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.HierarchyMembers))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ParentChild>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ParentChild))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelMembersGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ModelMembersResultCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityMembersCopyCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberSourceTarget>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.MemberSourceTarget))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityStagingImportType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityStagingGetCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityStagingBatch>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.EntityStagingBatch))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingResultCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingDataStatus))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingBatch>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingUnbatchedInformation>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.StagingUnbatchedInformation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TransactionSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.TransactionType))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Transaction>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Transaction))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ReplacementId>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ReplacementId))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationSearchCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationSummaryItem>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationSummaryItem))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationIssue>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationIssue))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationProcessCriteria))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationProcessOptions))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.ValidationProcessResult))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.Annotation))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<object>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<System.Guid>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.Collection<int>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTestService.International))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Version))]
-    public partial class TabularDataRow : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.ObjectModel.Collection<object> ValuesField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.Collection<object> Values {
-            get {
-                return this.ValuesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ValuesField, value) != true)) {
-                    this.ValuesField = value;
-                    this.RaisePropertyChanged("Values");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DisplayType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum DisplayType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Code = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        CodeName = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NameCode = 3,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.FlagsAttribute()]
-    [System.Runtime.Serialization.DataContractAttribute(Name="MemberReturnOption", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum MemberReturnOption : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Data = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Counts = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DataAndCounts = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MembershipInformation = 4,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SortDirection", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum SortDirection : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Asc = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Desc = 1,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityStagingImportType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum EntityStagingImportType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MergeOptimistic = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Insert = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MergeOverwrite = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Delete = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Purge = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        DeleteSetNull = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        PurgeSetNull = 6,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="StagingDataStatus", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum StagingDataStatus : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        All = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Successful = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Error = 2,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TransactionType", Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09")]
-    public enum TransactionType : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NotSpecified = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        CreateMember = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        ChangeMemberStatus = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        SetAttributeValue = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MoveMemberToParent = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MoveMemberToSibling = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        AnnotateMember = 6,
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", ConfigurationName="MDSTestService.IService")]
-    public interface IService {
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Annota" +
-            "tionsUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Annota" +
-            "tionsUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Annota" +
-            "tionsUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.AnnotationsUpdateResponse AnnotationsUpdate(MetadataSample.MDSTestService.AnnotationsUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Annota" +
-            "tionsDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Annota" +
-            "tionsDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Annota" +
-            "tionsDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.AnnotationsDeleteResponse AnnotationsDelete(MetadataSample.MDSTestService.AnnotationsDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberKeyLookup", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberKeyLookupResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberKeyLookupEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMemberKeyGetResponse EntityMemberKeyLookup(MetadataSample.MDSTestService.EntityMemberKeyGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gProcess", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gProcessResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gProcessEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.StagingProcessResponse StagingProcess(MetadataSample.MDSTestService.StagingProcessRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ExportViewCreateResponse ExportViewCreate(MetadataSample.MDSTestService.ExportViewCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ExportViewUpdateResponse ExportViewUpdate(MetadataSample.MDSTestService.ExportViewUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ExportViewDeleteResponse ExportViewDelete(MetadataSample.MDSTestService.ExportViewDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewListGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewListGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Export" +
-            "ViewListGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ExportViewListGetResponse ExportViewListGet(MetadataSample.MDSTestService.ExportViewListGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taClone", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taCloneResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taCloneEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MetadataCloneResponse MetadataClone(MetadataSample.MDSTestService.MetadataCloneRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MetadataCreateResponse MetadataCreate(MetadataSample.MDSTestService.MetadataCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MetadataDeleteResponse MetadataDelete(MetadataSample.MDSTestService.MetadataDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MetadataGetResponse MetadataGet(MetadataSample.MDSTestService.MetadataGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Metada" +
-            "taUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MetadataUpdateResponse MetadataUpdate(MetadataSample.MDSTestService.MetadataUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gNameCheck", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gNameCheckResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gNameCheckEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.StagingNameCheckResponse StagingNameCheck(MetadataSample.MDSTestService.StagingNameCheckRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Attrib" +
-            "uteChange", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Attrib" +
-            "uteChangeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Attrib" +
-            "uteChangeEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.AttributeChangeResponse AttributeChange(MetadataSample.MDSTestService.AttributeChangeRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "SettingsGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "SettingsGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "SettingsGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SystemSettingsGetResponse SystemSettingsGet(MetadataSample.MDSTestService.SystemSettingsGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "SettingsUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "SettingsUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "SettingsUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SystemSettingsUpdateResponse SystemSettingsUpdate(MetadataSample.MDSTestService.SystemSettingsUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "DomainListGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "DomainListGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "DomainListGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SystemDomainListGetResponse SystemDomainListGet(MetadataSample.MDSTestService.SystemDomainListGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "PropertiesGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "PropertiesGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/System" +
-            "PropertiesGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SystemPropertiesGetResponse SystemPropertiesGet(MetadataSample.MDSTestService.SystemPropertiesGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Servic" +
-            "eCheck", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Servic" +
-            "eCheckResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Servic" +
-            "eCheckEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse ServiceCheck(MetadataSample.MDSTestService.ServiceCheckGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Servic" +
-            "eVersionGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Servic" +
-            "eVersionGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Servic" +
-            "eVersionGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ServiceVersionGetResponse ServiceVersionGet(MetadataSample.MDSTestService.ServiceVersionGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Versio" +
-            "nCopy", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Versio" +
-            "nCopyResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Versio" +
-            "nCopyEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.VersionCopyResponse VersionCopy(MetadataSample.MDSTestService.VersionCopyRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.UserPreferencesGetResponse UserPreferencesGet(MetadataSample.MDSTestService.UserPreferencesGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.UserPreferencesUpdateResponse UserPreferencesUpdate(MetadataSample.MDSTestService.UserPreferencesUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/UserPr" +
-            "eferencesDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.UserPreferencesDeleteResponse UserPreferencesDelete(MetadataSample.MDSTestService.UserPreferencesDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SecurityCreateResponse SecurityPrincipalsCreate(MetadataSample.MDSTestService.SecurityPrincipalsRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsClone", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsCloneResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsCloneEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse SecurityPrincipalsClone(MetadataSample.MDSTestService.SecurityPrincipalsRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse SecurityPrincipalsUpdate(MetadataSample.MDSTestService.SecurityPrincipalsRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SecurityPrincipalsGetResponse SecurityPrincipalsGet(MetadataSample.MDSTestService.SecurityPrincipalsGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrincipalsDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse SecurityPrincipalsDelete(MetadataSample.MDSTestService.SecurityPrincipalsDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SecurityCreateResponse SecurityPrivilegesCreate(MetadataSample.MDSTestService.SecurityPrivilegesRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesClone", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesCloneResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesCloneEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse SecurityPrivilegesClone(MetadataSample.MDSTestService.SecurityPrivilegesRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse SecurityPrivilegesUpdate(MetadataSample.MDSTestService.SecurityPrivilegesRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.SecurityPrivilegesGetResponse SecurityPrivilegesGet(MetadataSample.MDSTestService.SecurityPrivilegesGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Securi" +
-            "tyPrivilegesDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse SecurityPrivilegesDelete(MetadataSample.MDSTestService.SecurityPrivilegesDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesPaletteGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesPaletteGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesPaletteGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.BusinessRulesPaletteGetResponse BusinessRulesPaletteGet(MetadataSample.MDSTestService.BusinessRulesPaletteGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesClone", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesCloneResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesCloneEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse BusinessRulesClone(MetadataSample.MDSTestService.BusinessRulesCloneRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.BusinessRulesCreateResponse BusinessRulesCreate(MetadataSample.MDSTestService.BusinessRulesCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse BusinessRulesDelete(MetadataSample.MDSTestService.BusinessRulesDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.BusinessRulesGetResponse BusinessRulesGet(MetadataSample.MDSTestService.BusinessRulesGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesPublish", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesPublishResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesPublishEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse BusinessRulesPublish(MetadataSample.MDSTestService.BusinessRulesPublishRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Busine" +
-            "ssRulesUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.MessageResponse BusinessRulesUpdate(MetadataSample.MDSTestService.BusinessRulesUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityInstalledState", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityInstalledStateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityInstalledStateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityInstalledStateResponse DataQualityInstalledState(MetadataSample.MDSTestService.DataQualityInstalledStateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityKnowledgeBasesGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityKnowledgeBasesGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityKnowledgeBasesGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityKnowledgeBasesGetResponse DataQualityKnowledgeBasesGet(MetadataSample.MDSTestService.DataQualityKnowledgeBasesGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityCleansingOperationCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityCleansingOperationCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityCleansingOperationCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityOperationCreateResponse DataQualityCleansingOperationCreate(MetadataSample.MDSTestService.DataQualityCleansingOperationCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityMatchingOperationCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityMatchingOperationCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityMatchingOperationCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityOperationCreateResponse DataQualityMatchingOperationCreate(MetadataSample.MDSTestService.DataQualityMatchingOperationCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationStatus", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationStatusResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationStatusEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityOperationStatusResponse DataQualityOperationStatus(MetadataSample.MDSTestService.DataQualityOperationStatusRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationResultsGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationResultsGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationResultsGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityOperationResultsGetResponse DataQualityOperationResultsGet(MetadataSample.MDSTestService.DataQualityOperationResultsGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityStoreInputData", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityStoreInputDataResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityStoreInputDataEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityStoreInputDataResponse DataQualityStoreInputData(MetadataSample.MDSTestService.DataQualityStoreInputDataRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationStart", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationStartResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationStartEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityOperationStartResponse DataQualityOperationStart(MetadataSample.MDSTestService.DataQualityOperationStartRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationPurgeOperation", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationPurgeOperationResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/DataQu" +
-            "alityOperationPurgeOperationEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.DataQualityOperationPurgeOperationResponse DataQualityOperationPurgeOperation(MetadataSample.MDSTestService.DataQualityOperationPurgeOperationRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMembersGetResponse EntityMembersGet(MetadataSample.MDSTestService.EntityMembersGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAttributesGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAttributesGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAttributesGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMemberAttributesGetResponse EntityMemberAttributesGet(MetadataSample.MDSTestService.EntityMemberAttributesGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Hierar" +
-            "chyMembersGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Hierar" +
-            "chyMembersGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Hierar" +
-            "chyMembersGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.HierarchyMembersGetResponse HierarchyMembersGet(MetadataSample.MDSTestService.HierarchyMembersGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ModelMembersGetResponse ModelMembersGet(MetadataSample.MDSTestService.ModelMembersGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMembersCreateResponse EntityMembersCreate(MetadataSample.MDSTestService.EntityMembersCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMembersDeleteResponse EntityMembersDelete(MetadataSample.MDSTestService.EntityMembersDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMembersUpdateResponse EntityMembersUpdate(MetadataSample.MDSTestService.EntityMembersUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersCopy", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersCopyResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersCopyEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMembersCopyResponse EntityMembersCopy(MetadataSample.MDSTestService.EntityMembersCopyRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersMerge", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersMergeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MembersMergeEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMembersMergeResponse EntityMembersMerge(MetadataSample.MDSTestService.EntityMembersMergeRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingLoad", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingLoadResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingLoadEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityStagingLoadResponse EntityStagingLoad(MetadataSample.MDSTestService.EntityStagingLoadRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityStagingGetResponse EntityStagingGet(MetadataSample.MDSTestService.EntityStagingGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingClear", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingClearResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingClearEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityStagingClearResponse EntityStagingClear(MetadataSample.MDSTestService.EntityStagingClearRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingProcess", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingProcessResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "StagingProcessEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityStagingProcessResponse EntityStagingProcess(MetadataSample.MDSTestService.EntityStagingProcessRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkDelete", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkDeleteResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkDeleteEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ModelMembersBulkDeleteResponse ModelMembersBulkDelete(MetadataSample.MDSTestService.ModelMembersBulkDeleteRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkUpdate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkUpdateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkUpdateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ModelMembersBulkUpdateResponse ModelMembersBulkUpdate(MetadataSample.MDSTestService.ModelMembersBulkUpdateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkMerge", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkMergeResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/ModelM" +
-            "embersBulkMergeEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ModelMembersBulkMergeResponse ModelMembersBulkMerge(MetadataSample.MDSTestService.ModelMembersBulkMergeRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.StagingGetResponse StagingGet(MetadataSample.MDSTestService.StagingGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gClear", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gClearResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Stagin" +
-            "gClearEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.StagingClearResponse StagingClear(MetadataSample.MDSTestService.StagingClearRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionsGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionsGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionsGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.TransactionsGetResponse TransactionsGet(MetadataSample.MDSTestService.TransactionsGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionsReverse", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionsReverseResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionsReverseEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.TransactionsReverseResponse TransactionsReverse(MetadataSample.MDSTestService.TransactionsReverseRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Valida" +
-            "tionGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Valida" +
-            "tionGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Valida" +
-            "tionGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ValidationGetResponse ValidationGet(MetadataSample.MDSTestService.ValidationGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Valida" +
-            "tionProcess", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Valida" +
-            "tionProcessResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Valida" +
-            "tionProcessEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.ValidationProcessResponse ValidationProcess(MetadataSample.MDSTestService.ValidationProcessRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAnnotationsCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAnnotationsCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAnnotationsCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.AnnotationsCreateResponse EntityMemberAnnotationsCreate(MetadataSample.MDSTestService.EntityMemberAnnotationsCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionAnnotationsCreate", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionAnnotationsCreateResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionAnnotationsCreateEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.AnnotationsCreateResponse TransactionAnnotationsCreate(MetadataSample.MDSTestService.TransactionAnnotationsCreateRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAnnotationsGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAnnotationsGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Entity" +
-            "MemberAnnotationsGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.EntityMemberAnnotationsGetResponse EntityMemberAnnotationsGet(MetadataSample.MDSTestService.EntityMemberAnnotationsGetRequest request);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionAnnotationsGet", ReplyAction="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionAnnotationsGetResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(MetadataSample.MDSTestService.EditionExpiredMessage), Action="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09/IService/Transa" +
-            "ctionAnnotationsGetEditionExpiredMessageFault", Name="EditionExpiredMessage")]
-        MetadataSample.MDSTestService.TransactionAnnotationsGetResponse TransactionAnnotationsGet(MetadataSample.MDSTestService.TransactionAnnotationsGetRequest request);
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="AnnotationsUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class AnnotationsUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public string Comment;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public int Id;
-        
-        public AnnotationsUpdateRequest() {
-        }
-        
-        public AnnotationsUpdateRequest(MetadataSample.MDSTestService.International International, string Comment, int Id) {
-            this.International = International;
-            this.Comment = Comment;
-            this.Id = Id;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="AnnotationsUpdateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class AnnotationsUpdateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public AnnotationsUpdateResponse() {
-        }
-        
-        public AnnotationsUpdateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="AnnotationsDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class AnnotationsDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int Id;
-        
-        public AnnotationsDeleteRequest() {
-        }
-        
-        public AnnotationsDeleteRequest(MetadataSample.MDSTestService.International International, int Id) {
-            this.International = International;
-            this.Id = Id;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="AnnotationsDeleteResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class AnnotationsDeleteResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public AnnotationsDeleteResponse() {
-        }
-        
-        public AnnotationsDeleteResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMemberKeyGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMemberKeyGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Identifier EntityId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.MemberKeyLookupType LookupType;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberKey> MemberKeys;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public MetadataSample.MDSTestService.MemberType MemberType;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=4)]
-        public MetadataSample.MDSTestService.Identifier ModelId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=5)]
-        public MetadataSample.MDSTestService.Identifier VersionId;
-        
-        public EntityMemberKeyGetRequest() {
-        }
-        
-        public EntityMemberKeyGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.Identifier EntityId, MetadataSample.MDSTestService.MemberKeyLookupType LookupType, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberKey> MemberKeys, MetadataSample.MDSTestService.MemberType MemberType, MetadataSample.MDSTestService.Identifier ModelId, MetadataSample.MDSTestService.Identifier VersionId) {
-            this.International = International;
-            this.EntityId = EntityId;
-            this.LookupType = LookupType;
-            this.MemberKeys = MemberKeys;
-            this.MemberType = MemberType;
-            this.ModelId = ModelId;
-            this.VersionId = VersionId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMemberKeyGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMemberKeyGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberKey> MemberKeys;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMemberKeyGetResponse() {
-        }
-        
-        public EntityMemberKeyGetResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberKey> MemberKeys, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.MemberKeys = MemberKeys;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingProcessRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingProcessRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public bool Process;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.StagingUnbatchedCriteria UnbatchedCriteria;
-        
-        public StagingProcessRequest() {
-        }
-        
-        public StagingProcessRequest(MetadataSample.MDSTestService.International International, bool Process, MetadataSample.MDSTestService.StagingUnbatchedCriteria UnbatchedCriteria) {
-            this.International = International;
-            this.Process = Process;
-            this.UnbatchedCriteria = UnbatchedCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingProcessResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingProcessResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.StagingBatch BatchId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public StagingProcessResponse() {
-        }
-        
-        public StagingProcessResponse(MetadataSample.MDSTestService.StagingBatch BatchId, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.BatchId = BatchId;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.ExportView ExportView;
-        
-        public ExportViewCreateRequest() {
-        }
-        
-        public ExportViewCreateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.ExportView ExportView) {
-            this.International = International;
-            this.ExportView = ExportView;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewCreateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewCreateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public ExportViewCreateResponse() {
-        }
-        
-        public ExportViewCreateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.ExportView ExportView;
-        
-        public ExportViewUpdateRequest() {
-        }
-        
-        public ExportViewUpdateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.ExportView ExportView) {
-            this.International = International;
-            this.ExportView = ExportView;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewUpdateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewUpdateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public ExportViewUpdateResponse() {
-        }
-        
-        public ExportViewUpdateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Identifier Identifier;
-        
-        public ExportViewDeleteRequest() {
-        }
-        
-        public ExportViewDeleteRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.Identifier Identifier) {
-            this.International = International;
-            this.Identifier = Identifier;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewDeleteResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewDeleteResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public ExportViewDeleteResponse() {
-        }
-        
-        public ExportViewDeleteResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewListGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewListGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        public ExportViewListGetRequest() {
-        }
-        
-        public ExportViewListGetRequest(MetadataSample.MDSTestService.International International) {
-            this.International = International;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ExportViewListGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ExportViewListGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExportView> ExportViews;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public ExportViewListGetResponse() {
-        }
-        
-        public ExportViewListGetResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ExportView> ExportViews, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.ExportViews = ExportViews;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataCloneRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataCloneRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Metadata Metadata;
-        
-        public MetadataCloneRequest() {
-        }
-        
-        public MetadataCloneRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.Metadata Metadata) {
-            this.International = International;
-            this.Metadata = Metadata;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataCloneResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataCloneResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public MetadataCloneResponse() {
-        }
-        
-        public MetadataCloneResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Metadata Metadata;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public bool ReturnCreatedIdentifiers;
-        
-        public MetadataCreateRequest() {
-        }
-        
-        public MetadataCreateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.Metadata Metadata, bool ReturnCreatedIdentifiers) {
-            this.International = International;
-            this.Metadata = Metadata;
-            this.ReturnCreatedIdentifiers = ReturnCreatedIdentifiers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataCreateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataCreateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Metadata MetadataCreated;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public MetadataCreateResponse() {
-        }
-        
-        public MetadataCreateResponse(MetadataSample.MDSTestService.Metadata MetadataCreated, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.MetadataCreated = MetadataCreated;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Metadata Metadata;
-        
-        public MetadataDeleteRequest() {
-        }
-        
-        public MetadataDeleteRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.Metadata Metadata) {
-            this.International = International;
-            this.Metadata = Metadata;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataDeleteResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataDeleteResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public MetadataDeleteResponse() {
-        }
-        
-        public MetadataDeleteResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.MetadataResultOptions ResultOptions;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.MetadataSearchCriteria SearchCriteria;
-        
-        public MetadataGetRequest() {
-        }
-        
-        public MetadataGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.MetadataResultOptions ResultOptions, MetadataSample.MDSTestService.MetadataSearchCriteria SearchCriteria) {
-            this.International = International;
-            this.ResultOptions = ResultOptions;
-            this.SearchCriteria = SearchCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Metadata Metadata;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public MetadataGetResponse() {
-        }
-        
-        public MetadataGetResponse(MetadataSample.MDSTestService.Metadata Metadata, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.Metadata = Metadata;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Metadata Metadata;
-        
-        public MetadataUpdateRequest() {
-        }
-        
-        public MetadataUpdateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.Metadata Metadata) {
-            this.International = International;
-            this.Metadata = Metadata;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MetadataUpdateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MetadataUpdateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public MetadataUpdateResponse() {
-        }
-        
-        public MetadataUpdateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingNameCheckRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingNameCheckRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public string StagingName;
-        
-        public StagingNameCheckRequest() {
-        }
-        
-        public StagingNameCheckRequest(MetadataSample.MDSTestService.International International, string StagingName) {
-            this.International = International;
-            this.StagingName = StagingName;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingNameCheckResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingNameCheckResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public bool IsUnique;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public StagingNameCheckResponse() {
-        }
-        
-        public StagingNameCheckResponse(bool IsUnique, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.IsUnique = IsUnique;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="AttributeChangeRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class AttributeChangeRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.MetadataAttribute Attribute;
-        
-        public AttributeChangeRequest() {
-        }
-        
-        public AttributeChangeRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.MetadataAttribute Attribute) {
-            this.International = International;
-            this.Attribute = Attribute;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="AttributeChangeResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class AttributeChangeResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public string DeprecatedAttributeName;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<string> MemberCodesWithError;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public System.Guid NewAttributeMuid;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public AttributeChangeResponse() {
-        }
-        
-        public AttributeChangeResponse(string DeprecatedAttributeName, System.Collections.ObjectModel.Collection<string> MemberCodesWithError, System.Guid NewAttributeMuid, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.DeprecatedAttributeName = DeprecatedAttributeName;
-            this.MemberCodesWithError = MemberCodesWithError;
-            this.NewAttributeMuid = NewAttributeMuid;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemSettingsGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemSettingsGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SystemSettingsGetCriteria SearchCriteria;
-        
-        public SystemSettingsGetRequest() {
-        }
-        
-        public SystemSettingsGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SystemSettingsGetCriteria SearchCriteria) {
-            this.International = International;
-            this.SearchCriteria = SearchCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemSettingsGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemSettingsGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSettingGroup> SystemSettingsGroups;
-        
-        public SystemSettingsGetResponse() {
-        }
-        
-        public SystemSettingsGetResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSettingGroup> SystemSettingsGroups) {
-            this.OperationResult = OperationResult;
-            this.SystemSettingsGroups = SystemSettingsGroups;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemSettingsUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemSettingsUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSettingGroup> SystemSettingGroups;
-        
-        public SystemSettingsUpdateRequest() {
-        }
-        
-        public SystemSettingsUpdateRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemSettingGroup> SystemSettingGroups) {
-            this.International = International;
-            this.SystemSettingGroups = SystemSettingGroups;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemSettingsUpdateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemSettingsUpdateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public SystemSettingsUpdateResponse() {
-        }
-        
-        public SystemSettingsUpdateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemDomainListGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemDomainListGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SystemDomainListGetCriteria SearchCriteria;
-        
-        public SystemDomainListGetRequest() {
-        }
-        
-        public SystemDomainListGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SystemDomainListGetCriteria SearchCriteria) {
-            this.International = International;
-            this.SearchCriteria = SearchCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemDomainListGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemDomainListGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainList> SystemDomainLists;
-        
-        public SystemDomainListGetResponse() {
-        }
-        
-        public SystemDomainListGetResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemDomainList> SystemDomainLists) {
-            this.OperationResult = OperationResult;
-            this.SystemDomainLists = SystemDomainLists;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemPropertiesGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemPropertiesGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        public SystemPropertiesGetRequest() {
-        }
-        
-        public SystemPropertiesGetRequest(MetadataSample.MDSTestService.International International) {
-            this.International = International;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SystemPropertiesGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SystemPropertiesGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemPropertyValue> SystemProperties;
-        
-        public SystemPropertiesGetResponse() {
-        }
-        
-        public SystemPropertiesGetResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.SystemPropertyValue> SystemProperties) {
-            this.OperationResult = OperationResult;
-            this.SystemProperties = SystemProperties;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ServiceCheckGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ServiceCheckGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        public ServiceCheckGetRequest() {
-        }
-        
-        public ServiceCheckGetRequest(MetadataSample.MDSTestService.International International) {
-            this.International = International;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="MessageResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class MessageResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public MessageResponse() {
-        }
-        
-        public MessageResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ServiceVersionGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ServiceVersionGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        public ServiceVersionGetRequest() {
-        }
-        
-        public ServiceVersionGetRequest(MetadataSample.MDSTestService.International International) {
-            this.International = International;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ServiceVersionGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ServiceVersionGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int ApiContractVersion;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public System.Version Version;
-        
-        public ServiceVersionGetResponse() {
-        }
-        
-        public ServiceVersionGetResponse(int ApiContractVersion, MetadataSample.MDSTestService.OperationResult OperationResult, System.Version Version) {
-            this.ApiContractVersion = ApiContractVersion;
-            this.OperationResult = OperationResult;
-            this.Version = Version;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="VersionCopyRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class VersionCopyRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Guid FromVersionId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public string ToVersionDescription;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public string ToVersionName;
-        
-        public VersionCopyRequest() {
-        }
-        
-        public VersionCopyRequest(MetadataSample.MDSTestService.International International, System.Guid FromVersionId, string ToVersionDescription, string ToVersionName) {
-            this.International = International;
-            this.FromVersionId = FromVersionId;
-            this.ToVersionDescription = ToVersionDescription;
-            this.ToVersionName = ToVersionName;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="VersionCopyResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class VersionCopyResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public VersionCopyResponse() {
-        }
-        
-        public VersionCopyResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserPreferencesGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class UserPreferencesGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        public UserPreferencesGetRequest() {
-        }
-        
-        public UserPreferencesGetRequest(MetadataSample.MDSTestService.International International) {
-            this.International = International;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserPreferencesGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class UserPreferencesGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.Generic.Dictionary<string, string> UserPreferences;
-        
-        public UserPreferencesGetResponse() {
-        }
-        
-        public UserPreferencesGetResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.Generic.Dictionary<string, string> UserPreferences) {
-            this.OperationResult = OperationResult;
-            this.UserPreferences = UserPreferences;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserPreferencesUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class UserPreferencesUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.Generic.Dictionary<string, string> UserPreferences;
-        
-        public UserPreferencesUpdateRequest() {
-        }
-        
-        public UserPreferencesUpdateRequest(MetadataSample.MDSTestService.International International, System.Collections.Generic.Dictionary<string, string> UserPreferences) {
-            this.International = International;
-            this.UserPreferences = UserPreferences;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserPreferencesUpdateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class UserPreferencesUpdateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public UserPreferencesUpdateResponse() {
-        }
-        
-        public UserPreferencesUpdateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserPreferencesDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class UserPreferencesDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public bool DeleteAllUserPreferences;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.Generic.Dictionary<string, string> UserPreferences;
-        
-        public UserPreferencesDeleteRequest() {
-        }
-        
-        public UserPreferencesDeleteRequest(MetadataSample.MDSTestService.International International, bool DeleteAllUserPreferences, System.Collections.Generic.Dictionary<string, string> UserPreferences) {
-            this.International = International;
-            this.DeleteAllUserPreferences = DeleteAllUserPreferences;
-            this.UserPreferences = UserPreferences;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="UserPreferencesDeleteResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class UserPreferencesDeleteResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public UserPreferencesDeleteResponse() {
-        }
-        
-        public UserPreferencesDeleteResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrincipalsRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrincipalsRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SecurityPrincipals Principals;
-        
-        public SecurityPrincipalsRequest() {
-        }
-        
-        public SecurityPrincipalsRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SecurityPrincipals Principals) {
-            this.International = International;
-            this.Principals = Principals;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityCreateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityCreateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.SecuritySet SecuritySet;
-        
-        public SecurityCreateResponse() {
-        }
-        
-        public SecurityCreateResponse(MetadataSample.MDSTestService.OperationResult OperationResult, MetadataSample.MDSTestService.SecuritySet SecuritySet) {
-            this.OperationResult = OperationResult;
-            this.SecuritySet = SecuritySet;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrincipalsGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrincipalsGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SecurityPrincipalsCriteria Criteria;
-        
-        public SecurityPrincipalsGetRequest() {
-        }
-        
-        public SecurityPrincipalsGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SecurityPrincipalsCriteria Criteria) {
-            this.International = International;
-            this.Criteria = Criteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrincipalsGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrincipalsGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.SecurityPrincipals Principals;
-        
-        public SecurityPrincipalsGetResponse() {
-        }
-        
-        public SecurityPrincipalsGetResponse(MetadataSample.MDSTestService.OperationResult OperationResult, MetadataSample.MDSTestService.SecurityPrincipals Principals) {
-            this.OperationResult = OperationResult;
-            this.Principals = Principals;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrincipalsDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrincipalsDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SecurityPrincipalsDeleteCriteria Criteria;
-        
-        public SecurityPrincipalsDeleteRequest() {
-        }
-        
-        public SecurityPrincipalsDeleteRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SecurityPrincipalsDeleteCriteria Criteria) {
-            this.International = International;
-            this.Criteria = Criteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrivilegesRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrivilegesRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SecurityPrivileges Privileges;
-        
-        public SecurityPrivilegesRequest() {
-        }
-        
-        public SecurityPrivilegesRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SecurityPrivileges Privileges) {
-            this.International = International;
-            this.Privileges = Privileges;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrivilegesGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrivilegesGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SecurityPrivilegesGetCriteria Criteria;
-        
-        public SecurityPrivilegesGetRequest() {
-        }
-        
-        public SecurityPrivilegesGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SecurityPrivilegesGetCriteria Criteria) {
-            this.International = International;
-            this.Criteria = Criteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrivilegesGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrivilegesGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.SecurityPrivileges Privileges;
-        
-        public SecurityPrivilegesGetResponse() {
-        }
-        
-        public SecurityPrivilegesGetResponse(MetadataSample.MDSTestService.OperationResult OperationResult, MetadataSample.MDSTestService.SecurityPrivileges Privileges) {
-            this.OperationResult = OperationResult;
-            this.Privileges = Privileges;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="SecurityPrivilegesDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class SecurityPrivilegesDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.SecurityPrivilegesDeleteCriteria Criteria;
-        
-        public SecurityPrivilegesDeleteRequest() {
-        }
-        
-        public SecurityPrivilegesDeleteRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.SecurityPrivilegesDeleteCriteria Criteria) {
-            this.International = International;
-            this.Criteria = Criteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesPaletteGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesPaletteGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BREntityMemberType MemberType;
-        
-        public BusinessRulesPaletteGetRequest() {
-        }
-        
-        public BusinessRulesPaletteGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.BREntityMemberType MemberType) {
-            this.International = International;
-            this.MemberType = MemberType;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesPaletteGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesPaletteGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BusinessRulesPalette BusinessRulesPalette;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public BusinessRulesPaletteGetResponse() {
-        }
-        
-        public BusinessRulesPaletteGetResponse(MetadataSample.MDSTestService.BusinessRulesPalette BusinessRulesPalette, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.BusinessRulesPalette = BusinessRulesPalette;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesCloneRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesCloneRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BusinessRules BusinessRuleSet;
-        
-        public BusinessRulesCloneRequest() {
-        }
-        
-        public BusinessRulesCloneRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.BusinessRules BusinessRuleSet) {
-            this.International = International;
-            this.BusinessRuleSet = BusinessRuleSet;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BusinessRules BusinessRuleSet;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public bool ReturnCreatedIdentifiers;
-        
-        public BusinessRulesCreateRequest() {
-        }
-        
-        public BusinessRulesCreateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.BusinessRules BusinessRuleSet, bool ReturnCreatedIdentifiers) {
-            this.International = International;
-            this.BusinessRuleSet = BusinessRuleSet;
-            this.ReturnCreatedIdentifiers = ReturnCreatedIdentifiers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesCreateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesCreateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BusinessRules BusinessRuleSet;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public BusinessRulesCreateResponse() {
-        }
-        
-        public BusinessRulesCreateResponse(MetadataSample.MDSTestService.BusinessRules BusinessRuleSet, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.BusinessRuleSet = BusinessRuleSet;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BRDeleteCriteria DeleteCriteria;
-        
-        public BusinessRulesDeleteRequest() {
-        }
-        
-        public BusinessRulesDeleteRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.BRDeleteCriteria DeleteCriteria) {
-            this.International = International;
-            this.DeleteCriteria = DeleteCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BRGetCriteria GetCriteria;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.BRResultOptions ResultOptions;
-        
-        public BusinessRulesGetRequest() {
-        }
-        
-        public BusinessRulesGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.BRGetCriteria GetCriteria, MetadataSample.MDSTestService.BRResultOptions ResultOptions) {
-            this.International = International;
-            this.GetCriteria = GetCriteria;
-            this.ResultOptions = ResultOptions;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BusinessRules BusinessRuleSet;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public BusinessRulesGetResponse() {
-        }
-        
-        public BusinessRulesGetResponse(MetadataSample.MDSTestService.BusinessRules BusinessRuleSet, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.BusinessRuleSet = BusinessRuleSet;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesPublishRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesPublishRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BRPublishCriteria BRPublishCriteria;
-        
-        public BusinessRulesPublishRequest() {
-        }
-        
-        public BusinessRulesPublishRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.BRPublishCriteria BRPublishCriteria) {
-            this.International = International;
-            this.BRPublishCriteria = BRPublishCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="BusinessRulesUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class BusinessRulesUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.BusinessRules BusinessRuleSet;
-        
-        public BusinessRulesUpdateRequest() {
-        }
-        
-        public BusinessRulesUpdateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.BusinessRules BusinessRuleSet) {
-            this.International = International;
-            this.BusinessRuleSet = BusinessRuleSet;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityInstalledStateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityInstalledStateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        public DataQualityInstalledStateRequest() {
-        }
-        
-        public DataQualityInstalledStateRequest(MetadataSample.MDSTestService.International International) {
-            this.International = International;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityInstalledStateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityInstalledStateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public bool IsInstalled;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public DataQualityInstalledStateResponse() {
-        }
-        
-        public DataQualityInstalledStateResponse(bool IsInstalled, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.IsInstalled = IsInstalled;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityKnowledgeBasesGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityKnowledgeBasesGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        public DataQualityKnowledgeBasesGetRequest() {
-        }
-        
-        public DataQualityKnowledgeBasesGetRequest(MetadataSample.MDSTestService.International International) {
-            this.International = International;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityKnowledgeBasesGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityKnowledgeBasesGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Knowledgebase> KnowledgeBases;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public DataQualityKnowledgeBasesGetResponse() {
-        }
-        
-        public DataQualityKnowledgeBasesGetResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Knowledgebase> KnowledgeBases, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.KnowledgeBases = KnowledgeBases;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityCleansingOperationCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityCleansingOperationCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataSourceFieldMapping> ColumnMappings;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public long KnowledgebaseId;
-        
-        public DataQualityCleansingOperationCreateRequest() {
-        }
-        
-        public DataQualityCleansingOperationCreateRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.DataSourceFieldMapping> ColumnMappings, long KnowledgebaseId) {
-            this.International = International;
-            this.ColumnMappings = ColumnMappings;
-            this.KnowledgebaseId = KnowledgebaseId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationCreateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationCreateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Guid OperationId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public DataQualityOperationCreateResponse() {
-        }
-        
-        public DataQualityOperationCreateResponse(System.Guid OperationId, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationId = OperationId;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityMatchingOperationCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityMatchingOperationCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public long KnowledgebaseId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.MatchingPolicy MatchingPolicy;
-        
-        public DataQualityMatchingOperationCreateRequest() {
-        }
-        
-        public DataQualityMatchingOperationCreateRequest(MetadataSample.MDSTestService.International International, long KnowledgebaseId, MetadataSample.MDSTestService.MatchingPolicy MatchingPolicy) {
-            this.International = International;
-            this.KnowledgebaseId = KnowledgebaseId;
-            this.MatchingPolicy = MatchingPolicy;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationStatusRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationStatusRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Guid OperationId;
-        
-        public DataQualityOperationStatusRequest() {
-        }
-        
-        public DataQualityOperationStatusRequest(MetadataSample.MDSTestService.International International, System.Guid OperationId) {
-            this.International = International;
-            this.OperationId = OperationId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationStatusResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationStatusResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public string FailureString;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.OperationStatus Status;
-        
-        public DataQualityOperationStatusResponse() {
-        }
-        
-        public DataQualityOperationStatusResponse(string FailureString, MetadataSample.MDSTestService.OperationResult OperationResult, MetadataSample.MDSTestService.OperationStatus Status) {
-            this.FailureString = FailureString;
-            this.OperationResult = OperationResult;
-            this.Status = Status;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationResultsGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationResultsGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int MaximumResults;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Guid OperationId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public int StartRow;
-        
-        public DataQualityOperationResultsGetRequest() {
-        }
-        
-        public DataQualityOperationResultsGetRequest(MetadataSample.MDSTestService.International International, int MaximumResults, System.Guid OperationId, int StartRow) {
-            this.International = International;
-            this.MaximumResults = MaximumResults;
-            this.OperationId = OperationId;
-            this.StartRow = StartRow;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationResultsGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationResultsGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.TabularData Data;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public DataQualityOperationResultsGetResponse() {
-        }
-        
-        public DataQualityOperationResultsGetResponse(MetadataSample.MDSTestService.TabularData Data, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.Data = Data;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityStoreInputDataRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityStoreInputDataRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.TabularData Data;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Guid OperationId;
-        
-        public DataQualityStoreInputDataRequest() {
-        }
-        
-        public DataQualityStoreInputDataRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.TabularData Data, System.Guid OperationId) {
-            this.International = International;
-            this.Data = Data;
-            this.OperationId = OperationId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityStoreInputDataResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityStoreInputDataResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public DataQualityStoreInputDataResponse() {
-        }
-        
-        public DataQualityStoreInputDataResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationStartRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationStartRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Guid OperationId;
-        
-        public DataQualityOperationStartRequest() {
-        }
-        
-        public DataQualityOperationStartRequest(MetadataSample.MDSTestService.International International, System.Guid OperationId) {
-            this.International = International;
-            this.OperationId = OperationId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationStartResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationStartResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public string FailureString;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.OperationStatus Status;
-        
-        public DataQualityOperationStartResponse() {
-        }
-        
-        public DataQualityOperationStartResponse(string FailureString, MetadataSample.MDSTestService.OperationResult OperationResult, MetadataSample.MDSTestService.OperationStatus Status) {
-            this.FailureString = FailureString;
-            this.OperationResult = OperationResult;
-            this.Status = Status;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationPurgeOperationRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationPurgeOperationRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Guid OperationId;
-        
-        public DataQualityOperationPurgeOperationRequest() {
-        }
-        
-        public DataQualityOperationPurgeOperationRequest(MetadataSample.MDSTestService.International International, System.Guid OperationId) {
-            this.International = International;
-            this.OperationId = OperationId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="DataQualityOperationPurgeOperationResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class DataQualityOperationPurgeOperationResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public DataQualityOperationPurgeOperationResponse() {
-        }
-        
-        public DataQualityOperationPurgeOperationResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembersGetCriteria MembersGetCriteria;
-        
-        public EntityMembersGetRequest() {
-        }
-        
-        public EntityMembersGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityMembersGetCriteria MembersGetCriteria) {
-            this.International = International;
-            this.MembersGetCriteria = MembersGetCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembers EntityMembers;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.EntityMembersInformation EntityMembersInformation;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMembersGetResponse() {
-        }
-        
-        public EntityMembersGetResponse(MetadataSample.MDSTestService.EntityMembers EntityMembers, MetadataSample.MDSTestService.EntityMembersInformation EntityMembersInformation, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.EntityMembers = EntityMembers;
-            this.EntityMembersInformation = EntityMembersInformation;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMemberAttributesGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMemberAttributesGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembers EntityMembers;
-        
-        public EntityMemberAttributesGetRequest() {
-        }
-        
-        public EntityMemberAttributesGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityMembers EntityMembers) {
-            this.International = International;
-            this.EntityMembers = EntityMembers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMemberAttributesGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMemberAttributesGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembers EntityMembers;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMemberAttributesGetResponse() {
-        }
-        
-        public EntityMemberAttributesGetResponse(MetadataSample.MDSTestService.EntityMembers EntityMembers, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.EntityMembers = EntityMembers;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="HierarchyMembersGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class HierarchyMembersGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.HierarchyMembersGetCriteria HierarchyMembersGetCriteria;
-        
-        public HierarchyMembersGetRequest() {
-        }
-        
-        public HierarchyMembersGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.HierarchyMembersGetCriteria HierarchyMembersGetCriteria) {
-            this.International = International;
-            this.HierarchyMembersGetCriteria = HierarchyMembersGetCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="HierarchyMembersGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class HierarchyMembersGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.HierarchyMembers HierarchyMembers;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public HierarchyMembersGetResponse() {
-        }
-        
-        public HierarchyMembersGetResponse(MetadataSample.MDSTestService.HierarchyMembers HierarchyMembers, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.HierarchyMembers = HierarchyMembers;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.ModelMembersGetCriteria ModelsGetCriteria;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.ModelMembersResultCriteria ModelsResultCriteria;
-        
-        public ModelMembersGetRequest() {
-        }
-        
-        public ModelMembersGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.ModelMembersGetCriteria ModelsGetCriteria, MetadataSample.MDSTestService.ModelMembersResultCriteria ModelsResultCriteria) {
-            this.International = International;
-            this.ModelsGetCriteria = ModelsGetCriteria;
-            this.ModelsResultCriteria = ModelsResultCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public ModelMembersGetResponse() {
-        }
-        
-        public ModelMembersGetResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.ModelMembers = ModelMembers;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembers Members;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public bool ReturnCreatedIdentifiers;
-        
-        public EntityMembersCreateRequest() {
-        }
-        
-        public EntityMembersCreateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityMembers Members, bool ReturnCreatedIdentifiers) {
-            this.International = International;
-            this.Members = Members;
-            this.ReturnCreatedIdentifiers = ReturnCreatedIdentifiers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersCreateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersCreateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> CreatedMembers;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMembersCreateResponse() {
-        }
-        
-        public EntityMembersCreateResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> CreatedMembers, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.CreatedMembers = CreatedMembers;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembers Members;
-        
-        public EntityMembersDeleteRequest() {
-        }
-        
-        public EntityMembersDeleteRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityMembers Members) {
-            this.International = International;
-            this.Members = Members;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersDeleteResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersDeleteResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMembersDeleteResponse() {
-        }
-        
-        public EntityMembersDeleteResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembers Members;
-        
-        public EntityMembersUpdateRequest() {
-        }
-        
-        public EntityMembersUpdateRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityMembers Members) {
-            this.International = International;
-            this.Members = Members;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersUpdateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersUpdateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMembersUpdateResponse() {
-        }
-        
-        public EntityMembersUpdateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersCopyRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersCopyRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembersCopyCriteria EntityMembersCopyCriteria;
-        
-        public EntityMembersCopyRequest() {
-        }
-        
-        public EntityMembersCopyRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityMembersCopyCriteria EntityMembersCopyCriteria) {
-            this.International = International;
-            this.EntityMembersCopyCriteria = EntityMembersCopyCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersCopyResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersCopyResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMembersCopyResponse() {
-        }
-        
-        public EntityMembersCopyResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersMergeRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersMergeRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityMembers Members;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public bool ReturnCreatedIdentifiers;
-        
-        public EntityMembersMergeRequest() {
-        }
-        
-        public EntityMembersMergeRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityMembers Members, bool ReturnCreatedIdentifiers) {
-            this.International = International;
-            this.Members = Members;
-            this.ReturnCreatedIdentifiers = ReturnCreatedIdentifiers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMembersMergeResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMembersMergeResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> CreatedMembers;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityMembersMergeResponse() {
-        }
-        
-        public EntityMembersMergeResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.MemberIdentifier> CreatedMembers, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.CreatedMembers = CreatedMembers;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingLoadRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingLoadRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public string BatchTag;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.EntityStagingImportType ImportType;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public bool QueueForProcessing;
-        
-        public EntityStagingLoadRequest() {
-        }
-        
-        public EntityStagingLoadRequest(MetadataSample.MDSTestService.International International, string BatchTag, MetadataSample.MDSTestService.EntityStagingImportType ImportType, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers, bool QueueForProcessing) {
-            this.International = International;
-            this.BatchTag = BatchTag;
-            this.ImportType = ImportType;
-            this.ModelMembers = ModelMembers;
-            this.QueueForProcessing = QueueForProcessing;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingLoadResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingLoadResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches;
-        
-        public EntityStagingLoadResponse() {
-        }
-        
-        public EntityStagingLoadResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches) {
-            this.OperationResult = OperationResult;
-            this.StagingBatches = StagingBatches;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.EntityStagingGetCriteria GetCriteria;
-        
-        public EntityStagingGetRequest() {
-        }
-        
-        public EntityStagingGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.EntityStagingGetCriteria GetCriteria) {
-            this.International = International;
-            this.GetCriteria = GetCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int BatchCount;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityStagingBatch> Batches;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityStagingGetResponse() {
-        }
-        
-        public EntityStagingGetResponse(int BatchCount, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityStagingBatch> Batches, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.BatchCount = BatchCount;
-            this.Batches = Batches;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingClearRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingClearRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int BatchId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.Identifier ModelId;
-        
-        public EntityStagingClearRequest() {
-        }
-        
-        public EntityStagingClearRequest(MetadataSample.MDSTestService.International International, int BatchId, MetadataSample.MDSTestService.Identifier ModelId) {
-            this.International = International;
-            this.BatchId = BatchId;
-            this.ModelId = ModelId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingClearResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingClearResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityStagingClearResponse() {
-        }
-        
-        public EntityStagingClearResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingProcessRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingProcessRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public string BatchTag;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.Identifier EntityId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.MemberType MemberType;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public MetadataSample.MDSTestService.Identifier VersionId;
-        
-        public EntityStagingProcessRequest() {
-        }
-        
-        public EntityStagingProcessRequest(MetadataSample.MDSTestService.International International, string BatchTag, MetadataSample.MDSTestService.Identifier EntityId, MetadataSample.MDSTestService.MemberType MemberType, MetadataSample.MDSTestService.Identifier VersionId) {
-            this.International = International;
-            this.BatchTag = BatchTag;
-            this.EntityId = EntityId;
-            this.MemberType = MemberType;
-            this.VersionId = VersionId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityStagingProcessResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityStagingProcessResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int BatchId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public EntityStagingProcessResponse() {
-        }
-        
-        public EntityStagingProcessResponse(int BatchId, MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.BatchId = BatchId;
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersBulkDeleteRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersBulkDeleteRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers;
-        
-        public ModelMembersBulkDeleteRequest() {
-        }
-        
-        public ModelMembersBulkDeleteRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers) {
-            this.International = International;
-            this.ModelMembers = ModelMembers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersBulkDeleteResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersBulkDeleteResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches;
-        
-        public ModelMembersBulkDeleteResponse() {
-        }
-        
-        public ModelMembersBulkDeleteResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches) {
-            this.OperationResult = OperationResult;
-            this.StagingBatches = StagingBatches;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersBulkUpdateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersBulkUpdateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers;
-        
-        public ModelMembersBulkUpdateRequest() {
-        }
-        
-        public ModelMembersBulkUpdateRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers) {
-            this.International = International;
-            this.ModelMembers = ModelMembers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersBulkUpdateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersBulkUpdateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches;
-        
-        public ModelMembersBulkUpdateResponse() {
-        }
-        
-        public ModelMembersBulkUpdateResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches) {
-            this.OperationResult = OperationResult;
-            this.StagingBatches = StagingBatches;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersBulkMergeRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersBulkMergeRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers;
-        
-        public ModelMembersBulkMergeRequest() {
-        }
-        
-        public ModelMembersBulkMergeRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.EntityMembers> ModelMembers) {
-            this.International = International;
-            this.ModelMembers = ModelMembers;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ModelMembersBulkMergeResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ModelMembersBulkMergeResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches;
-        
-        public ModelMembersBulkMergeResponse() {
-        }
-        
-        public ModelMembersBulkMergeResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> StagingBatches) {
-            this.OperationResult = OperationResult;
-            this.StagingBatches = StagingBatches;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public bool IncludeUnbatchedInformation;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.StagingResultCriteria StagingResultCriteria;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.StagingSearchCriteria StagingSearchCriteria;
-        
-        public StagingGetRequest() {
-        }
-        
-        public StagingGetRequest(MetadataSample.MDSTestService.International International, bool IncludeUnbatchedInformation, MetadataSample.MDSTestService.StagingResultCriteria StagingResultCriteria, MetadataSample.MDSTestService.StagingSearchCriteria StagingSearchCriteria) {
-            this.International = International;
-            this.IncludeUnbatchedInformation = IncludeUnbatchedInformation;
-            this.StagingResultCriteria = StagingResultCriteria;
-            this.StagingSearchCriteria = StagingSearchCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingBatch> Batches;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingUnbatchedInformation> UnbatchedInformation;
-        
-        public StagingGetResponse() {
-        }
-        
-        public StagingGetResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingBatch> Batches, MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.StagingUnbatchedInformation> UnbatchedInformation) {
-            this.Batches = Batches;
-            this.OperationResult = OperationResult;
-            this.UnbatchedInformation = UnbatchedInformation;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingClearRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingClearRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Batches;
-        
-        public StagingClearRequest() {
-        }
-        
-        public StagingClearRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Identifier> Batches) {
-            this.International = International;
-            this.Batches = Batches;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="StagingClearResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class StagingClearResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int AttributesRecordsClearedCount;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public int BatchesQueuedToClearCount;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public int MemberRecordsClearedCount;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=4)]
-        public int RelationshipRecordsClearedCount;
-        
-        public StagingClearResponse() {
-        }
-        
-        public StagingClearResponse(int AttributesRecordsClearedCount, int BatchesQueuedToClearCount, int MemberRecordsClearedCount, MetadataSample.MDSTestService.OperationResult OperationResult, int RelationshipRecordsClearedCount) {
-            this.AttributesRecordsClearedCount = AttributesRecordsClearedCount;
-            this.BatchesQueuedToClearCount = BatchesQueuedToClearCount;
-            this.MemberRecordsClearedCount = MemberRecordsClearedCount;
-            this.OperationResult = OperationResult;
-            this.RelationshipRecordsClearedCount = RelationshipRecordsClearedCount;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TransactionsGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class TransactionsGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.TransactionSearchCriteria TransactionSearchCriteria;
-        
-        public TransactionsGetRequest() {
-        }
-        
-        public TransactionsGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.TransactionSearchCriteria TransactionSearchCriteria) {
-            this.International = International;
-            this.TransactionSearchCriteria = TransactionSearchCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TransactionsGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class TransactionsGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public int TotalRecordCount;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Transaction> TransactionList;
-        
-        public TransactionsGetResponse() {
-        }
-        
-        public TransactionsGetResponse(MetadataSample.MDSTestService.OperationResult OperationResult, int TotalRecordCount, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Transaction> TransactionList) {
-            this.OperationResult = OperationResult;
-            this.TotalRecordCount = TotalRecordCount;
-            this.TransactionList = TransactionList;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TransactionsReverseRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class TransactionsReverseRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<int> Transactions;
-        
-        public TransactionsReverseRequest() {
-        }
-        
-        public TransactionsReverseRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<int> Transactions) {
-            this.International = International;
-            this.Transactions = Transactions;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TransactionsReverseResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class TransactionsReverseResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ReplacementId> TransactionsReversed;
-        
-        public TransactionsReverseResponse() {
-        }
-        
-        public TransactionsReverseResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ReplacementId> TransactionsReversed) {
-            this.OperationResult = OperationResult;
-            this.TransactionsReversed = TransactionsReversed;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ValidationGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ValidationGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.ValidationSearchCriteria ValidationSearchCriteria;
-        
-        public ValidationGetRequest() {
-        }
-        
-        public ValidationGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.ValidationSearchCriteria ValidationSearchCriteria) {
-            this.International = International;
-            this.ValidationSearchCriteria = ValidationSearchCriteria;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ValidationGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ValidationGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public bool IsRunning;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationSummaryItem> SummaryItems;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public int TotalIssueCount;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=4)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationIssue> ValidationIssueList;
-        
-        public ValidationGetResponse() {
-        }
-        
-        public ValidationGetResponse(bool IsRunning, MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationSummaryItem> SummaryItems, int TotalIssueCount, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationIssue> ValidationIssueList) {
-            this.IsRunning = IsRunning;
-            this.OperationResult = OperationResult;
-            this.SummaryItems = SummaryItems;
-            this.TotalIssueCount = TotalIssueCount;
-            this.ValidationIssueList = ValidationIssueList;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ValidationProcessRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ValidationProcessRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.ValidationProcessCriteria ValidationProcessCriteria;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.ValidationProcessOptions ValidationProcessOptions;
-        
-        public ValidationProcessRequest() {
-        }
-        
-        public ValidationProcessRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.ValidationProcessCriteria ValidationProcessCriteria, MetadataSample.MDSTestService.ValidationProcessOptions ValidationProcessOptions) {
-            this.International = International;
-            this.ValidationProcessCriteria = ValidationProcessCriteria;
-            this.ValidationProcessOptions = ValidationProcessOptions;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="ValidationProcessResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class ValidationProcessResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationIssue> ValidationIssueList;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.ValidationProcessResult ValidationProcessResult;
-        
-        public ValidationProcessResponse() {
-        }
-        
-        public ValidationProcessResponse(MetadataSample.MDSTestService.OperationResult OperationResult, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.ValidationIssue> ValidationIssueList, MetadataSample.MDSTestService.ValidationProcessResult ValidationProcessResult) {
-            this.OperationResult = OperationResult;
-            this.ValidationIssueList = ValidationIssueList;
-            this.ValidationProcessResult = ValidationProcessResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMemberAnnotationsCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMemberAnnotationsCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.Identifier EntityId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.MemberIdentifier MemberId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public MetadataSample.MDSTestService.Identifier ModelId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=4)]
-        public MetadataSample.MDSTestService.Identifier VersionId;
-        
-        public EntityMemberAnnotationsCreateRequest() {
-        }
-        
-        public EntityMemberAnnotationsCreateRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations, MetadataSample.MDSTestService.Identifier EntityId, MetadataSample.MDSTestService.MemberIdentifier MemberId, MetadataSample.MDSTestService.Identifier ModelId, MetadataSample.MDSTestService.Identifier VersionId) {
-            this.International = International;
-            this.Annotations = Annotations;
-            this.EntityId = EntityId;
-            this.MemberId = MemberId;
-            this.ModelId = ModelId;
-            this.VersionId = VersionId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="AnnotationsCreateResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class AnnotationsCreateResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        public AnnotationsCreateResponse() {
-        }
-        
-        public AnnotationsCreateResponse(MetadataSample.MDSTestService.OperationResult OperationResult) {
-            this.OperationResult = OperationResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TransactionAnnotationsCreateRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class TransactionAnnotationsCreateRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public int TransactionId;
-        
-        public TransactionAnnotationsCreateRequest() {
-        }
-        
-        public TransactionAnnotationsCreateRequest(MetadataSample.MDSTestService.International International, System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations, int TransactionId) {
-            this.International = International;
-            this.Annotations = Annotations;
-            this.TransactionId = TransactionId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMemberAnnotationsGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMemberAnnotationsGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public MetadataSample.MDSTestService.Identifier EntityId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.MemberIdentifier MemberId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.Identifier ModelId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public MetadataSample.MDSTestService.Identifier VersionId;
-        
-        public EntityMemberAnnotationsGetRequest() {
-        }
-        
-        public EntityMemberAnnotationsGetRequest(MetadataSample.MDSTestService.International International, MetadataSample.MDSTestService.Identifier EntityId, MetadataSample.MDSTestService.MemberIdentifier MemberId, MetadataSample.MDSTestService.Identifier ModelId, MetadataSample.MDSTestService.Identifier VersionId) {
-            this.International = International;
-            this.EntityId = EntityId;
-            this.MemberId = MemberId;
-            this.ModelId = ModelId;
-            this.VersionId = VersionId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="EntityMemberAnnotationsGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class EntityMemberAnnotationsGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.Identifier EntityId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public MetadataSample.MDSTestService.MemberIdentifier MemberId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=3)]
-        public MetadataSample.MDSTestService.Identifier ModelId;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=4)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=5)]
-        public MetadataSample.MDSTestService.Identifier VersionId;
-        
-        public EntityMemberAnnotationsGetResponse() {
-        }
-        
-        public EntityMemberAnnotationsGetResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations, MetadataSample.MDSTestService.Identifier EntityId, MetadataSample.MDSTestService.MemberIdentifier MemberId, MetadataSample.MDSTestService.Identifier ModelId, MetadataSample.MDSTestService.OperationResult OperationResult, MetadataSample.MDSTestService.Identifier VersionId) {
-            this.Annotations = Annotations;
-            this.EntityId = EntityId;
-            this.MemberId = MemberId;
-            this.ModelId = ModelId;
-            this.OperationResult = OperationResult;
-            this.VersionId = VersionId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TransactionAnnotationsGetRequest", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class TransactionAnnotationsGetRequest {
-        
-        [System.ServiceModel.MessageHeaderAttribute(Namespace="http://www.w3.org/2005/09/ws-i18n")]
-        public MetadataSample.MDSTestService.International International;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public int TransactionId;
-        
-        public TransactionAnnotationsGetRequest() {
-        }
-        
-        public TransactionAnnotationsGetRequest(MetadataSample.MDSTestService.International International, int TransactionId) {
-            this.International = International;
-            this.TransactionId = TransactionId;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="TransactionAnnotationsGetResponse", WrapperNamespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", IsWrapped=true)]
-    public partial class TransactionAnnotationsGetResponse {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=0)]
-        public System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=1)]
-        public MetadataSample.MDSTestService.OperationResult OperationResult;
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.microsoft.com/sqlserver/masterdataservices/2009/09", Order=2)]
-        public int TransactionId;
-        
-        public TransactionAnnotationsGetResponse() {
-        }
-        
-        public TransactionAnnotationsGetResponse(System.Collections.ObjectModel.Collection<MetadataSample.MDSTestService.Annotation> Annotations, MetadataSample.MDSTestService.OperationResult OperationResult, int TransactionId) {
-            this.Annotations = Annotations;
-            this.OperationResult = OperationResult;
-            this.TransactionId = TransactionId;
-        }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IServiceChannel : MetadataSample.MDSTestService.IService, System.ServiceModel.IClientChannel {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ServiceClient : System.ServiceModel.ClientBase<MetadataSample.MDSTestService.IService>, MetadataSample.MDSTestService.IService {
-        
-        public ServiceClient() {
-        }
-        
-        public ServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
-        }
-        
-        public ServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
-        }
-        
-        public ServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
-        }
-        
-        public ServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
-        }
-        
-        public MetadataSample.MDSTestService.AnnotationsUpdateResponse AnnotationsUpdate(MetadataSample.MDSTestService.AnnotationsUpdateRequest request) {
-            return base.Channel.AnnotationsUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.AnnotationsDeleteResponse AnnotationsDelete(MetadataSample.MDSTestService.AnnotationsDeleteRequest request) {
-            return base.Channel.AnnotationsDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMemberKeyGetResponse EntityMemberKeyLookup(MetadataSample.MDSTestService.EntityMemberKeyGetRequest request) {
-            return base.Channel.EntityMemberKeyLookup(request);
-        }
-        
-        public MetadataSample.MDSTestService.StagingProcessResponse StagingProcess(MetadataSample.MDSTestService.StagingProcessRequest request) {
-            return base.Channel.StagingProcess(request);
-        }
-        
-        public MetadataSample.MDSTestService.ExportViewCreateResponse ExportViewCreate(MetadataSample.MDSTestService.ExportViewCreateRequest request) {
-            return base.Channel.ExportViewCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.ExportViewUpdateResponse ExportViewUpdate(MetadataSample.MDSTestService.ExportViewUpdateRequest request) {
-            return base.Channel.ExportViewUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.ExportViewDeleteResponse ExportViewDelete(MetadataSample.MDSTestService.ExportViewDeleteRequest request) {
-            return base.Channel.ExportViewDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.ExportViewListGetResponse ExportViewListGet(MetadataSample.MDSTestService.ExportViewListGetRequest request) {
-            return base.Channel.ExportViewListGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.MetadataCloneResponse MetadataClone(MetadataSample.MDSTestService.MetadataCloneRequest request) {
-            return base.Channel.MetadataClone(request);
-        }
-        
-        public MetadataSample.MDSTestService.MetadataCreateResponse MetadataCreate(MetadataSample.MDSTestService.MetadataCreateRequest request) {
-            return base.Channel.MetadataCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.MetadataDeleteResponse MetadataDelete(MetadataSample.MDSTestService.MetadataDeleteRequest request) {
-            return base.Channel.MetadataDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.MetadataGetResponse MetadataGet(MetadataSample.MDSTestService.MetadataGetRequest request) {
-            return base.Channel.MetadataGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.MetadataUpdateResponse MetadataUpdate(MetadataSample.MDSTestService.MetadataUpdateRequest request) {
-            return base.Channel.MetadataUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.StagingNameCheckResponse StagingNameCheck(MetadataSample.MDSTestService.StagingNameCheckRequest request) {
-            return base.Channel.StagingNameCheck(request);
-        }
-        
-        public MetadataSample.MDSTestService.AttributeChangeResponse AttributeChange(MetadataSample.MDSTestService.AttributeChangeRequest request) {
-            return base.Channel.AttributeChange(request);
-        }
-        
-        public MetadataSample.MDSTestService.SystemSettingsGetResponse SystemSettingsGet(MetadataSample.MDSTestService.SystemSettingsGetRequest request) {
-            return base.Channel.SystemSettingsGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.SystemSettingsUpdateResponse SystemSettingsUpdate(MetadataSample.MDSTestService.SystemSettingsUpdateRequest request) {
-            return base.Channel.SystemSettingsUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.SystemDomainListGetResponse SystemDomainListGet(MetadataSample.MDSTestService.SystemDomainListGetRequest request) {
-            return base.Channel.SystemDomainListGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.SystemPropertiesGetResponse SystemPropertiesGet(MetadataSample.MDSTestService.SystemPropertiesGetRequest request) {
-            return base.Channel.SystemPropertiesGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse ServiceCheck(MetadataSample.MDSTestService.ServiceCheckGetRequest request) {
-            return base.Channel.ServiceCheck(request);
-        }
-        
-        public MetadataSample.MDSTestService.ServiceVersionGetResponse ServiceVersionGet(MetadataSample.MDSTestService.ServiceVersionGetRequest request) {
-            return base.Channel.ServiceVersionGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.VersionCopyResponse VersionCopy(MetadataSample.MDSTestService.VersionCopyRequest request) {
-            return base.Channel.VersionCopy(request);
-        }
-        
-        public MetadataSample.MDSTestService.UserPreferencesGetResponse UserPreferencesGet(MetadataSample.MDSTestService.UserPreferencesGetRequest request) {
-            return base.Channel.UserPreferencesGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.UserPreferencesUpdateResponse UserPreferencesUpdate(MetadataSample.MDSTestService.UserPreferencesUpdateRequest request) {
-            return base.Channel.UserPreferencesUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.UserPreferencesDeleteResponse UserPreferencesDelete(MetadataSample.MDSTestService.UserPreferencesDeleteRequest request) {
-            return base.Channel.UserPreferencesDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.SecurityCreateResponse SecurityPrincipalsCreate(MetadataSample.MDSTestService.SecurityPrincipalsRequest request) {
-            return base.Channel.SecurityPrincipalsCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse SecurityPrincipalsClone(MetadataSample.MDSTestService.SecurityPrincipalsRequest request) {
-            return base.Channel.SecurityPrincipalsClone(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse SecurityPrincipalsUpdate(MetadataSample.MDSTestService.SecurityPrincipalsRequest request) {
-            return base.Channel.SecurityPrincipalsUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.SecurityPrincipalsGetResponse SecurityPrincipalsGet(MetadataSample.MDSTestService.SecurityPrincipalsGetRequest request) {
-            return base.Channel.SecurityPrincipalsGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse SecurityPrincipalsDelete(MetadataSample.MDSTestService.SecurityPrincipalsDeleteRequest request) {
-            return base.Channel.SecurityPrincipalsDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.SecurityCreateResponse SecurityPrivilegesCreate(MetadataSample.MDSTestService.SecurityPrivilegesRequest request) {
-            return base.Channel.SecurityPrivilegesCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse SecurityPrivilegesClone(MetadataSample.MDSTestService.SecurityPrivilegesRequest request) {
-            return base.Channel.SecurityPrivilegesClone(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse SecurityPrivilegesUpdate(MetadataSample.MDSTestService.SecurityPrivilegesRequest request) {
-            return base.Channel.SecurityPrivilegesUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.SecurityPrivilegesGetResponse SecurityPrivilegesGet(MetadataSample.MDSTestService.SecurityPrivilegesGetRequest request) {
-            return base.Channel.SecurityPrivilegesGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse SecurityPrivilegesDelete(MetadataSample.MDSTestService.SecurityPrivilegesDeleteRequest request) {
-            return base.Channel.SecurityPrivilegesDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.BusinessRulesPaletteGetResponse BusinessRulesPaletteGet(MetadataSample.MDSTestService.BusinessRulesPaletteGetRequest request) {
-            return base.Channel.BusinessRulesPaletteGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse BusinessRulesClone(MetadataSample.MDSTestService.BusinessRulesCloneRequest request) {
-            return base.Channel.BusinessRulesClone(request);
-        }
-        
-        public MetadataSample.MDSTestService.BusinessRulesCreateResponse BusinessRulesCreate(MetadataSample.MDSTestService.BusinessRulesCreateRequest request) {
-            return base.Channel.BusinessRulesCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse BusinessRulesDelete(MetadataSample.MDSTestService.BusinessRulesDeleteRequest request) {
-            return base.Channel.BusinessRulesDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.BusinessRulesGetResponse BusinessRulesGet(MetadataSample.MDSTestService.BusinessRulesGetRequest request) {
-            return base.Channel.BusinessRulesGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse BusinessRulesPublish(MetadataSample.MDSTestService.BusinessRulesPublishRequest request) {
-            return base.Channel.BusinessRulesPublish(request);
-        }
-        
-        public MetadataSample.MDSTestService.MessageResponse BusinessRulesUpdate(MetadataSample.MDSTestService.BusinessRulesUpdateRequest request) {
-            return base.Channel.BusinessRulesUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityInstalledStateResponse DataQualityInstalledState(MetadataSample.MDSTestService.DataQualityInstalledStateRequest request) {
-            return base.Channel.DataQualityInstalledState(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityKnowledgeBasesGetResponse DataQualityKnowledgeBasesGet(MetadataSample.MDSTestService.DataQualityKnowledgeBasesGetRequest request) {
-            return base.Channel.DataQualityKnowledgeBasesGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityOperationCreateResponse DataQualityCleansingOperationCreate(MetadataSample.MDSTestService.DataQualityCleansingOperationCreateRequest request) {
-            return base.Channel.DataQualityCleansingOperationCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityOperationCreateResponse DataQualityMatchingOperationCreate(MetadataSample.MDSTestService.DataQualityMatchingOperationCreateRequest request) {
-            return base.Channel.DataQualityMatchingOperationCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityOperationStatusResponse DataQualityOperationStatus(MetadataSample.MDSTestService.DataQualityOperationStatusRequest request) {
-            return base.Channel.DataQualityOperationStatus(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityOperationResultsGetResponse DataQualityOperationResultsGet(MetadataSample.MDSTestService.DataQualityOperationResultsGetRequest request) {
-            return base.Channel.DataQualityOperationResultsGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityStoreInputDataResponse DataQualityStoreInputData(MetadataSample.MDSTestService.DataQualityStoreInputDataRequest request) {
-            return base.Channel.DataQualityStoreInputData(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityOperationStartResponse DataQualityOperationStart(MetadataSample.MDSTestService.DataQualityOperationStartRequest request) {
-            return base.Channel.DataQualityOperationStart(request);
-        }
-        
-        public MetadataSample.MDSTestService.DataQualityOperationPurgeOperationResponse DataQualityOperationPurgeOperation(MetadataSample.MDSTestService.DataQualityOperationPurgeOperationRequest request) {
-            return base.Channel.DataQualityOperationPurgeOperation(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMembersGetResponse EntityMembersGet(MetadataSample.MDSTestService.EntityMembersGetRequest request) {
-            return base.Channel.EntityMembersGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMemberAttributesGetResponse EntityMemberAttributesGet(MetadataSample.MDSTestService.EntityMemberAttributesGetRequest request) {
-            return base.Channel.EntityMemberAttributesGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.HierarchyMembersGetResponse HierarchyMembersGet(MetadataSample.MDSTestService.HierarchyMembersGetRequest request) {
-            return base.Channel.HierarchyMembersGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.ModelMembersGetResponse ModelMembersGet(MetadataSample.MDSTestService.ModelMembersGetRequest request) {
-            return base.Channel.ModelMembersGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMembersCreateResponse EntityMembersCreate(MetadataSample.MDSTestService.EntityMembersCreateRequest request) {
-            return base.Channel.EntityMembersCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMembersDeleteResponse EntityMembersDelete(MetadataSample.MDSTestService.EntityMembersDeleteRequest request) {
-            return base.Channel.EntityMembersDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMembersUpdateResponse EntityMembersUpdate(MetadataSample.MDSTestService.EntityMembersUpdateRequest request) {
-            return base.Channel.EntityMembersUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMembersCopyResponse EntityMembersCopy(MetadataSample.MDSTestService.EntityMembersCopyRequest request) {
-            return base.Channel.EntityMembersCopy(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMembersMergeResponse EntityMembersMerge(MetadataSample.MDSTestService.EntityMembersMergeRequest request) {
-            return base.Channel.EntityMembersMerge(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityStagingLoadResponse EntityStagingLoad(MetadataSample.MDSTestService.EntityStagingLoadRequest request) {
-            return base.Channel.EntityStagingLoad(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityStagingGetResponse EntityStagingGet(MetadataSample.MDSTestService.EntityStagingGetRequest request) {
-            return base.Channel.EntityStagingGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityStagingClearResponse EntityStagingClear(MetadataSample.MDSTestService.EntityStagingClearRequest request) {
-            return base.Channel.EntityStagingClear(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityStagingProcessResponse EntityStagingProcess(MetadataSample.MDSTestService.EntityStagingProcessRequest request) {
-            return base.Channel.EntityStagingProcess(request);
-        }
-        
-        public MetadataSample.MDSTestService.ModelMembersBulkDeleteResponse ModelMembersBulkDelete(MetadataSample.MDSTestService.ModelMembersBulkDeleteRequest request) {
-            return base.Channel.ModelMembersBulkDelete(request);
-        }
-        
-        public MetadataSample.MDSTestService.ModelMembersBulkUpdateResponse ModelMembersBulkUpdate(MetadataSample.MDSTestService.ModelMembersBulkUpdateRequest request) {
-            return base.Channel.ModelMembersBulkUpdate(request);
-        }
-        
-        public MetadataSample.MDSTestService.ModelMembersBulkMergeResponse ModelMembersBulkMerge(MetadataSample.MDSTestService.ModelMembersBulkMergeRequest request) {
-            return base.Channel.ModelMembersBulkMerge(request);
-        }
-        
-        public MetadataSample.MDSTestService.StagingGetResponse StagingGet(MetadataSample.MDSTestService.StagingGetRequest request) {
-            return base.Channel.StagingGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.StagingClearResponse StagingClear(MetadataSample.MDSTestService.StagingClearRequest request) {
-            return base.Channel.StagingClear(request);
-        }
-        
-        public MetadataSample.MDSTestService.TransactionsGetResponse TransactionsGet(MetadataSample.MDSTestService.TransactionsGetRequest request) {
-            return base.Channel.TransactionsGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.TransactionsReverseResponse TransactionsReverse(MetadataSample.MDSTestService.TransactionsReverseRequest request) {
-            return base.Channel.TransactionsReverse(request);
-        }
-        
-        public MetadataSample.MDSTestService.ValidationGetResponse ValidationGet(MetadataSample.MDSTestService.ValidationGetRequest request) {
-            return base.Channel.ValidationGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.ValidationProcessResponse ValidationProcess(MetadataSample.MDSTestService.ValidationProcessRequest request) {
-            return base.Channel.ValidationProcess(request);
-        }
-        
-        public MetadataSample.MDSTestService.AnnotationsCreateResponse EntityMemberAnnotationsCreate(MetadataSample.MDSTestService.EntityMemberAnnotationsCreateRequest request) {
-            return base.Channel.EntityMemberAnnotationsCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.AnnotationsCreateResponse TransactionAnnotationsCreate(MetadataSample.MDSTestService.TransactionAnnotationsCreateRequest request) {
-            return base.Channel.TransactionAnnotationsCreate(request);
-        }
-        
-        public MetadataSample.MDSTestService.EntityMemberAnnotationsGetResponse EntityMemberAnnotationsGet(MetadataSample.MDSTestService.EntityMemberAnnotationsGetRequest request) {
-            return base.Channel.EntityMemberAnnotationsGet(request);
-        }
-        
-        public MetadataSample.MDSTestService.TransactionAnnotationsGetResponse TransactionAnnotationsGet(MetadataSample.MDSTestService.TransactionAnnotationsGetRequest request) {
-            return base.Channel.TransactionAnnotationsGet(request);
-        }
-    }
-}
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(MetadataSample.MDSTes

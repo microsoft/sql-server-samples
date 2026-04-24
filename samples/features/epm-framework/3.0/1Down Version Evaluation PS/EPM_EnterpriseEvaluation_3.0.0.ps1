@@ -7,12 +7,12 @@ param([string]$ConfigurationGroup=$(Throw `
 -PolicyCategoryFilter Category"), `
 [string]$EvalMode=$(Throw "Parameter missing: -EvalMode EvalMode"))
 
-# Parameter -ConfigurationGroup specifies the 
+# Parameter -ConfigurationGroup specifies the
 # Central Management Server group to evaluate
-# Parameter -PolicyCategoryFilter specifies the 
+# Parameter -PolicyCategoryFilter specifies the
 # category of policies to evaluate
 # Parameter -EvalMode accepts "Check" to report policy
-# results, "Configure" to reconfigure any violations 
+# results, "Configure" to reconfigure any violations
 
 # Declare variables to define the central warehouse
 # in which to write the output, store the policies
@@ -27,7 +27,7 @@ Remove-Item -Path $ResultDirDel
 
 #Function to insert policy evaluation results
 #into SQL Server - table policy.PolicyHistory
-function PolicyHistoryInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResults) 
+function PolicyHistoryInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResults)
 {
    &{
 	$sqlQueryText = "INSERT INTO policy.PolicyHistory (EvaluatedServer, EvaluatedPolicy, EvaluationResults) VALUES(N'$EvaluatedServer', N'$EvaluatedPolicy', N'$EvaluationResults')"
@@ -35,13 +35,13 @@ function PolicyHistoryInsert($sqlServerVariable, $sqlDatabaseVariable, $Evaluate
 	}
 	trap
 	{
-	  $ExceptionText = $_.Exception.Message -replace "'", "" 
+	  $ExceptionText = $_.Exception.Message -replace "'", ""
 	}
 }
 
-#Function to insert policy evaluation errors 
+#Function to insert policy evaluation errors
 #into SQL Server - table policy.EvaluationErrorHistory
-function PolicyErrorInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResultsEscape) 
+function PolicyErrorInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResultsEscape)
 {
 	&{
 	$sqlQueryText = "INSERT INTO policy.EvaluationErrorHistory (EvaluatedServer, EvaluatedPolicy, EvaluationResults) VALUES(N'$EvaluatedServer', N'$EvaluatedPolicy', N'$EvaluationResultsEscape')"
@@ -49,7 +49,7 @@ function PolicyErrorInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedS
 	}
 	trap
 	{
-	  $ExceptionText = $_.Exception.Message -replace "'", "" 
+	  $ExceptionText = $_.Exception.Message -replace "'", ""
 	}
 }
 
@@ -70,7 +70,7 @@ $dr = $cmd.ExecuteReader();
 # the policies.  For each server and policy,
 # call cmdlet to evaluate policy on server
 
-while ($dr.Read()) { 
+while ($dr.Read()) {
 	$ServerName = $dr.GetValue(0);
 	foreach ($Policy in $PolicyStore.Policies)
    {
@@ -80,18 +80,18 @@ while ($dr.Read()) {
 			$OutputFile = $ResultDir + ("{0}_{1}.xml" -f (Encode-SqlName $ServerName ), (Encode-SqlName $Policy.Name));
 			Invoke-PolicyEvaluation -Policy $Policy -TargetServerName $ServerName -AdHocPolicyEvaluationMode $EvalMode -OutputXML > $OutputFile;
 			$PolicyResult = Get-Content $OutputFile -encoding UTF8;
-			$PolicyResult = $PolicyResult -replace "'", "" 
+			$PolicyResult = $PolicyResult -replace "'", ""
 			PolicyHistoryInsert $CentralManagementServer $HistoryDatabase $ServerName $Policy.Name $PolicyResult;
 	 	}
 			trap [Exception]
-			{ 
-				  $ExceptionText = $_.Exception.Message -replace "'", "" 
+			{
+				  $ExceptionText = $_.Exception.Message -replace "'", ""
 				  $ExceptionMessage = $_.Exception.GetType().FullName + ", " + $ExceptionText
 				  PolicyErrorInsert $CentralManagementServer $HistoryDatabase $ServerName $Policy.Name $ExceptionMessage;
-				  continue;   
+				  continue;
 			}		
 	}
-   } 
+   }
  }
 
 $dr.Close()

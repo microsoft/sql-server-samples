@@ -1,15 +1,15 @@
-﻿/*----------------------------------------------------------------------------------  
-Copyright (c) Microsoft Corporation. All rights reserved.  
-  
-THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,   
-EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES   
-OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-----------------------------------------------------------------------------------  
-The example companies, organizations, products, domain names,  
-e-mail addresses, logos, people, places, and events depicted  
-herein are fictitious.  No association with any real company,  
-organization, product, domain name, email address, logo, person,  
-places, or events is intended or should be inferred.  
+﻿/*----------------------------------------------------------------------------------
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+----------------------------------------------------------------------------------
+The example companies, organizations, products, domain names,
+e-mail addresses, logos, people, places, and events depicted
+herein are fictitious.  No association with any real company,
+organization, product, domain name, email address, logo, person,
+places, or events is intended or should be inferred.
 
 */
 
@@ -24,20 +24,20 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-/*----------------------------------------------------------------------------------  
+/*----------------------------------------------------------------------------------
 High Level Scenario:
-This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate 
-and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Smart Grid scenario where multiple 
+This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate
+and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Smart Grid scenario where multiple
 IoT power meters are constantly sending electricity usage measurements to the database.
 
 Details:
-This code sample simulates an IoT Smart Grid scenario where multiple IoT power meters are sending electricity usage measurements to a SQL Server memory optimized database. 
-The Data Generator, that can be started either from the Console or the Windows Form client, produces a data generated spike to simulate a 
-shock absorber scenario: https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/. 
-Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter. 
-It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table. 
-In addition to the in-memory features, the sample is offloading historical values to a Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and 
-Power BI: https://powerbi.microsoft.com/en-us/desktop/ for data visualization. 
+This code sample simulates an IoT Smart Grid scenario where multiple IoT power meters are sending electricity usage measurements to a SQL Server memory optimized database.
+The Data Generator, that can be started either from the Console or the Windows Form client, produces a data generated spike to simulate a
+shock absorber scenario: https://blogs.technet.microsoft.com/dataplatforminsider/2013/09/19/in-memory-oltp-common-design-pattern-high-data-input-rateshock-absorber/.
+Every async task in the Data Generator produces a batch of records with random values in order to simulate the data of an IoT power meter.
+It then calls a natively compiled stored procedure, that accepts an memory optimized table valued parameter (TVP), to insert the data into an memory optimized SQL Server table.
+In addition to the in-memory features, the sample is offloading historical values to a Clustered Columnstore Index: https://msdn.microsoft.com/en-us/library/dn817827.aspx) for enabling real time operational analytics, and
+Power BI: https://powerbi.microsoft.com/en-us/desktop/ for data visualization.
 */
 namespace Client
 {
@@ -67,11 +67,11 @@ namespace Client
 
         public FrmMain()
         {
-            InitializeComponent();            
+            InitializeComponent();
             Init();
 
             this.dataGenerator = new SqlDataGenerator(this.connection, this.spName, this.commandTimeout, this.meters, this.numberOfDataLoadTasks, this.dataLoadCommandDelay, this.batchSize, this.deleteSPName, this.numberOfOffLoadTasks, this.offLoadCommandDelay, this.deleteBatchSize, this.numberOfRowsOfloadLimit, this.ExceptionCallback);
-            StartApp();            
+            StartApp();
         }
 
         private void ExceptionCallback(int taskId, Exception exception)
@@ -176,10 +176,10 @@ namespace Client
                 this.deleteBatchSize = int.Parse(ConfigurationManager.AppSettings["deleteBatchSize"]);
 
                 this.meters = int.Parse(ConfigurationManager.AppSettings["numberOfMeters"]);
-                
+
                 this.commandTimeout = int.Parse(ConfigurationManager.AppSettings["commandTimeout"]);
                 this.delayStart = int.Parse(ConfigurationManager.AppSettings["delayStart"]);
-                this.appRunDuration = int.Parse(ConfigurationManager.AppSettings["appRunDuration"]);                
+                this.appRunDuration = int.Parse(ConfigurationManager.AppSettings["appRunDuration"]);
                 this.rpsFrequency = int.Parse(ConfigurationManager.AppSettings["rpsFrequency"]);
                 numberOfRowsOfloadLimit = int.Parse(ConfigurationManager.AppSettings["numberOfRowsOfloadLimit"]);
 
@@ -189,7 +189,7 @@ namespace Client
 
                 // Initialize Labels
                 this.lblTasksValue.Text = string.Format("{0:#,#}", this.numberOfDataLoadTasks).ToString();
-                
+
                 if (batchSize <= 0) throw new SqlDataGeneratorException("The Batch Size cannot be less or equal to zero.");
 
                 if (numberOfDataLoadTasks <= 0) throw new SqlDataGeneratorException("Number Of Tasks cannot be less or equal to zero.");
@@ -205,7 +205,7 @@ namespace Client
         }
 
         private void rpsTimer_Tick(object sender, EventArgs e)
-        {            
+        {
             try
             {
                 this.lblTasksValue.Text = this.dataGenerator.RunningTasks.ToString();
@@ -214,7 +214,7 @@ namespace Client
                 if (dataGenerator.IsRunning)
                 {
                     if (this.dataGenerator.RunningTasks == 0) return;
-                
+
                     if (rps > 0)
                     {
                         this.lblRpsValue.Text = string.Format("{0:#,#}", rps).ToString();
@@ -230,7 +230,7 @@ namespace Client
             {
                 this.Stop.Text = "Stopping...";
                 this.Stop.Update();
-                
+
                 string script = File.ReadAllText(@"setup-or-reset-demo.sql");
 
                 int numberOfSqlConnections = ConfigurationManager.ConnectionStrings.Count;
@@ -250,7 +250,7 @@ namespace Client
                         }
                     }
                 }
-            }            
+            }
             catch (Exception exception) { HandleException(exception); }
             finally
             {
@@ -271,7 +271,7 @@ namespace Client
 
         private void RpsChart_Click(object sender, EventArgs e)
         {
-            StartApp();            
+            StartApp();
         }
     }
 }

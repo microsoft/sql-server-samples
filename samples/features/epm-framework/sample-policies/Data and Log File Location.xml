@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft Corporation.-->
+<!--Licensed under the MIT License-->
+<model xmlns="smlif.xsd">
+<_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">DMF:Name</_locTag>
+    <_locTag _loc="locData">DMF:Description</_locTag>
+    <_locTag _loc="locData">DMF:Condition</_locTag>
+    <_locTag _loc="locData">DMF:ObjectSet</_locTag>
+    <_locTag _loc="locData">DMF:RootCondition</_locTag>
+    <_locTag _loc="locData">DMF:PolicyCategory</_locTag>
+    <_locTag _loc="locData">DMF:HelpText</_locTag>
+</_locDefinition>
+  <identity>
+    <name>urn:uuid:96fe1236-abf6-4a57-b54d-e9baab394fd1</name>
+    <baseURI>http://documentcollection/</baseURI>
+  </identity>
+  <xs:bufferSchema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <definitions xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+      <document>
+        <docinfo>
+          <aliases>
+            <alias>/system/schema/DMF</alias>
+          </aliases>
+          <sfc:version DomainVersion="3" />
+        </docinfo>
+        <data>
+          <xs:schema targetNamespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+            <xs:element name="Policy">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ObjectSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Condition">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="PolicyCategory">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSetLevel">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <DMF:bufferData xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08">
+              <instances xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Policy/Data and Log File Location</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Policy xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:PolicyCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Data and Log Files on Separate Drives</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyCondition>
+                      <DMF:PolicyObjectSet>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyObjectSet>
+                      <DMF:PolicyRootCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Enterprise or Standard Edition</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyRootCondition>
+                      <DMF:PolicyPolicyCategory>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Performance</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyPolicyCategory>
+                      <DMF:Name type="string">Data and Log File Location</DMF:Name>
+                      <DMF:Description type="string">Checks whether data and log files are placed on separate logical drives. Placing both data and log files on the same drive can cause contention for that drive and result in poor performance. Placing the files on separate drives allows the I/O activity to occur at the same time for both the data and log files. The best practice is to specify separate drives for the data and log when you create a new database. To move files after the database is created, the database must be taken offline. Move the files by using one of the following methods:&lt;?char 13?&gt;
+&lt;?char 13?&gt;
+* Restore the database from backup by using the RESTORE DATABASE statement with the WITH MOVE option. &lt;?char 13?&gt;
+* Detach and then re-attach the database specifying separate locations for the data and log devices. &lt;?char 13?&gt;
+* Specify a new location by running the ALTER DATABASE statement with the MODIFY FILE option, and then restarting the instance of SQL Server. &lt;?char 13?&gt;
+&lt;?char 13?&gt;
+Note:  This policy cannot detect separate physical devices through mount points.</DMF:Description>
+                      <DMF:Condition type="string">Data and Log Files on Separate Drives</DMF:Condition>
+                      <DMF:ObjectSet type="string">Data and Log File Location_ObjectSet</DMF:ObjectSet>
+                      <DMF:RootCondition type="string">Enterprise or Standard Edition</DMF:RootCondition>
+                      <DMF:PolicyCategory type="string">Microsoft Best Practices: Performance</DMF:PolicyCategory>
+                      <DMF:Enabled type="boolean">false</DMF:Enabled>
+                      <DMF:AutomatedPolicyEvaluationMode type="AutomatedPolicyEvaluationMode">None</DMF:AutomatedPolicyEvaluationMode>
+                      <DMF:HelpText type="string" />
+                      <DMF:HelpLink type="string">http://go.microsoft.com/fwlink/?LinkId=116362</DMF:HelpLink>
+                      <DMF:ActiveEndDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveEndDate>
+                      <DMF:ActiveStartDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveStartDate>
+                    </DMF:Policy>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:ObjectSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:TargetSets>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:TargetSets>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Data and Log File Location_ObjectSet</DMF:Name>
+                      <DMF:Facet type="string">IDatabasePerformanceFacet</DMF:Facet>
+                    </DMF:ObjectSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Data and Log Files on Separate Drives</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">&lt;Operator&gt;&lt;?char 13?&gt;
+  &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+  &lt;OpType&gt;OR&lt;/OpType&gt;&lt;?char 13?&gt;
+  &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+  &lt;Operator&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;OpType&gt;OR&lt;/OpType&gt;&lt;?char 13?&gt;
+    &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+    &lt;Operator&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;OpType&gt;OR&lt;/OpType&gt;&lt;?char 13?&gt;
+      &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+      &lt;Operator&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+        &lt;Attribute&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;Name&gt;DataAndLogFilesOnSeparateLogicalVolumes&lt;/Name&gt;&lt;?char 13?&gt;
+        &lt;/Attribute&gt;&lt;?char 13?&gt;
+        &lt;Function&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;FunctionType&gt;True&lt;/FunctionType&gt;&lt;?char 13?&gt;
+          &lt;ReturnType&gt;Bool&lt;/ReturnType&gt;&lt;?char 13?&gt;
+          &lt;Count&gt;0&lt;/Count&gt;&lt;?char 13?&gt;
+        &lt;/Function&gt;&lt;?char 13?&gt;
+      &lt;/Operator&gt;&lt;?char 13?&gt;
+      &lt;Operator&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;OpType&gt;LT&lt;/OpType&gt;&lt;?char 13?&gt;
+        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+        &lt;Attribute&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;Name&gt;Size&lt;/Name&gt;&lt;?char 13?&gt;
+        &lt;/Attribute&gt;&lt;?char 13?&gt;
+        &lt;Constant&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;ObjType&gt;System.Int32&lt;/ObjType&gt;&lt;?char 13?&gt;
+          &lt;Value&gt;5120&lt;/Value&gt;&lt;?char 13?&gt;
+        &lt;/Constant&gt;&lt;?char 13?&gt;
+      &lt;/Operator&gt;&lt;?char 13?&gt;
+    &lt;/Operator&gt;&lt;?char 13?&gt;
+    &lt;Operator&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;OpType&gt;NE&lt;/OpType&gt;&lt;?char 13?&gt;
+      &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+      &lt;Attribute&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;Name&gt;Status&lt;/Name&gt;&lt;?char 13?&gt;
+      &lt;/Attribute&gt;&lt;?char 13?&gt;
+      &lt;Function&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;FunctionType&gt;Enum&lt;/FunctionType&gt;&lt;?char 13?&gt;
+        &lt;ReturnType&gt;Numeric&lt;/ReturnType&gt;&lt;?char 13?&gt;
+        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+        &lt;Constant&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+          &lt;Value&gt;Microsoft.SqlServer.Management.Smo.DatabaseStatus&lt;/Value&gt;&lt;?char 13?&gt;
+        &lt;/Constant&gt;&lt;?char 13?&gt;
+        &lt;Constant&gt;&lt;?char 13?&gt;
+          &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+          &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+          &lt;Value&gt;Normal&lt;/Value&gt;&lt;?char 13?&gt;
+        &lt;/Constant&gt;&lt;?char 13?&gt;
+      &lt;/Function&gt;&lt;?char 13?&gt;
+    &lt;/Operator&gt;&lt;?char 13?&gt;
+  &lt;/Operator&gt;&lt;?char 13?&gt;
+  &lt;Operator&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+    &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+    &lt;Attribute&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;Name&gt;IsSystemObject&lt;/Name&gt;&lt;?char 13?&gt;
+    &lt;/Attribute&gt;&lt;?char 13?&gt;
+    &lt;Function&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;FunctionType&gt;True&lt;/FunctionType&gt;&lt;?char 13?&gt;
+      &lt;ReturnType&gt;Bool&lt;/ReturnType&gt;&lt;?char 13?&gt;
+      &lt;Count&gt;0&lt;/Count&gt;&lt;?char 13?&gt;
+    &lt;/Function&gt;&lt;?char 13?&gt;
+  &lt;/Operator&gt;&lt;?char 13?&gt;
+&lt;/Operator&gt;</DMF:Expression>
+                      <DMF:Name type="string">Data and Log Files on Separate Drives</DMF:Name>
+                      <DMF:Description type="string">Confirms that data and log files are placed on separate drives.</DMF:Description>
+                      <DMF:Facet type="string">IDatabasePerformanceFacet</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Enterprise or Standard Edition</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">&lt;Operator&gt;&lt;?char 13?&gt;
+  &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+  &lt;OpType&gt;OR&lt;/OpType&gt;&lt;?char 13?&gt;
+  &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+  &lt;Operator&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+    &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+    &lt;Attribute&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;Name&gt;EngineEdition&lt;/Name&gt;&lt;?char 13?&gt;
+    &lt;/Attribute&gt;&lt;?char 13?&gt;
+    &lt;Function&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;FunctionType&gt;Enum&lt;/FunctionType&gt;&lt;?char 13?&gt;
+      &lt;ReturnType&gt;Numeric&lt;/ReturnType&gt;&lt;?char 13?&gt;
+      &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+      &lt;Constant&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+        &lt;Value&gt;Microsoft.SqlServer.Management.Smo.Edition&lt;/Value&gt;&lt;?char 13?&gt;
+      &lt;/Constant&gt;&lt;?char 13?&gt;
+      &lt;Constant&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+        &lt;Value&gt;Standard&lt;/Value&gt;&lt;?char 13?&gt;
+      &lt;/Constant&gt;&lt;?char 13?&gt;
+    &lt;/Function&gt;&lt;?char 13?&gt;
+  &lt;/Operator&gt;&lt;?char 13?&gt;
+  &lt;Operator&gt;&lt;?char 13?&gt;
+    &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+    &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+    &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+    &lt;Attribute&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;Name&gt;EngineEdition&lt;/Name&gt;&lt;?char 13?&gt;
+    &lt;/Attribute&gt;&lt;?char 13?&gt;
+    &lt;Function&gt;&lt;?char 13?&gt;
+      &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+      &lt;FunctionType&gt;Enum&lt;/FunctionType&gt;&lt;?char 13?&gt;
+      &lt;ReturnType&gt;Numeric&lt;/ReturnType&gt;&lt;?char 13?&gt;
+      &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+      &lt;Constant&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+        &lt;Value&gt;Microsoft.SqlServer.Management.Smo.Edition&lt;/Value&gt;&lt;?char 13?&gt;
+      &lt;/Constant&gt;&lt;?char 13?&gt;
+      &lt;Constant&gt;&lt;?char 13?&gt;
+        &lt;TypeClass&gt;String&lt;/TypeClass&gt;&lt;?char 13?&gt;
+        &lt;ObjType&gt;System.String&lt;/ObjType&gt;&lt;?char 13?&gt;
+        &lt;Value&gt;EnterpriseOrDeveloper&lt;/Value&gt;&lt;?char 13?&gt;
+      &lt;/Constant&gt;&lt;?char 13?&gt;
+    &lt;/Function&gt;&lt;?char 13?&gt;
+  &lt;/Operator&gt;&lt;?char 13?&gt;
+&lt;/Operator&gt;</DMF:Expression>
+                      <DMF:Name type="string">Enterprise or Standard Edition</DMF:Name>
+                      <DMF:Description type="string">Confirms that the instance of SQL Server is either Enterprise or Standard Edition.</DMF:Description>
+                      <DMF:Facet type="string">Server</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Performance</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:PolicyCategory xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Microsoft Best Practices: Performance</DMF:Name>
+                    </DMF:PolicyCategory>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet/TargetSet/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Levels>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:Levels>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:Enabled type="boolean">true</DMF:Enabled>
+                    </DMF:TargetSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSetLevel xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Data and Log File Location__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:LevelName type="string">Database</DMF:LevelName>
+                      <DMF:Condition type="string" />
+                    </DMF:TargetSetLevel>
+                  </data>
+                </document>
+              </instances>
+            </DMF:bufferData>
+          </xs:schema>
+        </data>
+      </document>
+    </definitions>
+  </xs:bufferSchema>
+</model>

@@ -7,17 +7,17 @@ BEGIN
 /*
 Notes:
   Generates a fake postal code formatted accurately for the country
-  needed. 
+  needed.
 
   Note only countries for which data is being generated are included.
-  As time goes by this will be expanded. 
+  As time goes by this will be expanded.
 
   If the country is not found then the procedure just defaults to the
-  standard US format. 
+  standard US format.
 
 Usage:
   DECLARE @myPostalCode AS NVARCHAR(10)
-  EXEC [DataLoadSimulation].[GetBogativePostalCode] 
+  EXEC [DataLoadSimulation].[GetBogativePostalCode]
       @CityID = 1
     , @PostalCode = @myPostalCode OUTPUT
   SELECT @myPostalCode
@@ -36,7 +36,7 @@ Usage:
      AND c.[ValidTo] = '9999-12-31 23:59:59.9999999'
 
   -- Generate a fake postal code but formatted for the country
-  SET @PostalCode 
+  SET @PostalCode
     = CASE @CountryName
         WHEN 'United States'
         THEN RIGHT('00000' + CAST((ABS(CHECKSUM(NEWID())) % 99999) AS NVARCHAR), 5)

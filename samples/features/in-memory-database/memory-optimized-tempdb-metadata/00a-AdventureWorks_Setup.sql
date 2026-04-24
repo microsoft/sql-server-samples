@@ -1,8 +1,8 @@
 -- SQL 2019
 
 -- Restore AdventureWorks
-RESTORE DATABASE [AdventureWorks] 
-FROM  DISK = N'F:\MSSQL\MSSQL15.SQL2019\MSSQL\Backup\AdventureWorks2016_EXT.bak' 
+RESTORE DATABASE [AdventureWorks]
+FROM  DISK = N'F:\MSSQL\MSSQL15.SQL2019\MSSQL\Backup\AdventureWorks2016_EXT.bak'
 WITH  FILE = 1
 	,  MOVE N'AdventureWorks2016_EXT_Data' TO N'F:\MSSQL\MSSQL15.SQL2019\MSSQL\DATA\AdventureWorks_Data.mdf'
 	,  MOVE N'AdventureWorks2016_EXT_Log' TO N'F:\MSSQL\MSSQL15.SQL2019\MSSQL\DATA\AdventureWorks_Log.ldf'
@@ -20,5 +20,5 @@ GO
 
 -- Upgrade compatibility
 ALTER DATABASE AdventureWorks
-SET COMPATIBILITY_LEVEL = 150;  
+SET COMPATIBILITY_LEVEL = 150;
 GO

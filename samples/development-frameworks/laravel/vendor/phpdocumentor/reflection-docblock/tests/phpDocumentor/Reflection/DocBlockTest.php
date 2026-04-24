@@ -28,7 +28,7 @@ class DocBlockTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers \phpDocumentor\Reflection\DocBlock
-     * 
+     *
      * @return void
      */
     public function testConstruct()
@@ -60,7 +60,7 @@ DOCBLOCK;
         $this->assertTrue($object->hasTag('see'));
         $this->assertTrue($object->hasTag('return'));
         $this->assertFalse($object->hasTag('category'));
-        
+
         $this->assertSame('MyNamespace', $object->getContext()->getNamespace());
         $this->assertSame(
             array('PHPDoc' => '\phpDocumentor'),
@@ -128,7 +128,7 @@ DOCBLOCK;
 
     /**
      * @covers \phpDocumentor\Reflection\DocBlock::cleanInput
-     * 
+     *
      * @return void
      */
     public function testConstructOneLiner()
@@ -145,7 +145,7 @@ DOCBLOCK;
 
     /**
      * @covers \phpDocumentor\Reflection\DocBlock::__construct
-     * 
+     *
      * @return void
      */
     public function testConstructFromReflector()
@@ -166,7 +166,7 @@ DOCBLOCK;
 
     /**
      * @expectedException \InvalidArgumentException
-     * 
+     *
      * @return void
      */
     public function testExceptionOnInvalidObject()
@@ -198,7 +198,7 @@ DOCBLOCK;
     /**
      * @covers \phpDocumentor\Reflection\DocBlock::parseTags
      * @expectedException \LogicException
-     * 
+     *
      * @return void
      */
     public function testInvalidTagBlock()
@@ -218,7 +218,7 @@ class MyReflectionDocBlock extends \phpDocumentor\Reflection\DocBlock {
 DOCBLOCK_EXTENSION
         );
         new \MyReflectionDocBlock('');
-        
+
     }
 
     public function testTagCaseSensitivity()
@@ -263,7 +263,7 @@ DOCBLOCK;
     /**
      * @depends testConstructFromReflector
      * @covers \phpDocumentor\Reflection\DocBlock::getTagsByName
-     * 
+     *
      * @return void
      */
     public function testGetTagsByNameZeroAndOneMatch()
@@ -276,7 +276,7 @@ DOCBLOCK;
     /**
      * @depends testConstructWithTagsOnly
      * @covers \phpDocumentor\Reflection\DocBlock::parseTags
-     * 
+     *
      * @return void
      */
     public function testParseMultilineTag()
@@ -294,7 +294,7 @@ DOCBLOCK;
     /**
      * @depends testConstructWithTagsOnly
      * @covers \phpDocumentor\Reflection\DocBlock::parseTags
-     * 
+     *
      * @return void
      */
     public function testParseMultilineTagWithLineBreaks()
@@ -317,7 +317,7 @@ DOCBLOCK;
     /**
      * @depends testConstructWithTagsOnly
      * @covers \phpDocumentor\Reflection\DocBlock::getTagsByName
-     * 
+     *
      * @return void
      */
     public function testGetTagsByNameMultipleMatch()

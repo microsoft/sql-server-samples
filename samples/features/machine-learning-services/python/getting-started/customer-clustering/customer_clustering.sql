@@ -15,7 +15,7 @@ SELECT
   CAST( (ROUND(COALESCE(returns_count / NULLIF(1.0*orders_count, 0), 0), 7) ) AS FLOAT) AS orderRatio,
   CAST( (ROUND(COALESCE(returns_items / NULLIF(1.0*orders_items, 0), 0), 7) ) AS FLOAT) AS itemsRatio,
   CAST( (ROUND(COALESCE(returns_money / NULLIF(1.0*orders_money, 0), 0), 7) ) AS FLOAT) AS monetaryRatio,
-  CAST( (COALESCE(returns_count, 0)) AS FLOAT) AS frequency  
+  CAST( (COALESCE(returns_count, 0)) AS FLOAT) AS frequency
 FROM
   (
     SELECT
@@ -41,7 +41,7 @@ FROM
       SUM( sr_return_amt ) AS returns_money
     FROM store_returns
     GROUP BY sr_customer_sk
-  ) returned ON ss_customer_sk=sr_customer_sk 
+  ) returned ON ss_customer_sk=sr_customer_sk
  '
 
 EXEC sp_execute_external_script
@@ -90,11 +90,11 @@ EXEC [dbo].[py_generate_customer_return_clusters];
 -- Select contents of the table
 SELECT * FROM py_customer_clusters;
 
---Get email addresses of customers in cluster 0 
+--Get email addresses of customers in cluster 0
 SELECT customer.[c_email_address], customer.c_customer_sk
   FROM dbo.customer
   JOIN
   [dbo].[py_customer_clusters] as c
   ON c.Customer = customer.c_customer_sk
   WHERE c.cluster = 0;
-  
+

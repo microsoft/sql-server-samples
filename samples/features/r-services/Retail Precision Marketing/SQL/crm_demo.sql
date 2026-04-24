@@ -6,15 +6,15 @@ go
 drop procedure if exists get_CDNOW_RFM
 go
 
---create stored procedure to get RFM 
+--create stored procedure to get RFM
 
-create proc get_CDNOW_RFM (@start datetime = '1900-1-1', @end datetime = '3000-1-1', @now datetime = null) 
+create proc get_CDNOW_RFM (@start datetime = '1900-1-1', @end datetime = '3000-1-1', @now datetime = null)
 as
 begin
-if @now is null 
+if @now is null
 	set @now = getdate()
 
-select 
+select
 	ID, DATEDIFF(d,R,@now) as R ,F,M
 from
 (select
@@ -22,7 +22,7 @@ from
 from
 	[dbo].[CDNOW]
  where
-	[Date] BETWEEN @start AND @end 
+	[Date] BETWEEN @start AND @end
  group by ID ) as rfm_tmp
 order by cast (ID as int)
 end
@@ -38,31 +38,31 @@ go
 
 --create stored procedure to break RFM score
 
-create proc BreakScoreRFM (@start datetime = '1900-1-1', @end datetime = '3000-1-1', @now datetime = null, 
-      @r_cut varchar(254) = null, @f_cut varchar(254) = null, @m_cut varchar(254) = null) 
-as 
+create proc BreakScoreRFM (@start datetime = '1900-1-1', @end datetime = '3000-1-1', @now datetime = null,
+      @r_cut varchar(254) = null, @f_cut varchar(254) = null, @m_cut varchar(254) = null)
+as
 begin
-      if @now is null 
+      if @now is null
             set @now = getdate()
-      
+
       declare @r_cut1 float = 100, @r_cut2 float = 200, @r_cut3 float = 300, @r_cut4 float = 400
       declare @f_cut1 float = 100, @f_cut2 float = 200, @f_cut3 float = 300, @f_cut4 float = 400
       declare @m_cut1 float = 100, @m_cut2 float = 200, @m_cut3 float = 300, @m_cut4 float = 400
       declare @idx int = 0, @len int = 0
-      --get cut parameter, should add more code to check cut parameter. 
+      --get cut parameter, should add more code to check cut parameter.
       if(@r_cut is not null) -- and @r_cut follow the syntax
       begin
-            set @idx = CHARINDEX('-',@r_cut) 
+            set @idx = CHARINDEX('-',@r_cut)
             set @len = len(@r_cut)
             set @r_cut1 = substring(@r_cut,1,@idx-1)
             set @r_cut=substring(@r_cut,@idx+1,@len-@idx)
 
-            set @idx = CHARINDEX('-',@r_cut) 
+            set @idx = CHARINDEX('-',@r_cut)
             set @len = len(@r_cut)
             set @r_cut2 = substring(@r_cut,1,@idx-1)
             set @r_cut=substring(@r_cut,@idx+1,@len-@idx)
 
-            set @idx = CHARINDEX('-',@r_cut) 
+            set @idx = CHARINDEX('-',@r_cut)
             set @len = len(@r_cut)
             set @r_cut3 = substring(@r_cut,1,@idx-1)
             set @r_cut4=substring(@r_cut,@idx+1,@len-@idx)
@@ -70,35 +70,35 @@ begin
 
       if(@f_cut is not null) -- and @f_cut follow the syntax
       begin
-            set @idx = CHARINDEX('-',@f_cut) 
+            set @idx = CHARINDEX('-',@f_cut)
             set @len = len(@f_cut)
             set @f_cut1 = substring(@f_cut,1,@idx-1)
             set @f_cut=substring(@f_cut,@idx+1,@len-@idx)
 
-            set @idx = CHARINDEX('-',@f_cut) 
+            set @idx = CHARINDEX('-',@f_cut)
             set @len = len(@f_cut)
             set @f_cut2 = substring(@f_cut,1,@idx-1)
             set @f_cut=substring(@f_cut,@idx+1,@len-@idx)
 
-            set @idx = CHARINDEX('-',@f_cut) 
+            set @idx = CHARINDEX('-',@f_cut)
             set @len = len(@f_cut)
             set @f_cut3 = substring(@f_cut,1,@idx-1)
             set @f_cut4=substring(@f_cut,@idx+1,@len-@idx)
-      end 
+      end
 
       if(@m_cut is not null) -- and @m_cut follow the syntax
       begin
-            set @idx = CHARINDEX('-',@m_cut) 
+            set @idx = CHARINDEX('-',@m_cut)
             set @len = len(@m_cut)
             set @m_cut1 = substring(@m_cut,1,@idx-1)
             set @m_cut=substring(@m_cut,@idx+1,@len-@idx)
 
-            set @idx = CHARINDEX('-',@m_cut) 
+            set @idx = CHARINDEX('-',@m_cut)
             set @len = len(@m_cut)
             set @m_cut2 = substring(@m_cut,1,@idx-1)
             set @m_cut=substring(@m_cut,@idx+1,@len-@idx)
 
-            set @idx = CHARINDEX('-',@m_cut) 
+            set @idx = CHARINDEX('-',@m_cut)
             set @len = len(@m_cut)
             set @m_cut3 = substring(@m_cut,1,@idx-1)
             set @m_cut4=substring(@m_cut,@idx+1,@len-@idx)
@@ -116,21 +116,21 @@ begin
             truncate table RFM
             drop table RFM
       end
-      -- get RFM table from initial data. 
-      select  
+      -- get RFM table from initial data.
+      select
             ID, DATEDIFF(d,R,@now) as R, F, M into RFM
       from
-      (select 
+      (select
             ID, max([Date]) as R, count(Volume) as F, round(avg(Amount),2) as M
-      from 
+      from
             CDNOW
-       where 
-            [Date] between @start and @end 
+       where
+            [Date] between @start and @end
        group by ID ) as rfm_tmp
       order by cast (ID as int)
-      
-      -- record R_Score at temp table '#R' 
-      select 
+
+      -- record R_Score at temp table '#R'
+      select
             ID,
             case when R <= @r_cut1 then 5
                   when R > @r_cut1 and R <= @r_cut2 then 4
@@ -140,10 +140,10 @@ begin
             else 0
             end as R_Score
       into #R
-      from RFM 
+      from RFM
 
       -- score F
-      select 
+      select
             ID,
             case when F >= @f_cut4 then 5
                   when F > @f_cut3 and F <= @f_cut4 then 4
@@ -153,10 +153,10 @@ begin
             else 0
             end as F_Score
       into #F
-      from RFM 
+      from RFM
 
       -- score M
-      select 
+      select
             ID,
             case when M >= @m_cut4 then 5
                   when M > @m_cut3 and M <= @m_cut4 then 4
@@ -166,12 +166,12 @@ begin
             else 0
             end as M_Score
       into #M
-      from RFM 
+      from RFM
 
-      --union all 
-      select #R.ID, R_Score, F_Score, M_Score, R_Score*100 + F_Score*10 + M_Score as Toltal_Score 
-                  into RFM_Score 
-      from #R, #F, #M 
+      --union all
+      select #R.ID, R_Score, F_Score, M_Score, R_Score*100 + F_Score*10 + M_Score as Toltal_Score
+                  into RFM_Score
+      from #R, #F, #M
       where #R.ID = #F.ID and #R.ID = #M.ID
 
       select * from RFM_Score order by Toltal_Score desc,ID
@@ -189,7 +189,7 @@ go
 drop table RFM_Result;
 select a.*, b.R_Score, b.F_Score, b.M_Score, b.Toltal_Score
 into RFM_Result
-from 
+from
   [dbo].[RFM] a  left outer join
   [dbo].[RFM_Score] b on
       a.[ID] = b.[ID];
@@ -217,7 +217,7 @@ begin
 			      tmpdf <-df[df$R_Score==j & df$F_Score==i & df$M_Score==k,]
 			      c[k]<- dim(tmpdf)[1]
                 }
-		    if (i==1 & j==1) 
+		    if (i==1 & j==1)
 			    barplot(c,col="lightblue",names.arg=names)
 		    else
 			barplot(c,col="lightblue")
@@ -232,7 +232,7 @@ begin
 	png(filename=ff, width=620, height=240)
 	print(RFMhist)
 	dev.off()
-    OutputDataSet <- data.frame(data=readBin(file(ff, "rb"), what=raw(), n=1e6));  
+    OutputDataSet <- data.frame(data=readBin(file(ff, "rb"), what=raw(), n=1e6));
 	   '
 	, @input_data_1 = N'select "R", "F", "M" from RFM_Result'
 	, @input_data_1_name = N'RFM_Result'
@@ -271,8 +271,8 @@ begin
 	  @language = N'R'
 	, @script = N'
 		require("RevoScaleR");
-		CDNOWKmeans <- rxKmeans(formula=~R+F+M+R_Score+F_Score+M_Score, 
-						                data=RFM_Result, 
+		CDNOWKmeans <- rxKmeans(formula=~R+F+M+R_Score+F_Score+M_Score,
+						                data=RFM_Result,
  						                #outFile=Kmeans_Result,
 						                numClusters=8,
 					                	algorithm="lloyd",
@@ -362,7 +362,7 @@ as
 begin
 	declare @rx_model varbinary(max) = (select model from CDNOW_rx_models where model_name = @model);
 	-- Predict based on the specified model:
-	exec sp_execute_external_script 
+	exec sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
           require("RevoScaleR");
@@ -396,20 +396,20 @@ as
 begin
 	declare @rx_model varbinary(max) = (select model from CDNOW_rx_models where model_name = @model);
 	-- Predict based on the specified model:
-	exec sp_execute_external_script 
+	exec sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
           require("RevoScaleR");
           CDNOWmodel <- unserialize(rx_model);
           CDNOWpred <- rxPredict(CDNOWmodel,
-                                 data=RFMVIPCluster, 
+                                 data=RFMVIPCluster,
                                  predVarNames=c("prob1", "prob2", "prob3", "prob4", "prob5", "prob6", "prob7", "prob8"),
                                  writeModelVars=TRUE, extraVarsToWrite="ID",
                                  computeResiduals=T, overwrite=TRUE);
-          OutputDataSet <- round(cbind(RFMVIPCluster[,1], RFMVIPCluster[,10], 
+          OutputDataSet <- round(cbind(RFMVIPCluster[,1], RFMVIPCluster[,10],
                                 CDNOWpred$prob1,CDNOWpred$prob2,CDNOWpred$prob3,CDNOWpred$prob4,
 					                      CDNOWpred$prob5,CDNOWpred$prob6,CDNOWpred$prob7,CDNOWpred$prob8),2);
-					                      
+					
           colnames(OutputDataSet) <- c("ID", "Cluster.Actual", "Cluster1.Prob","Cluster2.Prob","Cluster3.Prob","Cluster4.Prob","Cluster5.Prob","Cluster6.Prob","Cluster7.Prob","Cluster8.Prob");
           OutputDataSet<-as.data.frame(OutputDataSet);
   '

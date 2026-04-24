@@ -3,7 +3,7 @@
 >[!NOTE]
 >All examples of using fencing agent for vmware in [RHEL documentation](https://access.redhat.com/solutions/306233) are with `-ssl` option ( or `-z`). That “Default” behavior has changed from just checking any certificate to just signed certs that can be validated. Hence in testing use the `–ssl-insecure`. Can use default if you have a valid certificate.
 
-## Manually Test Fencing Device 
+## Manually Test Fencing Device
 
 The options that are passed in the example below have the following usage: `-a` is IP of Vsphere, `-l` is username, `-p` is password, `-n` is node name you want to fence. Can use `-v` as verbose mode to debug.
 

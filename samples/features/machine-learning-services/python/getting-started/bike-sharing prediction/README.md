@@ -27,7 +27,7 @@ This sample consist of a  binary classifier that predict whether a particular bi
 
 
 - **Applies to:** SQL Server 2017 CTP2.0 or higher
-- **Key features:** SQL Server Machine Learning Services 
+- **Key features:** SQL Server Machine Learning Services
 - **Workload:** SQL Server Machine Learning Services
 - **Programming Language:** Python, TSQL
 - **Author:** Yassine Khelifi
@@ -36,8 +36,8 @@ This sample consist of a  binary classifier that predict whether a particular bi
 
 ## Before you begin
 
-To run this sample, you need the following prerequisites: 
-1. [Download this DB backup file](https://sq14samples.blob.core.windows.net/data/velibDB.bak) and restore it using Setup.sql. 
+To run this sample, you need the following prerequisites:
+1. [Download this DB backup file](https://sq14samples.blob.core.windows.net/data/velibDB.bak) and restore it using Setup.sql.
 
 **Software prerequisites:**
 
@@ -47,7 +47,7 @@ To run this sample, you need the following prerequisites:
 3. [Python Tools for Visual Studio](https://www.visualstudio.com/vs/python/) or another Python IDE
 
 ## Run this sample
-1. From SQL Server Management Studio, or SQL Server Data Tools, connect to your SQL Server 2017 database and execute setup.sql to restore the sample DB you have downloaded 
+1. From SQL Server Management Studio, or SQL Server Data Tools, connect to your SQL Server 2017 database and execute setup.sql to restore the sample DB you have downloaded
 
 2. From Python Tools for Visual Studio, open the python tools command under tools menu, add the Machine Learning Services Python environment to the corresponding paths https://docs.microsoft.com/en-us/visualstudio/python/python-environments
 

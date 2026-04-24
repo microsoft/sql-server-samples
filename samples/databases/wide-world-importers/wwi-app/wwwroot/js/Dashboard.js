@@ -1,5 +1,5 @@
 ﻿$(() => {
-    
+
     $.ajax('/odata/Customers?$apply=groupby((PostalCity),aggregate(CustomerID with sum as Total))&$orderby=CustomerID with sum desc&$top=5', { dataType: 'json' })
         .done(data => {
             $("#part1 table tbody tr").view(data.value);

@@ -20,5 +20,5 @@ EXEC [sys].[sp_cdc_help_jobs]
 
 SELECT maxtrans, maxscans, continuous, pollinginterval
 FROM @cdc_jobs
-WHERE job_type = N'capture' 
+WHERE job_type = N'capture'
 GO

@@ -133,7 +133,7 @@ int main(int argc, char* argv[])
                "Demonstrate a Backup or Restore using the Virtual Device Interface\n");
         return 1;
     }
-   
+
     umask(0);
     vds = new ClientVirtualDeviceSet();
 

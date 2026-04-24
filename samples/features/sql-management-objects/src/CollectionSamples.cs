@@ -44,7 +44,7 @@
                     $"QueryCount:{unoptimizedMetrics.QueryCount}", $"ConnectionCount:{unoptimizedMetrics.ConnectionCount}",
                     $"BytesSent:{unoptimizedMetrics.BytesSent}", $"BytesRead:{unoptimizedMetrics.BytesRead}"
                 }));
-                
+
                 connectionMetrics.Reset();
                 server.SetDefaultInitFields(typeof(Table), "Name", "Schema", "FileGroup");
                 database.Tables.Refresh();

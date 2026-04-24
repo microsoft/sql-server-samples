@@ -1,0 +1,110 @@
+# This workflow runs the configured unit tests after installing tSQLt on a SQL Server instance inside a Docker container!
+
+name: Unit testing runner
+
+#---------- 1. Definition of activation events
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+#---------- 2. Creating a Docker container from a SQL Server image on Linux
+
+jobs:
+
+  windows-auth-tsqlt:
+
+    name: Installting tSQLt framework with SQL Auth and running unit tests
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    services:
+      sqlserver:
+        image: chriseaton/adventureworks:latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: 3uuiCaKxfbForrK
+
+    steps:
+
+#---------- 2.1 Save the container ID into the environment variable ENV_CONTAINER_ID
+
+      #- name: Get the containers list unformatted
+      #  run: docker ps
+
+      #- name: Get the containers list formatted
+      #  run: docker ps --all --filter status=running --no-trunc --format "{{.ID}}"
+
+      #- name: Set the container ID
+      #  run: echo '::set-output name=CONTAINER_ID::$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")'
+      #  id: ContainerID
+
+      #- name: Get container ID
+      #  run: echo "The container ID is ${{ steps.ContainerID.outputs.CONTAINER_ID }}"
+
+      - name: Set environment variable ENV_CONTAINER_ID
+        run: echo "ENV_CONTAINER_ID=$(docker ps --all --filter status=running --no-trunc --format "{{.ID}}")" >> $GITHUB_ENV
+
+      - name: Test environment variable ENV_CONTAINER_ID
+        run: echo $ENV_CONTAINER_ID
+
+      - name: Sleep for 20s
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 20s
+
+#---------- 3. AdventureWorks database recovery
+
+      - name: Restore AdventureWorks
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -Q "RESTORE DATABASE [AdventureWorks2017] FROM DISK = '/adventureworks.bak' WITH MOVE 'AdventureWorks2017' TO '/var/opt/mssql/data/AdventureWorks.mdf', MOVE 'AdventureWorks2017_log' TO '/var/opt/mssql/data/AdventureWorks_log.ldf'"
+
+      - name: Get the database list
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -Q "SELECT Name FROM sys.databases"
+
+#---------- 4. Installation of the tSQLt framework
+
+      - uses: actions/checkout@v3.5.2
+
+      - name: Install tSQLt with SQL auth on AdventureWorks2017
+        uses: lowlydba/tsqlt-installer@v1
+        with:
+          sql-instance: localhost
+          database: AdventureWorks2017
+          version: latest
+          user: sa
+          password: 3uuiCaKxfbForrK
+
+#---------- 5. Creating the database objects to be tested (SUT)
+
+      - name: Create sp usp_Raiserror_SafetyStockLevel
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -d AdventureWorks2017 -b < ./source/usp-raiserror-safetystocklevel.sql
+
+      - name: Create system under test (SUT) TR_Product_SafetyStockLevel
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -d AdventureWorks2017 -b < ./source/tr-product-safetystocklevel.sql
+
+#---------- 6. Creation and execution of test units
+
+      - name: Create test class UnitTestTRProductSafetyStockLevel
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -d AdventureWorks2017 -b < ./unit-test/test-class-trproductsafetystocklevel.sql
+
+      - name: Create and run test case try to insert one wrong row
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -d AdventureWorks2017 -b < ./unit-test/test-case-try-to-insert-one-wrong-row.sql
+
+      - name: Create and run test case try to insert one right row
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -d AdventureWorks2017 -b < ./unit-test/test-case-try-to-insert-one-right-row.sql
+
+      - name: Create and run test case try to insert multiple rows
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -d AdventureWorks2017 -b < ./unit-test/test-case-try-to-insert-multiple-rows.sql
+
+      - name: Create and run test case try to insert multiple rows ordered
+        run: docker exec -i $ENV_CONTAINER_ID /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "3uuiCaKxfbForrK" -d AdventureWorks2017 -b < ./unit-test/test-case-try-to-insert-multiple-rows-ordered.sql

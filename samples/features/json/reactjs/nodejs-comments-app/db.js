@@ -7,17 +7,17 @@
         // If you're on Azure, you will need this:
         options: { encrypt: true, database: 'CommentsDb' }
     };
-    
+
     var Connection = require('tedious').Connection;
     var connection = new Connection(config);
-    
+
     return connection;
 }
 
 function createRequest(query, connection) {
     var Request = require('tedious').Request;
     var req =
-        new Request(query, 
+        new Request(query,
                 function (err, rowCount) {
                         if (err) {
                             console.trace(err);
@@ -30,7 +30,7 @@ function createRequest(query, connection) {
 }
 
 function stream (query, connection, output, defaultContent) {
-    
+
     var request = query;
     if (typeof query == "string") {
         request = createRequest(query, connection);
@@ -56,20 +56,20 @@ function stream (query, connection, output, defaultContent) {
     executeRequest (request, connection);
 }
 
-function _OnDone(empty, defaultContent, output) { 
-        if(empty) { 
+function _OnDone(empty, defaultContent, output) {
+        if(empty) {
             output.write(defaultContent);
             console.log('No results from database - default content is returned.');
-        } 
+        }
         try {
             console.log('Closing Http Response output.');
             output.end();
-        } catch (err) {  
+        } catch (err) {
             console.error(err);
         }
     }
 
-function executeRequest (request, connection) { 
+function executeRequest (request, connection) {
         connection.on('connect', function (err) {
             if (err) {
                 console.trace(err);
@@ -80,6 +80,6 @@ function executeRequest (request, connection) {
 }
 
 module.exports.createConnection = createConnection;
-module.exports.createRequest = createRequest; 
+module.exports.createRequest = createRequest;
 module.exports.executeRequest = executeRequest;
 module.exports.stream = stream;

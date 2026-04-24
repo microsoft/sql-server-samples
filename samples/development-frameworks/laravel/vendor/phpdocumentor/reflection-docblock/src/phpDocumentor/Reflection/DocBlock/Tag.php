@@ -51,7 +51,7 @@ class Tag implements \Reflector
 
     /** @var DocBlock The DocBlock which this tag belongs to. */
     protected $docblock = null;
-    
+
     /**
      * @var array An array with a tag as a key, and an FQCN to a class that
      *     handles it as an array value. The class is expected to inherit this
@@ -148,16 +148,16 @@ class Tag implements \Reflector
 
     /**
      * Registers a handler for tags.
-     * 
+     *
      * Registers a handler for tags. The class specified is autoloaded if it's
      * not available. It must inherit from this class.
-     * 
+     *
      * @param string      $tag     Name of tag to regiser a handler for. When
      *     registering a namespaced tag, the full name, along with a prefixing
      *     slash MUST be provided.
      * @param string|null $handler FQCN of handler. Specifing NULL removes the
      *     handler for the specified tag, if any.
-     * 
+     *
      * @return bool TRUE on success, FALSE on failure.
      */
     final public static function registerTagHandler($tag, $handler)
@@ -214,9 +214,9 @@ class Tag implements \Reflector
 
     /**
      * Sets the name of this tag.
-     * 
+     *
      * @param string $name The new name of this tag.
-     * 
+     *
      * @return $this
      * @throws \InvalidArgumentException When an invalid tag name is provided.
      */
@@ -249,9 +249,9 @@ class Tag implements \Reflector
 
     /**
      * Sets the content of this tag.
-     * 
+     *
      * @param string $content The new content of this tag.
-     * 
+     *
      * @return $this
      */
     public function setContent($content)
@@ -274,9 +274,9 @@ class Tag implements \Reflector
 
     /**
      * Sets the description component of this tag.
-     * 
+     *
      * @param string $description The new description component of this tag.
-     * 
+     *
      * @return $this
      */
     public function setDescription($description)
@@ -290,7 +290,7 @@ class Tag implements \Reflector
 
     /**
      * Gets the parsed text of this description.
-     * 
+     *
      * @return array An array of strings and tag objects, in the order they
      *     occur within the description.
      */
@@ -305,7 +305,7 @@ class Tag implements \Reflector
 
     /**
      * Gets the docblock this tag belongs to.
-     * 
+     *
      * @return DocBlock The docblock this tag belongs to.
      */
     public function getDocBlock()
@@ -315,10 +315,10 @@ class Tag implements \Reflector
 
     /**
      * Sets the docblock this tag belongs to.
-     * 
+     *
      * @param DocBlock $docblock The new docblock this tag belongs to. Setting
      *     NULL removes any association.
-     * 
+     *
      * @return $this
      */
     public function setDocBlock(DocBlock $docblock = null)
@@ -337,12 +337,12 @@ class Tag implements \Reflector
     {
         return $this->location;
     }
-    
+
     /**
      * Sets the location of the tag.
-     * 
+     *
      * @param Location $location The new location of the tag.
-     * 
+     *
      * @return $this
      */
     public function setLocation(Location $location = null)

@@ -21,7 +21,7 @@ namespace wwi_app.Controllers
             this.queryService = queryService;
             this._logger = logger;
         }
-        
+
         public async Task<IActionResult> Login(string username, string password)
         {
             if(string.IsNullOrEmpty(username))

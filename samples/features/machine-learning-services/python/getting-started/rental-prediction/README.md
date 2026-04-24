@@ -15,7 +15,7 @@ This sample shows how to create a predictive model in Python and operationalize 
 ## About this sample
 
 Predictive modeling is a powerful way to add intelligence to your application. It enables applications to predict outcomes against new data.
-The act of incorporating predictive analytics into your applications involves two major phases: 
+The act of incorporating predictive analytics into your applications involves two major phases:
 model training and model operationalization.
 
 In this sample, you will learn how to create a predictive model in python and operationalize it with SQL Server vNext.
@@ -23,18 +23,18 @@ In this sample, you will learn how to create a predictive model in python and op
 
 <!-- Delete the ones that don't apply -->
 - **Applies to:** SQL Server 2017 CTP2.0 or higher
-- **Key features:** SQL Server Machine Learning Services 
+- **Key features:** SQL Server Machine Learning Services
 - **Workload:** SQL Server Machine Learning Services
 - **Programming Language:** T-SQL, Python
 - **Authors:** Nellie Gustafsson
-- **Update history:** Getting started tutorial for SQL Server ML Services - Python 
+- **Update history:** Getting started tutorial for SQL Server ML Services - Python
 
 <a name=before-you-begin></a>
 
 ## Before you begin
 
 To run this sample, you need the following prerequisites: </br>
-[Download this DB backup file](https://sqlchoice.blob.core.windows.net/sqlchoice/TutorialDB.bak) and restore it using Setup.sql. 
+[Download this DB backup file](https://sqlchoice.blob.core.windows.net/sqlchoice/TutorialDB.bak) and restore it using Setup.sql.
 
 **Software prerequisites:**
 
@@ -51,14 +51,14 @@ Necessary tables </br>
 Creates stored procedure to train a model </br>
 Creates a stored procedure to predict using that model </br>
 Saves the predicted results to a DB table </br>
-3. You can also try the Python script on its own, connecting to SQL Server and getting data using RevoScalePy Rx functions. Just remember to point the Python environment to the corresponding path "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES" if you run in-db Python Server, or 
+3. You can also try the Python script on its own, connecting to SQL Server and getting data using RevoScalePy Rx functions. Just remember to point the Python environment to the corresponding path "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES" if you run in-db Python Server, or
 "C:\Program Files\Microsoft SQL Server\140\PYTHON_SERVER" if you have the standalone Machine Learning Server installed.
 
 <a name=sample-details></a>
 
 ## Sample details
 
-This sample shows how to create a predictive model with Python and generate predictions using the model and deploy that in SQL Server with SQL Server Machine Learning Services. 
+This sample shows how to create a predictive model with Python and generate predictions using the model and deploy that in SQL Server with SQL Server Machine Learning Services.
 
 ### rental_prediction.py
 The Python script that generates a predictive model and uses it to predict rental counts

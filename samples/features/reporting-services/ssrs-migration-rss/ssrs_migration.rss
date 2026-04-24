@@ -1,5 +1,5 @@
 ' This is a Microsoft SQL Server Reporting Services RSS script that migrates content from one Reporting Services server to another.
-' Run the script with the rs.exe utility.  Rs.exe is installed by Reporting Services. 
+' Run the script with the rs.exe utility.  Rs.exe is installed by Reporting Services.
 ' For details about rs.exe see: https://docs.microsoft.com/sql/reporting-services/tools/rs-exe-utility-ssrs
 '
 ' >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -7,7 +7,7 @@
 ' >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 '
 ' The script supports report server versions SQL Server 2008 R2 and later and Power BI Report Server.
-' The script supports both native mode report servers and SharePoint mode report servers. 
+' The script supports both native mode report servers and SharePoint mode report servers.
 ' The script can be run from the source or target server.
 '
 '-----------------------------------------------------------------------------------------------------------
@@ -16,18 +16,19 @@
 ' 1) Download ssrs_migration.rss
 ' 2) Open a command prompt and navigate to the folder containing ssrs_migration.rss, for example c:\rss
 ' 3) Run the following command (in one line):
-'			rs.exe -i ssrs_migration.rss -e Mgmt2010
+'	rs.exe -i ssrs_migration.rss -e Mgmt2010
 '
-' 			-s SOURCE_URL						'URL of the source RS server.
-'			-u domain\username -p password				'Credentials for source server. OPTIONAL, default credentials are used if missing.
-'			-v st="SITE"						'Specifies SharePoint site, in case source server is in SharePoint integrated mode
-'			-v f="SOURCEFOLDER"					'Set to "/" for migrating everything, or to something like "/folder/subfolder" for partial migration. Everything within this folder will be copied. OPTIONAL, default is "/".
+'	-s SOURCE_URL					'URL of the source RS server.
+'	-u domain\username -p password		        'Credentials for source server. OPTIONAL, default credentials are used if missing.
+'	-v st="SITE"					'Specifies SharePoint site, in case source server is in SharePoint integrated mode
+'	-v f="SOURCEFOLDER"				'Set to "/" for migrating everything, or to something like "/folder/subfolder" for partial migration. Everything within this folder will be copied. OPTIONAL, default is "/".
 '
-'			-v ts="TARGET_URL" 					'URL of the target RS server"
-'			-v tu="domain\username" -v tp="password"		'Credentials for target server. OPTIONAL, default credentials are used if missing.
-'			-v tst="SITE"						'Specifies SharePoint site, in case target server is in SharePoint integrated mode
-'			-v tf="TARGETFOLDER"					'Set to "/" for migrating into the root level, or to something like "/folder/subfolder" for copying into some folder, which must be already existing. Everything within "SOURCEFOLDER" will be copied into "TARGETFOLDER". OPTIONAL, default is "/".
-'			-v security= "True/False"				'If set to “False”, destination catalog items will inherit security setting according to the settings of the target system. Default is false.
+'	-v ts="TARGET_URL" 				'URL of the target RS server"
+'	-v tu="domain\username" -v tp="password"	'Credentials for target server. OPTIONAL, default credentials are used if missing.
+'	-v tst="SITE"					'Specifies SharePoint site, in case target server is in SharePoint integrated mode
+'	-v tf="TARGETFOLDER"				'Set to "/" for migrating into the root level, or to something like "/folder/subfolder" for copying into some folder, which must be already existing. Everything within "SOURCEFOLDER" will be copied into "TARGETFOLDER". OPTIONAL, default is "/".
+'	-v security= "True/False"			'If set to "False", destination catalog items will inherit security setting according to the settings of the target system. Default is false.
+'	-v logprefix="PREFIX"                           'Prefix name to the output log file (default is MigrationLog.csv created from where script is run).
 '			
 ' Example: rs.exe -i ssrs_migration.rss -e Mgmt2010 -s http://server1/reportserver -v ts="http://server2/_vti_bin/reportserver"
 ' Example: rs.exe -i ssrs_migration.rss -e Mgmt2010 -s http://server1/reportserver -u domain1\user1 -p password1 -v f="/SOURCEFOLDER" -v ts="http://server2/_vti_bin/reportserver" -v tu="domain1\user2" -v tp="password2" -v tf="/TARGETFOLDER"
@@ -45,10 +46,9 @@
 '
 ' ADDITIONAL INFO:
 ' The virtual folder structure presented to the user in SharePoint might be different
-' than the physical structure, which is used for by this script. 
-' Open http://servername/_vti_bin/reportserver in a browser to see the non-virtual folder structure. 
+' than the physical structure, which is used for by this script.
+' Open http://servername/_vti_bin/reportserver in a browser to see the non-virtual folder structure.
 ' This is helpful for setting SrcFolder and SnkFolder to something other than "/" for a server in SharePoint integrated mode.
-
 
 Private RsSrc As ReportingService2010
 Private SrcProtocol As String = "http"	
@@ -60,7 +60,7 @@ Private SrcFolder As String = "/"
 Private RsSnk As ReportingService2010
 Private SnkProtocol As String = "http"				
 Private SnkServer As String 						
-Private SnkIsNative As Boolean 
+Private SnkIsNative As Boolean
 Private SnkSite As String = ""							
 Private SnkFolder As String = "/"		
 
@@ -75,6 +75,7 @@ Private policies As Policy() = Nothing
 Private srcSiteUrl As String = Nothing
 Private snkSiteUrl As String = Nothing
 
+Private logFilePath As String = "MigrationLog.csv"
 
 ''''''''''''''''''''''''''''''''''''''''''''''
 Sub Main()
@@ -116,7 +117,7 @@ Sub Main()
 		Dim password As String = Me.GetType().GetField("tp").GetValue(Me)
 
 		If user.contains("\") Then			
-			Dim domainuser As String() = user.Split(New [Char]() {"\"c}) 
+			Dim domainuser As String() = user.Split(New [Char]() {"\"c})
 			RsSnk.Credentials = New System.Net.NetworkCredential(domainuser(1), password, domainuser(0))	
 		Else
 			RsSnk.Credentials = New System.Net.NetworkCredential(user, password)		
@@ -151,6 +152,11 @@ Sub Main()
 	
 	If Not Me.GetType().GetField("security") Is Nothing Then
 		MigrateSecurity = (Me.GetType().GetField("security").GetValue(Me).ToLower = "true")
+	End If
+
+    ' Update the migration log path to prefix if speficied
+    If Not Me.GetType().GetField("logprefix") Is Nothing Then
+		logFilePath = Me.GetType().GetField("logprefix").GetValue(Me) + "_" + logFilePath
 	End If	
 	
 	SnkFolder = SnkSite + SnkFolder
@@ -193,6 +199,7 @@ Sub Main()
 	Dim timeout As Integer = RsSrc.Timeout
 	RsSrc.Timeout = 600000 '10 minutes
 	srcItems = RsSrc.ListChildren(GetSrcFolderPath(), True) 'Possible catalog item types: Model, Dataset, Component, Resource, DataSource, Folder, Report
+	Array.Sort(srcItems, New Comparison(Of CatalogItem)(AddressOf SortParentFoldersFirst))
 	RsSrc.Timeout = timeout
 	
 	For Each ci As CatalogItem In srcItems
@@ -222,7 +229,38 @@ Sub Main()
 
 	Console.ReadLine()
 	
-	
+	' Create destination folder if not present
+	Try 
+        If SnkFolder.Contains("/") And Not SnkFolder = "/" Then
+            Dim targetFolders As String() = SnkFolder.Substring(1).Split("/"c)
+            Dim parentFolder As String = "/"
+
+            For Each folderName As String In targetFolders
+
+                Try
+                    RsSnk.CreateFolder(folderName, parentFolder, Nothing)
+                Catch er As Exception
+                    If (er.Message.Contains("Microsoft.ReportingServices.Diagnostics.Utilities.ItemAlreadyExistsException"))
+                        Console.ForegroundColor = ConsoleColor.Gray
+                        Console.WriteLine("Folder already exists: " + folderName)
+                        Console.ResetColor()
+                    Else
+                        Throw ' Unknown Exception
+                    End If
+                End Try
+
+                If parentFolder <> "/" Then
+                    parentFolder = parentFolder + "/" + folderName
+                Else 
+                    parentFolder = "/" + folderName
+                End If
+            Next            
+        End If
+	Catch ex As Exception 
+        Console.ForegroundColor = ConsoleColor.Red
+		Console.WriteLine(ex.Message + Environment.NewLine)
+        Console.ResetColor()
+	End Try
 
 	Try
 		'Roles & Policies
@@ -301,9 +339,9 @@ Sub Main()
 		Console.ForegroundColor = ConsoleColor.Red
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("GENERAL", "Exception", ex.Message)
 	End Try
 End Sub
-
 
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -328,6 +366,7 @@ Sub MigrateSchedules()
 				Console.WriteLine(" ... FAILURE:")
 				Console.WriteLine(e.Message + Environment.NewLine)
 				Console.ResetColor()
+                LogErrorToFile("SCHEDULES", s.Name, e.Message)
 			End Try
 		Next
 
@@ -335,6 +374,7 @@ Sub MigrateSchedules()
 		Console.ForegroundColor = ConsoleColor.Red
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("SCHEDULES", "Exception", ex.Message)
 	End Try
 End Sub
 
@@ -347,7 +387,6 @@ Sub MigrateRoles()
 	Console.WriteLine("Migrating roles.")
 	
 	Try
-			
 		For Each r As Role In roles
 			Try
 				Console.Write("Migrating role: " + r.Name)
@@ -366,6 +405,7 @@ Sub MigrateRoles()
 				Console.WriteLine(" ... FAILURE:")
 				Console.WriteLine(e.Message + Environment.NewLine)
 				Console.ResetColor()
+                LogErrorToFile("ROLES", r.Name, e.Message)
 			End Try
 		Next
 
@@ -373,6 +413,7 @@ Sub MigrateRoles()
 		Console.ForegroundColor = ConsoleColor.Red
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("ROLES", "Exception", ex.Message)
 	End Try
 End Sub
 
@@ -392,6 +433,7 @@ Sub MigrateSystemPolicies()
 		Console.WriteLine("... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("POLICIES", "Exception", ex.Message)
 	End Try
 End Sub
 
@@ -413,6 +455,7 @@ Function MigrateFolder(srcItem As CatalogItem) As CatalogItem
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("FOLDER", srcItem.Path, ex.Message)
 	End Try
 	Return result
 End Function
@@ -431,8 +474,12 @@ Function MigrateDataSource(srcItem As CatalogItem) As CatalogItem
 		
 		If definition.CredentialRetrieval = CredentialRetrievalEnum.Store Then
 			Console.ForegroundColor = ConsoleColor.Yellow
-			Console.WriteLine("You need to re-enter the password for user '" + definition.UserName + "' in data source '" + result.Path + "'")
+            Dim warningMsg as String = "You need to re-enter the password for user '" + definition.UserName + "' in data source '" + result.Path + "'"
+			Console.WriteLine(warningMsg)
 			Console.ResetColor()
+
+            LogErrorToFile("CATALOGITEM", "Warning: " + result.Path, warningMsg)
+
 		End If
 
 	Catch ex As Exception
@@ -440,6 +487,7 @@ Function MigrateDataSource(srcItem As CatalogItem) As CatalogItem
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("DATASOURCE", srcItem.Path, ex.Message)
 	End Try
 	Return result
 End Function
@@ -479,6 +527,7 @@ Function MigrateLinkedReport(srcItem As CatalogItem) As CatalogItem
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("LINKEDREPORT", srcItem.Path, ex.Message)
 	End Try
 	Return result
 End Function
@@ -514,8 +563,11 @@ Function MigrateCatalogItem(srcItem As CatalogItem) As CatalogItem
 					Dim dsd As DataSourceDefinition = d.Item
 					If dsd.CredentialRetrieval = CredentialRetrievalEnum.Store Then
 						Console.ForegroundColor = ConsoleColor.Yellow
-						Console.WriteLine("You need to re-enter the password for user '" + dsd.UserName + "' in data source '" + d.Name + "' contained in " + result.TypeName + " '" + result.Path + "'")
+                        Dim warningMsg as String = "You need to re-enter the password for user '" + dsd.UserName + "' in data source '" + d.Name + "' contained in " + result.TypeName + " '" + result.Path + "'"
+						Console.WriteLine(warningMsg)
 						Console.ResetColor()
+
+                        LogErrorToFile("CATALOGITEM", "Warning: " + result.TypeName, warningMsg)
 					End If
 				End If		
 			Next
@@ -527,6 +579,7 @@ Function MigrateCatalogItem(srcItem As CatalogItem) As CatalogItem
 			For Each w As Warning In warnings
 				If w.Code <> "rsDataSourceReferenceNotPublished" And w.Code <> "rsDataSetReferenceNotPublished" Then	'This should be fine after re-linking
 					Console.WriteLine("Warning: " + w.Message)
+					LogErrorToFile("CATALOGITEM", "Warning: " + srcItem.Path, w.Message)
 				End If
 			Next
 			Console.ResetColor()
@@ -538,11 +591,10 @@ Function MigrateCatalogItem(srcItem As CatalogItem) As CatalogItem
 		Console.ForegroundColor = ConsoleColor.Red
 		Console.WriteLine(Environment.NewLine + ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("CATALOGITEM", srcItem.Path, ex.Message)
 	End Try
 	Return result
 End Function
-
-
 
 
 'Re-link DataSources of a Report or a Model
@@ -583,6 +635,7 @@ Sub RelinkDataSources(snkReport As CatalogItem, srcReport As CatalogItem)
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("RELINKDATASOURCE", snkReport.Name, ex.Message)
 	End Try
 End Sub
 
@@ -603,7 +656,7 @@ Sub RelinkItemReferences(snkItem As CatalogItem, srcItem As CatalogItem)
 			Dim type As String = RsSrc.GetItemType(srcRef.Reference)
 			Dim snkRef As ItemReference = New ItemReference
 			snkRef.Name = srcRef.Name
-			snkRef.Reference = GetSnkFilename(GetSnkPath(srcRef.Reference), type)
+			snkRef.Reference = GetSnkFilename(GetSnkPathRef(srcRef.Reference), type)
 
 			snkReferences.Add(snkRef)
 		Next
@@ -618,15 +671,15 @@ Sub RelinkItemReferences(snkItem As CatalogItem, srcItem As CatalogItem)
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("RELINKREFERENCES", snkItem.Name, ex.Message)
 	End Try
 End Sub
 
 
 
-
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''' Migrate report artefacts ''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 'Migrate report's subscriptions
 Sub MigrateReportSubscriptions(snkReport As CatalogItem, srcReport As CatalogItem)
@@ -656,19 +709,41 @@ Sub MigrateReportSubscriptions(snkReport As CatalogItem, srcReport As CatalogIte
 				RsSrc.GetDataDrivenSubscriptionProperties(srcSub.SubscriptionID, extensionSettings, dataRetrievalPlan, description, active, status, eventType, matchData, parameters)				
 				If extensionSettings.Extension = "Report Server FileShare" Then
 					Dim newParameterValues() As [ParameterValueOrFieldReference] = New [ParameterValueOrFieldReference](extensionSettings.ParameterValues.Length) {}
-					Array.Copy(extensionSettings.ParameterValues, newParameterValues, extensionSettings.ParameterValues.Length)	
-					Dim pwdParameterValue As ParameterValue = New ParameterValue
-					pwdParameterValue.Label = "PASSWORD"
-					pwdParameterValue.Name = "PASSWORD"
-					pwdParameterValue.Value = "PASSWORD"
-					newParameterValues(extensionSettings.ParameterValues.Length) = pwdParameterValue
+					Dim passwordParamFound As Boolean = False
+					Array.Copy(extensionSettings.ParameterValues, newParameterValues, extensionSettings.ParameterValues.Length)
+					For Each pvofr As ParameterValueOrFieldReference In extensionSettings.ParameterValues
+						If TypeOf pvofr Is ParameterValue Then
+							Dim pv As ParameterValue = pvofr
+							If pv.Name.Contains("PASSWORD") Then
+								'Subscription has Password field linked to dataset field
+								passwordParamFound = True
+								Exit For
+							End If
+						Else If TypeOf pvofr Is ParameterFieldReference Then
+							Dim pfr As ParameterFieldReference = pvofr
+							If pfr.ParameterName.Contains("PASSWORD") Then
+								'Subscription has Password field linked to dataset field
+								passwordParamFound = True
+								Exit For
+							End If
+						End If
+					Next
+					If not passwordParamFound Then
+						'Subscription has Password field set to "Leave blank" or "Enter value"
+						Dim pwdParameterValue As ParameterValue = New ParameterValue
+						pwdParameterValue.Label = "PASSWORD"
+						pwdParameterValue.Name = "PASSWORD"
+						pwdParameterValue.Value = "PASSWORD"
+						newParameterValues(extensionSettings.ParameterValues.Length) = pwdParameterValue		
+					End If
+
 					extensionSettings.ParameterValues = newParameterValues					
 				End If
 						
 				Console.Write(description)
 				If Not dataRetrievalPlan Is Nothing And TypeOf dataRetrievalPlan.Item Is DataSourceReference Then
 					Dim item As DataSourceReference = dataRetrievalPlan.Item
-					Dim ref As String = GetSnkPath(item.Reference)
+					Dim ref As String = GetSnkPathRef(item.Reference)
 					item.Reference = ref
 				End If				
 				RsSnk.CreateDataDrivenSubscription(snkReport.Path, extensionSettings, dataRetrievalPlan, description, eventType, GetMatchData(matchData, RsSnk), parameters)
@@ -678,8 +753,12 @@ Sub MigrateReportSubscriptions(snkReport As CatalogItem, srcReport As CatalogIte
 					Dim dsd As DataSourceDefinition = dataRetrievalPlan.Item
 					If dsd.CredentialRetrieval = CredentialRetrievalEnum.Store Then
 						Console.ForegroundColor = ConsoleColor.Yellow
-						Console.WriteLine("You need to re-enter the password for user '" + dsd.UserName + "' in data-driven subscription '" + description + "' contained in report '" + snkReport.Path + "'")
-						Console.ResetColor()
+                        Dim warningMsg as String = "You need to re-enter the password for user '" + dsd.UserName + "' in data-driven subscription '" + description + "' contained in report '" + snkReport.Path + "'"
+			            Console.WriteLine(warningMsg)
+			            Console.ResetColor()
+
+                        LogErrorToFile("SUBSCRIPTIONS", "Warning: " + snkReport.Path, warningMsg)
+
 					End If
 				End If		
 				
@@ -688,7 +767,8 @@ Sub MigrateReportSubscriptions(snkReport As CatalogItem, srcReport As CatalogIte
 				RsSrc.GetSubscriptionProperties(srcSub.SubscriptionID, extensionSettings, description, active, status, eventType, matchData, parameters)
 				If extensionSettings.Extension = "Report Server FileShare" Then
 					Dim newParameterValues() As [ParameterValueOrFieldReference] = New [ParameterValueOrFieldReference](extensionSettings.ParameterValues.Length) {}
-					Array.Copy(extensionSettings.ParameterValues, newParameterValues, extensionSettings.ParameterValues.Length)	
+					Array.Copy(extensionSettings.ParameterValues, newParameterValues, extensionSettings.ParameterValues.Length)
+					'Standard subscriptions will always require adding PASSWORD parameter during migration
 					Dim pwdParameterValue As ParameterValue = New ParameterValue
 					pwdParameterValue.Label = "PASSWORD"
 					pwdParameterValue.Name = "PASSWORD"
@@ -712,9 +792,13 @@ Sub MigrateReportSubscriptions(snkReport As CatalogItem, srcReport As CatalogIte
 					End If
 				Next
 				Console.ForegroundColor = ConsoleColor.Yellow
-				Console.WriteLine("You need to re-enter the password for user '" + username + "' in file share subscription '" + description + "' contained in report '" + snkReport.Path + "'.")
-				Console.ResetColor()
-			End If			
+                Dim warningMsg as String = "You need to re-enter the password for user '" + username + "' in file share subscription '" + description + "' contained in report '" + snkReport.Path + "'."
+			    Console.WriteLine(warningMsg)
+			    Console.ResetColor()
+
+                LogErrorToFile("SUBSCRIPTIONS", "Warning: " + snkReport.Path, warningMsg)
+
+			End If
 		Next
 
 	Catch ex As Exception
@@ -722,6 +806,7 @@ Sub MigrateReportSubscriptions(snkReport As CatalogItem, srcReport As CatalogIte
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("SUBSCRIPTIONS", snkReport.Name, ex.Message)
 	End Try
 End Sub
 
@@ -755,6 +840,7 @@ Sub MigrateCacheRefreshPlans(snkReport As CatalogItem, srcReport As CatalogItem)
 				Console.WriteLine(" ... FAILURE")
 				Console.WriteLine(e.Message + Environment.NewLine)
 				Console.ResetColor()
+                LogErrorToFile("CACHEREFRESH", snkReport.Name, e.Message)
 			End Try
 		Next
 
@@ -762,6 +848,7 @@ Sub MigrateCacheRefreshPlans(snkReport As CatalogItem, srcReport As CatalogItem)
 		Console.ForegroundColor = ConsoleColor.Red
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("CACHEREFRESH", "Exception", ex.Message)
 	End Try
 End Sub
 
@@ -784,6 +871,7 @@ Sub MigrateReportParameters(snkReport As CatalogItem, srcReport As CatalogItem)
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("REPORTPARAMETERS", snkReport.Name, ex.Message)
 	End Try
 End Sub
 
@@ -807,6 +895,7 @@ Sub MigrateReportExecutionOptions(snkReport As CatalogItem, srcReport As Catalog
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("EXECUTIONOPTIONS", snkReport.Name, ex.Message)
 	End Try
 End Sub
 
@@ -830,6 +919,7 @@ Sub MigrateReportCacheOptions(snkReport As CatalogItem, srcReport As CatalogItem
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("CACHEOPTIONS", snkReport.Name, ex.Message)
 	End Try
 End Sub
 
@@ -859,6 +949,7 @@ Sub MigrateReportHistorySettings(snkReport As CatalogItem, srcReport As CatalogI
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("HISTORYSETTINGS", snkReport.Name, ex.Message)
 	End Try
 End Sub
 
@@ -889,16 +980,33 @@ Sub MigrateItemPolicies(snkReport As CatalogItem, srcReport As CatalogItem)
 		Console.WriteLine(" ... FAILURE:")
 		Console.WriteLine(ex.Message + Environment.NewLine)
 		Console.ResetColor()
+        LogErrorToFile("ITEMPOLICIES", snkReport.Name, ex.Message)
 	End Try
 End Sub
 
 
-
-
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''' Helper Functions '''''''''''''''''''''''
-''''''''''''''''''''''''''''''''''''''''''''''''''''''' 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+'Helper function to link snk reference with relative paths
+Function GetSnkPathRef(srcPath As String) As String
+    Dim snkPath = srcPath
+
+	If Not SrcIsNative Then
+        'SharePoint integrated mode, will assume /sites server relative URL delimeter
+    	If srcSiteUrl isNot Nothing
+            Dim delimeter = "/sites/"
+		    snkPath = srcPath.Remove(0, srcSiteUrl.IndexOf(delimeter) + delimeter.Length-1)
+	    End If
+    Else
+        'Treat path reference like other scenarios if not intergated mode
+        snkPath = GetSnkPath(srcPath)
+    End If
+
+	Return snkPath
+End Function
+		
 'Helper function to construct correctly formatted path
 Function GetSnkPath(srcPath As String) As String
 	If Not SrcIsNative Then
@@ -908,7 +1016,11 @@ Function GetSnkPath(srcPath As String) As String
 	Dim snkPath As String = SnkFolder
 
 	If Not srcPath = "" Then
-		snkPath = snkPath + IIf(SrcFolder = "/", srcPath, srcPath.Remove(0, SrcFolder.Length))
+		If SrcFolder = SnkFolder Then ' exact relative folder paths assumed between source and target
+			snkPath = srcPath
+		Else
+			snkPath = snkPath + IIf(SrcFolder = "/", srcPath, srcPath.Remove(0, SrcFolder.Length))
+		End If		
 	End If
 
 	If snkPath.StartsWith("//") Then
@@ -924,11 +1036,12 @@ End Function
 
 'Helper function to construct correctly formatted filename
 Function GetSnkFilename(srcFilename As String, type As String) As String
-	Dim hasFE As Boolean = HasFileExtension(srcFilename)
-	If SnkIsNative And hasFE And Not GetExtension(type) = "" Then 'Cut off file extension, if present            
+	Dim currentFileExtension As String = GetFileNameExtension(srcFilename)
+
+	If SnkIsNative And (GetExtension(type) = currentFileExtension) and currentFileExtension <> "" Then 'Cut off file extension, if present
 		srcFilename = RemoveFileExtension(srcFilename)
 
-	ElseIf Not SnkIsNative And Not hasFE Then 'Add file extension, if not present
+	ElseIf Not SnkIsNative And currentFileExtension = "" Then 'Add file extension, if not present
 		srcFilename = srcFilename + GetExtension(type)
 	End If
 
@@ -936,9 +1049,14 @@ Function GetSnkFilename(srcFilename As String, type As String) As String
 End Function
 
 'Helper
-Function HasFileExtension(filename As String) As Boolean
-	Dim index As Integer = filename.LastIndexOf(".")
-	Return index >= 0 And filename.Length - index <= 5
+Function GetFileNameExtension(filename As String) As String
+	Dim index as Integer = -1
+	index = filename.LastIndexOf(".")
+	If index > 0
+		Return filename.Substring(index)
+	Else
+		Return ""
+	End If
 End Function
 
 'Helper
@@ -981,7 +1099,7 @@ Function GetMatchData(matchData As String, RsSnk As ReportingService2010) As Str
 	End If
 
 	Dim snkSchedules As Schedule() = RsSnk.ListSchedules(snkSiteUrl)
-	For Each s As Schedule In snkSchedules 
+	For Each s As Schedule In snkSchedules
 		If s.Name = name Then
 			Return s.ScheduleID
 		End If
@@ -1067,4 +1185,44 @@ Sub WriteSuccess()
 	Console.ForegroundColor = ConsoleColor.Green
 	Console.WriteLine(" ... SUCCESS")
 	Console.ResetColor()
+End Sub
+
+Function SortParentFoldersFirst(first As CatalogItem, second As CatalogItem) As Integer
+	If first.TypeName = "Folder" And second.TypeName <> "Folder" Then
+		Return -1
+	ElseIf first.TypeName <> "Folder" And second.TypeName = "Folder" Then
+		Return 1
+	ElseIf first.TypeName <> "Folder" And second.TypeName <> "Folder" Then
+		Return 0
+	Else
+		Return String.Compare(first.Path, second.Path)
+	End If
+End Function
+
+Sub LogErrorToFile(source As String, errItem as String, message As String) 
+    Dim writer as StreamWriter
+
+    Try 
+        Dim fileExists As Boolean = Not File.Exists(logFilePath) OrElse New FileInfo(logFilePath).Length = 0
+
+        ' Create a StreamWriter object
+        writer = New StreamWriter(logFilePath, True)
+
+        If fileExists Then
+            writer.WriteLine("DateTime, Source, ErrorItem, ErrorMessage")
+        End If
+
+        ' Format log message with timestamp
+        Dim timeStamp As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        Dim formattedMessage as String = String.Format("{0}, {1}, {2}, ""{3}""", timeStamp, source, errItem, message.Replace(Environment.NewLine, " "))
+
+        ' Write the log entry to file
+        writer.WriteLine(formattedMessage)
+    Catch ex As Exception
+        Console.WriteLine(ex.Message)
+    Finally
+        If Not writer Is Nothing Then
+            writer.Close()
+        End If
+    End Try
 End Sub

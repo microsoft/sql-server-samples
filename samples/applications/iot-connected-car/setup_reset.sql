@@ -17,19 +17,19 @@ SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
 -- 1. validate that In-Memory OLTP is supported
-IF SERVERPROPERTY(N'IsXTPSupported') = 0 
-BEGIN                                    
+IF SERVERPROPERTY(N'IsXTPSupported') = 0
+BEGIN
     PRINT N'Error: In-Memory OLTP is not supported for this server edition or database pricing tier.';
-END 
+END
 IF DB_ID() < 5
-BEGIN                                    
+BEGIN
     PRINT N'Error: In-Memory OLTP is not supported in system databases. Connect to a user database.';
-END 
-ELSE 
-BEGIN 
+END
+ELSE
+BEGIN
 	BEGIN TRY
 -- 2. add MEMORY_OPTIMIZED_DATA filegroup when not using Azure SQL DB
-	IF SERVERPROPERTY('EngineEdition') != 5 
+	IF SERVERPROPERTY('EngineEdition') != 5
 	BEGIN
 		DECLARE @SQLDataFolder nvarchar(max) = cast(SERVERPROPERTY('InstanceDefaultDataPath') as nvarchar(max))
 		DECLARE @MODName nvarchar(max) = DB_NAME() + N'_mod';
@@ -41,7 +41,7 @@ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM sys.filegroups WHERE type = N'FX')
 		BEGIN
 			SET @SQL = N'
-				ALTER DATABASE CURRENT 
+				ALTER DATABASE CURRENT
 				ADD FILEGROUP ' + QUOTENAME(@MODName) + N' CONTAINS MEMORY_OPTIMIZED_DATA;';
 			EXECUTE (@SQL);
 
@@ -51,7 +51,7 @@ BEGIN
 				SET @SQL = N'
 				ALTER DATABASE CURRENT
 				ADD FILE (name = N''' + @MODName + ''', filename = '''
-						+ @MemoryOptimizedFilegroupFolder + N''') 
+						+ @MemoryOptimizedFilegroupFolder + N''')
 				TO FILEGROUP ' + QUOTENAME(@MODName);
 				EXECUTE (@SQL);
 			END
@@ -60,7 +60,7 @@ BEGIN
 
 	-- 3. set compat level to 130 if it is lower
 	IF (SELECT compatibility_level FROM sys.databases WHERE database_id=DB_ID()) < 130
-		ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 130 
+		ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 130
 
 	-- 4. enable MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT for the database
 	ALTER DATABASE CURRENT SET MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT = ON;
@@ -128,7 +128,7 @@ CREATE TABLE [dbo].[EventCategory](
  WITH ( MEMORY_OPTIMIZED = ON , DURABILITY = SCHEMA_AND_DATA);
 
 -- Temporal In-Memory Table: [dbo].[Events]
-IF EXISTS (SELECT * FROM sys.tables WHERE name = N'Events' AND temporal_type = 2) 
+IF EXISTS (SELECT * FROM sys.tables WHERE name = N'Events' AND temporal_type = 2)
 	ALTER TABLE [dbo].[Events] SET (SYSTEM_VERSIONING = OFF);
 
 DROP TABLE IF EXISTS [dbo].[Events];
@@ -201,7 +201,7 @@ CREATE TABLE ownsAuto (
        Rating integer,
        Trend decimal,
        Rank_change integer,
-) AS EDGE;    
+) AS EDGE;
 
 
 --==================================================================
@@ -244,7 +244,7 @@ WITH ( MEMORY_OPTIMIZED = ON );
 -- STEP 7: Create Natively compiled stored procedure: dbo.InsertEvent
 --==================================================================
 EXEC(
-'CREATE PROCEDURE [dbo].[InsertEvent] 
+'CREATE PROCEDURE [dbo].[InsertEvent]
 	@Batch AS dbo.udtEvent READONLY,
 	@BatchSize INT
 
@@ -301,7 +301,7 @@ BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N''English'')
 		FROM	@Batch
 		WHERE	RowID = @i
 		
-		UPDATE	dbo.Events 
+		UPDATE	dbo.Events
 		SET		EventID = @EventID,
 				EventCategoryID = @EventCategoryID,
 				EventMessage = @EventMessage,
@@ -328,7 +328,7 @@ BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N''English'')
 		BEGIN
 			INSERT INTO dbo.Events (EventID, AutoID, EventCategoryID, EventMessage, City, OutsideTemperature, EngineTemperature, Speed, Fuel, EngineOil, TirePressure, Odometer, AcceleratorPedalPosition, ParkingBrakeStatus, HeadlampStatus, BrakePedalStatus, TransmissionGearPosition, IgnitionStatus, WindshieldWiperStatus, Abs, PostalCode)
 			VALUES (@EventID, @AutoID, @EventCategoryID, @EventMessage, @City, @OutsideTemperature, @EngineTemperature, @Speed, @Fuel, @EngineOil, @TirePressure, @Odometer, @AcceleratorPedalPosition, @ParkingBrakeStatus, @HeadlampStatus, @BrakePedalStatus, @TransmissionGearPosition, @IgnitionStatus, @WindshieldWiperStatus, @Abs, @PostalCode);			
-		END 
+		END
 
 		SET @i += 1
 	END	
@@ -745,7 +745,7 @@ insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNum
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(399,'Ngai Lam','Ngai','1952-10-30','(215) 555-0100','(215) 555-0101','ngai@tailspintoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(400,'Camille Hetu','Camille','1951-06-26','(215) 555-0100','(215) 555-0101','camille@tailspintoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(401,'Hyun-Doo Song','Hyun-Doo','1957-07-21','(262) 555-0100','(262) 555-0101','hyun-doo@tailspintoys.com',NULL);
-insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(402,'Bahadır Korkmaz','Bahadır','1987-11-04','(262) 555-0100','(262) 555-0101','bahad�r@tailspintoys.com',NULL);
+insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(402,'Bahadır Korkmaz','Bahadır','1987-11-04','(262) 555-0100','(262) 555-0101','bahad�r@tailspintoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(403,'Gabriela Srbova','Gabriela','1960-03-19','(319) 555-0100','(319) 555-0101','gabriela@tailspintoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(404,'Priya kaushal','Priya','1994-08-12','(319) 555-0100','(319) 555-0101','priya@tailspintoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(405,'Serkan senturk','Serkan','1975-06-21','(702) 555-0100','(702) 555-0101','serkan@tailspintoys.com',NULL);
@@ -843,7 +843,7 @@ insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNum
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(497,'Marcello Dellucci','Marcello','1980-11-04','(405) 555-0100','(405) 555-0101','marcello@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(498,'Shobha Raju','Shobha','1964-05-25','(405) 555-0100','(405) 555-0101','shobha@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(499,'Mee-Kyong Sin','Mee-Kyong','1953-10-09','(480) 555-0100','(480) 555-0101','mee-kyong@wingtiptoys.com',NULL);
-insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(500,'Věra Kopecka','Věra','1950-12-10','(480) 555-0100','(480) 555-0101','v�ra@wingtiptoys.com',NULL);
+insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(500,'Věra Kopecka','Věra','1950-12-10','(480) 555-0100','(480) 555-0101','v�ra@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(501,'Ivica Lučic','Ivica','1984-11-08','(212) 555-0100','(212) 555-0101','ivica@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(502,'David Svoboda','David','1977-01-02','(212) 555-0100','(212) 555-0101','david@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(503,'Vinicius Correa','Vinicius','1961-12-17','(231) 555-0100','(231) 555-0101','vinicius@wingtiptoys.com',NULL);
@@ -949,7 +949,7 @@ insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNum
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(603,'Gi-Suk Heo','Gi-Suk','1977-11-01','(215) 555-0100','(215) 555-0101','gi-suk@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(604,'Roman Tomek','Roman','1980-07-23','(215) 555-0100','(215) 555-0101','roman@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(605,'Irma Kruze','Irma','1980-10-06','(219) 555-0100','(219) 555-0101','irma@wingtiptoys.com',NULL);
-insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(606,'Věra Stejskalova','Věra','1965-11-10','(219) 555-0100','(219) 555-0101','v�ra@wingtiptoys.com',NULL);
+insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(606,'Věra Stejskalova','Věra','1965-11-10','(219) 555-0100','(219) 555-0101','v�ra@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(607,'Dhaeraemdranaadh Pamulaparthi','Dhaeraemdranaadh','1965-02-02','(458) 555-0100','(458) 555-0101','dhaeraemdranaadh@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(608,'Victoria Brezeanu','Victoria','1994-01-03','(458) 555-0100','(458) 555-0101','victoria@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(609,'Agrita Kalnina','Agrita','1968-02-26','(314) 555-0100','(314) 555-0101','agrita@wingtiptoys.com',NULL);
@@ -1028,7 +1028,7 @@ insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNum
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(682,'Jose Williams','Jose','1966-05-22','(314) 555-0100','(314) 555-0101','jose@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(683,'Padma Iyer','Padma','1990-06-09','(505) 555-0100','(505) 555-0101','padma@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(684,'Cai Cao','Cai','1957-05-30','(505) 555-0100','(505) 555-0101','cai@wingtiptoys.com',NULL);
-insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(685,'Śani Sen','Śani','1979-09-03','(405) 555-0100','(405) 555-0101','�ani@wingtiptoys.com',NULL);
+insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(685,'Śani Sen','Śani','1979-09-03','(405) 555-0100','(405) 555-0101','�ani@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(686,'Ngu Hoa','Ngu','1975-10-06','(405) 555-0100','(405) 555-0101','ngu@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(687,'Helene Dupuy','Helene','1971-05-02','(270) 555-0100','(270) 555-0101','helene@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(688,'Antonio Trentini','Antonio','1994-02-06','(270) 555-0100','(270) 555-0101','antonio@wingtiptoys.com',NULL);
@@ -1070,7 +1070,7 @@ insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNum
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(724,'Indu Chowdary','Indu','1996-06-02','(228) 555-0100','(228) 555-0101','indu@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(725,'Bich Banh','Bich','1957-08-09','(215) 555-0100','(215) 555-0101','bich@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(726,'Lennart Kask','Lennart','1954-02-06','(215) 555-0100','(215) 555-0101','lennart@wingtiptoys.com',NULL);
-insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(727,'Śani Nair','Śani','1960-04-06','(207) 555-0100','(207) 555-0101','�ani@wingtiptoys.com',NULL);
+insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(727,'Śani Nair','Śani','1960-04-06','(207) 555-0100','(207) 555-0101','�ani@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(728,'Cuc Tu','Cuc','1964-01-09','(207) 555-0100','(207) 555-0101','cuc@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(729,'Angelina Gormanston','Angelina','1951-06-24','(201) 555-0100','(201) 555-0101','angelina@wingtiptoys.com',NULL);
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(730,'Prasanna Shetty','Prasanna','1996-12-15','(201) 555-0100','(201) 555-0101','prasanna@wingtiptoys.com',NULL);
@@ -1346,7 +1346,7 @@ insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNum
 insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(1000,'Emily Whittle','Emily','1962-11-25','(231) 555-0100','(231) 555-0101','emily@example.com',NULL);
 set identity_insert dbo.Person off;
 /*
-select	'insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(' +  
+select	'insert into dbo.Person (PersonID, FullName, PreferredName, DateOfBirth, PhoneNumber, FaxNumber, EmailAddress, Photo) values(' +
 		convert(varchar,PersonID) + ',' + '''' +  FullName + '''' + ',' +
 '''' + PreferredName + '''' + ',' + '''' +  convert(varchar,DateOfBirth) + '''' + ',' + '''' +  PhoneNumber + '''' + ',' + '''' + FaxNumber + '''' + ',' + '''' +  EmailAddress + '''' + ',' +  'NULL);'
 from Person
@@ -3875,7 +3875,7 @@ CREATE TABLE DriveScore (
 
 
 -- CREATE EDGES
-CREATE TABLE owns_auto AS EDGE;   
+CREATE TABLE owns_auto AS EDGE;
 CREATE TABLE has_score AS EDGE;
 CREATE TABLE is_friend_of AS EDGE;
 
@@ -3891,7 +3891,7 @@ declare @rankchange int;
 declare @upper int;
 declare @lower int;
 declare @random int;
-declare @i integer; 
+declare @i integer;
 
 declare @brake bigint;
 declare @fuel bigint;
@@ -3937,7 +3937,7 @@ begin
        ELSE IF (@driverrank > 8)
        begin
               set @rating = 2
-              set @trend = -0.3 
+              set @trend = -0.3
               set @trendVal = convert(varchar(20), @trend) + '%'
               set @rankchange = -2
               set @brake = @random + 500
@@ -3948,7 +3948,7 @@ begin
        end
 
        insert into DriveScore values (@i, @driverrank, @rating, @trend, @rankchange, @brake, @fuel, @weather, @lane, @overallscore)
-       
+
        set @i = @i + 1
 
 end;
@@ -3971,17 +3971,17 @@ update DriveScore set Rank = 4, Rating = 4, Trend = 0.4, Rank_change= 1, brake_s
 -------------------------------------------------------------------------------------
 
 -- Rohan Kumar
-insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":80}','{"type":"node","schema":"dbo","table":"DriveScore","id":0}'); 
+insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":80}','{"type":"node","schema":"dbo","table":"DriveScore","id":0}');
 -- Shreya Verma
-insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":84}','{"type":"node","schema":"dbo","table":"DriveScore","id":1}'); 
+insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":84}','{"type":"node","schema":"dbo","table":"DriveScore","id":1}');
 -- John Kane
-insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":819}','{"type":"node","schema":"dbo","table":"DriveScore","id":2}'); 
+insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":819}','{"type":"node","schema":"dbo","table":"DriveScore","id":2}');
 -- Laurent Bonnet
-insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":820}','{"type":"node","schema":"dbo","table":"DriveScore","id":3}'); 
+insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":820}','{"type":"node","schema":"dbo","table":"DriveScore","id":3}');
 -- Jennifer Kim
-insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":847}','{"type":"node","schema":"dbo","table":"DriveScore","id":4}'); 
+insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":847}','{"type":"node","schema":"dbo","table":"DriveScore","id":4}');
 -- Steve Schmidt
-insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":887}','{"type":"node","schema":"dbo","table":"DriveScore","id":5}'); 
+insert into has_score($fromid, $toid) values('{"type":"node","schema":"dbo","table":"Person","id":887}','{"type":"node","schema":"dbo","table":"DriveScore","id":5}');
 
 set @lower = 1
 set @upper = 1000
@@ -3990,8 +3990,8 @@ set @i = 7
 while (@i <= @upper)
 Begin
        select @random = ROUND(((@upper - @Lower -1) * RAND() + @Lower), 0)
-       
-       insert has_score($fromid, $toid) 
+
+       insert has_score($fromid, $toid)
        select p.$nodeid, a.$nodeid
        from Person p, DriveScore a
        where p.PersonId = @random
@@ -4028,7 +4028,7 @@ Begin
 			  and p.PersonId <> 81 -- Exclude Rohan
               set @j = @j + 1
        End
-       
+
        set @i = @i + 1
 End;
 

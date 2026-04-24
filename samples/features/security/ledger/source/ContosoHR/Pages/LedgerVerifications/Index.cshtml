@@ -1,0 +1,39 @@
+﻿@page
+@model ContosoHR.Pages.LedgerVerifications.IndexModel
+
+<h1>Ledger Verifications</h1>
+
+<div class="row">
+    <div class="col-lg-1">
+        <form asp-page-handler="verify" method="post">
+            <button class="btn btn-success" >Verify</button>
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LedgerVerifications[0].TimeStamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LedgerVerifications[0].Result)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.LedgerVerifications) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Result)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+

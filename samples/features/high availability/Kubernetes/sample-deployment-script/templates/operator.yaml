@@ -72,7 +72,7 @@ kind: Deployment
 
 metadata:
   name: mssql-operator
-  namespace: 
+  namespace:
 
 spec:
   selector:

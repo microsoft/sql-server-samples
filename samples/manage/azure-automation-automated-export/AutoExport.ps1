@@ -56,7 +56,7 @@ function CreateDatabaseObject($databaseName, $serverName)
 	$dbObj = New-Object System.Object;
 	# Add the DatabaseName property and set it.
 	$dbObj | Add-Member -type NoteProperty -name DatabaseName -Value $databaseName;
-	# Add a unique time at the end of DatabaseCopyName so that we have a unique database name every time. 
+	# Add a unique time at the end of DatabaseCopyName so that we have a unique database name every time.
 	$currentTime = Get-Date -format "_yyyy-MM-dd_HH:mm.ss";
 	$dbCopyName = $databaseName + $currentTime;
 	# Add the DatabaseCopyName property and set it.
@@ -297,7 +297,7 @@ for($currentRun = 0; $currentRun -lt ([math]::Ceiling($databaseServerPairs.Lengt
 	for($currentIndex; $currentIndex -lt $global:databaseServerPairs.Length -and $currentIndex -lt ($currentRun*$batchingLimit + $batchingLimit); $currentIndex++)
 	{
 		$global:dbs.Add((CreateDatabaseObject $global:databaseServerPairs[$currentIndex].DatabaseName $global:databaseServerPairs[$currentIndex].ServerName))
-	} 
+	}
 
 	# Continually call ExportProcess until all of the database objects have been removed from the array.
 	while($global:dbs.Count -gt 0)

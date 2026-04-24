@@ -1,5 +1,5 @@
-﻿-- Note this procedure is not included in the regular build, it 
--- is called during the post deployment process. 
+﻿-- Note this procedure is not included in the regular build, it
+-- is called during the post deployment process.
 -- This is due to the fact it updates temporal tables, and SSDT
 -- will throw up an error when this occurs, despite the fact we
 -- have procedures to deactivate the temporal tables and reactivate
@@ -20,7 +20,7 @@ BEGIN
 
     DECLARE @NumberOfStockItems int = 0;
 
-    IF CAST(@CurrentDateTime AS date) = '20160101'
+    IF CAST(@CurrentDateTime AS date) = '20220101'
     BEGIN
         SET @NumberOfStockItems = 2;
 
@@ -35,7 +35,7 @@ BEGIN
 
         COMMIT;
 
-    END ELSE IF CAST(@CurrentDateTime AS date) = '20160102'
+    END ELSE IF CAST(@CurrentDateTime AS date) = '20220102'
     BEGIN
         SET @NumberOfStockItems = 2;
 
@@ -50,7 +50,7 @@ BEGIN
 
         COMMIT;
 
-    END ELSE IF CAST(@CurrentDateTime AS date) = '20160104'
+    END ELSE IF CAST(@CurrentDateTime AS date) = '20220104'
     BEGIN
         SET @NumberOfStockItems = 2;
 
@@ -65,7 +65,7 @@ BEGIN
 
         COMMIT;
 
-    END ELSE IF CAST (@CurrentDateTime AS date) = '20160105'
+    END ELSE IF CAST (@CurrentDateTime AS date) = '20220105'
     BEGIN
         SET @NumberOfStockItems = 2;
 

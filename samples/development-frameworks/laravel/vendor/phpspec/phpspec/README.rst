@@ -10,7 +10,7 @@ The main website with documentation is at `http://www.phpspec.net <http://www.ph
 .. image:: https://scrutinizer-ci.com/g/phpspec/phpspec/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/phpspec/phpspec/build-status/master
    :alt: Master Scrutinizer Quality Score
-   
+
 Installing Dependencies
 -----------------------
 

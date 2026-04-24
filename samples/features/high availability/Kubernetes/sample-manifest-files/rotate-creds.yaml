@@ -67,7 +67,7 @@ spec:
         image: mcr.microsoft.com/mssql/ha:2019-CTP2.1-ubuntu
         command: ["/mssql-server-k8s-rotate-creds"]
         env:
-        - name: MSSQL_K8S_SQL_SERVER_NAME 
+        - name: MSSQL_K8S_SQL_SERVER_NAME
           value: mssql1
         - name: MSSQL_ROTATE_CERT
           value: "True"
@@ -92,4 +92,4 @@ spec:
               key: sapassword
       imagePullSecrets:
       - name: private-registry-key
-        
+

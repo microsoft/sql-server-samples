@@ -17,7 +17,7 @@ router.get('/:id', function (req, res) {
 
 /* POST create product. */
 router.post('/', function (req, res) {
-    
+
     req.sql("EXEC InsertProductFromJson @json")
         .param('json', req.body, TYPES.NVarChar)
         .exec(res);

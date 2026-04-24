@@ -1,7 +1,7 @@
 <?php
 /**
  * phpDocumentor Covers Tag Test
- * 
+ *
  * PHP version 5.3
  *
  * @author    Daniel O'Connor <daniel.oconnor@gmail.com>

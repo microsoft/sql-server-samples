@@ -14,17 +14,17 @@ Usage:
   DECLARE @myEmployeePersonID INT
   EXEC [DataLoadSimulation].[GetRandomEmployeePerson]
       @EmployeePersonID = @myEmployeePersonID OUTPUT
-  SELECT @myEmployeePersonID 
+  SELECT @myEmployeePersonID
 
 */
-  
-  SELECT TOP(1) 
+
+  SELECT TOP(1)
          @EmployeePersonID = PersonID
     FROM [Application].People
    WHERE IsEmployee <> 0
      AND ValidTo = '99991231 23:59:59.9999999'
    ORDER BY NEWID()
-  
+
   RETURN
 
 END

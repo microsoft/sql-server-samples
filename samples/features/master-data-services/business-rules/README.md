@@ -1,9 +1,9 @@
 # Master Data Services Business Rule API Sample
-This is a C# code sample to show how to use MDS APIs to create, edit, validate, exclude, and delete business rules. The scenario in this sample is that the system creates a business rule (when "Code equals ABC", "Name must be equal to Test") and edits the business rule (change the condition to “Code starts with Test”). 
-The next step creates a member that causes a business rule validation error (add a member with Code = “Test12” and Name = “AA”), processes validation, and gets the validation issue information. To complete the example, the sample excludes and deletes the business rule.
+This is a C# code sample to show how to use MDS APIs to create, edit, validate, exclude, and delete business rules. The scenario in this sample is that the system creates a business rule (when "Code equals ABC", "Name must be equal to Test") and edits the business rule (change the condition to ï¿½Code starts with Testï¿½
+The next step creates a member that causes a business rule validation error (add a member with Code = ï¿½Test12ï¿½ and Name = ï¿½AAï¿½), processes validation, and gets the validation issue information. To complete the example, the sample excludes and deletes the business rule.
 For every action that changes the business rule status (creates, edits, excludes, and deletes), the business rule must be published to finalize the change.
 
-Please set the MDS URL (plus /Service/Service.svc) to mdsURL in Program.cs. 
+Please set the MDS URL (plus /Service/Service.svc) to mdsURL in Program.cs.
 
 ```C#
 string mdsURL = @"http://localhost/MDS/Service/Service.svc";
@@ -22,12 +22,12 @@ To enable an http/https Get on the WSDL:
 
 
 To also enable service exception details for additional debugging (not necessary for standard, trapped errors):
-1. Search for the tag ‘serviceDebug’ and set includeExceptionDetailInFaults to true.
+1. Search for the tag ï¿½serviceDebugï¿½ and set includeExceptionDetailInFaults to true.
 
 After that you need to add a Service Reference to http://ServerName/MdsSiteName/service/service.svc and set the namespace to the service to "MDSTestService" in the following steps using Visual Studio.
 
 1. Click "Add Service Reference".
-2. In Address, enter the URL to the MDS service which will be “http://ServerName/MdsSiteName/service/service.svc”.
+2. In Address, enter the URL to the MDS service which will be ï¿½http://ServerName/MdsSiteName/service/service.svcï¿½.
 3. Specify the namespace to the service as "MDSTestService" in the Namespace box.
 4. Click the Advanced button to configure advanced settings.
 5. Check Always generate message contracts.

@@ -1,6 +1,6 @@
---======================================================================================
--- Drop Statistics template for Azure SQL Database and Azure SQL Data Warehouse Database
---======================================================================================
+--=============================================================================================================================
+-- Drop Statistics template for Azure SQL Database, Azure Synapse Analytics Database, and Azure Synapse SQL Analytics on-demand
+--=============================================================================================================================
 IF EXISTS (
   SELECT *
 	FROM sys.stats as st

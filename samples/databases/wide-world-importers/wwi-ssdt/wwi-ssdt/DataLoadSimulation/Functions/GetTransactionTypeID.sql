@@ -13,9 +13,9 @@ Usage:
 
 */
   DECLARE @TransTypeId INT
-  SELECT TOP 1 
-         @TransTypeId = TransactionTypeID 
-   FROM [Application].TransactionTypes 
+  SELECT TOP 1
+         @TransTypeId = TransactionTypeID
+   FROM [Application].TransactionTypes
   WHERE TransactionTypeName = @TransactionTypeName
      AND ValidTo = '99991231 23:59:59.9999999'
 

@@ -39,7 +39,7 @@ To run this sample, you need the following prerequisites.
 <a name=run-this-sample></a>
 
 ## Run this sample
-If using Docker, use runtests.sh or runtests.cmd as appropriate. If using a separate instance of SQL Server or Azure SQL Database, create a .runsettings file and run the unit tests using Visual Studio or "dotnet vstest". 
+If using Docker, use runtests.sh or runtests.cmd as appropriate. If using a separate instance of SQL Server or Azure SQL Database, create a .runsettings file and run the unit tests using Visual Studio or "dotnet vstest".
 
 <a name=sample-details></a>
 

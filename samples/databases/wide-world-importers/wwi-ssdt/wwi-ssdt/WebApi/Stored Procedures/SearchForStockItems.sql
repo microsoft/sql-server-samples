@@ -24,7 +24,7 @@ BEGIN
 	AND (@MinPrice IS NULL OR si.UnitPrice > @MinPrice)
 	AND (@MaxPrice IS NULL OR si.UnitPrice < @MaxPrice)
 	)
-	SELECT 
+	SELECT
 		value = (SELECT TOP(@MaximumRowsToReturn) v.StockItemID,v.StockItemName,v.Brand,v.ColorName,v.UnitPrice,v.TaxRate,v.Size,v.MarketingComments
 					FROM value v
 					WHERE (@Tag IS NULL OR EXISTS (SELECT * FROM OPENJSON (CustomFields, '$.Tags') WITH (Tag nvarchar(20) '$') WHERE Tag = @Tag) )

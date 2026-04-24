@@ -3,8 +3,8 @@
 SQL Server Management Studio supports templatized queries for multiple languages, including T-SQL, DAX, and MDX. The templates contain variables of the form "<variable_name, [data type], [default value]>". SSMS users typically open the templates in one of the following ways:
 
 1. The Template Explorer, which presents the hierarchy as a tree control. Users can drag the query templates to the current editor window or double click to open them in a new window.
-2. A "New <object>" menu item in Object Explorer. 
-3. The File/Open menu to open their own templates. 
+2. A "New <object>" menu item in Object Explorer.
+3. The File/Open menu to open their own templates.
 
 The SSMS query editor detects the presence of these variables and offers a menu item to open the dialog to specify values for the template parameters.
 

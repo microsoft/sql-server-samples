@@ -12,14 +12,14 @@ consider issues relevant to [supported PHP versions](https://secure.php.net/supp
 
 ## Important
 
-Although this library has been examined by some security experts in the PHP 
-community, there will always be a chance that we overlooked something. Please 
+Although this library has been examined by some security experts in the PHP
+community, there will always be a chance that we overlooked something. Please
 ask your favorite trusted hackers to hammer it for implementation errors and
 bugs before even thinking about deploying it in production.
 
 **Do not use the master branch, use a [stable release](https://github.com/paragonie/random_compat/releases/latest).**
 
-For the background of this library, please refer to our blog post on 
+For the background of this library, please refer to our blog post on
 [Generating Random Integers and Strings in PHP](https://paragonie.com/blog/2015/07/how-safely-generate-random-strings-and-integers-in-php).
 
 ### Usability Notice
@@ -36,11 +36,11 @@ to a newer version of PHP immediately.
 
 **Signed PHP Archive:**
 
-As of version 1.2.0, we also ship an ECDSA-signed PHP Archive with each stable 
+As of version 1.2.0, we also ship an ECDSA-signed PHP Archive with each stable
 release on Github.
 
 1. Download [the `.phar`, `.phar.pubkey`, and `.phar.pubkey.asc`](https://github.com/paragonie/random_compat/releases/latest) files.
-2. (**Recommended** but not required) Verify the PGP signature of `.phar.pubkey` 
+2. (**Recommended** but not required) Verify the PGP signature of `.phar.pubkey`
    (contained within the `.asc` file) using the [PGP public key for Paragon Initiative Enterprises](https://paragonie.com/static/gpg-public-key.txt).
 3. Extract both `.phar` and `.phar.pubkey` files to the same directory.
 4. `require_once "/path/to/random_compat.phar";`
@@ -65,7 +65,7 @@ try {
     $string = random_bytes(32);
 } catch (TypeError $e) {
     // Well, it's an integer, so this IS unexpected.
-    die("An unexpected error has occurred"); 
+    die("An unexpected error has occurred");
 } catch (Error $e) {
     // This is also unexpected because 32 is a reasonable integer.
     die("An unexpected error has occurred");
@@ -86,7 +86,7 @@ try {
 
 } catch (TypeError $e) {
     // Well, it's an integer, so this IS unexpected.
-    die("An unexpected error has occurred"); 
+    die("An unexpected error has occurred");
 } catch (Error $e) {
     // This is also unexpected because 0 and 255 are both reasonable integers.
     die("An unexpected error has occurred");
@@ -138,7 +138,7 @@ try {
 
 ## Contributors
 
-This project would not be anywhere near as excellent as it is today if it 
+This project would not be anywhere near as excellent as it is today if it
 weren't for the contributions of the following individuals:
 
 * [@AndrewCarterUK (Andrew Carter)](https://github.com/AndrewCarterUK)

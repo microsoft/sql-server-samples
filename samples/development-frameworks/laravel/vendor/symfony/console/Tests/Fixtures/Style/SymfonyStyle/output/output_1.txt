@@ -2,7 +2,7 @@
 Title
 =====
 
- [WARNING] Lorem ipsum dolor sit amet                                                                                   
+ [WARNING] Lorem ipsum dolor sit amet
 
 Title
 =====

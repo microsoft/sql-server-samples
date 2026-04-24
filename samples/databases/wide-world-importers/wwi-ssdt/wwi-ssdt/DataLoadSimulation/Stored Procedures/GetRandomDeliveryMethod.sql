@@ -21,7 +21,7 @@ Usage:
     FROM [Application].[DeliveryMethods]
    WHERE ValidTo = '99991231 23:59:59.9999999'
    ORDER BY NEWID()
-  
+
   RETURN
 
 END

@@ -1,15 +1,15 @@
-﻿/*----------------------------------------------------------------------------------  
-Copyright (c) Microsoft Corporation. All rights reserved.  
-  
-THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,   
-EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES   
-OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-----------------------------------------------------------------------------------  
-The example companies, organizations, products, domain names,  
-e-mail addresses, logos, people, places, and events depicted  
-herein are fictitious.  No association with any real company,  
-organization, product, domain name, email address, logo, person,  
-places, or events is intended or should be inferred.  
+﻿/*----------------------------------------------------------------------------------
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+----------------------------------------------------------------------------------
+The example companies, organizations, products, domain names,
+e-mail addresses, logos, people, places, and events depicted
+herein are fictitious.  No association with any real company,
+organization, product, domain name, email address, logo, person,
+places, or events is intended or should be inferred.
 
 */
 
@@ -23,10 +23,10 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.Data;
 using System.Data.SqlClient;
 
-/*----------------------------------------------------------------------------------  
+/*----------------------------------------------------------------------------------
 High Level Scenario:
-This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate 
-and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Connected car scenario where multiple 
+This code sample demonstrates how a SQL Server 2016 (or higher) memory optimized database could be used to ingest a very high input data rate
+and ultimately help improve the performance of applications with this scenario. The code simulates an IoT Connected car scenario where multiple
 IoT telemetry data are constantly sending car events to the Azure SQL database.
 */
 namespace Client
@@ -48,7 +48,7 @@ namespace Client
 
         public FrmMain()
         {
-            InitializeComponent();            
+            InitializeComponent();
             Init();
 
             this.dataGenerator = new SqlDataGenerator(this.connection, this.spName, this.commandTimeout, this.cars, this.tasks, this.delay, this.batchSize, this.ExceptionCallback);
@@ -64,7 +64,7 @@ namespace Client
             //string ex = taskId?.ToString() + " - " + exception.Message + (exception.InnerException != null ? "\n\nInner Exception\n" + exception.InnerException : "");
 
             //MessageBox.Show(ex, "Invalid Input Parameter", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, ex); }               
+            //using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, ex); }
         }
 
         private async void Start_Click(object sender, EventArgs e)
@@ -87,7 +87,7 @@ namespace Client
         private async void Stop_Click(object sender, EventArgs e)
         {
             try
-            {                               
+            {
                 this.UpdateChart(-1);
                 this.rpsTimer.Stop();
                 this.lblRpsValue.Text = "0";
@@ -173,7 +173,7 @@ namespace Client
                 if (dataGenerator.IsRunning)
                 {
                     if (this.dataGenerator.RunningTasks == 0) return;
-                
+
                     if (rps > 0)
                     {
                         this.lblRpsValue.Text = string.Format("{0:#,#}", rps).ToString();
@@ -215,7 +215,7 @@ namespace Client
                 this.Reset.Text = "Setup/Reset DB";
                 this.Reset.Update();
             }
-                
+
         }
     }
 }

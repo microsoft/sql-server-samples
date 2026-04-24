@@ -1,5 +1,5 @@
 ﻿$(() => {
- 
+
     $("#stockItems")
         .DataTable({
             ajax: { url: "/OData/StockItems?$top=0", dataSrc: "value" },

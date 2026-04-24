@@ -1,10 +1,10 @@
 // ==========================
-// Nested Prediction 
+// Nested Prediction
 // ==========================
 
-SELECT <select list,expr list,*> FROM [<mining model,name,MyModel>] 
+SELECT <select list,expr list,*> FROM [<mining model,name,MyModel>]
 PREDICTION JOIN
-SHAPE 
+SHAPE
 { OPENQUERY([<datasource,name,MyDataSource>],'<case query,string,SELECT * FROM MyTable>') }
 APPEND
 ( {OPENQUERY([<datasource,name,MyDataSource>],'<nested query,string,SELECT * FROM MyNestedTable>')}

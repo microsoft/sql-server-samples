@@ -1,12 +1,12 @@
 ﻿PRINT 'Inserting Warehouse.PackageTypes'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT Warehouse.StockGroups 
-  (StockGroupID, StockGroupName, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT Warehouse.StockGroups
+  (StockGroupID, StockGroupName, LastEditedBy, ValidFrom, ValidTo)
+VALUES
   (1,'Novelty Items', 1, @CurrentDateTime, @EndOfTime)
 , (2,'Clothing', 1, @CurrentDateTime, @EndOfTime)
 , (3,'Mugs', 1, @CurrentDateTime, @EndOfTime)

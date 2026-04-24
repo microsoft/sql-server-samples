@@ -6,7 +6,7 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@Color)
 		WITH (ColorName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Warehouse.Colors.ColorID = @ColorID
 
 END

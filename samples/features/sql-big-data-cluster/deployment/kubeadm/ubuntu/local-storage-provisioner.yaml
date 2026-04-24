@@ -30,16 +30,16 @@ reclaimPolicy: Delete
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: local-provisioner-config 
+  name: local-provisioner-config
   namespace: local-storage
 data:
-  storageClassMap: |     
+  storageClassMap: |
     local-storage:
        hostDir: /mnt/local-storage
        mountDir:  /mnt/local-storage
        blockCleanerCommand:
          - "/scripts/shred.sh"
-         - "2" 
+         - "2"
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -51,7 +51,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: local-volume-provisioner 
+      app: local-volume-provisioner
   template:
     metadata:
       labels:
@@ -61,7 +61,7 @@ spec:
       containers:
         - image: "quay.io/external_storage/local-volume-provisioner:v2.1.0"
           imagePullPolicy: "Always"
-          name: provisioner 
+          name: provisioner
           securityContext:
             privileged: true
           env:
@@ -70,16 +70,16 @@ spec:
               fieldRef:
                 fieldPath: spec.nodeName
           volumeMounts:
-            - mountPath: /etc/provisioner/config 
+            - mountPath: /etc/provisioner/config
               name: provisioner-config
-              readOnly: true             
+              readOnly: true
             - mountPath:  /mnt/local-storage
               name: local-storage
-              mountPropagation: "HostToContainer" 
+              mountPropagation: "HostToContainer"
       volumes:
         - name: provisioner-config
           configMap:
-            name: local-provisioner-config         
+            name: local-provisioner-config
         - name: local-storage
           hostPath:
             path: /mnt/local-storage

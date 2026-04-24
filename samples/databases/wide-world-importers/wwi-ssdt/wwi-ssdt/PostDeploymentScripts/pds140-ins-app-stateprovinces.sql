@@ -1,15 +1,15 @@
 ﻿PRINT 'Inserting Application.StateProvinces'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
 DECLARE @CountryIDUS INT
 SELECT @CountryIDUS = CountryID FROM [Application].Countries WHERE CountryName = N'United States'
 
-INSERT [Application].StateProvinces 
-  (StateProvinceID, StateProvinceCode, StateProvinceName, CountryID, SalesTerritory, Border, LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT [Application].StateProvinces
+  (StateProvinceID, StateProvinceCode, StateProvinceName, CountryID, SalesTerritory, Border, LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo)
+VALUES
   (1, 'AL', 'Alabama', @CountryIDUS, 'Southeast', NULL, 4833722,  1,  @CurrentDateTime,  @EndOfTime)
 , (2, 'AK', 'Alaska', @CountryIDUS, 'Far West', NULL, 735132,  1,  @CurrentDateTime,  @EndOfTime)
 , (3, 'AZ', 'Arizona', @CountryIDUS, 'Southwest', NULL, 6626624,  1,  @CurrentDateTime,  @EndOfTime)

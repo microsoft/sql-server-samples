@@ -2,18 +2,18 @@
 
 * Whitespace and other cosmetic changes
 * Added a changelog.
-* We now ship with a command line utility to build a PHP Archive from the 
+* We now ship with a command line utility to build a PHP Archive from the
   command line.
-  
+
   Every time we publish a new release, we will also upload a .phar
   to Github. Our public key is signed by our GPG key.
 
 ### Version 1.1.6 - 2015-01-29
 
-* Eliminate `open_basedir` warnings by detecting this configuration setting. 
+* Eliminate `open_basedir` warnings by detecting this configuration setting.
   (Thanks [@oucil](https://github.com/oucil) for reporting this.)
 * Added install instructions to the README.
-* Documentation cleanup (there is, in fact, no `MCRYPT_CREATE_IV` constant, I 
+* Documentation cleanup (there is, in fact, no `MCRYPT_CREATE_IV` constant, I
   meant to write `MCRYPT_DEV_URANDOM`)
 
 ### Version 1.1.5 - 2016-01-06
@@ -39,15 +39,15 @@ Fix a performance issue with `/dev/urandom` buffering.
 
 ### Version 1.1.0 - 2015-11-09
 
-Fix performance issues with ancient versions of PHP on Windows, but dropped 
+Fix performance issues with ancient versions of PHP on Windows, but dropped
 support for PHP < 5.4.1 without mcrypt on Windows 7+ in the process. Since this
  is a BC break, semver dictates a minor version bump.
 
 ### Version 1.0.10 - 2015-10-23
 
-* Avoid a performance killer with OpenSSL on Windows PHP 5.3.0 - 5.3.3 that was 
+* Avoid a performance killer with OpenSSL on Windows PHP 5.3.0 - 5.3.3 that was
   affecting [WordPress users](https://core.trac.wordpress.org/ticket/34409).
-* Use `$var = null` instead of `unset($var)` to avoid triggering the garbage 
+* Use `$var = null` instead of `unset($var)` to avoid triggering the garbage
   collector and slowing things down.
 
 ### Version 1.0.9 - 2015-10-20
@@ -56,13 +56,13 @@ There is an outstanding issue `mcrypt_create_iv()` and PHP 7's `random_bytes()`
 on Windows reported by [@nicolas-grekas](https://github.com/nicolas-grekas) caused by `proc_open()` and environment
 variable handling (discovered by Appveyor when developing Symfony).
 
-Since the break is consistent, it's not our responsibility to fix it, but we 
+Since the break is consistent, it's not our responsibility to fix it, but we
 should fail the same way PHP 7 will (i.e. throw an `Exception` rather than raise
 an error and then throw an `Exception`).
 
 ### Version 1.0.8 - 2015-10-18
 
-* Fix usability issues with Windows (`new COM('CAPICOM.Utilities.1')` is not 
+* Fix usability issues with Windows (`new COM('CAPICOM.Utilities.1')` is not
   always available).
 * You can now test all the possible drivers by running `phpunit.sh each` in the
   `tests` directory.
@@ -76,32 +76,32 @@ Several large integer handling bugfixes were contributed by [@oittaa](https://gi
 Don't let the version number fool you, this was a pretty significant change.
 
 1. Added support for ext-libsodium, if it exists on the system. This is morally
-   equivalent to adding `getrandom(2)` support without having to expose the 
+   equivalent to adding `getrandom(2)` support without having to expose the
    syscall interface in PHP-land.
-2. Relaxed open_basedir restrictions. In previous versions, if open_basedir was 
-   set, PHP wouldn't even try to read from `/dev/urandom`. Now it will still do 
+2. Relaxed open_basedir restrictions. In previous versions, if open_basedir was
+   set, PHP wouldn't even try to read from `/dev/urandom`. Now it will still do
    so if you can.
 3. Fixed integer casting inconsistencies between random_compat and PHP 7.
 4. Handle edge cases where an integer overflow turns one of the parameters into
    a float.
 
-One change that we discussed was making `random_bytes()` and `random_int()` 
-strict typed; meaning you could *only* pass integers to either function. While 
-most veteran programmers are probably only doing this already (we strongly 
+One change that we discussed was making `random_bytes()` and `random_int()`
+strict typed; meaning you could *only* pass integers to either function. While
+most veteran programmers are probably only doing this already (we strongly
 encourage it), it wouldn't be consistent with how these functions behave in PHP
 7. Please use these functions responsibly.
 
-We've had even more of the PHP community involved in this release; the 
+We've had even more of the PHP community involved in this release; the
 contributors list has been updated. If I forgot anybody, I promise you it's not
-because your contributions (either code or ideas) aren't valued, it's because 
-I'm a bit overloaded with information at the moment. Please let me know 
+because your contributions (either code or ideas) aren't valued, it's because
+I'm a bit overloaded with information at the moment. Please let me know
 immediately and I will correct my oversight.
 
-Thanks everyone for helping make random_compat better. 
+Thanks everyone for helping make random_compat better.
 
 ### Version 1.0.5 - 2015-10-08
 
-Got rid of the methods in the `Throwable` interface, which was causing problems 
+Got rid of the methods in the `Throwable` interface, which was causing problems
 on PHP 5.2. While we would normally not care about 5.2 (since [5.4 and earlier are EOL'd](https://secure.php.net/supported-versions.php)),
 we do want to encourage widespread adoption (e.g. [Wordpress](https://core.trac.wordpress.org/ticket/28633)).
 
@@ -129,7 +129,7 @@ Thanks [@dd32](https://github.com/@dd32) for correcting this oversight.
 
 ### Version 1.0.1 - 2015-09-10
 
-Instead of throwing an Exception immediately on insecure platforms, only do so 
+Instead of throwing an Exception immediately on insecure platforms, only do so
 when `random_bytes()` is invoked.
 
 ### Version 1.0.0 - 2015-09-07
@@ -137,8 +137,8 @@ when `random_bytes()` is invoked.
 Our API is now stable and forward-compatible with the CSPRNG features in PHP 7
 (as of 7.0.0 RC3).
 
-A lot of great people have contributed their time and expertise to make this 
-compatibility library possible. That this library has reached a stable release 
+A lot of great people have contributed their time and expertise to make this
+compatibility library possible. That this library has reached a stable release
 is more a reflection on the community than it is on PIE.
 
 We are confident that random_compat will serve as the simplest and most secure
@@ -158,7 +158,7 @@ This should be identical to 1.0.0 sans any last-minute changes or performance en
 
 ### Version 0.9.5 (pre-release) - 2015-07-31
 
-* Validate that `/dev/urandom` is a character device 
+* Validate that `/dev/urandom` is a character device
   * Reported by [@lokdnet](https://twitter.com/lokdnet)
   * Investigated by [@narfbg](https://github.com/narfbg) and [frymaster](http://stackoverflow.com/users/1226810/frymaster) on [StackOverflow](http://stackoverflow.com/q/31631066/2224584)
 * Remove support for `/dev/arandom` which is an old OpenBSD feature, thanks [@jedisct1](https://github.com/jedisct1)
@@ -173,7 +173,7 @@ This should be identical to 1.0.0 sans any last-minute changes or performance en
 ### Version 0.9.3 (pre-release) - 2015-07-22
 
 Unless the Exceptions change to PHP 7 fails, this should be the last pre-release
-version. If need be, we'll make one more pre-release version with compatible 
+version. If need be, we'll make one more pre-release version with compatible
 behavior.
 
 Changes since 0.9.2:
@@ -187,7 +187,7 @@ Changes since 0.9.2:
 
 * Consolidated `$range > PHP_INT_MAX` logic with `$range <= PHP_INT_MAX` (thanks
   [@oittaa](https://github.com/oittaa) and [@CodesInChaos](https://github.com/CodesInChaos))
-* `tests/phpunit.sh` now also runs the tests with `mbstring.func_overload` and 
+* `tests/phpunit.sh` now also runs the tests with `mbstring.func_overload` and
   `open_basedir`
 * Style consistency, whitespace cleanup, more meaningful variable names
 

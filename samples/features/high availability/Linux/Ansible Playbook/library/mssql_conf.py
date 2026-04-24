@@ -125,9 +125,10 @@ def main():
 				changed = False
 		if need_to_set_up:
 			setup_env = os.environ.copy()
+			setup_env.update({ 'MSSQL_SA_PASSWORD': setup_sa_password, 'MSSQL_PID': setup_pid })
 			subprocess.check_call(
 				['/opt/mssql/bin/mssql-conf', '--noprompt', 'setup', 'accept-eula'],
-				env = { 'MSSQL_SA_PASSWORD': setup_sa_password, 'MSSQL_PID': setup_pid })
+				env = setup_env)
 
 	if name is not None:
 		subprocess.check_call(['/opt/mssql/bin/mssql-conf', '--noprompt', 'set', name, value])

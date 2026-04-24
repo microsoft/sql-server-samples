@@ -16,7 +16,7 @@ go
 -- using regular tables
 SELECT top (10) sum(q2.UnitPrice * q2.Quantity) AS TotalSpendingOnItem, q4.CustomerName, q4.CustomerID
 FROM (SELECT StockItemID, StockItemName FROM Warehouse.StockItems) AS q1
-	join (SELECT StockItemID, OrderID, Quantity, UnitPrice FROM Sales.OrderLines) AS q2 ON q1.StockItemID = q2.StockItemID 
+	join (SELECT StockItemID, OrderID, Quantity, UnitPrice FROM Sales.OrderLines) AS q2 ON q1.StockItemID = q2.StockItemID
 	join (SELECT OrderID, CustomerID FROM Sales.Orders) AS q3 ON q2.OrderID = q3.OrderID
 	join (SELECT CustomerID, CustomerName FROM Sales.Customers) AS q4 ON q3.CustomerID = q4.CustomerID
 WHERE q1.StockItemName = 'Chocolate frogs 250g'

@@ -1,0 +1,396 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Azure Arc SQL Server Instances"
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "5ccbaa77-2a42-4a07-a877-b5a3a6297703",
+            "version": "KqlParameterItem/1.0",
+            "name": "Subscription",
+            "type": 6,
+            "isRequired": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "includeAll": true,
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "value": [
+              "value::all"
+            ]
+          },
+          {
+            "id": "43934901-a569-47a2-ab4e-116d2293204c",
+            "version": "KqlParameterItem/1.0",
+            "name": "ResourceGroup",
+            "label": "Resource Group",
+            "type": 2,
+            "isRequired": true,
+            "isGlobal": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "Resources\r\n| summarize Count = count() by subscriptionId, resourceGroup\r\n| order by Count desc\r\n| extend Rank = row_number()\r\n| project label = resourceGroup",
+            "crossComponentResources": [
+              "{Subscription}"
+            ],
+            "value": [
+              "value::all"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 86400000
+            },
+            "queryType": 1,
+            "resourceType": "microsoft.resourcegraph/resources"
+          },
+          {
+            "id": "4b0fd3d8-de3e-41b8-88d9-7e704404ad6b",
+            "version": "KqlParameterItem/1.0",
+            "name": "ServerName",
+            "label": "Server Name Filter",
+            "type": 1,
+            "value": ""
+          },
+          {
+            "version": "KqlParameterItem/1.0",
+            "name": "SQLInstance",
+            "type": 1,
+            "value": "",
+            "id": "2df50306-76d2-4686-abaf-78f57430e75a"
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "parameters - 7"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type =~ 'microsoft.hybridcompute/machines'\r\n| where properties.detectedProperties.mssqldiscovered == \"true\" and properties.status != \"Expired\"\r\n| count\r\n| extend Tittle=\"Number of Azure Arc SQL Servers:\"",
+        "size": 4,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "visualization": "tiles",
+        "tileSettings": {
+          "titleContent": {
+            "columnMatch": "Tittle",
+            "formatter": 1
+          },
+          "leftContent": {
+            "columnMatch": "Count",
+            "formatter": 12,
+            "formatOptions": {
+              "palette": "auto"
+            }
+          },
+          "showBorder": true,
+          "size": "auto"
+        }
+      },
+      "name": "query - 8"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type =~ \"Microsoft.AzureArcData/sqlServerInstances\"\r\n| extend SQLInstance = id, AzureArcServer = tolower(tostring(properties.containerResourceId))\r\n| join kind=inner (resources\r\n| where type in ('microsoft.hybridcompute/machines')\r\n| where properties.status != \"Expired\"\r\n| extend id = tolower(id)) on $left.AzureArcServer == $right.id\r\n| where SQLInstance like \"{SQLInstance}\"\r\n| where AzureArcServer like \"{ServerName}\"\r\n| extend version = tostring(properties.version)\r\n| summarize count() by tostring(version)\r\n| sort by version",
+        "size": 3,
+        "title": "SQL Versions",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "visualization": "piechart"
+      },
+      "customWidth": "25",
+      "name": "query - 4"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type =~ \"Microsoft.AzureArcData/sqlServerInstances\"\r\n| extend SQLInstance = id, AzureArcServer = tolower(tostring(properties.containerResourceId))\r\n| join kind=inner (resources\r\n| where type in ('microsoft.hybridcompute/machines')\r\n| where properties.status != \"Expired\"\r\n| extend id = tolower(id)) on $left.AzureArcServer == $right.id\r\n| where SQLInstance like \"{SQLInstance}\"\r\n| where AzureArcServer like \"{ServerName}\"\r\n| extend azureDefenderStatus = tostring(properties.azureDefenderStatus)\r\n| summarize count() by tostring(azureDefenderStatus)\r\n| sort by azureDefenderStatus",
+        "size": 3,
+        "title": "Azure Defender Status",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "visualization": "piechart",
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Protected",
+              "color": "green"
+            },
+            {
+              "seriesName": "Unknown",
+              "color": "gray"
+            },
+            {
+              "seriesName": "Not Protected",
+              "color": "redBright"
+            }
+          ]
+        }
+      },
+      "customWidth": "25",
+      "name": "query - 4 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type =~ \"Microsoft.AzureArcData/sqlServerInstances\"\r\n| extend SQLInstance = id, AzureArcServer = tolower(tostring(properties.containerResourceId))\r\n| join kind=inner (resources\r\n| where type in ('microsoft.hybridcompute/machines')\r\n| where properties.status != \"Expired\"\r\n| extend id = tolower(id)) on $left.AzureArcServer == $right.id\r\n| where SQLInstance like \"{SQLInstance}\"\r\n| where AzureArcServer like \"{ServerName}\"\r\n| extend edition = tostring(properties.edition)\r\n| summarize count() by tostring(edition)\r\n| sort by edition",
+        "size": 3,
+        "title": "SQL Editions",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "visualization": "piechart",
+        "chartSettings": {
+          "seriesLabelSettings": [
+            {
+              "seriesName": "Protected",
+              "color": "green"
+            },
+            {
+              "seriesName": "Unknown",
+              "color": "gray"
+            },
+            {
+              "seriesName": "Not Protected",
+              "color": "redBright"
+            }
+          ]
+        }
+      },
+      "customWidth": "25",
+      "name": "query - 4 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type =~ \"Microsoft.AzureArcData/sqlServerInstances\"\r\n| extend SQLInstance = id, AzureArcServer = tolower(tostring(properties.containerResourceId))\r\n| join kind=inner (resources\r\n| where type in ('microsoft.hybridcompute/machines')\r\n| where properties.status != \"Expired\"\r\n| extend id = tolower(id)) on $left.AzureArcServer == $right.id\r\n| where SQLInstance like \"{SQLInstance}\"\r\n| where AzureArcServer like \"{ServerName}\"\r\n| extend licenseType = tostring(properties.licenseType)\r\n| summarize count() by tostring(licenseType)\r\n| sort by licenseType",
+        "size": 3,
+        "title": "LicenseType",
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "visualization": "piechart"
+      },
+      "customWidth": "25",
+      "name": "query - 4 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type =~ \"Microsoft.AzureArcData/sqlServerInstances\"\r\n| extend SQLInstance = id, AzureArcServer = tolower(tostring(properties.containerResourceId))\r\n| join kind=inner (resources\r\n| where type in ('microsoft.hybridcompute/machines')\r\n| where properties.status != \"Expired\"\r\n| extend model = tostring(properties.detectedProperties.model)\r\n| extend id = tolower(id)) on $left.AzureArcServer == $right.id\r\n| where SQLInstance like \"{SQLInstance}\"\r\n| where AzureArcServer like \"{ServerName}\"\r\n| extend createdAt = format_datetime(todatetime(systemData.createdAt), 'yyyy-MM-dd hh:mm:ss')\r\n| extend version = tostring(properties.version)\r\n| extend edition = tostring(properties.edition)\r\n| extend currentVersion = tostring(properties.currentVersion)\r\n| extend licenseType = tostring(properties.licenseType)\r\n| extend azureDefenderStatus = tostring(properties.azureDefenderStatus)\r\n| extend patchLevel = tostring(properties.patchLevel)\r\n| extend vcores = toint(properties.vCore)\r\n| project createdAt,AzureArcServer,SQLInstance,version,currentVersion,patchLevel,edition,model,vcores,subscriptionId,licenseType,azureDefenderStatus\r\n",
+        "size": 0,
+        "showAnalytics": true,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "createdAt",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "21.1429ch"
+              }
+            },
+            {
+              "columnMatch": "AzureArcServer",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "20.1429ch"
+              }
+            },
+            {
+              "columnMatch": "SQLInstance",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "23.4286ch"
+              }
+            },
+            {
+              "columnMatch": "version",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "19ch"
+              }
+            },
+            {
+              "columnMatch": "currentVersion",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "17.4286ch"
+              }
+            },
+            {
+              "columnMatch": "patchLevel",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "17ch"
+              }
+            },
+            {
+              "columnMatch": "edition",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "11.4286ch"
+              }
+            },
+            {
+              "columnMatch": "model",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "18.4286ch"
+              }
+            },
+            {
+              "columnMatch": "vcores",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "9.7143ch"
+              }
+            },
+            {
+              "columnMatch": "subscriptionId",
+              "formatter": 13,
+              "formatOptions": {
+                "linkTarget": "Resource",
+                "showIcon": true,
+                "customColumnWidthSetting": "26.5714ch"
+              }
+            },
+            {
+              "columnMatch": "licenseType",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "14.4286ch"
+              }
+            },
+            {
+              "columnMatch": "azureDefenderStatus",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "25ch"
+              }
+            }
+          ],
+          "rowLimit": 500,
+          "filter": true
+        }
+      },
+      "name": "query - 1"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type =~ \"microsoft.hybridcompute/machines\"\r\n| where properties.mssqlDiscovered == true\r\n| extend id = tolower(id)\r\n| join kind=leftouter (resources\r\n| where type =~ \"microsoft.hybridcompute/machines/extensions\"\r\n| where properties.type in (\"WindowsAgent.SqlServer\", \"AzureMonitorWindowsAgent\")\r\n| extend ArcServerResourceId = tolower(tostring(split(id, \"/extensions\")[0]))\r\n| project ArcServerResourceId, ExtensionType = tostring(properties.type), ExtensionState = tostring(properties.provisioningState)\r\n| summarize SqlExtensionInstalled = countif(ExtensionType == \"WindowsAgent.SqlServer\" and ExtensionState == \"Succeeded\"), AMAExtensionInstalled = countif(ExtensionType == \"AzureMonitorWindowsAgent\" and ExtensionState == \"Succeeded\") by ArcServerResourceId)\r\non $left.id == $right.ArcServerResourceId\r\n| join kind=leftouter (resources\r\n| where type =~ \"microsoft.azurearcdata/sqlserverinstances\"\r\n| project ArcServerId = tolower(tostring(properties.containerResourceId)), SqlServerId = id, InstanceName = properties.instanceName, Version = properties.version\r\n| summarize ArcSqlServerInstances = make_list(split(SqlServerId, \"/\")[8]) by ArcServerId)\r\non $left.id == $right.ArcServerId\r\n| project ArcServer = id, SqlExtensionInstalled = (SqlExtensionInstalled==1), AMAExtensionInstalled = (AMAExtensionInstalled == 1), ArcSqlServerInstances\r\n",
+        "size": 0,
+        "queryType": 1,
+        "resourceType": "microsoft.resourcegraph/resources",
+        "crossComponentResources": [
+          "{Subscription}"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "SqlExtensionInstalled",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "icons",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "0",
+                    "representation": "Important",
+                    "text": ""
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "success",
+                    "text": ""
+                  }
+                ]
+              }
+            },
+            {
+              "columnMatch": "AMAExtensionInstalled",
+              "formatter": 18,
+              "formatOptions": {
+                "thresholdsOptions": "icons",
+                "thresholdsGrid": [
+                  {
+                    "operator": "==",
+                    "thresholdValue": "0",
+                    "representation": "2",
+                    "text": ""
+                  },
+                  {
+                    "operator": "Default",
+                    "thresholdValue": null,
+                    "representation": "success",
+                    "text": ""
+                  }
+                ]
+              }
+            }
+          ],
+          "rowLimit": 500,
+          "filter": true
+        }
+      },
+      "name": "query - 0"
+    }
+  ],
+  "fallbackResourceIds": [
+    "/subscriptions/59b301d0-77eb-4a76-aba5-53cb5731c342/resourcegroups/rg-sentinel/providers/microsoft.operationalinsights/workspaces/laws-trsentinel"
+  ],
+  "fromTemplateId": "sentinel-UserWorkbook",
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

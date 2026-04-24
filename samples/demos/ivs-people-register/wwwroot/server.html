@@ -3,16 +3,16 @@
 <html>
 <head>
 	<title>People Register</title>
-  
+
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="shortcut icon" type="image/ico" href="media/images/favicon.ico">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
- 
-    <!--<link href="media/css/jquery-ui/jquery-ui.css" rel="stylesheet" />-->  
+
+    <!--<link href="media/css/jquery-ui/jquery-ui.css" rel="stylesheet" />-->
     <link href="media/css/Bootstrap.css" rel="stylesheet" />
     <link href="media/css/dataTables.bootstrap.css" rel="stylesheet" />
     <link href="media/css/demo.css" rel="stylesheet" />
-    
+
     <script src="media/js/lib/jquery.js"></script>
     <script src="media/js/lib/Bootstrap.js"></script>
     <script src="media/js/lib/jquery.dataTables.js"></script>
@@ -28,8 +28,8 @@ $(document).ready(function() {
         var title = $(this).text();
         $(this).html('<input type="text" placeholder="Search by ' + title + '" />');
     } );
- 
- 
+
+
  	var table = $('#example').DataTable({
         "serverSide": true,
         "processing": true,
@@ -53,7 +53,7 @@ $(document).ready(function() {
     // Apply the search
     table.columns().every( function () {
         var that = this;
- 
+
         $( 'input', this.footer() ).on( 'keyup change', function () {
             if ( that.search() !== this.value ) {
                 that
@@ -99,7 +99,7 @@ $(document).ready(function() {
       <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead><th>Name</th><th>Surname</th><th>Address</th><th>Town</th></thead>
         <tbody>
-        
+
         </tbody>
         <tfoot><th>name</th><th>surname</th><th>address</th><th>town</th></tfoot>
       </table>

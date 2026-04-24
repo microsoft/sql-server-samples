@@ -15,9 +15,9 @@ go
 
 CREATE PROCEDURE [dbo].[<ssb-proc-name, sysname, test-proc>]
    AS declare @message_body varbinary(MAX)
-   
+
    declare @message_type int
-   declare @dialog uniqueidentifier 
+   declare @dialog uniqueidentifier
 
 
 
@@ -40,7 +40,7 @@ begin
 		BEGIN
 			Rollback Transaction
 			BREAK
-		END 
+		END
 
 -- Check for the End Dialog message.
 	If (@message_type <> 2) -- End dialog message
@@ -51,7 +51,7 @@ begin
 			(@message_body);  -- the message contents (a varbinary(MAX) blob
 	END
 
---  Commit the transaction.  At any point before this, we could roll 
+--  Commit the transaction.  At any point before this, we could roll
 --  back - the received message would be back on the queue and the response
 --  wouldn't be sent.
 	commit transaction
@@ -61,9 +61,9 @@ go
 
 -- Create the required meta-data
 
-CREATE MESSAGE TYPE <Request-message-type, sysname, test_msg_req> VALIDATION = NONE 
+CREATE MESSAGE TYPE <Request-message-type, sysname, test_msg_req> VALIDATION = NONE
 
-CREATE MESSAGE TYPE <Response-message-type, sysname, test_msg_resp> VALIDATION = NONE 
+CREATE MESSAGE TYPE <Response-message-type, sysname, test_msg_resp> VALIDATION = NONE
 
 CREATE CONTRACT <contract-name, sysname, test_contract>
   ( <Request-message-type, sysname, test_msg_req> SENT BY INITIATOR,
@@ -71,9 +71,9 @@ CREATE CONTRACT <contract-name, sysname, test_contract>
 
 CREATE QUEUE <queue-name, sysname, test_queue>
 
-CREATE SERVICE [<service-name, sysname, test_service>] 
+CREATE SERVICE [<service-name, sysname, test_service>]
 ON QUEUE <queue-name, sysname, test_queue>
 
-ALTER SERVICE [<service-name, sysname, test_service>] 
+ALTER SERVICE [<service-name, sysname, test_service>]
  ( ADD CONTRACT <contract-name, sysname, test_contract> )
 

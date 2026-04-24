@@ -46,8 +46,12 @@
             "type": "Microsoft.Network/publicIPAddresses",
             "name": "[variables('gatewayPublicIpAddressName')]",
             "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard"
+            },
             "properties": {
-                "publicIPAllocationMethod": "Dynamic"
+                "publicIPAllocationMethod": "Static",
+                "publicIPAddressVersion": "IPv4"
             }
         },
         {
@@ -74,8 +78,8 @@
                     }
                 ],
                 "sku": {
-                    "name": "Standard",
-                    "tier": "Standard"
+                    "name": "VpnGw1AZ",
+                    "tier": "VpnGw1AZ"
                 },
                 "gatewayType": "Vpn",
                 "vpnType": "RouteBased",
@@ -89,7 +93,7 @@
                     "vpnClientProtocols": [
                         "IkeV2",
                         "SSTP"
-                    ],                    
+                    ],
                     "vpnClientRootCertificates": [
                         {
                             "name": "[variables('clientRootCertName')]",

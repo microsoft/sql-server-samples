@@ -27,7 +27,7 @@ AS BEGIN
 				TransactionAmount decimal(18,2),
 				OutstandingBalance decimal(18,2),
 				FinalizationDate date) as json
-		WHERE 
+		WHERE
 			Purchasing.SupplierTransactions.SupplierTransactionID = @SupplierTransactionID
 
 END

@@ -4,7 +4,7 @@ go
 ----------------------------------------------------------------------------
 -- Querying heterogeneous edges
 ----------------------------------------------------------------------------
-CREATE VIEW OperatesIn  AS 
+CREATE VIEW OperatesIn  AS
 SELECT *, 'located' AS relation FROM locatedIn
 UNION ALL
 SELECT *, 'delivery' FROM deliveryIn
@@ -22,13 +22,13 @@ SELECT SupplierID, SupplierName, PhoneNumber, relation
 ----------------------------------------------------------------------------
 
 CREATE VIEW Customer AS
-SELECT SupplierID AS ID, 
-  SupplierName AS NAME, 
+SELECT SupplierID AS ID,
+  SupplierName AS NAME,
   SupplierCategory AS CATEGORY
   FROM Supplier
 UNION ALL
-SELECT CustomerID, 
-  CustomerName, 
+SELECT CustomerID,
+  CustomerName,
   CustomerCategory
   FROM Customers
 GO
@@ -40,10 +40,10 @@ SELECT Customer.ID, Customer.NAME, Customer.CATEGORY
   locatedIn
  WHERE MATCH(Customer-(locatedIn)->City)
              AND City.CityName = 'San Francisco'
- 
+
  SELECT Customer.ID, Customer.NAME, Customer.CATEGORY
-  FROM Customer, 
-  City, 
+  FROM Customer,
+  City,
   OperatesIn
  WHERE MATCH(Customer-(OperatesIn)->City)
    AND City.CityName = 'San Francisco'
@@ -55,8 +55,8 @@ SELECT Customer.ID, Customer.NAME, Customer.CATEGORY
 
 
 CREATE VIEW Novelty_Supplier AS
-SELECT SupplierID, 
-	SupplierName , 
+SELECT SupplierID,
+	SupplierName ,
 	SupplierCategory ,
 	ValidTo
 	FROM Supplier
@@ -64,25 +64,25 @@ SELECT SupplierID,
 GO
 
 CREATE VIEW Novelty_Customer AS
-	SELECT CustomerID, 
-		CustomerName, 
+	SELECT CustomerID,
+		CustomerName,
 		CustomerCategory,
 		ValidTo
 	  FROM Customers
-	 WHERE CustomerCategory LIKE '%Novelty%' OR CustomerCategory LIKE '%Gift%' 
+	 WHERE CustomerCategory LIKE '%Novelty%' OR CustomerCategory LIKE '%Gift%'
 GO
 
 SELECT Name, ID, Category
-  FROM 
-(SELECT SupplierID AS ID, SupplierName AS Name, 
- SupplierCategory AS   Category, ValidTo 
+  FROM
+(SELECT SupplierID AS ID, SupplierName AS Name,
+ SupplierCategory AS   Category, ValidTo
    FROM Novelty_Supplier WHERE ValidTo > getdate()
 UNION ALL
- SELECT CustomerID, CustomerName, CustomerCategory, ValidTo 
-   FROM Novelty_Customer WHERE ValidTo > getdate()) AS NoveltyCust, 
-StockItems, 
-bought, 
-OperatesIn, 
+ SELECT CustomerID, CustomerName, CustomerCategory, ValidTo
+   FROM Novelty_Customer WHERE ValidTo > getdate()) AS NoveltyCust,
+StockItems,
+bought,
+OperatesIn,
 City
  WHERE MATCH(City<-(OperatesIn)-NoveltyCust-(bought)->Stockitems)
    AND StockItemName = 'White chocolate snow balls 250g'

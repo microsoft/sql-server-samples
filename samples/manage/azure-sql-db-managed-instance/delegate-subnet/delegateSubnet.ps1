@@ -12,12 +12,12 @@ $NScollections = "System.Collections.Generic"
 function VerifyPSVersion {
     Write-Host "Verifying PowerShell version."
     if ($PSVersionTable.PSEdition -eq "Desktop") {
-        if (($PSVersionTable.PSVersion.Major -ge 6) -or 
+        if (($PSVersionTable.PSVersion.Major -ge 6) -or
         (($PSVersionTable.PSVersion.Major -eq 5) -and ($PSVersionTable.PSVersion.Minor -ge 1))) {
             Write-Host "PowerShell version verified." -ForegroundColor Green
         }
         else {
-            Write-Host "You need to install PowerShell version 5.1 or heigher." -ForegroundColor Red
+            Write-Host "You need to install PowerShell version 5.1 or higher." -ForegroundColor Red
             Break;
         }
     }
@@ -26,9 +26,9 @@ function VerifyPSVersion {
             Write-Host "PowerShell version verified." -ForegroundColor Green
         }
         else {
-            Write-Host "You need to install PowerShell version 6.0 or heigher." -ForegroundColor Red
+            Write-Host "You need to install PowerShell version 6.0 or higher." -ForegroundColor Red
             Break;
-        }        
+        }
     }
 }
 
@@ -45,7 +45,7 @@ function EnsureAzModule {
             Write-Host "Module Az installed." -ForegroundColor Green
         }
     } else {
-        Write-Host "Module Az imported." -ForegroundColor Green        
+        Write-Host "Module Az imported." -ForegroundColor Green
     }
 }
 
@@ -158,7 +158,7 @@ function VerifyDelegation {
         $subnet
     )
 
-    $result = @{ 
+    $result = @{
         isDelegatedToManagedInstance = $false;
         isDelegated = $false;
         success = $false;
@@ -186,7 +186,7 @@ function LoadNetworkSecurityGroup {
         $null -ne $subnet.NetworkSecurityGroup
       )
     {
-        $nsgSegments = ($subnet.NetworkSecurityGroup.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)        
+        $nsgSegments = ($subnet.NetworkSecurityGroup.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)
         $nsgName = $nsgSegments[-1].Trim()
         $nsgResourceGroup = $nsgSegments[3].Trim()
         $networkSecurityGroup = Get-AzNetworkSecurityGroup -ResourceGroupName $nsgResourceGroup -Name $nsgName
@@ -203,7 +203,7 @@ function HasNSG {
     param (
         $subnet
     )
-    
+
     $nsg = LoadNetworkSecurityGroup $subnet
     return $nsg -ne $null
 }
@@ -217,7 +217,7 @@ function LoadRouteTable {
             $null -ne $subnet.RouteTable
           )
         {
-            $rtSegments = ($subnet.RouteTable.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)        
+            $rtSegments = ($subnet.RouteTable.Id).Split("/", [System.StringSplitOptions]::RemoveEmptyEntries)
             $rtName = $rtSegments[-1].Trim()
             $rtResourceGroup = $rtSegments[3].Trim()
             $routeTable = Get-AzRouteTable -ResourceGroupName $rtResourceGroup -Name $rtName
@@ -231,7 +231,7 @@ function HasRouteTable {
     param (
         $subnet
     )
-    
+
     $routeTable = LoadRouteTable $subnet
     return $routeTable -ne $null
 }
@@ -242,7 +242,7 @@ function CreateNSG
         $virtualNetwork,
         $subnet
     )
-    
+
     Write-Host "Creating Network security group."
     $networkSecurityGroupName = "nsgManagedInstance" + (Get-Random -Maximum 1000)
 
@@ -367,11 +367,11 @@ If($delegationVerificationResult['success'])
     $hasNsg = HasNSG $subnet
     $hasRouteTable = HasRouteTable $subnet
     $isValid = $delegationVerificationResult['isDelegatedToManagedInstance'] -and $hasNsg -and $hasRouteTable
-    
+
     If($isValid -ne $true)
     {
         Write-Host
-        Write-Host("----------  To delegate the virtual network subnet for Managed Instance this script will: --------------- ")  -ForegroundColor Yellow    
+        Write-Host("----------  To delegate the virtual network subnet for Managed Instance this script will: --------------- ")  -ForegroundColor Yellow
         Write-Host
 
         If(-not $hasNsg)
@@ -390,55 +390,55 @@ If($delegationVerificationResult['success'])
         }
 
         Write-Host
-        Write-Host("-------------------------------------------------------------------------------------------------------- ")  -ForegroundColor Yellow    
+        Write-Host("-------------------------------------------------------------------------------------------------------- ")  -ForegroundColor Yellow
         Write-Host
-    
-    
+
+
         $applyChanges = $force
-    
+
         If($applyChanges -ne $true)
         {
             $reply = Read-Host -Prompt "Do you want to make these changes? [y/n]"
-            $applyChanges = $reply -match "[yY]" 
+            $applyChanges = $reply -match "[yY]"
             Write-Host
         }
-    
-        If ($applyChanges) 
-        {           
+
+        If ($applyChanges)
+        {
             If(-not $hasNsg)
             {
                 CreateNSG $virtualNetwork $subnet
-            }  
-    
+            }
+
             If(-not $hasRouteTable)
             {
                 CreateRouteTable $virtualNetwork $subnet
-            }   
+            }
 
             If(-not $delegationVerificationResult['isDelegatedToManagedInstance'])
             {
                 DelegateSubnet $subnet
             }
-    
+
             SetVirtualNetwork $virtualNetwork
-    
+
             Write-Host
-            Write-Host "Subnet delegated to the Managed Instance." -ForegroundColor Green        
+            Write-Host "Subnet delegated to the Managed Instance." -ForegroundColor Green
             Write-Host "https://portal.azure.com/#create/Microsoft.SQLManagedInstance"
         }
         Else
         {
             Write-Host
             Write-Host "Subnet delegation canceled." -ForegroundColor Yellow
-        }    
+        }
     }
     Else
     {
-            Write-Host "Subnet is already delegated to the Managed Instance." -ForegroundColor Green        
+            Write-Host "Subnet is already delegated to the Managed Instance." -ForegroundColor Green
             Write-Host "https://portal.azure.com/#create/Microsoft.SQLManagedInstance"
-    } 
+    }
 }
-Else 
+Else
 {
     Write-Host
     Write-Host "Subnet is already delegated to other service." -ForegroundColor Red

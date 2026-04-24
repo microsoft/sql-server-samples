@@ -3,14 +3,14 @@
 --
 -- Last updated: 2016-07-29
 --
--- 
+--
 --  Copyright (C) Microsoft Corporation.  All rights reserved.
--- 
+--
 -- This source code is intended only as a supplement to Microsoft
--- Development Tools and/or on-line documentation.  
--- 
--- THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF 
--- ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO 
+-- Development Tools and/or on-line documentation.
+--
+-- THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF
+-- ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
 -- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 -- PARTICULAR PURPOSE.
 
@@ -28,16 +28,16 @@ GO
 
 ALTER DATABASE CURRENT SET MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT = ON
 GO
-ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 130 
+ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 130
 GO
 
 /*************************** Create Tables **********************************/
 
 -- first drop all objects that have a schema-bound dependency on the table
 
-DROP PROCEDURE IF EXISTS [SalesLT].usp_InsertSalesOrder_inmem 
+DROP PROCEDURE IF EXISTS [SalesLT].usp_InsertSalesOrder_inmem
 GO
-DROP TABLE IF EXISTS [SalesLT].[SalesOrderHeader_inmem] 
+DROP TABLE IF EXISTS [SalesLT].[SalesOrderHeader_inmem]
 GO
 CREATE TABLE [SalesLT].[SalesOrderHeader_inmem](
 	[SalesOrderID] int IDENTITY NOT NULL PRIMARY KEY NONCLUSTERED HASH WITH (BUCKET_COUNT=100000),
@@ -46,7 +46,7 @@ CREATE TABLE [SalesLT].[SalesOrderHeader_inmem](
 	[DueDate] [datetime2] NOT NULL,
 	[ShipDate] [datetime2] NULL,
 	[Status] [tinyint] NOT NULL CONSTRAINT [IMDF_SalesOrderHeader_Status]  DEFAULT ((1)),
-	[OnlineOrderFlag] bit NOT NULL CONSTRAINT [IMDF_SalesOrderHeader_OnlineOrderFlag]  DEFAULT ((1)), 
+	[OnlineOrderFlag] bit NOT NULL CONSTRAINT [IMDF_SalesOrderHeader_OnlineOrderFlag]  DEFAULT ((1)),
 	[PurchaseOrderNumber] nvarchar(25) NULL,
 	[AccountNumber] nvarchar(15) NULL,
 	[CustomerID] [int] NOT NULL ,
@@ -63,7 +63,7 @@ CREATE TABLE [SalesLT].[SalesOrderHeader_inmem](
 ) WITH (MEMORY_OPTIMIZED=ON)
 GO
 
-DROP TABLE IF EXISTS [SalesLT].[SalesOrderDetail_inmem] 
+DROP TABLE IF EXISTS [SalesLT].[SalesOrderDetail_inmem]
 GO
 CREATE TABLE [SalesLT].[SalesOrderDetail_inmem](
 	[SalesOrderID] int NOT NULL INDEX IX_SalesOrderID HASH WITH (BUCKET_COUNT=100000),
@@ -74,7 +74,7 @@ CREATE TABLE [SalesLT].[SalesOrderDetail_inmem](
 	[UnitPriceDiscount] [money] NOT NULL CONSTRAINT [IMDF_SalesOrderDetail_UnitPriceDiscount]  DEFAULT ((0.0)),
 	[ModifiedDate] [datetime2] NOT NULL ,
 
-	CONSTRAINT [imPK_SalesOrderDetail_SalesOrderID_SalesOrderDetailID] PRIMARY KEY NONCLUSTERED HASH 
+	CONSTRAINT [imPK_SalesOrderDetail_SalesOrderID_SalesOrderDetailID] PRIMARY KEY NONCLUSTERED HASH
 	(	[SalesOrderID],
 		[SalesOrderDetailID]
 	)WITH (BUCKET_COUNT=1000000)
@@ -83,7 +83,7 @@ GO
 
 
 -- type used for TVPs when creating new sales orders
-DROP TYPE IF EXISTS [SalesLT].[SalesOrderDetailType_inmem] 
+DROP TYPE IF EXISTS [SalesLT].[SalesOrderDetailType_inmem]
 GO
 CREATE TYPE [SalesLT].[SalesOrderDetailType_inmem] AS TABLE(
 	[OrderQty] [smallint] NOT NULL,
@@ -93,7 +93,7 @@ GO
 
 
 
-DROP TABLE IF EXISTS [SalesLT].[Product_inmem] 
+DROP TABLE IF EXISTS [SalesLT].[Product_inmem]
 GO
 CREATE TABLE [SalesLT].[Product_inmem](
 	[ProductID] [int] IDENTITY NOT NULL,
@@ -111,11 +111,11 @@ CREATE TABLE [SalesLT].[Product_inmem](
 	[ModifiedDate] [datetime2] NOT NULL CONSTRAINT [IMDF_Product_ModifiedDate]  DEFAULT (SYSDATETIME()),
 
 	CONSTRAINT [IMPK_Product_ProductID] PRIMARY KEY NONCLUSTERED
-	( [ProductID] ) 
+	( [ProductID] )
 )	WITH (MEMORY_OPTIMIZED=ON)
 GO
 
-DROP TABLE IF EXISTS [SalesLT].[SalesOrderHeader_ondisk] 
+DROP TABLE IF EXISTS [SalesLT].[SalesOrderHeader_ondisk]
 GO
 CREATE TABLE [SalesLT].[SalesOrderHeader_ondisk](
 	[SalesOrderID] int IDENTITY NOT NULL PRIMARY KEY,
@@ -124,9 +124,9 @@ CREATE TABLE [SalesLT].[SalesOrderHeader_ondisk](
 	[DueDate] [datetime2] NOT NULL,
 	[ShipDate] [datetime2] NULL,
 	[Status] [tinyint] NOT NULL CONSTRAINT [ODDF_SalesOrderHeader_Status]  DEFAULT ((1)),
-	[OnlineOrderFlag] bit NOT NULL CONSTRAINT [ODDF_SalesOrderHeader_OnlineOrderFlag]  DEFAULT ((1)),  
-	[PurchaseOrderNumber] nvarchar(25) NULL, 
-	[AccountNumber] nvarchar(15) NULL, 
+	[OnlineOrderFlag] bit NOT NULL CONSTRAINT [ODDF_SalesOrderHeader_OnlineOrderFlag]  DEFAULT ((1)),
+	[PurchaseOrderNumber] nvarchar(25) NULL,
+	[AccountNumber] nvarchar(15) NULL,
 	[CustomerID] [int] NOT NULL ,
 	[BillToAddressID] [int] NOT NULL,
 	[ShipToAddressID] [int] NOT NULL,
@@ -139,10 +139,10 @@ CREATE TABLE [SalesLT].[SalesOrderHeader_ondisk](
 
 	INDEX IX_CustomerID (CustomerID) ,
 	INDEX IX_OrderDate (OrderDate ASC)
-) 
+)
 GO
 
-DROP TABLE IF EXISTS [SalesLT].[SalesOrderDetail_ondisk] 
+DROP TABLE IF EXISTS [SalesLT].[SalesOrderDetail_ondisk]
 GO
 CREATE TABLE [SalesLT].[SalesOrderDetail_ondisk](
 	[SalesOrderID] int NOT NULL,
@@ -153,15 +153,15 @@ CREATE TABLE [SalesLT].[SalesOrderDetail_ondisk](
 	[UnitPriceDiscount] [money] NOT NULL CONSTRAINT [ODDF_SalesOrderDetail_UnitPriceDiscount]  DEFAULT ((0.0)),
 	[ModifiedDate] [datetime2] NOT NULL ,
 
-	CONSTRAINT [ODPK_SalesOrderDetail_SalesOrderID_SalesOrderDetailID] PRIMARY KEY  
+	CONSTRAINT [ODPK_SalesOrderDetail_SalesOrderID_SalesOrderDetailID] PRIMARY KEY
 	(	[SalesOrderID],	[SalesOrderDetailID])
-) 
+)
 GO
 
 
-DROP PROCEDURE IF EXISTS SalesLT.usp_InsertSalesOrder_ondisk 
+DROP PROCEDURE IF EXISTS SalesLT.usp_InsertSalesOrder_ondisk
 GO
-DROP TYPE IF EXISTS [SalesLT].[SalesOrderDetailType_ondisk] 
+DROP TYPE IF EXISTS [SalesLT].[SalesOrderDetailType_ondisk]
 GO
 CREATE TYPE [SalesLT].[SalesOrderDetailType_ondisk] AS TABLE(
 	[OrderQty] [smallint] NOT NULL,
@@ -172,7 +172,7 @@ GO
 
 
 
-DROP TABLE IF EXISTS SalesLT.[Product_ondisk] 
+DROP TABLE IF EXISTS SalesLT.[Product_ondisk]
 GO
 CREATE TABLE [SalesLT].[Product_ondisk](
 	[ProductID] [int] IDENTITY NOT NULL,
@@ -188,7 +188,7 @@ CREATE TABLE [SalesLT].[Product_ondisk](
 	[SellEndDate] [datetime2] NULL,
 	[DiscontinuedDate] [datetime2] NULL,
 	[ModifiedDate] [datetime2] NOT NULL CONSTRAINT [ODDF_Product_ModifiedDate]  DEFAULT (SYSDATETIME()),
-	CONSTRAINT [ODPK_Product_ProductID] PRIMARY KEY CLUSTERED ([ProductID]) 
+	CONSTRAINT [ODPK_Product_ProductID] PRIMARY KEY CLUSTERED ([ProductID])
 )
 GO
 
@@ -371,7 +371,7 @@ GO
 
 /*************************** Create stored procedures **********************************/
 
-DROP PROCEDURE IF EXISTS SalesLT.usp_InsertSalesOrder_inmem 
+DROP PROCEDURE IF EXISTS SalesLT.usp_InsertSalesOrder_inmem
 GO
 CREATE PROCEDURE SalesLT.usp_InsertSalesOrder_inmem
 	@SalesOrderID int OUTPUT,
@@ -397,7 +397,7 @@ BEGIN ATOMIC WITH
 	DECLARE @SubTotal money NOT NULL = 0
 
 	SELECT @SubTotal = ISNULL(SUM(p.ListPrice),0)
-	FROM @SalesOrderDetails od 
+	FROM @SalesOrderDetails od
 		JOIN SalesLT.Product_inmem p on od.ProductID=p.ProductID
 
 	INSERT INTO SalesLT.SalesOrderHeader_inmem
@@ -442,7 +442,7 @@ BEGIN ATOMIC WITH
 		UnitPriceDiscount,
 		ModifiedDate
 	)
-    SELECT 
+    SELECT
 		@SalesOrderID,
 		od.OrderQty,
 		od.ProductID,
@@ -457,7 +457,7 @@ GO
 
 
 
-DROP PROCEDURE IF EXISTS SalesLT.usp_InsertSalesOrder_ondisk 
+DROP PROCEDURE IF EXISTS SalesLT.usp_InsertSalesOrder_ondisk
 GO
 CREATE PROCEDURE SalesLT.usp_InsertSalesOrder_ondisk
 	@SalesOrderID int OUTPUT,
@@ -473,7 +473,7 @@ CREATE PROCEDURE SalesLT.usp_InsertSalesOrder_ondisk
 	@CreditCardApprovalCode [varchar](15) = NULL,
 	@Comment nvarchar(128) = NULL
 AS
-BEGIN 
+BEGIN
 	BEGIN TRAN
 	
 		DECLARE @OrderDate datetime2 = sysdatetime()
@@ -481,7 +481,7 @@ BEGIN
 		DECLARE @SubTotal money = 0
 
 		SELECT @SubTotal = ISNULL(SUM(p.ListPrice),0)
-		FROM @SalesOrderDetails od 
+		FROM @SalesOrderDetails od
 			JOIN SalesLT.Product_ondisk p on od.ProductID=p.ProductID
 
 		INSERT INTO SalesLT.SalesOrderHeader_ondisk
@@ -526,7 +526,7 @@ BEGIN
 			UnitPriceDiscount,
 			ModifiedDate
 		)
-		SELECT 
+		SELECT
 			@SalesOrderID,
 			od.OrderQty,
 			od.ProductID,
@@ -544,22 +544,22 @@ GO
 
 /*************************** Demo harness **********************************/
 
-DROP PROCEDURE IF EXISTS Demo.usp_DemoInsertSalesOrders 
+DROP PROCEDURE IF EXISTS Demo.usp_DemoInsertSalesOrders
 go
-DROP PROCEDURE IF EXISTS Demo.usp_DemoInitSeed 
+DROP PROCEDURE IF EXISTS Demo.usp_DemoInitSeed
 GO
-DROP TABLE IF EXISTS Demo.DemoSalesOrderDetailSeed 
+DROP TABLE IF EXISTS Demo.DemoSalesOrderDetailSeed
 GO
-DROP TABLE IF EXISTS Demo.DemoSalesOrderHeaderSeed 
+DROP TABLE IF EXISTS Demo.DemoSalesOrderHeaderSeed
 GO
-DROP PROCEDURE IF EXISTS Demo.usp_DemoReset 
+DROP PROCEDURE IF EXISTS Demo.usp_DemoReset
 GO
 DROP SCHEMA IF EXISTS Demo
 GO
 CREATE SCHEMA Demo
 GO
 
-DROP TABLE IF EXISTS Demo.DemoSalesOrderDetailSeed 
+DROP TABLE IF EXISTS Demo.DemoSalesOrderDetailSeed
 GO
 CREATE TABLE Demo.DemoSalesOrderDetailSeed
 (
@@ -570,7 +570,7 @@ CREATE TABLE Demo.DemoSalesOrderDetailSeed
 ) WITH (MEMORY_OPTIMIZED=ON)
 GO
 
-DROP TABLE IF EXISTS Demo.DemoSalesOrderHeaderSeed 
+DROP TABLE IF EXISTS Demo.DemoSalesOrderHeaderSeed
 GO
 CREATE TABLE Demo.DemoSalesOrderHeaderSeed
 (
@@ -582,23 +582,23 @@ CREATE TABLE Demo.DemoSalesOrderHeaderSeed
 ) WITH (MEMORY_OPTIMIZED=ON)
 GO
 
-DROP PROCEDURE IF EXISTS Demo.usp_DemoInitSeed 
+DROP PROCEDURE IF EXISTS Demo.usp_DemoInitSeed
 GO
 CREATE PROCEDURE Demo.usp_DemoInitSeed @items_per_order int = 5
 AS
 BEGIN
-	DECLARE @ProductID int, 
+	DECLARE @ProductID int,
 		@i int = 1
 	DECLARE @seed_order_count int = (SELECT COUNT(*)/@items_per_order FROM SalesLT.Product_inmem)
 
-	DECLARE seed_cursor CURSOR FOR 
-		SELECT 
+	DECLARE seed_cursor CURSOR FOR
+		SELECT
 			ProductID
 		FROM SalesLT.Product_inmem WITH (SNAPSHOT)
 
 	OPEN seed_cursor
 
-	FETCH NEXT FROM seed_cursor 
+	FETCH NEXT FROM seed_cursor
 	INTO @ProductID
 
 	BEGIN TRAN
@@ -623,14 +623,14 @@ BEGIN
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 			INSERT Demo.DemoSalesOrderDetailSeed
-			SELECT 
+			SELECT
 				@i % 6 + 1,
 				@ProductID,
 				@i % (@seed_order_count+1)
 
 			SET @i += 1
 
-			FETCH NEXT FROM seed_cursor 
+			FETCH NEXT FROM seed_cursor
 			INTO @ProductID
 		END
 
@@ -646,7 +646,7 @@ END
 GO
 
 
-DROP PROCEDURE IF EXISTS Demo.usp_DemoReset 
+DROP PROCEDURE IF EXISTS Demo.usp_DemoReset
 GO
 CREATE PROCEDURE Demo.usp_DemoReset
 AS

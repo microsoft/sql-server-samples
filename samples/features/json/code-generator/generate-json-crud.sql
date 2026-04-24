@@ -58,7 +58,7 @@ CREATE FUNCTION
 codegen.GetTableColumns(@SchemaName sysname, @TableName sysname, @JsonColumns nvarchar(max), @IgnoredColumns nvarchar(max))
 RETURNS TABLE
 AS RETURN (
-	select 
+	select
 		col.name as ColumnName,
 		col.column_id ColumnId,
 		typ.name as ColumnType,
@@ -76,8 +76,8 @@ AS RETURN (
 			else ''
 		end as StringSize,
 		-- if column is not nullable, add Strict mode in JSON
-		case 
-			when col.is_nullable = 1 then '$.' else 'strict $.' 
+		case
+			when col.is_nullable = 1 then '$.' else 'strict $.'
 		end Mode,
 		CHARINDEX(col.name, @JsonColumns,0) as IsJson,
 		i.is_primary_key IsPK,
@@ -89,13 +89,13 @@ AS RETURN (
 			and (sm.text IS NULL OR sm.text NOT LIKE '(NEXT VALUE FOR%')
 			and LOWER(typ.name) NOT IN ('text', 'ntext', 'sql_variant', 'image','hierarchyid','geometry','geography'),
 			1,0) as IsDataColumn
-from sys.columns col 
+from sys.columns col
 		join sys.types typ
 			on col.system_type_id = typ.system_type_id AND col.user_type_id = typ.user_type_id
-			LEFT join sys.index_columns ic  
+			LEFT join sys.index_columns ic
 				ON ic.object_id = col.object_id AND col.column_id = ic.column_id
 				LEFT join sys.indexes i
-					ON i.object_id = ic.object_id AND i.index_id = ic.index_id 
+					ON i.object_id = ic.object_id AND i.index_id = ic.index_id
 				LEFT JOIN sys.syscomments SM ON col.default_object_id = SM.id
 where col.object_id = object_id(codegen.QNAME(@SchemaName) + '.' + codegen.QNAME(@TableName))	
 and col.name NOT IN (SELECT value COLLATE Latin1_General_CI_AS FROM STRING_SPLIT(@IgnoredColumns, ','))
@@ -137,14 +137,14 @@ DECLARE @JsonSchema NVARCHAR(MAX) = '';
 with columns as (
 select ColumnId, ColumnName, ColumnType, StringSize, IsJson, Mode
 from codegen.GetTableDefinition(@SchemaName, @TableName, @JsonColumns, @IgnoredColumns)
-union all 
+union all
 select ColumnId, ColumnName, ColumnType, StringSize, 0 as IsJson, 'strict $.' as Mode
 from codegen.GetPkColumns(@SchemaName, @TableName)
 where @WithPk = 1
 )
-SELECT @JsonSchema = 
+SELECT @JsonSchema =
 @JsonSchema + '
-					' + codegen.QNAME(ColumnName) + ' ' + ColumnType + StringSize + 
+					' + codegen.QNAME(ColumnName) + ' ' + ColumnType + StringSize +
 			 IIF(ISNULL(SESSION_CONTEXT(N'CODEGEN:EXPLICIT.JSON.PATH'),'no')='yes',
 				(' N''' + Mode + codegen.JSON_ESCAPE(ColumnName) +'''' +IIF(IsJson>0, ' AS JSON', '') + ',' ),
 				IIF(codegen.JSON_ESCAPE(ColumnName) <> codegen.QNAME(ColumnName) OR CHARINDEX('strict', Mode)>0,
@@ -169,7 +169,7 @@ declare @JsonSchema nvarchar(max) = codegen.GetOpenJsonSchema (@SchemaName, @Tab
 
 -- Generate list of column names ordered by columnid
 declare @TableSchema nvarchar(max) = '';
-select @TableSchema = @TableSchema + codegen.QNAME(ColumnName) + ',' 
+select @TableSchema = @TableSchema + codegen.QNAME(ColumnName) + ','
 from codegen.GetTableDefinition(@SchemaName, @TableName, @JsonColumns, @IgnoredColumns)
 order by ColumnId
 
@@ -186,7 +186,7 @@ SET @OutputPks = SUBSTRING(@OutputPks, 0, LEN(@OutputPks)) --> remove last comma
 
 
 
-declare @Result nvarchar(max) = 
+declare @Result nvarchar(max) =
 N'GO
 DROP PROCEDURE IF EXISTS ' + codegen.QNAME( @ProcSchemaName) + '.' + codegen.QNAME('Insert' + @TableName + 'FromJson') + '
 GO
@@ -194,14 +194,14 @@ CREATE PROCEDURE ' + codegen.QNAME( @ProcSchemaName) + '.' + codegen.QNAME('Inse
 WITH EXECUTE AS OWNER
 AS BEGIN
 ' +
-	codegen.GenerateProcedureHead(@TableName, @JsonParam) 
+	codegen.GenerateProcedureHead(@TableName, @JsonParam)
 +
 '	INSERT INTO ' + codegen.QNAME( @SchemaName) + '.' + codegen.QNAME(@TableName) + '(' + @TableSchema + ')
 			OUTPUT ' + @OutputPks + '
 			SELECT ' + @TableSchema + '
 			FROM OPENJSON(' + @JsonParam + ')
 				WITH (' + @JsonSchema + ')' +
-	codegen.GenerateProcedureTail(@TableName) 
+	codegen.GenerateProcedureTail(@TableName)
 +
 '
 END'
@@ -241,21 +241,21 @@ order by ColumnId
 
 SET @RowFilter = SUBSTRING(@RowFilter, 0, LEN(@RowFilter)) --> remove last comma
 
-declare @Result nvarchar(max) = 
+declare @Result nvarchar(max) =
 N'GO
 DROP PROCEDURE IF EXISTS ' + codegen.QNAME( @ProcSchemaName) + '.' + codegen.QNAME('Update' + @TableName + 'FromJson') + '
 GO
 CREATE PROCEDURE ' + codegen.QNAME( @ProcSchemaName) + '.' + codegen.QNAME('Update' + @TableName + 'FromJson') +'(' + @JsonParam + ' NVARCHAR(MAX))
 WITH EXECUTE AS OWNER
 AS BEGIN' +
-	codegen.GenerateProcedureHead(@TableName, @JsonParam) 
+	codegen.GenerateProcedureHead(@TableName, @JsonParam)
 +
 '	UPDATE ' + codegen.QNAME( @SchemaName) + '.' + codegen.QNAME(@TableName) + ' SET' + @TableSchema + '
 			FROM OPENJSON(' + @JsonParam + ')
 				WITH (' + @JsonSchema + ') as json
 			WHERE ' + @RowFilter  + '
 ' +
-	codegen.GenerateProcedureTail(@TableName) 
+	codegen.GenerateProcedureTail(@TableName)
 +
 '
 END'
@@ -282,8 +282,8 @@ select ColumnId, ColumnName, ColumnType, StringSize, IsJson, Mode from codegen.G
 union all
 select ColumnId, ColumnName, ColumnType, StringSize, 0 as IsJson, 'strict $.' as Mode from codegen.GetPkColumns(@SchemaName, @TableName)
 )
-select @Columns = @Columns + codegen.QNAME(ColumnName) + ','-- + ColumnType + StringSize --+ 
-			-- ' N''' + Mode + '"' + STRING_ESCAPE(ColumnName, 'json') + '"''' +IIF(IsJson>0, ' AS JSON', '') + ',' 
+select @Columns = @Columns + codegen.QNAME(ColumnName) + ','-- + ColumnType + StringSize --+
+			-- ' N''' + Mode + '"' + STRING_ESCAPE(ColumnName, 'json') + '"''' +IIF(IsJson>0, ' AS JSON', '') + ','
 from all_columns
 order by ColumnId
 
@@ -306,7 +306,7 @@ order by ColumnId
 
 SET @RowFilter = SUBSTRING(@RowFilter, -3, LEN(@RowFilter)) --> remove last comma
 
-declare @Result nvarchar(max) = 
+declare @Result nvarchar(max) =
 N'GO
 DROP FUNCTION IF EXISTS ' + codegen.QNAME( @ProcSchemaName) + '.' + codegen.QNAME('Retrieve' + @TableName + 'AsJson') + '
 GO
@@ -340,7 +340,7 @@ select ColumnId, ColumnName, ColumnType, StringSize, IsJson, Mode from codegen.G
 union all
 select ColumnId, ColumnName, ColumnType, StringSize, 0 as IsJson, 'strict $.' as Mode from codegen.GetPkColumns(@SchemaName, @TableName)
 )
-select @Columns = @Columns + codegen.QNAME(ColumnName) + ',' 
+select @Columns = @Columns + codegen.QNAME(ColumnName) + ','
 from all_columns
 order by ColumnId
 
@@ -361,7 +361,7 @@ order by ColumnId
 
 SET @RowFilter = SUBSTRING(@RowFilter, -3, LEN(@RowFilter)) --> remove last comma
 
-declare @Result nvarchar(max) = 
+declare @Result nvarchar(max) =
 N'GO
 DROP PROCEDURE IF EXISTS ' + codegen.QNAME( @SchemaName) + '.' + codegen.QNAME('Delete' + @TableName) + '
 GO
@@ -422,7 +422,7 @@ declare @RowFilter nvarchar(max) = '';
 declare @PkColumns nvarchar(max) = '';
 declare @PkColumnsAndTypes nvarchar(max) = '';
 
-select 
+select
 @PkColumns = @PkColumns + 'INSERTED.' + codegen.QNAME(ColumnName) + ',',
 @PkColumnsAndTypes = @PkColumnsAndTypes + codegen.QNAME(ColumnName) + ' INT,',
 @RowFilter = @RowFilter + CHAR(10) + '		'+ codegen.QNAME( @SchemaName) + '.' + codegen.QNAME(@TableName) +'.' +  codegen.QNAME(ColumnName) + ' = json.' +  codegen.QNAME(ColumnName) + ','
@@ -433,7 +433,7 @@ SET @PkColumns = SUBSTRING(@PkColumns, 0, LEN(@PkColumns)) --> remove last comma
 SET @PkColumnsAndTypes = SUBSTRING(@PkColumnsAndTypes, 0, LEN(@PkColumnsAndTypes)) --> remove last comma
 SET @RowFilter = SUBSTRING(@RowFilter, 0, LEN(@RowFilter)) --> remove last comma
 
-declare @Result nvarchar(max) = 
+declare @Result nvarchar(max) =
 N'GO
 DROP PROCEDURE IF EXISTS ' + codegen.QNAME( @ProcSchemaName) + '.' + codegen.QNAME('Upsert' + @TableName + 'FromJson') + '
 GO
@@ -441,24 +441,24 @@ CREATE PROCEDURE ' + codegen.QNAME( @ProcSchemaName) + '.' + codegen.QNAME('Upse
 WITH EXECUTE AS OWNER
 AS BEGIN
 ' +
-	codegen.GenerateProcedureHead(@TableName, @JsonParam) 
+	codegen.GenerateProcedureHead(@TableName, @JsonParam)
 +
 'MERGE INTO ' + codegen.QNAME( @SchemaName) + '.' + codegen.QNAME(@TableName) + '
 		USING ( SELECT *
 			FROM OPENJSON(' + @JsonParam + ')
 				WITH (' + @JsonSchema + ')) as json
 		ON (' + @RowFilter + ')
-		WHEN MATCHED THEN 
-			UPDATE SET' + @TableUpdateColumns + 
+		WHEN MATCHED THEN
+			UPDATE SET' + @TableUpdateColumns +
 	
 	'
-		WHEN NOT MATCHED THEN 
+		WHEN NOT MATCHED THEN
 			INSERT (' + @TableSchema + ')
 			VALUES  (' + @TableSchemaWithAlias + ');' +
 --		OUTPUT ' + @PkColumns + '
 --			INTO @ChildRows;
 --' +
-	codegen.GenerateProcedureTail(@TableName) 
+	codegen.GenerateProcedureTail(@TableName)
 +
 '
 END'

@@ -34,9 +34,9 @@
             this.ConnectionStringTextBox = new System.Windows.Forms.TextBox();
             this.PopulateButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
+            //
             // DescriptionTextBox
-            // 
+            //
             this.DescriptionTextBox.BackColor = System.Drawing.SystemColors.Info;
             this.DescriptionTextBox.Location = new System.Drawing.Point(13, 13);
             this.DescriptionTextBox.Multiline = true;
@@ -45,25 +45,25 @@
             this.DescriptionTextBox.TabIndex = 0;
             this.DescriptionTextBox.TabStop = false;
             this.DescriptionTextBox.Text = resources.GetString("DescriptionTextBox.Text");
-            // 
+            //
             // ConnectionStringLabel
-            // 
+            //
             this.ConnectionStringLabel.AutoSize = true;
             this.ConnectionStringLabel.Location = new System.Drawing.Point(10, 82);
             this.ConnectionStringLabel.Name = "ConnectionStringLabel";
             this.ConnectionStringLabel.Size = new System.Drawing.Size(141, 17);
             this.ConnectionStringLabel.TabIndex = 1;
             this.ConnectionStringLabel.Text = "Connection String:";
-            // 
+            //
             // ConnectionStringTextBox
-            // 
+            //
             this.ConnectionStringTextBox.Location = new System.Drawing.Point(13, 115);
             this.ConnectionStringTextBox.Name = "ConnectionStringTextBox";
             this.ConnectionStringTextBox.Size = new System.Drawing.Size(863, 24);
             this.ConnectionStringTextBox.TabIndex = 1;
-            // 
+            //
             // PopulateButton
-            // 
+            //
             this.PopulateButton.Location = new System.Drawing.Point(368, 167);
             this.PopulateButton.Name = "PopulateButton";
             this.PopulateButton.Size = new System.Drawing.Size(115, 39);
@@ -71,9 +71,9 @@
             this.PopulateButton.Text = "&Populate";
             this.PopulateButton.UseVisualStyleBackColor = true;
             this.PopulateButton.Click += new System.EventHandler(this.PopulateButton_Click);
-            // 
+            //
             // PopulateAlwaysEncryptedDataMain
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(891, 228);

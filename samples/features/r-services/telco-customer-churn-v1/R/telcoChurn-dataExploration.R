@@ -34,9 +34,9 @@ data <- cdrDF %>%
 ui <- fluidPage(
   tags$style(HTML("
                   @import url('https://fonts.googleapis.com/css?family=Poppins');
-                  
+
                   body {
-                  
+
                   font-family: 'Poppins', 'Lucida Grande', Verdana, Lucida, Helvetica, Arial, Calibri, sans-serif;
                   color: rgb(0,0,0);
                   background-color: #d2d2d2;
@@ -45,7 +45,7 @@ ui <- fluidPage(
 
   titlePanel("Telco Customer Churn"),
 
-  # Sidebar with a slider input for number of bins 
+  # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
       sliderInput("sc", "Scale size of circles (also redraws map to show only the last added state)",
@@ -65,9 +65,9 @@ ui <- fluidPage(
       p("Impact of call failure rate on churn"),
       plotOutput("MyPlot3", height = "200px"),
       h2("About"),
-      HTML("<p>Created by Fang Zhou with R and Shiny leaflet. R users can download the 
+      HTML("<p>Created by Fang Zhou with R and Shiny leaflet. R users can download the
            cleaned and tidy call detail record data from <a href = 'https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/r-services/Telco%20Customer%20Churn'>
-           https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/r-services/Telco%20Customer%20Churn</a>.  
+           https://github.com/Microsoft/sql-server-samples/tree/master/samples/features/r-services/Telco%20Customer%20Churn</a>.
            The latitute and longitute for each USA state can be found from <a href = 'http://dev.maxmind.com/geoip/legacy/codes/state_latlon/'>
            http://dev.maxmind.com/geoip/legacy/codes/state_latlon/</a>.")
       ),

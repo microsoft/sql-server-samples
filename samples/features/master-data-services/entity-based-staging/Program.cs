@@ -17,33 +17,33 @@ namespace EntityBasedStaging
 {
     class Program
     {
-        // MDS service client proxy object. 
+        // MDS service client proxy object.
         private static ServiceClient clientProxy;
-        // Set the MDS URL (plus /Service/Service.svc) here. 
+        // Set the MDS URL (plus /Service/Service.svc) here.
         private static string mdsURL = @"http://localhost/MDS/Service/Service.svc";
 
         static void Main(string[] args)
         {
             try
             {
-                // Before running this sample code you need to populate the staging table for the entity that you use with a staging record. 
+                // Before running this sample code you need to populate the staging table for the entity that you use with a staging record.
                 // The staging record should have batch tag = "Test1".
                 // Example:
                 // Populate the record into stg.TestEntity_Leaf staging table with batch tag = “Test1” by running the SQL script.
-                // Note that the Code and Name below is set to trigger the business rule validation error (if Code is “ABC”, Name must be equal to “Test”). 
+                // Note that the Code and Name below is set to trigger the business rule validation error (if Code is “ABC”, Name must be equal to “Test”).
                 // Insert into stg.TestEntity_Leaf
-                // (ImportType, BatchTag, Code, Name) 
+                // (ImportType, BatchTag, Code, Name)
                 // values (0, N'Test1', N'ABC', N'Name2');
                 // ImportType = 0 means the import type is merge optimistic.
 
-                // Create a service proxy. 
+                // Create a service proxy.
                 clientProxy = GetClientProxy(mdsURL);
 
                 // Process staging data in the staging table with the specified batch tag.
                 // You need to specify the existing model name, entity name, version name, and batch tag.
                 ProcessStagingData("TestModel", "TestEntity", "VERSION_1", "Test1", MemberType.Leaf);
 
-                // Wait till the batch process completes (wait for 60 seconds). 
+                // Wait till the batch process completes (wait for 60 seconds).
                 Thread.Sleep(60000);
 
                 // Get the staging information such as the batch status and the error information.
@@ -75,13 +75,13 @@ namespace EntityBasedStaging
         // Creates MDS service client proxy.
         private static ServiceClient GetClientProxy(string targetURL)
         {
-            // Create an endpoint address using the URL. 
+            // Create an endpoint address using the URL.
             EndpointAddress endptAddress = new EndpointAddress(targetURL);
 
-            // Create and configure the WS Http binding. 
+            // Create and configure the WS Http binding.
             WSHttpBinding wsBinding = new WSHttpBinding();
 
-            // Create and return the client proxy. 
+            // Create and return the client proxy.
             return new ServiceClient(wsBinding, endptAddress);
         }
 
@@ -228,7 +228,7 @@ namespace EntityBasedStaging
                 Identifier modelId = new Identifier { Name = modelName };
                 Identifier entityId = new Identifier { Name = entityName };
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesCreateRequest ruleCreateRequest = new MDSTestService.BusinessRulesCreateRequest();
                 ruleCreateRequest.ReturnCreatedIdentifiers = true;
                 ruleCreateRequest.BusinessRuleSet = new MDSTestService.BusinessRules();
@@ -341,7 +341,7 @@ namespace EntityBasedStaging
                 MDSTestService.ValidationProcessResponse validationProcessResponse = clientProxy.ValidationProcess(validationProcessRequest);
                 HandleOperationErrors(validationProcessResponse.OperationResult);
 
-                // Show the validation issue's description. 
+                // Show the validation issue's description.
                 if (validationProcessResponse.ValidationIssueList.Count > 0)
                 {
                     ValidationIssue validationIssue = validationProcessResponse.ValidationIssueList[0];

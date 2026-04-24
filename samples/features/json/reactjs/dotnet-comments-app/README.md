@@ -1,4 +1,4 @@
-# ASP.NET Core REST Web API that uses SQL/JSON functionalities 
+# ASP.NET Core REST Web API that uses SQL/JSON functionalities
 
 This project contains an implementation of ASP.NET Core REST API backend for [ReactJS Comments tutorial](https://facebook.github.io/react/docs/tutorial.html).
 In this example you will see how easily you can integrate Single-page apps implemented using ReactJS with SQL Server 2016 or Azure SQL Database using ASP.NET Core and JSON functions that are available in SQL Server 2016.
@@ -67,7 +67,7 @@ If your database is hosted on Azure you can add something like:
 
 ### Build and run sample
 
-1. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+1. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.
   1. Open /index.html Url to get all comments from database,
   2. Add new comment using the form below the list of comments.
 
@@ -90,7 +90,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 - [ReactJS](https://facebook.github.io/react/).

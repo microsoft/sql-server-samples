@@ -42,9 +42,9 @@ To run this sample, you need to download source code from SQL Server GitHub acco
 2. Add data-access NuGet package. Click on the **Files** link on the righ-hand side, and upload [project.json[(azure-function/project.json) file into your Azure Function. This file contains a reference to the Data Access library that will be used to get the data from Azure SQL Database.
 
 3. Setup connection to your database. Click on manage link in Azure Function, and open settings of your Azure Function application. Scroll down to the connection string section, add a key **azure-db-connection** and put the connection string to your dataase as a value.
- 
+
 4. Modify C# code in your Azure Function (Run.csx file). Put the code in the [run.csx](azure-function/run.csx) file in your Azure Function.
-   - Modify query in the code to create different REST API. 
+   - Modify query in the code to create different REST API.
 
 <a name=sample-details></a>
 
@@ -55,7 +55,7 @@ Azure Function returns response to the caller using HttpResponseMessage class.
 
 ```
 var httpStatus = HttpStatusCode.OK;
-string body = 
+string body =
         await (new QueryMapper(ConnectionString)
                    .OnError(ex => { httpStatus = HttpStatusCode.InternalServerError; }))
           .GetStringAsync("select * from sys.objects for json path");
@@ -70,7 +70,7 @@ return new HttpResponseMessage() { Content = new StringContent(body), StatusCode
 
 ## Related Links
 
-You can find more information about the technologies that are used in this sample on these locations: 
+You can find more information about the technologies that are used in this sample on these locations:
 - [JSON support in Azure SQL Database](https://docs.microsoft.com/en-us/azure/sql-database/sql-database-json-features).
 - [Webhooks in Azure Functions](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-a-web-hook-or-api-function).
 

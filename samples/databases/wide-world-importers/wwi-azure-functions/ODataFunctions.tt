@@ -42,7 +42,7 @@ namespace WideWorldImportersFunctions
     }
 }
 <#+
-	public class TableDef { 
+	public class TableDef {
 		public string Schema {get; set;}
 		public string Table {get; set;}
 		public string ODataColumns {get; set;}

@@ -66,9 +66,9 @@ class SeeTag extends Tag
 
     /**
      * Sets the structural element this tag refers to.
-     * 
+     *
      * @param string $refers The new type this tag refers to.
-     * 
+     *
      * @return $this
      */
     public function setReference($refers)

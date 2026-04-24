@@ -16,16 +16,16 @@ namespace MDSBusinessRules
 {
     class Program
     {
-        // MDS service client proxy object. 
+        // MDS service client proxy object.
         private static ServiceClient clientProxy;
-        // Set the MDS URL (plus /Service/Service.svc) here. 
+        // Set the MDS URL (plus /Service/Service.svc) here.
         private static string mdsURL = @"http://localhost/MDS/Service/Service.svc";
 
         static void Main(string[] args)
         {
             try
             {
-                // Create a service proxy. 
+                // Create a service proxy.
                 clientProxy = GetClientProxy(mdsURL);
             }
             catch (Exception ex)
@@ -56,13 +56,13 @@ namespace MDSBusinessRules
         // Creates MDS service client proxy.
         private static ServiceClient GetClientProxy(string targetURL)
         {
-            // Create an endpoint address using the URL. 
+            // Create an endpoint address using the URL.
             EndpointAddress endptAddress = new EndpointAddress(targetURL);
 
-            // Create and configure the WS Http binding. 
+            // Create and configure the WS Http binding.
             WSHttpBinding wsBinding = new WSHttpBinding();
 
-            // Create and return the client proxy. 
+            // Create and return the client proxy.
             return new ServiceClient(wsBinding, endptAddress);
         }
 
@@ -91,7 +91,7 @@ namespace MDSBusinessRules
                 Identifier modelId = new Identifier { Name = modelName };
                 Identifier entityId = new Identifier { Name = entityName };
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesCreateRequest ruleCreateRequest = new MDSTestService.BusinessRulesCreateRequest();
                 ruleCreateRequest.ReturnCreatedIdentifiers = true;
                 ruleCreateRequest.BusinessRuleSet = new BusinessRules();
@@ -190,7 +190,7 @@ namespace MDSBusinessRules
                 Identifier modelId = new Identifier { Name = modelName };
                 Identifier entityId = new Identifier { Name = entityName };
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesGetRequest ruleGetRequest = new MDSTestService.BusinessRulesGetRequest();
                 ruleGetRequest.ResultOptions = new BRResultOptions();
                 ruleGetRequest.ResultOptions.BusinessRules = ResultType.Details;
@@ -296,7 +296,7 @@ namespace MDSBusinessRules
                 MDSTestService.ValidationProcessResponse validationProcessResponse = clientProxy.ValidationProcess(validationProcessRequest);
                 HandleOperationErrors(validationProcessResponse.OperationResult);
 
-                // Show the validation issue's description. 
+                // Show the validation issue's description.
                 if (validationProcessResponse.ValidationIssueList.Count > 0)
                 {
                     ValidationIssue validationIssue = validationProcessResponse.ValidationIssueList[0];
@@ -338,7 +338,7 @@ namespace MDSBusinessRules
                 // Set the status to pending exclusion.
                 selectedBusinessRule.Status = BRStatus.PendingExclusion;
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesUpdateRequest ruleUpdateRequest = new MDSTestService.BusinessRulesUpdateRequest();
                 ruleUpdateRequest.BusinessRuleSet = new BusinessRules();
                 ruleUpdateRequest.BusinessRuleSet.BusinessRulesMember = new System.Collections.ObjectModel.Collection<BusinessRule> { };
@@ -349,7 +349,7 @@ namespace MDSBusinessRules
 
                 HandleOperationErrors(ruleUpdateResponse.OperationResult);
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesPublishRequest rulePublishRequest = new MDSTestService.BusinessRulesPublishRequest();
                 rulePublishRequest.BRPublishCriteria = new BRPublishCriteria();
                 rulePublishRequest.BRPublishCriteria.EntityId = entityId;
@@ -376,7 +376,7 @@ namespace MDSBusinessRules
                 Identifier modelId = new Identifier { Name = modelName };
                 Identifier entityId = new Identifier { Name = entityName };
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesGetRequest ruleGetRequest = new MDSTestService.BusinessRulesGetRequest();
                 ruleGetRequest.ResultOptions = new BRResultOptions();
                 ruleGetRequest.ResultOptions.BusinessRules = ResultType.Details;
@@ -393,7 +393,7 @@ namespace MDSBusinessRules
 
                 BusinessRule selectedBusinessRule = ruleGetResponse.BusinessRuleSet.BusinessRulesMember[0];
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesDeleteRequest ruleDeleteRequest = new MDSTestService.BusinessRulesDeleteRequest();
                 ruleDeleteRequest.DeleteCriteria = new BRDeleteCriteria();
                 ruleDeleteRequest.DeleteCriteria.BusinessRules = new System.Collections.ObjectModel.Collection<Guid> { };
@@ -403,7 +403,7 @@ namespace MDSBusinessRules
                 MDSTestService.MessageResponse ruleDeleteResponse = clientProxy.BusinessRulesDelete(ruleDeleteRequest);
                 HandleOperationErrors(ruleDeleteResponse.OperationResult);
 
-                // Create the request object. 
+                // Create the request object.
                 MDSTestService.BusinessRulesPublishRequest rulePublishRequest = new MDSTestService.BusinessRulesPublishRequest();
                 rulePublishRequest.BRPublishCriteria = new BRPublishCriteria();
                 rulePublishRequest.BRPublishCriteria.EntityId = entityId;

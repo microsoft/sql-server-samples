@@ -80,7 +80,7 @@ as
 begin
 	declare @rx_model varbinary(max) = (select model from cdr_models where model_name = @model);
 	-- Predict based on the specified model:
-	exec sp_execute_external_script 
+	exec sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
     require("RevoScaleR");
@@ -137,7 +137,7 @@ begin
 	execute sp_execute_external_script
 	  @language = N'R'
 	, @script = N'
-      evaluateModel <- function(data, observed, predicted) 
+      evaluateModel <- function(data, observed, predicted)
       {
       confusion <- table(data[[observed]], data[[predicted]])
       print(confusion)
@@ -176,7 +176,7 @@ go
 exec model_evaluate
 go
 
---Create a stored procedure to generate roc curve 
+--Create a stored procedure to generate roc curve
 drop procedure if exists model_roccurve;
 go
 create procedure model_roccurve
@@ -186,7 +186,7 @@ begin
 	  @language = N'R'
 	, @script = N'
       require("RevoScaleR");
-      rxrocCurve <- function(data, observed, predicted) 
+      rxrocCurve <- function(data, observed, predicted)
 	  {
       data <- data[, c(observed, predicted)]
       data[[observed]] <- as.numeric(as.character(data[[observed]]))
@@ -205,7 +205,7 @@ begin
      );
      dev.off();
      OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));
-' 
+'
 	, @input_data_1 = N'
 	select * from edw_cdr_pred'
 	, @input_data_1_name = N'edw_cdr_pred'
@@ -226,7 +226,7 @@ create procedure pie
 as
 begin
 exec sp_execute_external_script
-      @language = N'R', 
+      @language = N'R',
 	  @script = N'
       # Set output directory for files
       # Prior to plotting ensure there are no files with same file names as the out files below in the above directory.
@@ -248,7 +248,7 @@ exec sp_execute_external_script
       );
       dev.off();
       OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));
-' 
+'
    , @input_data_1 = N'select * from edw_cdr_pred'
    , @input_data_1_name = N'edw_cdr_pred'
 	with result sets ((plot varbinary(max)));
@@ -266,7 +266,7 @@ create procedure stackedbar
 as
 begin
 exec sp_execute_external_script
-      @language = N'R', 
+      @language = N'R',
 	  @script = N'
       # Set output directory for files
       # Prior to plotting ensure there are no files with same file names as the out files below in the above directory.
@@ -290,7 +290,7 @@ exec sp_execute_external_script
       );
       dev.off();
       OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));
-' 
+'
    , @input_data_1 = N'select * from edw_cdr_pred'
    , @input_data_1_name = N'edw_cdr_pred'
 	with result sets ((plot varbinary(max)));

@@ -1,7 +1,7 @@
 <?php
 /**
  * phpDocumentor Param tag test.
- * 
+ *
  * PHP version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>

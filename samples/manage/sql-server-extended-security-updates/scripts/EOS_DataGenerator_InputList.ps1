@@ -3,20 +3,20 @@
    Run the following command: .\EOS_DataGenerator_InputList.ps1
 
    Disclaimer
-   The sample scripts are not supported under any Microsoft standard support program or service. 
-   The sample scripts are provided AS IS without warranty of any kind. Microsoft further disclaims all implied warranties including, 
-   without limitation, any implied warranties of merchantability or of fitness for a particular purpose. 
-   The entire risk arising out of the use or performance of the sample scripts and documentation remains with you. 
-   In no event shall Microsoft, its authors, or anyone else involved in the creation, production, or delivery of the scripts be liable 
-   for any damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, loss of 
-   business information, or other pecuniary loss) arising out of the use of or inability to use the sample scripts or documentation, 
-   even if Microsoft has been advised of the possibility of such damages. 
+   The sample scripts are not supported under any Microsoft standard support program or service.
+   The sample scripts are provided AS IS without warranty of any kind. Microsoft further disclaims all implied warranties including,
+   without limitation, any implied warranties of merchantability or of fitness for a particular purpose.
+   The entire risk arising out of the use or performance of the sample scripts and documentation remains with you.
+   In no event shall Microsoft, its authors, or anyone else involved in the creation, production, or delivery of the scripts be liable
+   for any damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, loss of
+   business information, or other pecuniary loss) arising out of the use of or inability to use the sample scripts or documentation,
+   even if Microsoft has been advised of the possibility of such damages.
 #>
 
 $SQLServerList = Read-Host "Input file must be in the current script path. Enter input SQL Server List filename"
 
-If ([string]::IsNullOrEmpty($SQLServerList) ) { 
-    Throw "Parameter missing: Input file" 
+If ([string]::IsNullOrEmpty($SQLServerList) ) {
+    Throw "Parameter missing: Input file"
 } Else {
     $scriptFolder = Split-Path -Parent $MyInvocation.MyCommand.Path
     $SQLServerList = $scriptFolder + "\" + $SQLServerList
@@ -25,8 +25,8 @@ If ([string]::IsNullOrEmpty($SQLServerList) ) {
 
 $CSVfilename = Read-Host "Output file will be saved in the current script path. Enter a file name for the CSV output"
 
-If ([string]::IsNullOrEmpty($CSVfilename) ) { 
-    Throw "Parameter missing: Output file" 
+If ([string]::IsNullOrEmpty($CSVfilename) ) {
+    Throw "Parameter missing: Output file"
 } Else {
     If ($CSVfilename -notlike "*.csv") { $CSVfilename = $CSVfilename + ".csv" }
 
@@ -40,7 +40,7 @@ Function Get-Info {
     Param( [Parameter(Mandatory = $TRUE, ValueFromPipeline = $TRUE)] [String] $ServerName )
 
     Process {
-    
+
             Write-Host "`nConnecting to $ServerName..."
 
             # Get SQL Server instance's data
@@ -68,8 +68,8 @@ Function Get-Info {
 
             Write-Host "|- Querying $ServerName..."
 
-            While ( $dr.Read() ) { 
-             $SQLEdition = $dr.GetValue(0); 
+            While ( $dr.Read() ) {
+             $SQLEdition = $dr.GetValue(0);
              $Version = $dr.GetValue(1);
              $MachineName = $dr.GetValue(2);
             }
@@ -82,15 +82,15 @@ Function Get-Info {
             Elseif ($Version -eq "10.5"){
                 $OutVersion = '2008R2'}
             Elseif ($Version -eq "11.0"){
-                $OutVersion = '2012'} 
+                $OutVersion = '2012'}
             Elseif ($Version -eq "12.0"){
                 $OutVersion = '2014'}
             Elseif ($Version -eq "13.0"){
-                $OutVersion = '2016'}  
+                $OutVersion = '2016'}
             Elseif ($Version -eq "14.0"){
-                $OutVersion = '2017'} 
+                $OutVersion = '2017'}
             Elseif ($Version -eq "15.0"){
-                $OutVersion = '2019'} 
+                $OutVersion = '2019'}
             Else {
                 $OutVersion = 'Unknown'}
 
@@ -98,9 +98,9 @@ Function Get-Info {
             $dr.Close()
             $sqlconn.Close()
 
-            #Get processors information            
+            #Get processors information
             $CPU = Get-WmiObject -ComputerName $MachineName -class Win32_Processor
-            
+
             #Get Computer model information
             $Manufacturer = (Get-WmiObject -ComputerName $MachineName -class Win32_ComputerSystem).Manufacturer
 
@@ -110,20 +110,20 @@ Function Get-Info {
                 $HostType = 'Virtual Machine'}
             Else {
                 $HostType = 'Physical Server'}
-            
+
             #Reset number of cores and use count for the CPUs counting
             $CPUs = 0
             $Cores = 0
-           
+
             ForEach ( $Processor in $CPU ) {
 
-                $CPUs = $CPUs + 1   
-           
-                #count the total number of cores         
+                $CPUs = $CPUs + 1
+
+                #count the total number of cores
                 $Cores = $Cores + $Processor.NumberOfCores
-        
-            } 
-           
+
+            }
+
             $InfoRecord = New-Object -TypeName PSObject -Property @{
                     Name = $ServerName;
                     HostType = $HostType;
@@ -132,7 +132,7 @@ Function Get-Info {
                     Version = $Version;
 
             }
- 
+
             Write-Output $InfoRecord
     }
 }
@@ -142,6 +142,6 @@ Get-Content $SQLServerList | Foreach-Object {Get-Info $_ } `
     | Select-Object "name", "version", "edition", "cores", "hostType" `
     | ConvertTo-Csv -NoTypeInformation `
     | % { $_ -Replace '"', ""} `
-    | Out-File -FilePath $CSVfilename -Encoding UTF8 #-NoClobber #-Append 
-    
+    | Out-File -FilePath $CSVfilename -Encoding UTF8 #-NoClobber #-Append
+
 Write-Host -ForegroundColor Yellow "`nDone!"

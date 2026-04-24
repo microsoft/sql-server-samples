@@ -19,9 +19,9 @@ namespace MasterData
 {
     static class Program
     {
-        // MDS service client proxy object. 
+        // MDS service client proxy object.
         private static ServiceClient clientProxy;
-        // Set the MDS URL (plus /Service/Service.svc) here. 
+        // Set the MDS URL (plus /Service/Service.svc) here.
         private static string mdsURL = @"http://localhost/MDS/Service/Service.svc";
 
         static void Main()
@@ -29,13 +29,13 @@ namespace MasterData
             Identifier modelId = null;
             try
             {
-                // Create a service proxy. 
+                // Create a service proxy.
                 clientProxy = GetClientProxy(mdsURL);
 
                 string model = "TestModel" + Guid.NewGuid().ToString("N");
                 string entity = "TestEntity";
                 string explicitHierarchy = "TestEH";
-                // "VERSION_1" is a default version name for a new model. 
+                // "VERSION_1" is a default version name for a new model.
                 string version = "VERSION_1";
 
                 modelId = CreateModel(model, entity, explicitHierarchy);
@@ -52,7 +52,7 @@ namespace MasterData
                 leafMemberName = "Name" + Guid.NewGuid().ToString("N");
                 UpdateEntityMember(model, version, entity, leafMemberCode, MemberType.Leaf, leafMemberName);
 
-                // Create a consolidated memeber with specified name, code, member type, and hierarchy name. 
+                // Create a consolidated memeber with specified name, code, member type, and hierarchy name.
                 // HierarchyName is used only when the member type is Consolidated.
                 string consolidatedMemberCode = "Code" + Guid.NewGuid().ToString("N");
                 string consolidatedMemberName = "Name" + Guid.NewGuid().ToString("N");
@@ -62,7 +62,7 @@ namespace MasterData
                 // Get the entity member identifier with specified model name, version name, entity name, member type, and entity member name.
                 GetEntityMemberByName(model, version, entity, MemberType.Consolidated, consolidatedMemberName);
 
-                // Update an entity member relationship. 
+                // Update an entity member relationship.
                 // You need to specify the existing hierachy name, parent member code, and child member code.
                 UpdateEntityMemberRelationship(model, version, entity, explicitHierarchy, consolidatedMemberCode,
                     leafMemberCode);
@@ -128,13 +128,13 @@ namespace MasterData
         // Creates MDS service client proxy.
         private static ServiceClient GetClientProxy(string targetURL)
         {
-            // Create an endpoint address using the URL. 
+            // Create an endpoint address using the URL.
             EndpointAddress endptAddress = new EndpointAddress(targetURL);
 
-            // Create and configure the WS Http binding. 
+            // Create and configure the WS Http binding.
             WSHttpBinding wsBinding = new WSHttpBinding();
 
-            // Create and return the client proxy. 
+            // Create and return the client proxy.
             return new ServiceClient(wsBinding, endptAddress);
         }
 
@@ -270,7 +270,7 @@ namespace MasterData
             // Create the request object to get the entity information.
             EntityMembersGetRequest getRequest = new EntityMembersGetRequest();
             getRequest.MembersGetCriteria = new EntityMembersGetCriteria();
-                
+
             // Set the modelId, versionId, entityId, and the member name.
             getRequest.MembersGetCriteria.ModelId = new Identifier { Name = modelName };
             getRequest.MembersGetCriteria.VersionId = new Identifier { Name = versionName };
@@ -287,7 +287,7 @@ namespace MasterData
 
             // Show attribute information.
             ShowMemberInformation(getResponse.EntityMembers.Members[0]);
- 
+
             HandleOperationErrors(getResponse.OperationResult);
 
             return memberIdentifier;
@@ -356,7 +356,7 @@ namespace MasterData
 
             return getResponse.EntityMembers.Members;
         }
-        
+
         // Show attribute information.
         private static void ShowMemberInformation(Member member)
         {
@@ -415,12 +415,12 @@ namespace MasterData
             // Set the member code.
             aMember.MemberId = new MemberIdentifier() {Code = memberCode, MemberType = memberType};
             aMember.Attributes = new Collection<MDSTestService.Attribute> { };
-            // Set the new member name into the Attribute object. 
+            // Set the new member name into the Attribute object.
             MDSTestService.Attribute anAttribute = new MDSTestService.Attribute();
             anAttribute.Identifier = new Identifier() { Name = "Name" };
             anAttribute.Type = AttributeValueType.String;
             anAttribute.Value = newMemberName;
-            aMember.Attributes.Add(anAttribute); 
+            aMember.Attributes.Add(anAttribute);
             updateRequest.Members.Members.Add(aMember);
 
             if (!string.IsNullOrEmpty(changesetName))
@@ -434,8 +434,8 @@ namespace MasterData
             HandleOperationErrors(createResponse.OperationResult);
 
         }
-        
-        // Update an entity member relationship. 
+
+        // Update an entity member relationship.
         private static void UpdateEntityMemberRelationship(string modelName, string versionName, string entityName, string hierarchyName, string parentMemberCode, string childMemberCode)
         {
             // Create the request object for entity update.

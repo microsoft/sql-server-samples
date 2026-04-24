@@ -15,7 +15,7 @@ This sample shows how to create a predictive model in R and operationalize it wi
 ## About this sample
 
 Predictive modeling is a powerful way to add intelligence to your application. It enables applications to predict outcomes against new data.
-The act of incorporating predictive analytics into your applications involves two major phases: 
+The act of incorporating predictive analytics into your applications involves two major phases:
 model training and model operationalization.
 
 In this sample, you will learn how to create a predictive model in R and operationalize it with SQL Server 2016.
@@ -24,7 +24,7 @@ Follow the step by step tutorial [here](http://aka.ms/sqldev/R) to walk through 
 
 <!-- Delete the ones that don't apply -->
 - **Applies to:** SQL Server 2016 (or higher)
-- **Key features:** SQL Server R Services 
+- **Key features:** SQL Server R Services
 - **Workload:** SQL Server R Services
 - **Programming Language:** T-SQL, R, JavaScript (NodeJS)
 - **Authors:** Nellie Gustafsson
@@ -47,7 +47,7 @@ After that, you can download a DB backup file and restore it using Setup.sql. [D
 
 ## Run this sample app
 1. From SQL Server Management Studio or SQL Server Data Tools connect to your SQL Server 2016 or vNext SQL database and execute setup.sql to restore the sample DB
-2. From SQL Server Management Studio or SQL Server Data Tools, execute Predictive Model.sql script to set up tables, train model, predict using that model etc. 
+2. From SQL Server Management Studio or SQL Server Data Tools, execute Predictive Model.sql script to set up tables, train model, predict using that model etc.
 This is all covered step by step in the [tutorial](http://aka.ms/sqldev/R)
 
 3. Navigate to the folder where you have downloaded sample and run **npm install** in command window, or run setup.bat if you are on Windows operating system. This command will install necessary npm packages defined in project.json.
@@ -84,11 +84,11 @@ The R script that generates a predictive model and uses it to predict rental cou
 ### Predictive Model.SQL
 Takes the R code in PredictiveModel.R and deploys it inside SQL Server. Creating stored procedures and tables for training, storing models and creating stored procedures for prediction.
 
-### app.js 
+### app.js
 File that contains startup code.
-### db.js 
+### db.js
 File that contains functions that wrap Tedious library
-### predictions.js 
+### predictions.js
 File that contains action that will be called to get the predictions
 
 Service uses Tedious library for data access and built-in JSON functionalities that are available in SQL Server 2016 and Azure SQL Database.

@@ -1,6 +1,6 @@
 # Sample databases
 
-Contains samples databases for Microsoft's SQL databases include SQL Server, Azure SQL Database, and Azure SQL Data Warehouse.
+Contains sample databases for Microsoft's SQL databases include SQL Server, Azure SQL Database, and Azure SQL Data Warehouse.
 
 __[wide-world-importers](wide-world-importers/)__
 
@@ -12,4 +12,4 @@ Sample data warehouse that illustrates loading data into Azure SQL Data Warehous
 
 __[AdventureWorks](adventure-works/)__
 
-Sample databases and Analysis Services models for use with SQL Server. 
+Sample databases and Analysis Services models for use with SQL Server.

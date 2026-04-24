@@ -1,5 +1,5 @@
 -- ============================================
--- Drop dml trigger template Azure SQL Database 
+-- Drop dml trigger template Azure SQL Database
 -- ============================================
 
 IF EXISTS(

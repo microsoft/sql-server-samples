@@ -2,8 +2,8 @@
 -- Template generated from Template Explorer using:
 -- Create Scalar Function (New Menu).SQL
 --
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
+-- Use the Specify Values for Template Parameters
+-- command (Ctrl-Shift-M) to fill in the parameter
 -- values below.
 --
 -- This block of comments will not be included in
@@ -18,7 +18,7 @@ GO
 -- Create date: <Create Date, ,>
 -- Description:	<Description, ,>
 -- =============================================
-CREATE FUNCTION <Scalar_Function_Name, sysname, FunctionName> 
+CREATE FUNCTION <Scalar_Function_Name, sysname, FunctionName>
 (
 	-- Add the parameters for the function here
 	<@Param1, sysname, @p1> <Data_Type_For_Param1, , int>

@@ -17,7 +17,7 @@ namespace EFGetStarted.AspNetCore.NewDb.Controllers
         {
             return View(_context.Blogs.ToList());
         }
-        
+
         public IActionResult Search(string Owner)
         {
             // Option 1: .Net side filter using LINQ:

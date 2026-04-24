@@ -2,8 +2,8 @@
 -- Ratio to Parent
 -- =============================================
 
-With 
-		Member [Measures].[RatioToParent] AS 
+With
+		Member [Measures].[RatioToParent] AS
 		'[Measures].<measure_name, mdx_name,> /
 		( [Measures].<measure_name, mdx_name,>, <hierarchy_name, mdx_name,>.CurrentMember.Parent )',
 		Format_String = 'Percent'

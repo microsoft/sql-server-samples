@@ -1,5 +1,5 @@
 ﻿$(() => {
-    
+
     var $form = $("#EditSupplierTransactionForm");
     var $dlg = $("#modalSupplierTransactionDialog");
 

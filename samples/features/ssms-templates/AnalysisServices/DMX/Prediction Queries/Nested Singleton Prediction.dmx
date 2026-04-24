@@ -1,11 +1,11 @@
 // ==========================
-// 	Nested Singleton Prediction 
+// 	Nested Singleton Prediction
 // ==========================
 
 SELECT <select list,expr list,*>
 	FROM [<mining model,name,MyModel>] NATURAL PREDICTION JOIN
-(SELECT '<value,string,>' AS [<column,name,CaseLevelColumn>], 
+(SELECT '<value,string,>' AS [<column,name,CaseLevelColumn>],
 	(SELECT 'value' AS [<nested column,name,NestedKeyColumn>] UNION
-		SELECT 'value' AS [<nested column,name,NestedKeyColumn>] ...) 
+		SELECT 'value' AS [<nested column,name,NestedKeyColumn>] ...)
 	AS [<nested table,name,MyNestedTable>])
 AS [<input alias,alias,t>]

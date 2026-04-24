@@ -5,7 +5,7 @@ USE <database_name,sysname,AdventureWorks>
 GO
 
 -- Create the data type
-CREATE TYPE <schema_name,sysname,dbo>.<type_name,sysname,Phone> 
+CREATE TYPE <schema_name,sysname,dbo>.<type_name,sysname,Phone>
 	FROM <base_type,,nvarchar> (<precision,int,25>) <allow_null,,NULL>
 
 -- Create table using the data type

@@ -23,7 +23,7 @@ namespace BulkLoader
         {
             // Load the file
             var reader = new StreamReader(path);
-            
+
             // Get the Data Table to hold the rows
             var datatable = GetDataTable();
 
@@ -58,7 +58,7 @@ namespace BulkLoader
             reader.Close();
             datatable.Dispose();
         }
-        
+
         static SqlConnection GetConnection()
         {
             var sb = new SqlConnectionStringBuilder();
@@ -81,7 +81,7 @@ namespace BulkLoader
                     new DataColumn("ProductId", typeof(int)),
                     new DataColumn("Name", typeof(string)),
                     new DataColumn("Description", typeof(string))
-                }              
+                }
             );
 
             return dt;

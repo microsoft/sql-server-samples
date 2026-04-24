@@ -2,31 +2,31 @@
 
 This is a C# code sample to show how to process, clear, and get information about entity based staging data by using MDS APIs. This sample has the following scenarios.
 
-1. Process the staging data in the staging table that has the specified batch tag (“Test1”). After calling the API to process the staging data wait untill the batch process completes (wait for 60 seconds).
+1. Process the staging data in the staging table that has the specified batch tag (ï¿½Test1ï¿½). After calling the API to process the staging data wait untill the batch process completes (wait for 60 seconds).
 2. Get the staging information such as the batch status and the error information. In this example, GetStagingInformation method returns the batch id for the specified batch tag.
 3. Clear the batch staging data for the specified batch id.
 4. Create a new business rule to validate the record that is added by Entity Based Staging and get the validation error.
 
-Before running this sample code you need to populate the staging table for the entity that you use with a staging record. 
+Before running this sample code you need to populate the staging table for the entity that you use with a staging record.
 
 The staging record should have batch tag = "Test1".
 
 Example:
 
-Populate the record into stg.TestEntity_Leaf staging table with batch tag = “Test1” by running the SQL script.
+Populate the record into stg.TestEntity_Leaf staging table with batch tag = ï¿½Test1ï¿½ by running the SQL script.
 
-Note that the Code and Name below is set to trigger the business rule validation error (if Code is “ABC”, Name must be equal to “Test”). 
+Note that the Code and Name below is set to trigger the business rule validation error (if Code is ï¿½ABCï¿½, Name must be equal to ï¿½T
 
 ```SQL
 Insert into stg.TestEntity_Leaf
-(ImportType, BatchTag, Code, Name) 
+(ImportType, BatchTag, Code, Name)
 values (0, N'Test1', N'ABC', N'Name2');
 ```
 
 ImportType = 0 means the import type is merge optimistic.
 
 
-Please set the MDS URL (plus /Service/Service.svc) to mdsURL in Program.cs. 
+Please set the MDS URL (plus /Service/Service.svc) to mdsURL in Program.cs.
 
 ```C#
 string mdsURL = @"http://localhost/MDS/Service/Service.svc";
@@ -40,17 +40,17 @@ You need to expose the WSDL. Exposing the WSDL is only necessary at the time whe
 
 To enable an http/https Get on the WSDL:
 
-1. Open the MDS web.config file in a text editor (<Program Files>\Microsoft SQL Server\Master Data Services\WebApplication\web.config). 
-2. Search for the tag serviceMetadata and set httpGetEnabled to true (or httpsGetEnabled if using SSL). 
+1. Open the MDS web.config file in a text editor (<Program Files>\Microsoft SQL Server\Master Data Services\WebApplication\web.config).
+2. Search for the tag serviceMetadata and set httpGetEnabled to true (or httpsGetEnabled if using SSL).
 
 To also enable service exception details for additional debugging (not necessary for standard, trapped errors):
 
-1. Search for the tag ‘serviceDebug’ and set includeExceptionDetailInFaults to true. 
+1. Search for the tag ï¿½serviceDebugï¿½ and set includeExceptionDetailInFaults to t
 
 After that you need to add a Service Reference to http://ServerName/MdsSiteName/service/service.svc and set the namespace to the service to "MDSTestService" in the following steps using Visual Studio.
 
 1. Click "Add Service Reference".
-2. In Address, enter the URL to the MDS service which will be “http://ServerName/MdsSiteName/service/service.svc”.
+2. In Address, enter the URL to the MDS service which will be ï¿½http://ServerName/MdsSiteName/service/service.svcï¿½.
 3. Specify the namespace to the service as "MDSTestService" in the Namespace box.
 4. Click the Advanced button to configure advanced settings.
 5. Check Always generate message contracts.

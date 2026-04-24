@@ -3,7 +3,7 @@ declare @verbose int = 0; -- change to 1 to get more verbose comparison;
 declare @source xml = '<place source XML result here>';
 declare @target xml = '<place target XML result here>';
 
-with 
+with
 src as(
 select property = x.v.value('name[1]', 'nvarchar(300)'),
 		value = x.v.value('value[1]', 'nvarchar(300)')

@@ -22,7 +22,7 @@ function format(d) {
                         + "</tr>");
         }
 
-        htAuditTrail = 
+        htAuditTrail =
             ('<table id="example" class="display" cellspacing="0" width="90%" style="padding-left:7%;padding-bottom:4%;padding-top:2%"><thead><tr><th>Product</th><th>Color</th><th>Size</th><th>Price</th><th>Quantity</th><th>Date Modified</th><th></th></tr></thead><tbody>'
              + innerTab
             + '</tbody></table>');
@@ -80,7 +80,7 @@ $(document).ready(function () {
                         alert("Product is successfully restored.");
 
                     }, false);
-                
+
             })
     });
 
@@ -116,7 +116,7 @@ $(function () {
                 $("span#snapshot").text('');
             } else {
                 $("span#snapshot").text("("+d.toDateString()+")");
-                $("#example").DataTable().ajax.url(jqdtAjaxSource + "?date=" + d.toISOString()).load();   
+                $("#example").DataTable().ajax.url(jqdtAjaxSource + "?date=" + d.toISOString()).load();
             }
         }
     });

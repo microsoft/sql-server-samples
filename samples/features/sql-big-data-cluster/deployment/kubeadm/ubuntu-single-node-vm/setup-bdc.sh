@@ -30,12 +30,12 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Requirements file.
 #
-export REQUIREMENTS_LINK="https://aka.ms/azdata"
+# export REQUIREMENTS_LINK="https://aka.ms/azdata"
 
 # Kube version.
 #
-KUBE_DPKG_VERSION=1.15.0-00
-KUBE_VERSION=1.15.0
+KUBE_DPKG_VERSION=1.20.7-00
+KUBE_VERSION=1.20.7
 
 # Wait for 5 minutes for the cluster to be ready.
 #
@@ -46,7 +46,7 @@ RETRY_INTERVAL=5
 #
 export DOCKER_REGISTRY="mcr.microsoft.com"
 export DOCKER_REPOSITORY="mssql/bdc"
-export DOCKER_TAG="2019-GDR1-ubuntu-16.04"
+export DOCKER_TAG="2019-CU13-ubuntu-20.04"
 
 # Variables used for azdata cluster creation.
 #
@@ -58,7 +58,7 @@ export STORAGE_CLASS=local-storage
 export PV_COUNT="30"
 
 IMAGES=(
-	mssql-app-service-proxy
+	    mssql-app-service-proxy
         mssql-control-watchdog
         mssql-controller
         mssql-dns
@@ -73,14 +73,12 @@ IMAGES=(
         mssql-monitor-influxdb
         mssql-monitor-kibana
         mssql-monitor-telegraf
-        mssql-security-domainctl
         mssql-security-knox
         mssql-security-support
-        mssql-server
         mssql-server-controller
         mssql-server-data
         mssql-ha-operator
-	mssql-ha-supervisor
+	    mssql-ha-supervisor
         mssql-service-proxy
         mssql-ssis-app-runtime
 )
@@ -92,12 +90,11 @@ mkdir -p $BDCDEPLOY_DIR
 cd $BDCDEPLOY_DIR/
 touch $LOG_FILE
 
-{
-# Install all necessary packages: kuberenetes, docker, python3, python3-pip, request, azdata.
+# Install all necessary packages: kubernetes, docker, python3, python3-pip, request, azdata.
 #
 echo ""
 echo "######################################################################################"
-echo "Starting installing packages..." 
+echo "Starting installing packages..."
 
 # Install docker.
 #
@@ -107,7 +104,11 @@ apt --yes install \
     software-properties-common \
     apt-transport-https \
     ca-certificates \
+    lsb-release \
+    gnupg \
+    wget \
     curl
+
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
@@ -115,36 +116,44 @@ add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
 apt update -q
-apt-get install -q --yes docker-ce=18.06.2~ce~3-0~ubuntu --allow-downgrades
-apt-mark hold docker-ce
+apt-cache policy docker-ce
+apt --yes install docker-ce
 
 usermod --append --groups docker $USER
 
 # Install python3, python3-pip, requests.
 #
-apt-get install -q -y python3 
-apt-get install -q -y python3-pip
-apt-get install -y libkrb5-dev
-apt-get install -y libsqlite3-dev
-apt-get install -y unixodbc-dev
+apt install -y libodbc1 odbcinst odbcinst1debian2 unixodbc apt-transport-https libkrb5-dev
 
-pip3 install requests --upgrade
-
-# Install and create virtualenv.
+# Download and install azdata package
 #
-pip3 install --upgrade virtualenv
-virtualenv -p python3 $VIRTUALENV_NAME
-source $VIRTUALENV_NAME/bin/activate
+echo ""
 
-# Install azdata cli.
-#
-pip3 install -r $REQUIREMENTS_LINK
-echo "Packages installed." 
+curl -sL https://packages.microsoft.com/keys/microsoft.asc |
+gpg --dearmor |
+tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+
+code=$(lsb_release -cs)
+if [ $code == "focal" ]; then
+   add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/20.04/prod.list)"
+elif [ $code == "bionic" ]; then
+   add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/18.04/prod.list)"
+elif [ $code == "xenial" ]; then
+   add-apt-repository "$(wget -qO- https://packages.microsoft.com/config/ubuntu/16.04/prod.list)"
+fi
+
+apt-get update
+apt-get install -y azdata-cli
+
+cd -
+
+azdata --version
+echo "Azdata has been successfully installed."
 
 # Load all pre-requisites for Kubernetes.
 #
 echo "###########################################################################"
-echo "Starting to setup pre-requisites for kubernetes..." 
+echo "Starting to setup pre-requisites for kubernetes..."
 
 # Setup the kubernetes preprequisites.
 #
@@ -196,7 +205,7 @@ apt-get install -q -y kubelet=$KUBE_DPKG_VERSION kubeadm=$KUBE_DPKG_VERSION kube
 # Holding the version of kube packages.
 #
 apt-mark hold kubelet kubeadm kubectl
-curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get | bash
+curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get-helm-3 | bash
 
 . /etc/os-release
 if [ "$UBUNTU_CODENAME" == "bionic" ]; then
@@ -227,13 +236,13 @@ for i in $(seq 1 $PV_COUNT); do
   mount --bind /mnt/local-storage/$vol /mnt/local-storage/$vol
 
 done
-echo "Kubernetes pre-requisites have been completed." 
+echo "Kubernetes pre-requisites have been completed."
 
 # Setup kubernetes cluster including remove taint on master.
 #
 echo ""
 echo "#############################################################################"
-echo "Starting to setup Kubernetes master..." 
+echo "Starting to setup Kubernetes master..."
 
 # Initialize a kubernetes cluster on the current node.
 #
@@ -297,7 +306,7 @@ echo "Kubernetes master setup done."
 #
 echo ""
 echo "############################################################################"
-echo "Starting to pull docker images..." 
+echo "Starting to pull docker images..."
 echo "Pulling images from repository: " $DOCKER_REGISTRY"/"$DOCKER_REPOSITORY
 
 for image in "${IMAGES[@]}";
@@ -305,13 +314,13 @@ do
     docker pull $DOCKER_REGISTRY/$DOCKER_REPOSITORY/$image:$DOCKER_TAG
     echo "Docker image" $image " pulled."
 done
-echo "Docker images pulled." 
+echo "Docker images pulled."
 
 # Deploy azdata bdc create cluster.
 #
 echo ""
 echo "############################################################################"
-echo "Starting to deploy azdata cluster..." 
+echo "Starting to deploy azdata cluster..."
 
 # Command to create cluster for single node cluster.
 #
@@ -323,7 +332,7 @@ azdata bdc config replace -c kubeadm-custom/bdc.json -j "$.spec.resources.data-0
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.data.className=$STORAGE_CLASS"
 azdata bdc config replace -c kubeadm-custom/control.json -j "spec.storage.logs.className=$STORAGE_CLASS"
 azdata bdc create -c kubeadm-custom --accept-eula $ACCEPT_EULA
-echo "Big data cluster created." 
+echo "Big data cluster created."
 
 # Setting context to cluster.
 #
@@ -333,10 +342,3 @@ kubectl config set-context --current --namespace $CLUSTER_NAME
 #
 azdata login -n $CLUSTER_NAME
 azdata bdc endpoint list --output table
-
-if [ -d "$HOME/.azdata/" ]; then
-        sudo chown -R $(id -u $SUDO_USER):$(id -g $SUDO_USER) $HOME/.azdata/
-fi
-
-echo "alias azdata='$BDCDEPLOY_DIR/$VIRTUALENV_NAME/bin/azdata'" >> $HOME/.bashrc
-}| tee $LOG_FILE

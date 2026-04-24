@@ -40,7 +40,7 @@ str(trainData)
 str(testData)
 
 ####################################################################################################
-## Random forest modeling with randomForest on the data frame 
+## Random forest modeling with randomForest on the data frame
 ####################################################################################################
 library(randomForest)
 
@@ -88,7 +88,7 @@ plot(M.ROC.randomForest[1,], M.ROC.randomForest[2,], main = "ROC Curves for Rand
 text(0.2, 0, paste("AUC=", round(randomForest.auc, 2)))
 
 ####################################################################################################
-## Extreme gradient boost modeling with xgboost on the data frame 
+## Extreme gradient boost modeling with xgboost on the data frame
 ####################################################################################################
 library(Matrix)
 library(xgboost)
@@ -140,7 +140,7 @@ plot(M.ROC.xgboost[1,], M.ROC.xgboost[2,], main = "ROC Curves for Xgboost", col 
 text(0.5, 0, paste("AUC=", round(xgboost.auc, 2)))
 
 ####################################################################################################
-## Decision forest modeling with rxDForest on SQL data source 
+## Decision forest modeling with rxDForest on SQL data source
 ####################################################################################################
 
 ##Train Model

@@ -22,7 +22,7 @@ SELECT @Cores = hyperthread_ratio FROM sys.dm_os_sys_info;
 SELECT @Edition = CONVERT(NVARCHAR(20), SERVERPROPERTY('Edition'))
 SELECT @SQLVersion = CONVERT(NVARCHAR(50), SERVERPROPERTY('ProductVersion'))
 
-SELECT SERVERPROPERTY('ServerName') AS [name],  
+SELECT SERVERPROPERTY('ServerName') AS [name],
 	CASE LEFT(@SQLVersion,4) WHEN '10.0' THEN '2008'
 		WHEN '10.5' THEN '2008R2'
 		WHEN '11.0' THEN '2012'
@@ -31,7 +31,7 @@ SELECT SERVERPROPERTY('ServerName') AS [name],
 		WHEN '14.0' THEN '2017'
 		WHEN '15.0' THEN '2019'
 		ELSE 'Other'
-		END AS [version], 
+		END AS [version],
 	LEFT(@Edition,CHARINDEX(' ', @Edition,0)-1) AS edition,
 	@Cores AS cores,
 	@HostType AS hostType;
@@ -40,7 +40,7 @@ SELECT SERVERPROPERTY('ServerName') AS [name],
 
 ## <a name="ps"></a> Powershell
 
-To collect registration information from **all instances in a single machine**, you can use the example Powershell script [EOS_DataGenerator_LocalDiscovery.ps1](./scripts/EOS_DataGenerator_LocalDiscovery.ps1). Can be used in an Azure VM, on-premises physical server or on-premises VM. 
+To collect registration information from **all instances in a single machine**, you can use the example Powershell script [EOS_DataGenerator_LocalDiscovery.ps1](./scripts/EOS_DataGenerator_LocalDiscovery.ps1). Can be used in an Azure VM, on-premises physical server or on-premises VM.
 
 **Note**: Verify if the **Host Type** is correct for your SQL Server instance before uploading the CSV file.
 

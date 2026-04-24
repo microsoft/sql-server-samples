@@ -5,7 +5,7 @@ BEGIN
 /*
 Notes:
   This procedure will randomly select a street suffix from the table
-  variable loaded herein. 
+  variable loaded herein.
 
   While it would be preferable to have implemented this as a function,
   the NEWID mechanism needed to make this work are not allowed within
@@ -18,8 +18,8 @@ Usage:
 */
 
   DECLARE @streetSuffix TABLE (street NVARCHAR(20))
-  
-  INSERT INTO @streetSuffix 
+
+  INSERT INTO @streetSuffix
   VALUES ('Street')
        , ('Road')
        , ('Avenue')
@@ -36,8 +36,8 @@ Usage:
        , ('Highway')
        , ('Alley')
        ;
-  
+
   SELECT TOP 1 @randomStreetSuffix = street FROM @streetSuffix ORDER BY NEWID()
-  RETURN 
+  RETURN
 
 END;

@@ -1,7 +1,7 @@
 ﻿PRINT 'Inserting Purchasing.Suppliers'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
 DECLARE @Bank NVARCHAR(50)
@@ -9,7 +9,7 @@ DECLARE @Bank NVARCHAR(50)
 -- City Variables
 DECLARE @myCityID            AS INT
 DECLARE @myCityName          AS NVARCHAR(50)
-DECLARE @myStateProvinceCode AS NVARCHAR(5) 
+DECLARE @myStateProvinceCode AS NVARCHAR(5)
 DECLARE @myStateProvinceName AS NVARCHAR(50)
 DECLARE @myAreaCode          AS NVARCHAR(3)
 
@@ -23,7 +23,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -37,7 +37,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   ( 1, 'A Datum Corporation'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Novelty Goods Supplier')
@@ -64,7 +64,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -78,8 +78,8 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
-VALUES  
+  , LastEditedBy, ValidFrom, ValidTo)
+VALUES
   ( 2, 'Contoso, Ltd.'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Novelty Goods Supplier')
   , [DataLoadSimulation].[GetPersonID] ('Hanna Mihhailov')
@@ -106,7 +106,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -120,7 +120,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
  ( 3, 'Consolidated Messenger'
  , [DataLoadSimulation].[GetSupplierCategoryID] ('Courier')
@@ -148,7 +148,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -162,7 +162,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   ( 4, 'Fabrikam, Inc.'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Clothing Supplier')
@@ -190,7 +190,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -204,7 +204,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   ( 5, 'Graphic Design Institute'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Novelty Goods Supplier')
@@ -232,7 +232,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -246,7 +246,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   ( 6, 'Humongous Insurance'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Insurance Services Supplier')
@@ -274,7 +274,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -288,7 +288,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   ( 7, 'Litware, Inc.'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Packaging Supplier')
@@ -316,7 +316,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -330,7 +330,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   ( 8, 'Lucerne Publishing'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Novelty Goods Supplier')
@@ -358,7 +358,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -372,7 +372,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   ( 9, 'Nod Publishers'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Novelty Goods Supplier')
@@ -400,7 +400,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -414,7 +414,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   (10, 'Northwind Electric Cars'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Toy Supplier')
@@ -442,7 +442,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -456,7 +456,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   (11, 'Trey Research'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Marketing Services Supplier')
@@ -484,7 +484,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -498,7 +498,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   (12, 'The Phone Company'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Novelty Goods Supplier')
@@ -526,7 +526,7 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 
 SET @Bank = 'Woodgrove Bank ' + @myCityName
 
-INSERT Purchasing.Suppliers 
+INSERT Purchasing.Suppliers
   ( SupplierID, SupplierName
   , SupplierCategoryID
   , PrimaryContactPersonID
@@ -540,7 +540,7 @@ INSERT Purchasing.Suppliers
   , WebsiteURL
   , DeliveryAddressLine1, DeliveryAddressLine2, DeliveryPostalCode, DeliveryLocation
   , PostalAddressLine1, PostalAddressLine2, PostalPostalCode
-  , LastEditedBy, ValidFrom, ValidTo) 
+  , LastEditedBy, ValidFrom, ValidTo)
 VALUES
   (13, 'Woodgrove Bank'
   , [DataLoadSimulation].[GetSupplierCategoryID] ('Financial Services Supplier')
@@ -559,11 +559,11 @@ VALUES
   )
 
 
-UPDATE s 
+UPDATE s
    SET s.DeliveryLocation = c.[Location]
-     , s.[ValidFrom] = DATEADD(minute, CEILING(RAND() * 5), @CurrentDateTime) 
-  FROM Purchasing.Suppliers AS s 
- INNER JOIN [Application].Cities AS c 
+     , s.[ValidFrom] = DATEADD(minute, CEILING(RAND() * 5), @CurrentDateTime)
+  FROM Purchasing.Suppliers AS s
+ INNER JOIN [Application].Cities AS c
          ON s.DeliveryCityID = c.CityID
 GO
 

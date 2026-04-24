@@ -1,4 +1,4 @@
-# Create a Kubernetes cluster using Kubeadm on Ubuntu 16.04 LTS or 18.04 LTS
+# Create a Kubernetes cluster using Kubeadm on Ubuntu 20.04 LTS
 
 
 ## __[ubuntu](ubuntu/)__

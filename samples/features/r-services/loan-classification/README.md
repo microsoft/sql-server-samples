@@ -1,5 +1,5 @@
 #  Loan Classification using SQL Server 2016 R Services #
- 
+
 During an Ignite keynote session, we had shown how customers are able to achieve a scale up of 1 million predictions/sec using SQL Server 2016 R Services. This sample contains all the scripts required to emulate a similar setup using Lending Club data with SQL Server 2016 R Services and an Azure Data Science VM.
 
 **Scripts**

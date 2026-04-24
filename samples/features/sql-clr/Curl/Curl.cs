@@ -9,10 +9,16 @@ using System.Threading;
 /// </summary>
 public partial class Curl
 {
+    static Curl()
+    {
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+    }
+
     [SqlFunction]
     [return: SqlFacet(MaxSize = -1)]
     public static SqlChars Get(SqlChars H, SqlChars url)
     {
+
         var client = new WebClient();
         AddHeader(H, client);
         return new SqlChars(
@@ -24,6 +30,7 @@ public partial class Curl
     [SqlProcedure]
     public static void Post(SqlChars H, SqlChars d, SqlChars url)
     {
+
         var client = new WebClient();
         AddHeader(H, client);
         if (d.IsNull)
@@ -39,6 +46,7 @@ public partial class Curl
     [SqlProcedure]
     public static void PostWithRetry(SqlChars H, SqlChars d, SqlChars url)
     {
+
         var client = new WebClient();
         AddHeader(H, client);
         if (d.IsNull)

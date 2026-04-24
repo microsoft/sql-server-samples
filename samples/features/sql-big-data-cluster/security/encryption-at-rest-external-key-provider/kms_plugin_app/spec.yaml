@@ -1,0 +1,15 @@
+name: encryption
+version: v1
+runtime: kms-plugin-python
+src: ./app.py
+entrypoint: handler
+replicas: 1
+poolsize: 1
+inputs:
+  operation: str
+  payload: str
+  pin: str
+  key_attributes: str
+  version: str
+output:
+  result: str

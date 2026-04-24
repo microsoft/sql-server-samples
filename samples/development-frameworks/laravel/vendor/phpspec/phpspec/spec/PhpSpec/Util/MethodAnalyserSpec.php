@@ -46,7 +46,7 @@ class MethodAnalyserSpec extends ObjectBehavior
         $this->methodIsEmpty('spec\PhpSpec\Util\ExampleObjectUsingTrait', 'emptyMethodInTrait')->shouldReturn(true);
         $this->methodIsEmpty('spec\PhpSpec\Util\ExampleObjectUsingTrait', 'nonEmptyMethodInTrait')->shouldReturn(false);
     }
-    
+
     function it_finds_the_real_declaring_class_of_a_method()
     {
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {

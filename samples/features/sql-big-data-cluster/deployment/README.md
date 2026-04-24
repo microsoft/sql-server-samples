@@ -14,3 +14,11 @@ Using the sample Python script in **aks** folder, you will deploy a Kubernetes c
 ## __[Push SQL Server big data cluster images to your own private Docker repository](offline/)__
 
 Using the sample Python script in **offline** folder, you will push the necessary images required for the deployment to your own repository.
+
+## __[Deploy SQL Server big data clusters (BDC) with Azure Kubernetes service (AKS) private cluster](private-aks/)__
+
+Using the sample Python script in **private-aks** folder, you will Deploy SQL Server big data cluster in in your private network with Azure Kubernetes service (AKS) private cluster.
+
+## __[OpenShift manifests and scripts](openshift/)__
+
+Use manifests and scripts in **openshift** folder, to support SQL Server Big Data Clusters on OpenShift.

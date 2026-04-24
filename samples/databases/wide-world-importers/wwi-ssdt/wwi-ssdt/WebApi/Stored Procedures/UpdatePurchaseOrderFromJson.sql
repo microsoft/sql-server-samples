@@ -17,7 +17,7 @@ AS BEGIN	UPDATE Purchasing.PurchaseOrders SET
 					ExpectedDeliveryDate date,
 					SupplierReference nvarchar(20),
 					IsOrderFinalized bit) as json
-			WHERE 
+			WHERE
 				Purchasing.PurchaseOrders.PurchaseOrderID = @PurchaseOrderID
 
 END

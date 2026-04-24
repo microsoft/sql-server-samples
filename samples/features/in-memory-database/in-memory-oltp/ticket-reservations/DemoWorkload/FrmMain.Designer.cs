@@ -72,9 +72,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.chtLatches)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chtCPU)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // btnRun
-            // 
+            //
             this.btnRun.BackColor = System.Drawing.Color.White;
             this.btnRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -86,9 +86,9 @@
             this.btnRun.Text = "Start";
             this.btnRun.UseVisualStyleBackColor = false;
             this.btnRun.Click += new System.EventHandler(this.OnRunClick);
-            // 
+            //
             // btnStop
-            // 
+            //
             this.btnStop.BackColor = System.Drawing.Color.White;
             this.btnStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -101,9 +101,9 @@
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = false;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
+            //
             // lbResults
-            // 
+            //
             this.lbResults.BackColor = System.Drawing.Color.Transparent;
             this.lbResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbResults.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(166)))));
@@ -113,9 +113,9 @@
             this.lbResults.TabIndex = 31;
             this.lbResults.Text = "Baseline";
             this.lbResults.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // menuStrip1
-            // 
+            //
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem});
@@ -125,32 +125,32 @@
             this.menuStrip1.Size = new System.Drawing.Size(815, 24);
             this.menuStrip1.TabIndex = 32;
             this.menuStrip1.Text = "menuStrip1";
-            // 
+            //
             // optionsToolStripMenuItem
-            // 
+            //
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configurationToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 22);
             this.optionsToolStripMenuItem.Text = "Options";
-            // 
+            //
             // configurationToolStripMenuItem
-            // 
+            //
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
             this.configurationToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.configurationToolStripMenuItem.Text = "Configuration";
             this.configurationToolStripMenuItem.Click += new System.EventHandler(this.configurationToolStripMenuItem_Click);
-            // 
+            //
             // exitToolStripMenuItem
-            // 
+            //
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
+            //
             // ErrorMessages
-            // 
+            //
             this.ErrorMessages.Location = new System.Drawing.Point(846, 79);
             this.ErrorMessages.Multiline = true;
             this.ErrorMessages.Name = "ErrorMessages";
@@ -159,9 +159,9 @@
             this.ErrorMessages.Size = new System.Drawing.Size(360, 272);
             this.ErrorMessages.TabIndex = 5;
             this.ErrorMessages.TabStop = false;
-            // 
+            //
             // chtTPS
-            // 
+            //
             this.chtTPS.BackColor = System.Drawing.Color.Transparent;
             chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
             chartArea1.AxisX.MajorGrid.Enabled = false;
@@ -194,9 +194,9 @@
             this.chtTPS.Size = new System.Drawing.Size(348, 268);
             this.chtTPS.TabIndex = 33;
             this.chtTPS.Text = "chart1";
-            // 
+            //
             // statusStrip1
-            // 
+            //
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
@@ -208,40 +208,40 @@
             this.statusStrip1.Size = new System.Drawing.Size(815, 22);
             this.statusStrip1.TabIndex = 35;
             this.statusStrip1.Text = "statusStrip1";
-            // 
+            //
             // toolStripStatusLabel1
-            // 
+            //
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(80, 17);
             this.toolStripStatusLabel1.Text = "Elapsed Time:";
-            // 
+            //
             // lblTime
-            // 
+            //
             this.lblTime.Name = "lblTime";
             this.lblTime.Size = new System.Drawing.Size(13, 17);
             this.lblTime.Text = "0";
-            // 
+            //
             // toolStripStatusLabel3
-            // 
+            //
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(100, 17);
             this.toolStripStatusLabel3.Text = "Running Threads:";
-            // 
+            //
             // lblThreads
-            // 
+            //
             this.lblThreads.Name = "lblThreads";
             this.lblThreads.Size = new System.Drawing.Size(13, 17);
             this.lblThreads.Text = "0";
-            // 
+            //
             // splitContainer1
-            // 
+            //
             this.splitContainer1.BackColor = System.Drawing.Color.Transparent;
             this.splitContainer1.Location = new System.Drawing.Point(0, 25);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
+            //
             // splitContainer1.Panel1
-            // 
+            //
             this.splitContainer1.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.splitContainer1.Panel1.Controls.Add(this.label4);
             this.splitContainer1.Panel1.Controls.Add(this.speedDialPanel);
@@ -252,17 +252,17 @@
             this.splitContainer1.Panel1.Controls.Add(this.btnRun);
             this.splitContainer1.Panel1.Controls.Add(this.btnStop);
             this.splitContainer1.Panel1.Controls.Add(this.lbResults);
-            // 
+            //
             // splitContainer1.Panel2
-            // 
+            //
             this.splitContainer1.Panel2.Controls.Add(this.chtLatches);
             this.splitContainer1.Panel2.Controls.Add(this.chtCPU);
             this.splitContainer1.Size = new System.Drawing.Size(786, 655);
             this.splitContainer1.SplitterDistance = 398;
             this.splitContainer1.TabIndex = 39;
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.AutoSize = true;
             this.label4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -272,17 +272,17 @@
             this.label4.Size = new System.Drawing.Size(122, 13);
             this.label4.TabIndex = 45;
             this.label4.Text = "Transactions/sec x1000";
-            // 
+            //
             // speedDialPanel
-            // 
+            //
             this.speedDialPanel.Location = new System.Drawing.Point(21, 86);
             this.speedDialPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.speedDialPanel.Name = "speedDialPanel";
             this.speedDialPanel.Size = new System.Drawing.Size(319, 260);
             this.speedDialPanel.TabIndex = 43;
-            // 
+            //
             // label2
-            // 
+            //
             this.label2.AutoSize = true;
             this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -292,9 +292,9 @@
             this.label2.Size = new System.Drawing.Size(124, 17);
             this.label2.TabIndex = 42;
             this.label2.Text = "Transactions / sec";
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -303,9 +303,9 @@
             this.label1.Size = new System.Drawing.Size(260, 17);
             this.label1.TabIndex = 41;
             this.label1.Text = "Increase in performance since last reset";
-            // 
+            //
             // btnToggle
-            // 
+            //
             this.btnToggle.BackColor = System.Drawing.Color.White;
             this.btnToggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -317,9 +317,9 @@
             this.btnToggle.Text = "Show diagnostics ";
             this.btnToggle.UseVisualStyleBackColor = false;
             this.btnToggle.Click += new System.EventHandler(this.btnToggle_Click);
-            // 
+            //
             // chtLatches
-            // 
+            //
             chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
             chartArea2.AxisX.LabelStyle.Enabled = false;
             chartArea2.AxisX.LineColor = System.Drawing.Color.White;
@@ -349,9 +349,9 @@
             this.chtLatches.Size = new System.Drawing.Size(685, 84);
             this.chtLatches.TabIndex = 42;
             this.chtLatches.Text = "chart1";
-            // 
+            //
             // chtCPU
-            // 
+            //
             this.chtCPU.BackColor = System.Drawing.Color.Transparent;
             chartArea3.AxisX.LabelStyle.Enabled = false;
             chartArea3.AxisX.LineColor = System.Drawing.Color.White;
@@ -386,9 +386,9 @@
             this.chtCPU.Series.Add(series3);
             this.chtCPU.Size = new System.Drawing.Size(786, 253);
             this.chtCPU.TabIndex = 41;
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Location = new System.Drawing.Point(843, 40);
@@ -396,9 +396,9 @@
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 11;
             this.label3.Text = "Error Messages:";
-            // 
+            //
             // FrmMain
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;

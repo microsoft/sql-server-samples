@@ -1803,12 +1803,12 @@ WITH RESULT SETS
 WITH RESULT SETS
 (
     (
-        [WWI Employee ID] int, 
-        Employee nvarchar(50), 
-        [Preferred Name] nvarchar(50), 
-        [Is Salesperson] bit, 
-        Photo varbinary(max), 
-        [Valid From] datetime2(7), 
+        [WWI Employee ID] int,
+        Employee nvarchar(50),
+        [Preferred Name] nvarchar(50),
+        [Is Salesperson] bit,
+        Photo varbinary(max),
+        [Valid From] datetime2(7),
         [Valid To] datetime2(7)
     )
 );</property>
@@ -7311,7 +7311,7 @@ WITH RESULT SETS
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -7823,7 +7823,7 @@ WITH RESULT SETS
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">EXEC Integration.GetSupplierUpdates ?, ?
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC Integration.GetSupplierUpdates ?, ?
 WITH RESULT SETS
 (
     (
@@ -8108,7 +8108,7 @@ WITH RESULT SETS
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -8510,7 +8510,7 @@ WITH RESULT SETS
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">EXEC Integration.GetTransactionUpdates ?, ?
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC Integration.GetTransactionUpdates ?, ?
 WITH RESULT SETS
 (
     (
@@ -8956,7 +8956,7 @@ WITH RESULT SETS
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -9464,7 +9464,7 @@ WITH RESULT SETS
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">EXEC Integration.GetTransactionTypeUpdates ?, ?
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXEC Integration.GetTransactionTypeUpdates ?, ?
 WITH RESULT SETS
 (
     (
@@ -9642,7 +9642,7 @@ WITH RESULT SETS
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -10089,35 +10089,35 @@ WITH RESULT SETS
       <GraphLayout
         Capacity="256" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="291,42"
+          Size="291.2,41.6"
           Id="Package\Calculate ETL Cutoff Time backup"
           TopLeft="204.500000000001,149.5" />
         <NodeLayout
-          Size="291,42"
+          Size="291.2,41.6"
           Id="Package\Ensure Date Dimension includes current year"
           TopLeft="204.500000000001,297.366666666667" />
         <NodeLayout
-          Size="252,42"
+          Size="252,41.6"
           Id="Package\Load City Dimension\Extract Updated City Data to Staging"
           TopLeft="5.50000000000006,413.5" />
         <NodeLayout
-          Size="218,42"
+          Size="217.6,41.6"
           Id="Package\Load City Dimension\Get Last City ETL Cutoff Time"
           TopLeft="22.5000000000001,311.5" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Load City Dimension\Get Lineage Key"
           TopLeft="53.5,107.5" />
         <NodeLayout
-          Size="196,42"
+          Size="196,41.6"
           Id="Package\Load City Dimension\Migrate Staged City Data"
           TopLeft="33.5000000000001,515.5" />
         <NodeLayout
-          Size="184,42"
+          Size="184,41.6"
           Id="Package\Load City Dimension\Set TableName to City"
           TopLeft="39.5,5.5" />
         <NodeLayout
-          Size="183,42"
+          Size="183.2,41.6"
           Id="Package\Load City Dimension\Truncate City_Staging"
           TopLeft="40,209.5" />
         <EdgeLayout
@@ -10139,9 +10139,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10163,9 +10161,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10187,9 +10183,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10211,9 +10205,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10235,40 +10227,38 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="263,612"
-          Size="291,43"
+          PanelSize="291.2,612"
+          Size="291.2,43.2"
           Id="Package\Load City Dimension"
           TopLeft="204.500000000001,371.3" />
         <NodeLayout
-          Size="279,42"
+          Size="279.2,41.6"
           Id="Package\Load Customer Dimension\Extract Updated Customer Data to Staging"
           TopLeft="5.50000000000006,413.5" />
         <NodeLayout
-          Size="245,42"
+          Size="244.8,41.6"
           Id="Package\Load Customer Dimension\Get Last Customer ETL Cutoff Time"
           TopLeft="22.5000000000001,311.5" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Load Customer Dimension\Get Lineage Key"
           TopLeft="67,107.5" />
         <NodeLayout
-          Size="224,42"
+          Size="224,41.6"
           Id="Package\Load Customer Dimension\Migrate Staged Customer Data"
           TopLeft="33.0000000000001,515.5" />
         <NodeLayout
-          Size="211,42"
+          Size="211.2,41.6"
           Id="Package\Load Customer Dimension\Set TableName to Customer"
           TopLeft="39.5,5.5" />
         <NodeLayout
-          Size="210,42"
+          Size="209.6,41.6"
           Id="Package\Load Customer Dimension\Truncate Customer_Staging"
           TopLeft="40,209.5" />
         <EdgeLayout
@@ -10384,32 +10374,32 @@ WITH RESULT SETS
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="290,613"
-          Size="291,43"
+          PanelSize="291.2,612.8"
+          Size="291.2,43.2"
           Id="Package\Load Customer Dimension"
           TopLeft="204.500000000001,446.233333333333" />
         <NodeLayout
-          Size="280,42"
+          Size="280,41.6"
           Id="Package\Load Employee Dimension\Extract Updated Employee Data to Staging"
           TopLeft="5.50000000000006,413.5" />
         <NodeLayout
-          Size="246,42"
+          Size="246.4,41.6"
           Id="Package\Load Employee Dimension\Get Last Employee ETL Cutoff Time"
           TopLeft="22.5000000000001,311.5" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Load Employee Dimension\Get Lineage Key"
           TopLeft="67.5,107.5" />
         <NodeLayout
-          Size="224,42"
+          Size="224,41.6"
           Id="Package\Load Employee Dimension\Migrate Staged Employee Data"
           TopLeft="33.5000000000001,515.5" />
         <NodeLayout
-          Size="212,42"
+          Size="212,41.6"
           Id="Package\Load Employee Dimension\Set TableName to Employee"
           TopLeft="39.5,5.5" />
         <NodeLayout
-          Size="211,42"
+          Size="211.2,41.6"
           Id="Package\Load Employee Dimension\Truncate Employee_Staging"
           TopLeft="40,209.5" />
         <EdgeLayout
@@ -10431,9 +10421,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10455,9 +10443,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10479,9 +10465,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10503,9 +10487,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -10527,16 +10509,14 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="291,613"
-          Size="291,43"
+          PanelSize="291.2,612.8"
+          Size="226.4,43.2"
           Id="Package\Load Employee Dimension"
           TopLeft="204.500000000001,521.166666666667" />
         <NodeLayout
@@ -10687,7 +10667,7 @@ WITH RESULT SETS
           HeaderHeight="43"
           IsExpanded="False"
           PanelSize="295,613"
-          Size="291,43"
+          Size="291.2,43.2"
           Id="Package\Load Movement Fact"
           TopLeft="204.500000000001,895.833333333333" />
         <NodeLayout
@@ -10837,8 +10817,8 @@ WITH RESULT SETS
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="272,613"
-          Size="291,43"
+          PanelSize="291,613"
+          Size="291.2,43.2"
           Id="Package\Load Order Fact"
           TopLeft="204.500000000001,970.766666666666" />
         <NodeLayout
@@ -10989,31 +10969,31 @@ WITH RESULT SETS
           HeaderHeight="43"
           IsExpanded="False"
           PanelSize="325,613"
-          Size="291,43"
+          Size="291.2,43.2"
           Id="Package\Load Payment Method Dimension"
           TopLeft="204.500000000001,596.1" />
         <NodeLayout
-          Size="277,42"
+          Size="276.8,41.6"
           Id="Package\Load Purchase Fact\Extract Updated Purchase Data to Staging"
           TopLeft="5.50000000000006,413.5" />
         <NodeLayout
-          Size="249,42"
+          Size="248.8,41.6"
           Id="Package\Load Purchase Fact\Get Last Movement ETL Cutoff Time"
           TopLeft="19.5000000000001,311.5" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Load Purchase Fact\Get Lineage Key"
           TopLeft="66,107.5" />
         <NodeLayout
-          Size="221,42"
+          Size="220.8,41.6"
           Id="Package\Load Purchase Fact\Migrate Staged Purchase Data"
           TopLeft="33.5000000000001,515.5" />
         <NodeLayout
-          Size="209,42"
+          Size="208.8,41.6"
           Id="Package\Load Purchase Fact\Set TableName to Purchase"
           TopLeft="39.5,5.5" />
         <NodeLayout
-          Size="208,42"
+          Size="208,41.6"
           Id="Package\Load Purchase Fact\Truncate Purchase_Staging"
           TopLeft="40,209.5" />
         <EdgeLayout
@@ -11035,9 +11015,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11059,9 +11037,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11083,9 +11059,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11107,9 +11081,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11131,40 +11103,38 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="288,613"
-          Size="291,43"
+          PanelSize="291.2,612.8"
+          Size="291.2,43.2"
           Id="Package\Load Purchase Fact"
           TopLeft="204.500000000001,1045.7" />
         <NodeLayout
-          Size="254,42"
+          Size="254.4,41.6"
           Id="Package\Load Sale Fact\Extract Updated Sale Data to Staging"
           TopLeft="5.50000000000006,413.5" />
         <NodeLayout
-          Size="249,42"
+          Size="248.8,41.6"
           Id="Package\Load Sale Fact\Get Last Movement ETL Cutoff Time"
           TopLeft="8.00000000000006,311.5" />
         <NodeLayout
-          Size="156,42"
+          Size="156,41.6"
           Id="Package\Load Sale Fact\Get Lineage Key"
           TopLeft="54.5,107.5" />
         <NodeLayout
-          Size="198,42"
+          Size="198.4,41.6"
           Id="Package\Load Sale Fact\Migrate Staged Sale Data"
           TopLeft="33.5000000000001,515.5" />
         <NodeLayout
-          Size="186,42"
+          Size="185.6,41.6"
           Id="Package\Load Sale Fact\Set TableName to Sale"
           TopLeft="39.5,5.5" />
         <NodeLayout
-          Size="185,42"
+          Size="184.8,41.6"
           Id="Package\Load Sale Fact\Truncate Sale_Staging"
           TopLeft="40,209.5" />
         <EdgeLayout
@@ -11186,9 +11156,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11210,9 +11178,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11234,9 +11200,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11258,9 +11222,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11282,16 +11244,14 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="265,613"
-          Size="291,43"
+          PanelSize="291.2,612.8"
+          Size="172,43.2"
           Id="Package\Load Sale Fact"
           TopLeft="204.500000000001,1120.63333333333" />
         <NodeLayout
@@ -11441,8 +11401,8 @@ WITH RESULT SETS
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="282,613"
-          Size="291,43"
+          PanelSize="291,613"
+          Size="291.2,43.2"
           Id="Package\Load Stock Holding Fact"
           TopLeft="204.500000000001,1195.56666666667" />
         <NodeLayout
@@ -11593,7 +11553,7 @@ WITH RESULT SETS
           HeaderHeight="43"
           IsExpanded="False"
           PanelSize="297,613"
-          Size="291,43"
+          Size="291.2,43.2"
           Id="Package\Load Stock Item Dimension"
           TopLeft="204.500000000001,671.033333333333" />
         <NodeLayout
@@ -11743,8 +11703,8 @@ WITH RESULT SETS
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="False"
-          PanelSize="284,613"
-          Size="291,43"
+          PanelSize="291,613"
+          Size="291.2,43.2"
           Id="Package\Load Supplier Dimension"
           TopLeft="204.500000000001,745.966666666666" />
         <NodeLayout
@@ -11895,7 +11855,7 @@ WITH RESULT SETS
           HeaderHeight="43"
           IsExpanded="False"
           PanelSize="300,613"
-          Size="291,43"
+          Size="291.2,43.2"
           Id="Package\Load Transaction Fact"
           TopLeft="204.500000000001,1270.5" />
         <NodeLayout
@@ -12046,11 +12006,11 @@ WITH RESULT SETS
           HeaderHeight="43"
           IsExpanded="False"
           PanelSize="327,613"
-          Size="291,43"
+          Size="291.2,43.2"
           Id="Package\Load Transaction Type Dimension"
           TopLeft="204.500000000001,820.9" />
         <NodeLayout
-          Size="291,42"
+          Size="291.2,41.6"
           Id="Package\Trim Any Milliseconds"
           TopLeft="204.500000000001,223.433333333333" />
         <EdgeLayout
@@ -12077,18 +12037,18 @@ WITH RESULT SETS
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="350.000000000001,339.366666666667">
+          TopLeft="350.100000000001,338.966666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.9333333333333"
+              EndConnector="0,32.333333333333"
               Start="0,0"
-              End="0,24.4333333333333">
+              End="0,24.833333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.4333333333333" />
+                    End="0,24.833333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12121,18 +12081,18 @@ WITH RESULT SETS
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 11]"
-          TopLeft="350.000000000001,1013.76666666667">
+          TopLeft="350.100000000001,1013.96666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.9333333333333"
+              EndConnector="0,31.733333333334"
               Start="0,0"
-              End="0,24.4333333333333">
+              End="0,24.233333333334">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.4333333333333" />
+                    End="0,24.233333333334" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12143,18 +12103,30 @@ WITH RESULT SETS
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 12]"
-          TopLeft="350.000000000001,1088.7">
+          TopLeft="350.100000000001,1088.9">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.9333333333334"
+              EndConnector="-59.5999999999999,31.7333333333299"
               Start="0,0"
-              End="0,24.4333333333334">
+              End="-59.5999999999999,24.2333333333299">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.4333333333334" />
+                    End="0,11.866666666665" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.866666666665"
+                    Point2="0,15.866666666665"
+                    Point3="-4,15.866666666665" />
+                  <mssgle:LineSegment
+                    End="-55.5999999999999,15.866666666665" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-55.5999999999999,15.866666666665"
+                    Point2="-59.5999999999999,15.866666666665"
+                    Point3="-59.5999999999999,19.866666666665" />
+                  <mssgle:LineSegment
+                    End="-59.5999999999999,24.2333333333299" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12165,18 +12137,30 @@ WITH RESULT SETS
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 13]"
-          TopLeft="350.000000000001,1163.63333333333">
+          TopLeft="290.500000000001,1163.83333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.9333333333334"
+              EndConnector="59.6,31.7333333333399"
               Start="0,0"
-              End="0,24.4333333333334">
+              End="59.6,24.2333333333399">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.4333333333334" />
+                    End="0,11.86666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.86666666667"
+                    Point2="0,15.86666666667"
+                    Point3="4,15.86666666667" />
+                  <mssgle:LineSegment
+                    End="55.6,15.86666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="55.6,15.86666666667"
+                    Point2="59.6,15.86666666667"
+                    Point3="59.6,19.86666666667" />
+                  <mssgle:LineSegment
+                    End="59.6,24.2333333333399" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12231,18 +12215,18 @@ WITH RESULT SETS
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="350.000000000001,414.3">
+          TopLeft="350.100000000001,414.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.9333333333333"
+              EndConnector="0,31.733333333333"
               Start="0,0"
-              End="0,24.4333333333333">
+              End="0,24.233333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.4333333333333" />
+                    End="0,24.233333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12253,18 +12237,30 @@ WITH RESULT SETS
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="350.000000000001,489.233333333333">
+          TopLeft="350.100000000001,489.433333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.9333333333333"
+              EndConnector="-32.3999999999999,31.733333333334"
               Start="0,0"
-              End="0,24.4333333333333">
+              End="-32.3999999999999,24.233333333334">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.4333333333333" />
+                    End="0,11.866666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.866666666667"
+                    Point2="0,15.866666666667"
+                    Point3="-4,15.866666666667" />
+                  <mssgle:LineSegment
+                    End="-28.3999999999999,15.866666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-28.3999999999999,15.866666666667"
+                    Point2="-32.3999999999999,15.866666666667"
+                    Point3="-32.3999999999999,19.866666666667" />
+                  <mssgle:LineSegment
+                    End="-32.3999999999999,24.233333333334" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12275,18 +12271,30 @@ WITH RESULT SETS
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 5]"
-          TopLeft="350.000000000001,564.166666666667">
+          TopLeft="317.700000000001,564.366666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.9333333333333"
+              EndConnector="32.4,31.733333333333"
               Start="0,0"
-              End="0,24.4333333333333">
+              End="32.4,24.233333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.4333333333333" />
+                    End="0,11.8666666666665" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.8666666666665"
+                    Point2="0,15.8666666666665"
+                    Point3="4,15.8666666666665" />
+                  <mssgle:LineSegment
+                    End="28.4,15.8666666666665" />
+                  <mssgle:CubicBezierSegment
+                    Point1="28.4,15.8666666666665"
+                    Point2="32.4,15.8666666666665"
+                    Point3="32.4,19.8666666666665" />
+                  <mssgle:LineSegment
+                    End="32.4,24.233333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12390,13 +12398,13 @@ WITH RESULT SETS
     design-time-name="Package\Load City Dimension\Extract Updated City Data to Staging">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="209,42"
+          Size="208.8,41.6"
           Id="Package\Load City Dimension\Extract Updated City Data to Staging\Integration_GetCityUpdates"
           TopLeft="5.50000000000001,5.5" />
         <NodeLayout
-          Size="196,42"
+          Size="196,41.6"
           Id="Package\Load City Dimension\Extract Updated City Data to Staging\Integration_City_Staging"
           TopLeft="12,107.5" />
         <EdgeLayout
@@ -12418,9 +12426,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -12761,13 +12767,13 @@ WITH RESULT SETS
     design-time-name="Package\Load Sale Fact\Extract Updated Sale Data to Staging">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="211,42"
+          Size="211.2,41.6"
           Id="Package\Load Sale Fact\Extract Updated Sale Data to Staging\Integration_GetSaleUpdates"
           TopLeft="5.50000000000001,5.5" />
         <NodeLayout
-          Size="198,42"
+          Size="198.4,41.6"
           Id="Package\Load Sale Fact\Extract Updated Sale Data to Staging\Integration_Sale_Staging"
           TopLeft="12,107.5" />
         <EdgeLayout
@@ -12789,9 +12795,7 @@ WITH RESULT SETS
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

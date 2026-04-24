@@ -1,6 +1,6 @@
 /*
 SQLCMD script to generate the required
-objects to support a centralized 
+objects to support a centralized
 Policy-Based Management solution.
 This is the first script to run.
 
@@ -27,10 +27,10 @@ EXEC sys.sp_executesql N'CREATE SCHEMA [policy] AUTHORIZATION [dbo]'
 
 --Start create tables and indexes
 
---Create the table to store the results from the 
+--Create the table to store the results from the
 --PowerShell evaluation.
 IF NOT EXISTS(SELECT * FROM sys.objects WHERE type = N'U' AND name = N'PolicyHistory')
-BEGIN 
+BEGIN
 	CREATE TABLE [policy].[PolicyHistory](
 		[PolicyHistoryID] [int] IDENTITY NOT NULL ,
 		[EvaluatedServer] [nvarchar](50) NULL,
@@ -45,7 +45,7 @@ BEGIN
 END
 GO
 	IF EXISTS(SELECT * FROM sys.columns WHERE object_id = object_id('policy.policyhistory')	AND name = 'PolicyResult')
-		BEGIN 
+		BEGIN
 			ALTER TABLE policy.PolicyHistory
 			DROP COLUMN PolicyResult
 		END
@@ -58,7 +58,7 @@ GO
 
 	CREATE XML INDEX IX_EvaluationResults_PROPERTY ON policy.PolicyHistory(EvaluationResults)
 	USING XML INDEX IX_EvaluationResults
-	FOR PROPERTY  
+	FOR PROPERTY
 	GO
 
 	IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistory]') AND name = N'IX_EvaluatedPolicy')
@@ -75,20 +75,20 @@ GO
 	INCLUDE ([PolicyHistoryID],[EvaluationDateTime],[EvaluatedPolicy])
 	GO
 
---Create the table to store the error information from the 
+--Create the table to store the error information from the
 --failed PowerShell executions.
 
 IF NOT EXISTS(
 	SELECT * FROM sys.objects WHERE type = N'U' AND name = N'EvaluationErrorHistory'
 	)
-BEGIN 
+BEGIN
 	CREATE TABLE [policy].[EvaluationErrorHistory](
 		[ErrorHistoryID] [int] IDENTITY(1,1) NOT NULL,
 		[EvaluatedServer] [nvarchar](50) NULL,
 		[EvaluationDateTime] [datetime] NULL,
 		[EvaluatedPolicy] [nvarchar](128) NULL,
 		[EvaluationResults] [nvarchar](max) NOT NULL,
-	CONSTRAINT PK_EvaluationErrorHistory PRIMARY KEY CLUSTERED 
+	CONSTRAINT PK_EvaluationErrorHistory PRIMARY KEY CLUSTERED
 	(
 		[ErrorHistoryID] ASC
 	)) ON [PRIMARY]
@@ -110,8 +110,8 @@ GO
 
 
 --Create the table to store the policy result details.
---This table is loaded with the procedure 
---policy.epm_LoadPolicyHistoryDetail or through 
+--This table is loaded with the procedure
+--policy.epm_LoadPolicyHistoryDetail or through
 --the SQL Server 2008 SSIS policy package.
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND type in (N'U'))
 BEGIN
@@ -139,20 +139,20 @@ GO
 	DROP INDEX IX_EvaluatedPolicy ON policy.PolicyHistoryDetail
 	GO
 	CREATE INDEX IX_EvaluatedPolicy ON [policy].[PolicyHistoryDetail]
-	([EvaluatedPolicy]) 
-	INCLUDE ([PolicyHistoryID], 
-		[EvaluatedServer], 
-		[EvaluationDateTime], 
-		[MonthYear], 
-		[policy_id], 
-		[CategoryName], 
-		[EvaluatedObject], 
+	([EvaluatedPolicy])
+	INCLUDE ([PolicyHistoryID],
+		[EvaluatedServer],
+		[EvaluationDateTime],
+		[MonthYear],
+		[policy_id],
+		[CategoryName],
+		[EvaluatedObject],
 		[PolicyResult])
 		
 	IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = N'IX_PolicyHistoryView')
 	DROP INDEX IX_PolicyHistoryView ON policy.PolicyHistoryDetail
 	GO
-	CREATE NONCLUSTERED INDEX [IX_PolicyHistoryView] ON [policy].[PolicyHistoryDetail] 
+	CREATE NONCLUSTERED INDEX [IX_PolicyHistoryView] ON [policy].[PolicyHistoryDetail]
 	(   [EvaluatedPolicy] ASC,
 		[EvaluatedServer] ASC,
 		[EvaluatedObject] ASC,
@@ -166,7 +166,7 @@ GO
 	IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = N'IX_EvaluatedServer')
 	DROP INDEX IX_EvaluatedServer ON policy.PolicyHistoryDetail
 	GO
-	CREATE NONCLUSTERED INDEX [IX_EvaluatedServer] ON [policy].[PolicyHistoryDetail] 
+	CREATE NONCLUSTERED INDEX [IX_EvaluatedServer] ON [policy].[PolicyHistoryDetail]
 	(	[EvaluatedServer] ASC,
 		[EvaluatedPolicy] ASC,
 		[EvaluatedObject] ASC,
@@ -187,7 +187,7 @@ GO
 	CREATE STATISTICS [Stat_EvaluatedPolicy] ON [policy].[PolicyHistoryDetail]([EvaluatedPolicy], [CategoryName])
 	GO
 
-	IF EXISTS(SELECT * FROM sys.stats WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = 'Stat_CategoryName') 
+	IF EXISTS(SELECT * FROM sys.stats WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = 'Stat_CategoryName')
 	DROP STATISTICS policy.[PolicyHistoryDetail].[Stat_CategoryName]
 	GO
 	CREATE STATISTICS [Stat_CategoryName] ON [policy].[PolicyHistoryDetail]([CategoryName], [EvaluatedServer])
@@ -222,8 +222,8 @@ GO
 --The following function will support nested
 --CMS folders for the EPM Framework
 --The function must be created in a database ON the
---CMS server. This database will also store the 
---policy history. 
+--CMS server. This database will also store the
+--policy history.
 
 USE $(ManagementDatabase)
 GO
@@ -232,7 +232,7 @@ IF EXISTS(SELECT * FROM sys.objects WHERE name = 'pfn_ServerGroupInstances' AND 
 GO
 CREATE FUNCTION policy.pfn_ServerGroupInstances
 	(@server_group_name NVARCHAR(128))
-	RETURNS @ServerGroups TABLE 
+	RETURNS @ServerGroups TABLE
 	(server_name nvarchar(128)
 	, GroupName nvarchar(128)
 	)
@@ -247,15 +247,15 @@ CREATE FUNCTION policy.pfn_ServerGroupInstances
 			ON s.server_group_id = ssg.server_group_id
 		END
 		ELSE
-			WITH ServerGroups(parent_id, server_group_id, name) AS 
+			WITH ServerGroups(parent_id, server_group_id, name) AS
 			(
-				SELECT parent_id, server_group_id, name 
+				SELECT parent_id, server_group_id, name
 				FROM msdb.dbo.sysmanagement_shared_server_groups tg
 				WHERE is_system_object = 0
 				AND (tg.name = @server_group_name
 				OR @server_group_name = '')	
 				UNION ALL
-				SELECT cg.parent_id, cg.server_group_id, cg.name 
+				SELECT cg.parent_id, cg.server_group_id, cg.name
 				FROM msdb.dbo.sysmanagement_shared_server_groups cg
 				INNER JOIN ServerGroups pg
 				ON cg.parent_id = pg.server_group_id
@@ -263,31 +263,31 @@ CREATE FUNCTION policy.pfn_ServerGroupInstances
 			INSERT @ServerGroups
 			SELECT s.server_name, sg.name as GroupName
 			FROM [msdb].[dbo].[sysmanagement_shared_registered_servers_internal] s
-			INNER JOIN ServerGroups SG 
+			INNER JOIN ServerGroups SG
 			ON s.server_group_id = sg.server_group_id
 			RETURN
 	END
 GO
 
---Create the views which are used in 
+--Create the views which are used in
 --the policy reports
 
---Drop the view if it exists.  
+--Drop the view if it exists.
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_ServerGroups]'))
 DROP VIEW [policy].[v_ServerGroups]
 GO
-CREATE VIEW policy.v_ServerGroups AS 
+CREATE VIEW policy.v_ServerGroups AS
 	WITH ServerGroups(parent_id
 		, server_group_id
 		, GroupName
 		, GroupLevel
 		, Sort
-		, GroupValue) 
-	AS 
+		, GroupValue)
+	AS
 	(SELECT parent_id
 			, server_group_id
 			, cast('ALL' as varchar(500))
-			, 1 as GroupLevel 
+			, 1 as GroupLevel
 			, cast('ALL' as varchar(500)) as Sort
 			, cast('' as varchar(255))AS GroupValue
 		FROM msdb.dbo.sysmanagement_shared_server_groups tg
@@ -310,18 +310,18 @@ CREATE VIEW policy.v_ServerGroups AS
 			, GroupLevel
 			, Sort
 			, GroupValue
-		FROM	ServerGroups 
+		FROM	ServerGroups
 GO			
 
 
---Drop the view if it exists.  
+--Drop the view if it exists.
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_PolicyHistory]'))
 DROP VIEW [policy].[v_PolicyHistory]
 GO
 CREATE VIEW policy.v_PolicyHistory
 AS
 --The policy.v_PolicyHistory view will return all results
---and identify the policy evaluation result AS PASS, FAIL, or 
+--and identify the policy evaluation result AS PASS, FAIL, or
 --ERROR.  The ERROR result indicates that the policy was not able
 --to evaluate against an object.
 	SELECT PH.PolicyHistoryID
@@ -337,12 +337,12 @@ AS
 	 , PH.MonthYear
 	FROM policy.PolicyHistoryDetail PH
 	INNER JOIN msdb.dbo.syspolicy_policies AS p ON p.name = PH.EvaluatedPolicy
-	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c ON 
+	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c ON
 	p.policy_category_id = c.policy_category_id
 GO
 
 
---Drop the view if it exists.  
+--Drop the view if it exists.
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_PolicyHistory_Rank]'))
 DROP VIEW policy.v_PolicyHistory_Rank
 GO
@@ -365,14 +365,14 @@ CREATE VIEW policy.v_PolicyHistory_Rank AS
 GO
 
 
---Drop the view if it exists.  
+--Drop the view if it exists.
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_PolicyHistory_LastEvaluation]'))
 DROP VIEW policy.v_PolicyHistory_LastEvaluation
 GO
 CREATE VIEW policy.v_PolicyHistory_LastEvaluation
 AS
-	--The policy.v_PolicyHistory_LastEvaluation view will 
-	--the last result for any given policy evaluated against 
+	--The policy.v_PolicyHistory_LastEvaluation view will
+	--the last result for any given policy evaluated against
 	--an object.  This view requires the v_PolicyHistory view
 	--exist.
 	SELECT PolicyHistoryID
@@ -398,21 +398,21 @@ AS
 GO
 
 
---Create a view to return all errors.  Errors will be returned from 
+--Create a view to return all errors.  Errors will be returned from
 --the table EvaluationErrorHistory and the errors in the PolicyHistory
 --table.
---Drop the view if it exists.  
+--Drop the view if it exists.
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_EvaluationErrorHistory]'))
 DROP VIEW policy.v_EvaluationErrorHistory
 GO
 CREATE VIEW policy.v_EvaluationErrorHistory
 AS
-	SELECT 
+	SELECT
 		EEH.ErrorHistoryID
 		, EEH.EvaluatedServer
 		, EEH.EvaluationDateTime
 		, EEH.EvaluatedPolicy
-		, CASE WHEN CHARINDEX('\', EEH.EvaluatedServer) > 0 
+		, CASE WHEN CHARINDEX('\', EEH.EvaluatedServer) > 0
 			THEN RIGHT(EEH.EvaluatedServer, CHARINDEX('\', REVERSE(EEH.EvaluatedServer)) - 1)	
 			ELSE EEH.EvaluatedServer
 			END
@@ -424,7 +424,7 @@ AS
 	    , 'ERROR' AS PolicyResult	
 	FROM policy.EvaluationErrorHistory AS EEH
 	INNER JOIN msdb.dbo.syspolicy_policies AS p ON p.name = EEH.EvaluatedPolicy
-	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c ON 
+	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c ON
 	p.policy_category_id = c.policy_category_id
 	UNION ALL
 	SELECT PolicyHistoryID
@@ -443,13 +443,13 @@ GO
 	
 --Create a view to return the last error for each policy against
 --an instance.
---Drop the view if it exists.  
+--Drop the view if it exists.
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_EvaluationErrorHistory_LastEvaluation]'))	
 DROP VIEW policy.v_EvaluationErrorHistory_LastEvaluation
 GO
 CREATE VIEW policy.v_EvaluationErrorHistory_LastEvaluation
 AS
-	SELECT 
+	SELECT
 		ErrorHistoryID
 		, EvaluatedServer
 		, EvaluationDateTime
@@ -465,7 +465,7 @@ AS
 			ORDER BY EvaluationDateTime DESC)AS EvaluationOrderDesc
 	FROM policy.v_EvaluationErrorHistory EEH
 	WHERE NOT EXISTS (
-		SELECT * 
+		SELECT *
 		FROM policy.PolicyHistoryDetail PH
 		WHERE PH.EvaluatedPolicy = EEH.EvaluatedPolicy
 		AND PH.EvaluatedServer = EEH.EvaluatedServer
@@ -474,7 +474,7 @@ GO
 
 
 --Create the procedures
---epm_LoadPolicyHistoryDetail will load the details from the 
+--epm_LoadPolicyHistoryDetail will load the details from the
 --XML documents in PolicyHistory to the PolicyHistoryDetails
 --table.
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[policy].[epm_LoadPolicyHistoryDetail]') AND type in (N'P', N'PC'))
@@ -498,17 +498,17 @@ AS
 		, MonthYear
 		, PolicyHistorySource
 	)
-	SELECT 
+	SELECT
 		PH.PolicyHistoryID
 		, PH.EvaluatedServer
 		, PH.EvaluationDateTime
 		, PH.EvaluatedPolicy
 		, Res.Expr.value('(../DMF:TargetQueryExpression)[1]', 'nvarchar(150)') AS EvaluatedObject
 		, (CASE WHEN Res.Expr.value('(../DMF:Result)[1]', 'nvarchar(150)')= 'FALSE' AND Expr.value('(../DMF:Exception)[1]', 'nvarchar(max)') = ''
-			   THEN 'FAIL' 
+			   THEN 'FAIL'
 			   WHEN Res.Expr.value('(../DMF:Result)[1]', 'nvarchar(150)')= 'FALSE' AND Expr.value('(../DMF:Exception)[1]', 'nvarchar(max)')<> ''
 			   THEN 'ERROR'
-			   ELSE 'PASS' 
+			   ELSE 'PASS'
 			END) AS PolicyResult
 		, Expr.value('(../DMF:Exception)[1]', 'nvarchar(max)') AS ExceptionMessage
 		, CAST(Expr.value('(../DMF:ResultDetail)[1]', 'nvarchar(max)')AS XML) AS ResultDetail
@@ -517,15 +517,15 @@ AS
 		, datename(month, EvaluationDateTime) + ' ' + datename(year, EvaluationDateTime)  AS MonthYear
 		, 'PowerShell EPM Framework'
 	FROM policy.PolicyHistory AS PH
-	INNER JOIN msdb.dbo.syspolicy_policies AS p 
+	INNER JOIN msdb.dbo.syspolicy_policies AS p
 		ON p.name = PH.EvaluatedPolicy
-	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c 
+	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c
 		ON p.policy_category_id = c.policy_category_id
 	CROSS APPLY EvaluationResults.nodes('
 	declare default element namespace "http://schemas.microsoft.com/sqlserver/DMF/2007/08";
 	//TargetQueryExpression'
 	) AS Res(Expr)
-	WHERE NOT EXISTS (SELECT * 
+	WHERE NOT EXISTS (SELECT *
 		FROM policy.PolicyHistoryDetail PHD
 		WHERE PHD.PolicyHistoryID = PH.PolicyHistoryID);
 	
@@ -537,15 +537,15 @@ AS
 		, EvaluatedPolicy
 		, EvaluationResults
 		)
-	SELECT 
+	SELECT
 		PH.EvaluatedServer
 		, PH.EvaluationDateTime
 		, PH.EvaluatedPolicy
 		, Expr.value('(../DMF:Exception)[1]', 'nvarchar(max)') AS ExceptionMessage
 	FROM policy.PolicyHistory AS PH
-	INNER JOIN msdb.dbo.syspolicy_policies AS p 
+	INNER JOIN msdb.dbo.syspolicy_policies AS p
 		ON p.name = PH.EvaluatedPolicy
-	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c 
+	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c
 		ON 	p.policy_category_id = c.policy_category_id
 	CROSS APPLY EvaluationResults.nodes('
 	declare default element namespace "http://schemas.microsoft.com/sqlserver/DMF/2007/08";
@@ -554,9 +554,9 @@ AS
 	WHERE EvaluationResults.exist('declare namespace DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08";
 		 //DMF:EvaluationDetail'
 		) = 0	
-	AND Res.Expr.value('(../DMF:Result)[1]', 'nvarchar(150)')= 'FALSE' 
+	AND Res.Expr.value('(../DMF:Result)[1]', 'nvarchar(150)')= 'FALSE'
 	AND Expr.value('(../DMF:Exception)[1]', 'nvarchar(max)')<> ''
-	AND NOT EXISTS (SELECT * 
+	AND NOT EXISTS (SELECT *
 	FROM policy.PolicyHistoryDetail PHD
 	WHERE PHD.PolicyHistoryID = PH.PolicyHistoryID);
 
@@ -576,7 +576,7 @@ AS
 		, MonthYear
 		, PolicyHistorySource
 		)
-	SELECT 
+	SELECT
 		 PH.PolicyHistoryID
 		 , PH.EvaluatedServer
 		 , PH.EvaluationDateTime
@@ -590,9 +590,9 @@ AS
 		 , datename(month, EvaluationDateTime) + ' ' + datename(year, EvaluationDateTime)  AS MonthYear
 		, 'PowerShell EPM Framework'
 	FROM policy.PolicyHistory AS PH
-	INNER JOIN msdb.dbo.syspolicy_policies AS p 
+	INNER JOIN msdb.dbo.syspolicy_policies AS p
 		ON p.name = PH.EvaluatedPolicy
-	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c 
+	INNER JOIN msdb.dbo.syspolicy_policy_categories AS c
 		ON 	p.policy_category_id = c.policy_category_id
 	CROSS APPLY EvaluationResults.nodes('
 	declare default element namespace "http://schemas.microsoft.com/sqlserver/DMF/2007/08";
@@ -602,7 +602,7 @@ AS
 		 //DMF:EvaluationDetail'
 		) = 0	
 	AND Expr.value('(../DMF:Exception)[1]', 'nvarchar(max)')= ''
-	AND NOT EXISTS (SELECT * 
+	AND NOT EXISTS (SELECT *
 	FROM policy.PolicyHistoryDetail PHD
 	WHERE PHD.PolicyHistoryID = PH.PolicyHistoryID)
 GO

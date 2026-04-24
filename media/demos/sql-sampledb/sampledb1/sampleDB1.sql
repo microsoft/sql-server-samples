@@ -1,4 +1,4 @@
-/* 
+/*
 This is sourced from progress.com, variation by lightofodin.
 Basic database housing a sales scenario, that features employees and departments.
 */

@@ -14,7 +14,7 @@ GO
 DROP SCHEMA IF EXISTS CURL;
 GO
 
---Drop "trusted assembly flag" if it is set 
+--Drop "trusted assembly flag" if it is set
 
 DECLARE @hash VARBINARY(64);
 

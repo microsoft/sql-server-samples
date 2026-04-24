@@ -31,7 +31,7 @@
     o('DeliveryMethods')
         .select('DeliveryMethodID,DeliveryMethodName')
         .get(list => $("#DeliveryMethodID", $formOrder).view(list));
-  
+
     $table.on("click", "button.edit",
         e => {
             $formSupplier[0].reset();

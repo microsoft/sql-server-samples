@@ -7,5 +7,5 @@ GO
 EXEC [sys].[sp_cdc_change_job]
 	@job_type = N'cleanup',
 	@retention = <retention,bigint,retention>
-GO 
+GO
 

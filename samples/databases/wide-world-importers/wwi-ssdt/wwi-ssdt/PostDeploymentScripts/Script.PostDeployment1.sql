@@ -1,12 +1,12 @@
 ﻿/*
-Post-Deployment Script Template              
+Post-Deployment Script Template
 --------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.    
- Use SQLCMD syntax to include a file in the post-deployment script.      
- Example:      :r .\myfile.sql                
- Use SQLCMD syntax to reference a variable in the post-deployment script.    
- Example:      :setvar TableName MyTable              
-               SELECT * FROM [$(TableName)]          
+ This file contains SQL statements that will be appended to the build script.
+ Use SQLCMD syntax to include a file in the post-deployment script.
+ Example:      :r .\myfile.sql
+ Use SQLCMD syntax to reference a variable in the post-deployment script.
+ Example:      :setvar TableName MyTable
+               SELECT * FROM [$(TableName)]
 --------------------------------------------------------------------------------------
 */
 
@@ -26,7 +26,7 @@ EXEC DataLoadSimulation.DeactivateTemporalTablesBeforeDataLoad;
 GO
 
 /*
-   There are several procs that update the temporal tables. 
+   There are several procs that update the temporal tables.
    Unfortunately these cannot be part of the main build, as SSDT flags them
    as errors. Thus we have to execute the creation of these procs during the
    post deployment process, after the temporal tables are deactivated.
@@ -49,7 +49,7 @@ GO
 
 -- These scripts load the set of starter values needed for the
 -- sample database. Due to some restrictions with SSDT, the
--- cities had to be broken down into individual SQL files. 
+-- cities had to be broken down into individual SQL files.
 :r .\pds100-ins-app-people.sql
 :r .\pds105-ins-dls-ficticiousnamepool.sql
 :r .\pds106-ins-dls-areacode.sql
@@ -66,32 +66,32 @@ GO
 -- are optional to load. You can comment these out
 -- without negative effects
 
-:r .\pds150-ins-app-cities-a.sql
-:r .\pds150-ins-app-cities-b.sql
-:r .\pds150-ins-app-cities-c.sql
-:r .\pds150-ins-app-cities-d.sql
-:r .\pds150-ins-app-cities-e.sql
-:r .\pds150-ins-app-cities-f.sql
-:r .\pds150-ins-app-cities-g.sql
-:r .\pds150-ins-app-cities-h.sql
-:r .\pds150-ins-app-cities-i.sql
-:r .\pds150-ins-app-cities-j.sql
-:r .\pds150-ins-app-cities-k.sql
-:r .\pds150-ins-app-cities-l.sql
-:r .\pds150-ins-app-cities-m.sql
-:r .\pds150-ins-app-cities-n.sql
-:r .\pds150-ins-app-cities-o.sql
-:r .\pds150-ins-app-cities-p.sql
-:r .\pds150-ins-app-cities-q.sql
-:r .\pds150-ins-app-cities-r.sql
-:r .\pds150-ins-app-cities-s.sql
-:r .\pds150-ins-app-cities-t.sql
-:r .\pds150-ins-app-cities-u.sql
-:r .\pds150-ins-app-cities-v.sql
-:r .\pds150-ins-app-cities-w.sql
-:r .\pds150-ins-app-cities-x.sql
-:r .\pds150-ins-app-cities-y.sql
-:r .\pds150-ins-app-cities-z.sql
+--:r .\pds150-ins-app-cities-a.sql
+--:r .\pds150-ins-app-cities-b.sql
+--:r .\pds150-ins-app-cities-c.sql
+--:r .\pds150-ins-app-cities-d.sql
+--:r .\pds150-ins-app-cities-e.sql
+--:r .\pds150-ins-app-cities-f.sql
+--:r .\pds150-ins-app-cities-g.sql
+--:r .\pds150-ins-app-cities-h.sql
+--:r .\pds150-ins-app-cities-i.sql
+--:r .\pds150-ins-app-cities-j.sql
+--:r .\pds150-ins-app-cities-k.sql
+--:r .\pds150-ins-app-cities-l.sql
+--:r .\pds150-ins-app-cities-m.sql
+--:r .\pds150-ins-app-cities-n.sql
+--:r .\pds150-ins-app-cities-o.sql
+--:r .\pds150-ins-app-cities-p.sql
+--:r .\pds150-ins-app-cities-q.sql
+--:r .\pds150-ins-app-cities-r.sql
+--:r .\pds150-ins-app-cities-s.sql
+--:r .\pds150-ins-app-cities-t.sql
+--:r .\pds150-ins-app-cities-u.sql
+--:r .\pds150-ins-app-cities-v.sql
+--:r .\pds150-ins-app-cities-w.sql
+--:r .\pds150-ins-app-cities-x.sql
+--:r .\pds150-ins-app-cities-y.sql
+--:r .\pds150-ins-app-cities-z.sql
 
 
 :r .\pds151-ins-post-app-cities.sql
@@ -119,7 +119,7 @@ EXEC Sequences.ReseedAllSequences;
 GO
 
 -- This final set of code populates the database with a limited set of sample data.
--- To obtain the full set of sample data, follow the instructions in the documentation. 
+-- To obtain the full set of sample data, follow the instructions in the documentation.
 PRINT 'Populating limited data set.'
 GO
 
@@ -127,25 +127,25 @@ SET NOCOUNT ON;
 
 /* Explanation of parameters
      StartDate: Represents the first date to create data for
-     
+
      EndDate: The last date to create data for. You can update to the
               current date to get data that was up to date
 
-    AverageNumberOfCustomerOrdersPerDay: For each day the system will generate a 
+    AverageNumberOfCustomerOrdersPerDay: For each day the system will generate a
                                          series of orders for customers. This value
                                          indicates how many orders to create. The
                                          higher the value the longer data generation
-                                         will take. 
+                                         will take.
 
     SaturdayPercentageOfNormalWorkDay: In many business systems, orders over weekends
                                        tend to be fewer than on weekdays. This number
-                                       serves as a factor to accomdate for this in a 
+                                       serves as a factor to accomdate for this in a
                                        realistic manner. For example, if this number
                                        is set to 25, it means create 25% of the orders
                                        from the AverageNumberOfCustomerOrdersPerDay
-                                       parameter. 
+                                       parameter.
 
-    SundayPercentageOfNormalWorkDay: Works the same as the previous parameter, but 
+    SundayPercentageOfNormalWorkDay: Works the same as the previous parameter, but
                                      for Sundays
 
     UpdateCustomFields: The system has a few JSON style fields for use in demonstrating
@@ -154,16 +154,16 @@ SET NOCOUNT ON;
                         best to just leave this parameter as is.
 
     IsSilentMode: A value of 0 means don't run in silent mode, in other words the
-                  procedure will display status messages as it updates. 
+                  procedure will display status messages as it updates.
 
     AreDatesPrinted: A value of 1 indicates the procedure should display the current
                      date that is being processed. Note this parameter is being
-                     depricated in future releases. 
-*/ 
-EXEC DataLoadSimulation.DailyProcessToCreateHistory 
-    @StartDate = '20130101',
-    @EndDate = '20130201',
-    @AverageNumberOfCustomerOrdersPerDay = 60,
+                     depricated in future releases.
+*/
+EXEC DataLoadSimulation.DailyProcessToCreateHistory
+    @StartDate = '20200101',
+    @EndDate = '20200201',
+    @AverageNumberOfCustomerOrdersPerDay = 30,
     @SaturdayPercentageOfNormalWorkDay = 25,
     @SundayPercentageOfNormalWorkDay = 0,
     @UpdateCustomFields = 1,
@@ -180,11 +180,11 @@ GO
 
   That procedure will update the database with sample data, starting
   with whatever the maximum date value is from the sample data and
-  going through the current date on your computer. 
+  going through the current date on your computer.
 
   This is a great tool for keeping your sample database "current"
   with demonstration data. The parameters for it work the same
-  as they do for DailyProcessToCreateHistory 
+  as they do for DailyProcessToCreateHistory
 */
 
 

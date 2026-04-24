@@ -2,16 +2,16 @@
 -- Create stored procedure with OUTPUT parameters
 -- ===============================================
 IF EXISTS (
-  SELECT name 
-    FROM   sysobjects 
-   WHERE name = N'<stored_procedure_name, sysname, your_procedure_name>' 
+  SELECT name
+    FROM   sysobjects
+   WHERE name = N'<stored_procedure_name, sysname, your_procedure_name>'
      AND type = 'P'
 )
   DROP PROCEDURE <stored_procedure_name, sysname, your_procedure_name>
 GO
 
-CREATE PROCEDURE <stored_procedure_name, sysname, your_procedure_name> 
-	<@param1, sysname, @p1> <datatype_for_param1, , int> = <default_value_for_param1, , 0>, 
+CREATE PROCEDURE <stored_procedure_name, sysname, your_procedure_name>
+	<@param1, sysname, @p1> <datatype_for_param1, , int> = <default_value_for_param1, , 0>,
 	<@param2, sysname, @p2> <datatype_for_param2, , int>  OUTPUT
 AS
 	SELECT @p2 = @p2 + @p1

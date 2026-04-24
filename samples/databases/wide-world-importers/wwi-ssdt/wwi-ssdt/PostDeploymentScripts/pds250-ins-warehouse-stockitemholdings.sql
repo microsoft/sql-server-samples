@@ -1,12 +1,12 @@
 ﻿PRINT 'Inserting Warehouse.StockItemHoldings'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT Warehouse.StockItemHoldings 
-  (StockItemID, QuantityOnHand, BinLocation, LastStocktakeQuantity, LastCostPrice, ReorderLevel, TargetStockLevel, LastEditedBy, LastEditedWhen) 
-VALUES 
+INSERT Warehouse.StockItemHoldings
+  (StockItemID, QuantityOnHand, BinLocation, LastStocktakeQuantity, LastCostPrice, ReorderLevel, TargetStockLevel, LastEditedBy, LastEditedWhen)
+VALUES
   (1,22,'L-1',22,9.5,20,100,1,@CurrentDateTime)
 , (2,25,'L-1',25,9.5,20,100,1,@CurrentDateTime)
 , (3,50,'L-2',50,11.25,10,120,1,@CurrentDateTime)

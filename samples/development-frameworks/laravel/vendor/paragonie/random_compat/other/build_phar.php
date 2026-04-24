@@ -12,19 +12,19 @@ $phar = new Phar(
     'random_compat.phar'
 );
 rename(
-    dirname(__DIR__).'/lib/random.php', 
+    dirname(__DIR__).'/lib/random.php',
     dirname(__DIR__).'/lib/index.php'
 );
 $phar->buildFromDirectory(dirname(__DIR__).'/lib');
 rename(
-    dirname(__DIR__).'/lib/index.php', 
+    dirname(__DIR__).'/lib/index.php',
     dirname(__DIR__).'/lib/random.php'
 );
 
 /**
  * If we pass an (optional) path to a private key as a second argument, we will
  * sign the Phar with OpenSSL.
- * 
+ *
  * If you leave this out, it will produce an unsigned .phar!
  */
 if ($argc > 1) {
@@ -33,13 +33,13 @@ if ($argc > 1) {
         exit(255);
     }
     $pkeyFile = file_get_contents($argv[1]);
-    
+
     $private = openssl_get_privatekey($pkeyFile);
     if ($private !== false) {
         $pkey = '';
         openssl_pkey_export($private, $pkey);
         $phar->setSignatureAlgorithm(Phar::OPENSSL, $pkey);
-        
+
         /**
          * Save the corresponding public key to the file
          */

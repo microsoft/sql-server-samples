@@ -151,7 +151,7 @@ namespace ContosoClinic.Migrations
                  new Patient { SSN = "658-41-8532", FirstName = "Twanna", LastName = "Evans", MiddleName = "R.", StreetAddress = "Lewis County Mall", City = "Chehalis", ZipCode = "98532", State = "WA", BirthDate = new System.DateTime(1968, 11, 4) },
                  new Patient { SSN = "943-41-6011", FirstName = "Carolyn", LastName = "Farino", MiddleName = "", StreetAddress = "3250 South Meridian", City = "Puyallup", ZipCode = "98371", State = "WA", BirthDate = new System.DateTime(1950, 2, 12) },
                  new Patient { SSN = "691-30-8623", FirstName = "Geri", LastName = "Farrell", MiddleName = "P.", StreetAddress = "49925 Crestview Drive N.E.", City = "Rio Rancho", ZipCode = "87124", State = "NM", BirthDate = new System.DateTime(1962, 8, 11) },
-                 new Patient { SSN = "361-08-3217", FirstName = "François", LastName = "Ferrier", MiddleName = "", StreetAddress = "Eastridge Mall", City = "Casper", ZipCode = "82601", State = "WY", BirthDate = new System.DateTime(1957, 6, 14) },
+                 new Patient { SSN = "361-08-3217", FirstName = "Franï¿½ois", LastName = "Ferrier", MiddleName = "", StreetAddress = "Eastridge Mall", City = "Casper", ZipCode = "82601", State = "WY", BirthDate = new System.DateTime(1957, 6, 14) },
                  new Patient { SSN = "827-51-1487", FirstName = "Kathie", LastName = "Flood", MiddleName = "", StreetAddress = "705 SE Mall Parkway", City = "Everett", ZipCode = "98201", State = "WA", BirthDate = new System.DateTime(1978, 2, 8) },
                  new Patient { SSN = "483-93-0057", FirstName = "John", LastName = "Ford", MiddleName = "", StreetAddress = "23025 S.W. Military Rd.", City = "San Antonio", ZipCode = "78204", State = "TX", BirthDate = new System.DateTime(1987, 9, 16) },
                  new Patient { SSN = "738-37-1607", FirstName = "Garth", LastName = "Fort", MiddleName = "", StreetAddress = "3250 Baldwin Park Blvd", City = "Baldwin Park", ZipCode = "91706", State = "CA", BirthDate = new System.DateTime(1964, 11, 25) },
@@ -255,7 +255,7 @@ namespace ContosoClinic.Migrations
                  new Patient { SSN = "321-14-1319", FirstName = "Scott", LastName = "MacDonald", MiddleName = "", StreetAddress = "St. Louis Marketplace", City = "Saint Louis", ZipCode = "63103", State = "MS", BirthDate = new System.DateTime(1984, 11, 12) },
                  new Patient { SSN = "340-75-5874", FirstName = "Kathy", LastName = "Marcovecchio", MiddleName = "R.", StreetAddress = "9905 Three Rivers Drive", City = "Kelso", ZipCode = "98626", State = "WA", BirthDate = new System.DateTime(1994, 4, 3) },
                  new Patient { SSN = "043-85-0648", FirstName = "Melissa", LastName = "Marple", MiddleName = "R.", StreetAddress = "603 Gellert Blvd", City = "Daly City", ZipCode = "94015", State = "CA", BirthDate = new System.DateTime(1956, 9, 26) },
-                 new Patient { SSN = "253-33-7509", FirstName = "Frank", LastName = "Mart¡nez", MiddleName = "", StreetAddress = "870 N. 54th Ave.", City = "Chandler", ZipCode = "85225", State = "AZ", BirthDate = new System.DateTime(2003, 9, 2) },
+                 new Patient { SSN = "253-33-7509", FirstName = "Frank", LastName = "Martï¿½nez", MiddleName = "", StreetAddress = "870 N. 54th Ave.", City = "Chandler", ZipCode = "85225", State = "AZ", BirthDate = new System.DateTime(2003, 9, 2) },
                  new Patient { SSN = "335-68-4629", FirstName = "Chris", LastName = "Maxwell", MiddleName = "", StreetAddress = "3025 E Waterway Blvd", City = "Shelton", ZipCode = "98584", State = "WA", BirthDate = new System.DateTime(2013, 3, 16) },
                  new Patient { SSN = "535-30-6577", FirstName = "Sandra", LastName = "Maynard", MiddleName = "B.", StreetAddress = "9952 E. Lohman Ave.", City = "Las Cruces", ZipCode = "88001", State = "NM", BirthDate = new System.DateTime(1971, 6, 20) },
                  new Patient { SSN = "613-34-9127", FirstName = "Walter", LastName = "Mays", MiddleName = "J.", StreetAddress = "Po Box 252525", City = "Santa Ana", ZipCode = "92701", State = "CA", BirthDate = new System.DateTime(1974, 2, 5) },
@@ -318,8 +318,8 @@ namespace ContosoClinic.Migrations
                  new Visit { PatientID = 1, Date = new System.DateTime(2016, 1, 10), Reason = "Headache", Treatment = "A nap" },
                  new Visit { PatientID = 1, Date = new System.DateTime(2016, 1, 10), Reason = "Worse headache", Treatment = "A longer nap" }
             );
-            
-            
+
+
             // Create test userts
             var manager = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(

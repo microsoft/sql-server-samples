@@ -1,7 +1,7 @@
 -- ===========================================
 -- Add constraint template
 --
--- This template creates a table, then it  
+-- This template creates a table, then it
 -- adds a CHECK CONSTRAINT to the table
 -- ===========================================
 USE <database, sysname, AdventureWorks>
@@ -13,7 +13,7 @@ GO
 
 CREATE TABLE <schema_name, sysname, dbo>.<table_name, sysname, sample_table>
 (
-	column1      int      NOT NULL, 
+	column1      int      NOT NULL,
 	<constraint_column_name,sysname,phone>        char(8)  NOT NULL
 )
 GO

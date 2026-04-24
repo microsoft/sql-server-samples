@@ -8,7 +8,7 @@
 ## Define functions for model evaluation
 ####################################################################################################
 ## Define evaluation metrics
-evaluateModel <- function(data, observed, predicted) 
+evaluateModel <- function(data, observed, predicted)
 {
   confusion <- table(data[[observed]], data[[predicted]])
   print(confusion)
@@ -27,8 +27,8 @@ evaluateModel <- function(data, observed, predicted)
   return(metrics)
 }
 
-## Define ROC curve 
-rxrocCurve <- function(data, observed, predicted) 
+## Define ROC curve
+rxrocCurve <- function(data, observed, predicted)
 {
   data <- data[, c(observed, predicted)]
   data[[observed]] <- as.numeric(as.character(data[[observed]]))

@@ -1,0 +1,801 @@
+{
+  "properties": {
+    "lenses": [
+       {
+        "order": 0,
+        "parts": [
+           {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 18,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style='line-height:50px;'>\n<span style='font-size:20px;font-weight:bold'>Azure Arc - Extended Security Updates (ESU) for Windows Server and SQL Server</span><br/>\n<span style='font-size:20px'>This dashboard tracks ESU  for Windows Server & SQL Server 2012/2014</span>\n</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 2,
+              "colSpan": 6,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style='line-height:50px;'>\n<span style='font-size:16px;font-weight:bold'>Windows 2012 - </span>\n<span style='font-size:16px'>End of Life - </span><span style='font-size:16px;font-weight:bold'>10th October 2023</span>\n</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 6,
+              "y": 2,
+              "colSpan": 6,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style='line-height:50px;'>\n<span style='font-size:16px;font-weight:bold'>SQL Server 2012 - </span>\n<span style='font-size:16px'>End of Life - </span><span style='font-size:16px;font-weight:bold'>12th July 2022</span>\n</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 2,
+              "colSpan": 6,
+              "rowSpan": 1
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style='line-height:50px;'>\n<span style='font-size:16px;font-weight:bold'>SQL Server 2014 - </span>\n<span style='font-size:16px'>Planned End of Life - </span><span style='font-size:16px;font-weight:bold;color:Red'>9th July 2024</span>\n</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 3,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Query - All Arc Registered Windows 2012 Servers broken down by ESU assigned/not assigned\nresources\n| where type =~ 'microsoft.hybridcompute/machines'\n| extend osSku = tostring(properties.osSku)\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = tostring(properties.licenseProfile.esuProfile.licenseAssignmentState)\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n| extend esuCount = iff(ESU == \"NotAssigned\",0,1)\n//Change to \"Windows Server 2012\" for live version\n| where osSku contains \"Windows Server 2012\" \n| summarize ServerCount = count() by ESU",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Windows Server 2012 ESU License State",
+                "subtitle": "All WIndows Server 2012 servers by ESU license state"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 6,
+              "y": 3,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Assigned ESU for SQL Query\n//This is a 3 part query - needs to include all VMs that have SQL Server installed as an instance (and to subselect for ESU eligible\n//SQL Server versions) and then all Machine extensions which contain the ESU assigned True/False flag\n//This query can then be used to determine ESU assignment by SQL Version, Edition, Tag (Application), Location etc\n//Main Table - All Arc Virtual Machines\nresources\n| where type == \"microsoft.hybridcompute/machines\"\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Performance - select only machines with SQL Server detected\n| where mssqlDiscovered == 'true'\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n| join kind=inner (\n    //Sub Table - Select distinct SQL Server Version (and select on SQL Server 2012)\n    resources\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\n    | extend version = tostring(properties.version)\n    | extend edition = properties.edition\n    | extend containerId = tolower(tostring (properties.containerResourceId))\n    //add clause back in for live dashboard\n    | where version contains \"2012\"\n    | where edition in (\"Enterprise\", \"Standard\")\n    | where isnotempty(containerId)\n    | extend SQL_instance = name\n    //Machine may contain multiple instances - this distinct selects the first (assuming all instances on same machine are same SQL Version)\n    | distinct containerId)\non $left.machineId == $right.containerId\n| join kind=inner (\n    //Sub Table - Identify if SQL ESUs assigned\n    resources\n    //Machine extensions resource type\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\n    //Machine has SQL Server extension\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\n    //extract Machine name from ID\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\n    //enableExtendedSecurityUpdates has 3 values - Null (ESU not applicable), True (ESU applicable and enabled), False (ESU applicable and disabled)\n    | extend  ESU = iff(notnull(properties.settings.enableExtendedSecurityUpdates), iff(properties.settings.enableExtendedSecurityUpdates == true,\"enabled\",\"disabled\"), \"N/A\")\n    | project machineIdHasSQLServerExtensionInstalled, Extension_State = properties.provisioningState, License_Type = properties.settings.LicenseType,ESU, Extension_Version = properties.instanceView.typeHandlerVersion\n)\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\n//| distinct Machine_name, ESU\n//| summarize count(), sum(coreCount) by ESU\n| summarize count() by ESU",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2012 ESU License State",
+                "subtitle": "All SQL Server 2012 servers by ESU license state"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 3,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Query - All Arc Registered Windows 2014 Servers (SQL Server 2014 will be End of Life shortly)\nresources\n| where  type == \"microsoft.azurearcdata/sqlserverinstances\"\n| extend version = tostring(properties['version'])\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\n| extend ESU = tostring(properties.licenseProfile.esuProfile.licenseAssignmentState)\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n| extend esuCount = iff(ESU == \"NotAssigned\",0,1)\n// Change to SQL Server 2014 for live version\n| where ['version'] == \"SQL Server 2014\"\n// No ESUs as yet for SQL Server 2014, however pie chart used for consistency - Query will shift when ESUs are available for 2014\n| summarize Servers=count() by ESU",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2014 ESU License State",
+                "subtitle": "All SQL Server 2014 servers by ESU license state"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 8,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Windows 2012 Servers with no ESU license by Application\n//Applicaton breakdown requires tagging of resources\nResources\n| where type == \"microsoft.hybridcompute/machines\"\n| extend application = tostring(tags.Application)\n| extend osSku = tostring(properties.osSku)\n| extend esuLicense= tostring(properties.licenseProfile.esuProfile.licenseAssignmentState)\n//Change to Windows Server 2012 for live version\n| where osSku contains \"Windows Server 2012\"\n//Select Servers with no license\n| where esuLicense == \"NotAssigned\"\n| summarize ServerCount = count() by application",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Windows Server 2012 ESU not assigned by appllication",
+                "subtitle": "Windows Server 2012 servers with no ESU active by application"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 6,
+              "y": 8,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Assigned ESU for SQL Query\n//This is a 3 part query - needs to include all VMs that have SQL Server installed as an instance (and to subselect for ESU eligible\n//SQL Server versions) and then all Machine extensions which contain the ESU assigned True/False flag\n//This query can then be used to determine ESU assignment by SQL Version, Edition, Tag (Application), Location etc\n//Main Table - All Arc Virtual Machines\nresources\n| where type == \"microsoft.hybridcompute/machines\"\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Performance - select only machines with SQL Server detected\n| where mssqlDiscovered == 'true'\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend machineId = tolower(tostring(id))\n| extend Machine_name = name\n| join kind=inner (\n    //Sub Table - Select distinct SQL Server Version (and select on SQL Server 2012)\n    resources\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\n    | extend version = tostring(properties.version)\n    | extend edition = properties.edition\n    | extend application = tostring(tags.Application)\n    | extend containerId = tolower(tostring (properties.containerResourceId))\n    //add clause back in for live dashboard\n    | where version contains \"2012\"\n    | where edition in (\"Enterprise\", \"Standard\")\n    | where isnotempty(containerId)\n    | extend SQL_instance = name\n    //Machine may contain multiple instances - this distinct selects the first (assuming all instances on same machine are same SQL Version)\n    | distinct containerId, application)\non $left.machineId == $right.containerId\n| join kind=inner (\n    //Sub Table - Identify if SQL ESUs assigned\n    resources\n    //Machine extensions resource type\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\n    //Machine has SQL Server extension\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\n    //extract Machine name from ID\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\n    //enableExtendedSecurityUpdates has 3 values - Null (ESU not applicable), True (ESU applicable and enabled), False (ESU applicable and disabled)\n    | extend  ESU = iff(notnull(properties.settings.enableExtendedSecurityUpdates), iff(properties.settings.enableExtendedSecurityUpdates == true,\"enabled\",\"disabled\"), \"N/A\")\n    | project machineIdHasSQLServerExtensionInstalled, Extension_State = properties.provisioningState, License_Type = properties.settings.LicenseType,ESU, Extension_Version = properties.instanceView.typeHandlerVersion\n)\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\n//| distinct Machine_name, ESU\n//| summarize count(), sum(coreCount) by ESU\n| summarize count() by application",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2012 ESU not assigned by appllication",
+                "subtitle": "SQL Server 2012 servers with no ESU active by application"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 8,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where  type == \"microsoft.azurearcdata/sqlserverinstances\"\n// Change to SQL Server 2014\n| where tostring(properties['version']) == \"SQL Server 2014\"\n| extend application = tostring(tags.Application)\n//No ESU filter needed as no ESUs for 2014 yet\n| summarize Servers=count() by application",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2014 servers with no ESU active by application",
+                "subtitle": "SQL Server 2014 servers with no ESU active by application"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 13,
+              "colSpan": 12,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\r\n| where type == 'microsoft.hybridcompute/machines'\r\n//Change to Windows Server 2012\r\n| extend osSku = tostring(properties.osSku)\r\n| where osSku contains \"Windows Server 2012\"\r\n| extend esuLicense= tostring(properties.licenseProfile.esuProfile.licenseAssignmentState)\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subScriptionName = name)\r\n    on subscriptionId\r\n| project subScriptionName , resourceGroup, esuLicense\r\n| summarize ServerCount = count() by subScriptionName, resourceGroup, esuLicense",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Windows 2012 ESU Assignment by Subscription, Resource Group",
+                "subtitle": "Count of Windows Server 2012 servers assigned/not assigned"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 13,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Query - Chart of breakdown of Windows 2012 Servers into Datacenter and Standard\n//Filter on osTYpe = Windows \nresources\n| where type =~ 'microsoft.hybridcompute/machines'\n| where properties.osType == \"windows\"\n//**Change to Windows Server 2012\n| extend osSku = tostring(properties.osSku)\n| where osSku contains \"Windows Server 2012\"\n//Change back to original filter for go live - dummy filter below uses 2019/2022 to create 2 groups\n| extend edition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n| summarize serverCount = count() by edition",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Windows Server 2012 Standard vs Datacenter",
+                "subtitle": "Distribution of Windows Server 2012 Standard & Datacenter servers"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 18,
+              "colSpan": 18,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Summary Query – reports a count of servers onboarded to Arc by Subscription, Resource Group, returning if ESU is activated or not\nresources\n| where type =~ 'microsoft.hybridcompute/machines'\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\n//Select where Server is Eligible for ESUs\n| where esuEligibility == \"Eligible\"\n| extend ESUAttached = iff(properties.licenseProfile.esuProfile.licenseAssignmentState ==\"Assigned\", 1, 0)\n| join kind=inner (\n    resourcecontainers\n    | where type == 'microsoft.resources/subscriptions'\n    | project subscriptionId, subscriptionName = name)\n    on subscriptionId\n| summarize percentESUAssigned = toint(\n    round((todouble(sum(ESUAttached)) / count() * 100), 2)) by subscriptionName",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Percentage Windows Server ESU Assigned by Subscription",
+                "subtitle": "Percentage of WIndows Server ESUs of total ESU-eligible servers discovered"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 24,
+              "colSpan": 12,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Assigned ESU for SQL Query\r\n//This is a 3 part query - needs to include all VMs that have SQL Server installed as an instance (and to subselect for ESU eligible\r\n//SQL Server versions) and then all Machine extensions which contain the ESU assigned True/False flag\r\n//This query can then be used to determine ESU assignment by SQL Version, Edition, Tag (Application), Location etc\r\n//Main Table - All Arc Virtual Machines\r\nresources\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n//Performance - select only machines with SQL Server detected\r\n| where mssqlDiscovered == 'true'\r\n| extend coreCount = toint(properties.detectedProperties.coreCount)\r\n| extend machineId = tolower(tostring(id))\r\n| extend machineName = name\r\n//Include below if Subscription Name needed\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n| join kind=inner (\r\n    //Sub Table - Select distinct SQL Server Version (and select on SQL Server 2012)\r\n    resources\r\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\r\n    | extend version = tostring(properties.version)\r\n    | extend edition = properties.edition\r\n    | extend containerId = tolower(tostring (properties.containerResourceId))\r\n    //add clause back in for live dashboard\r\n    | where version contains \"2012\"\r\n    | where edition in (\"Enterprise\", \"Standard\")\r\n    | where isnotempty(containerId)\r\n    | extend SQL_instance = name\r\n    //Machine may contain multiple instances - this distinct selects the first (assuming all instances on same machine are same SQL Version)\r\n    | distinct containerId)\r\non $left.machineId == $right.containerId\r\n| join kind=inner (\r\n    //Sub Table - Identify if SQL ESUs assigned\r\n    resources\r\n    //Machine extensions resource type\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    //Machine has SQL Server extension\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    //extract Machine name from ID\r\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n    //enableExtendedSecurityUpdates has 3 values - Null (ESU not applicable), True (ESU applicable and enabled), False (ESU applicable and disabled)\r\n    | extend  ESU = iff(notnull(properties.settings.enableExtendedSecurityUpdates), iff(properties.settings.enableExtendedSecurityUpdates == true,\"enabled\",\"disabled\"), \"N/A\")\r\n    | project machineIdHasSQLServerExtensionInstalled, Extension_State = properties.provisioningState, License_Type = properties.settings.LicenseType,ESU, Extension_Version = properties.instanceView.typeHandlerVersion\r\n)\r\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\r\n//| distinct Machine_name, ESU\r\n//| summarize count(), sum(coreCount) by ESU\r\n| summarize ServerCount = count() by subscriptionName, resourceGroup, ESU",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2012 ESU Assignment by Subscription, Resource Group",
+                "subtitle": "Count of SQL Server 2012 servers assigned/not assigned"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 24,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Query - Chart of breakdown of SQL 2012 Servers into Datacenter and Standard\n//Filter on version = SQL Server 2012 \nresources\n| where  type == \"microsoft.azurearcdata/sqlserverinstances\"\n| extend version = tostring(properties.version)\n| extend edition = tostring(properties.edition)\n// Change to SQL Server 2012\n| where ['version'] == \"SQL Server 2012\"\n| summarize serverCount = count() by edition",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2012 Editions",
+                "subtitle": "Distribution of SQL Server 2012 Developer, Standard & Enterprise edition"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 29,
+              "colSpan": 12,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\r\n| where  type == \"microsoft.azurearcdata/sqlserverinstances\"\r\n// Change to SQL Server 2014\r\n//SQL Server Version & Edition\r\n| extend version = tostring(properties.version)\r\n| extend sqlEdition = tostring(properties.edition)\r\n| extend SQLinstance = name\r\n| where ['version'] == \"SQL Server 2014\"\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subScriptionName = name)\r\n    on subscriptionId\r\n| project subScriptionName , resourceGroup\r\n| summarize instanceCount = count() by subScriptionName, resourceGroup",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2014 Distribution by Subscription, Resource Group",
+                "subtitle": "Distribution of SQL Server 2014 across all Arc registered servers"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 29,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Query - Chart of breakdown of SQL 2012 Servers into Datacenter and Standard\n//Filter on version = SQL Server 2012 \nresources\n| where  type == \"microsoft.azurearcdata/sqlserverinstances\"\n| extend version = tostring(properties.version)\n| extend edition = tostring(properties.edition)\n// Change to SQL Server 2012\n| where ['version'] == \"SQL Server 2014\"\n| summarize serverCount = count() by edition",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server 2014 Editions",
+                "subtitle": "Distribution of SQL Server 2014 Developer, Standard & Enterprise edition"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        }
+      }
+    }
+  },
+  "name": "Arc - ESU",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "Arc - ESU"
+  },
+  "apiVersion": "2022-12-01-preview"
+}

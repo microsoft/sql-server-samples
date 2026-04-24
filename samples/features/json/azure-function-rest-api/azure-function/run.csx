@@ -9,9 +9,9 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     try{
         string ConnectionString = ConfigurationManager.ConnectionStrings["azure-db-connection"].ConnectionString;
-        
+
         var httpStatus = HttpStatusCode.OK;
-        string body = 
+        string body =
             await (new QueryMapper(ConnectionString)
                         .OnError(ex => { httpStatus = HttpStatusCode.InternalServerError; }))
             .GetStringAsync("select * from sys.objects for json path");

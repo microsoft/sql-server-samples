@@ -123,7 +123,10 @@ connection.on('connect', function(err) {
       } else {
         console.log("Done!");
       }
-    }
-                   )
+    })
   }
 });
+
+
+// Initialize the connection.
+connection.connect();

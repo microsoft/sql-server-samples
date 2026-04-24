@@ -44,7 +44,7 @@ AS BEGIN
 			InternalComments nvarchar(MAX),
 			Photo varbinary(MAX),
 			CustomFields nvarchar(MAX) AS JSON) as json
-	WHERE 
+	WHERE
 		Warehouse.StockItems.StockItemID = @StockItemID
 
 END

@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="403.597" height="181" viewBox="0 0 403.597 181">
+    <defs>
+        <clipPath id="a">
+            <rect width="384" height="152" style="fill:none"/>
+        </clipPath>
+    </defs>
+    <g transform="translate(-1391.5 -203)">
+        <path d="M1-121.863H31.379l30.379-12,37.024,13,59.808,7.5,20.269-8.5,42.387,16,26.581-7.5,29.429,7.5,41.967-18.1L357-117.934V-10H1V-120.5H1" transform="translate(1437 375)" style="fill-rule:evenodd;fill:none"/>
+        <g transform="translate(965 -36)">
+            <text class="c" transform="translate(466 385)">
+                <tspan x="1.895" y="11">-5min</tspan>
+            </text>
+            <text class="c" transform="translate(533 385)">
+                <tspan x="1.785" y="11">-4min</tspan>
+            </text>
+            <text class="c" transform="translate(599 385)">
+                <tspan x="1.895" y="11">-3min</tspan>
+            </text>
+            <text class="c" transform="translate(666 385)">
+                <tspan x="1.895" y="11">-2min</tspan>
+            </text>
+            <text class="c" transform="translate(732 385)">
+                <tspan x="2.654" y="11">-1min</tspan>
+            </text>
+            <text class="c" transform="translate(799 385)">
+                <tspan x="1.895" y="11">-0min</tspan>
+            </text>
+        </g>
+        <text class="d" transform="translate(1580 370)">
+            <tspan x="21.719" y="11">Time</tspan>
+        </text>
+        <text class="d" transform="translate(1391.5 310.5) rotate(-90)">
+            <tspan x="17.596" y="11">Knots</tspan>
+        </text>
+        <g transform="translate(1410 203)" style="clip-path:url(#a)">
+            <g transform="translate(-445 -370)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="9.263" y="11">80</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -353)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="9.483" y="11">70</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -336)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="9.263" y="11">60</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -319)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="9.263" y="11">50</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -302)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="9.043" y="11">40</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -285)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="9.263" y="11">30</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -268)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="9.263" y="11">20</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -251)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="10.781" y="11">10</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -234)">
+                <rect class="f" width="358" height="1" transform="translate(471 377)"/>
+                <text class="c" transform="translate(445 370)">
+                    <tspan x="14.731" y="11">0</tspan>
+                </text>
+            </g>
+        </g>
+        <path d="M208.771,26.96,177.924.928l-30.251,34.6-30.123-24.6-29.779,8.6L57.929,36.752l-29.7-25.824L-1.909,33.36" transform="translate(1438 289)" style="stroke-linejoin:round;stroke-width:2px;stroke:#ff6c00;stroke-linecap:square;fill:none"/>
+        <path d="M-1.6,24.9l22.507,4.146,37.518-4.762,29.361-3.168,30.283,3.168,26.959-1.952" transform="translate(1649 292)" style="stroke:#00c3ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;fill:none"/>
+    </g>
+</svg>

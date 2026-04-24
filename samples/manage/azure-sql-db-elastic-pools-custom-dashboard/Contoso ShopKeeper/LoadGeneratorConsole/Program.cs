@@ -23,10 +23,10 @@ namespace LoadGeneratorConsole
             {
                 tasks.AddRange(ScheduleLoadSpike(dbname, _numTaskPerSpike));
             }
-            
+
             Task.WaitAll( tasks.ToArray() ) ;
             Console.WriteLine("Tasks completed.");
-            
+
             Console.ReadLine();
         }
 
@@ -55,9 +55,9 @@ namespace LoadGeneratorConsole
 
             try
             {
-               
+
                 SqlConnection conn = new SqlConnection(connectionString);
-                
+
                 string commandText = "INSERT [SalesLT].[SalesOrderHeader] (PurchaseOrderNumber, DueDate, CustomerID, ShipToAddressID, BillToAddressID, ShipMethod, SubTotal) " +
                                         "VALUES (@PoNum, @DueDate,@CustomerID, @ShipToAddressID, @BillToAddressID, @ShipMethod, @SubTotal) ";
 
@@ -76,7 +76,7 @@ namespace LoadGeneratorConsole
                         conn = new SqlConnection(connectionString);
                         conn.Open();
                     }
-                        
+
 
                     List<SqlParameter> parameters = new List<SqlParameter>() {
                         new SqlParameter("@PoNum", String.Format("PO{0}{1}", DateTime.UtcNow.ToString("yyyymmddhhmmss"), r.Next(0,256)) ),

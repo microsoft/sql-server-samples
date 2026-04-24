@@ -5,8 +5,8 @@ GO
 DBCC DROPCLEANBUFFERS
 
 SET STATISTICS IO ON
-SELECT s.SalesTerritoryRegion,d.[CalendarYear],FirstName + ' ' + lastName as 'Employee',FORMAT(SUM(f.SalesAmount),'C') AS 'Total Sales', 
-SUM(f.OrderQuantity) as 'Order Quantity', COUNT(distinct f.SalesOrdernumber) as 'Number of Orders', 
+SELECT s.SalesTerritoryRegion,d.[CalendarYear],FirstName + ' ' + lastName as 'Employee',FORMAT(SUM(f.SalesAmount),'C') AS 'Total Sales',
+SUM(f.OrderQuantity) as 'Order Quantity', COUNT(distinct f.SalesOrdernumber) as 'Number of Orders',
 count(distinct f.Resellerkey) as 'Num of Resellers'
 FROM FactResellerSalesXL_PageCompressed f
 INNER JOIN [dbo].[DimDate] d ON f.OrderDateKey= d.Datekey
@@ -20,8 +20,8 @@ SET STATISTICS IO OFF
 DBCC DROPCLEANBUFFERS
 
 SET STATISTICS IO ON
-SELECT s.SalesTerritoryRegion,d.[CalendarYear],FirstName + ' ' + lastName as 'Employee',FORMAT(SUM(f.SalesAmount),'C') AS 'Total Sales', 
-SUM(f.OrderQuantity) as 'Order Quantity', COUNT(distinct f.SalesOrdernumber) as 'Number of Orders', 
+SELECT s.SalesTerritoryRegion,d.[CalendarYear],FirstName + ' ' + lastName as 'Employee',FORMAT(SUM(f.SalesAmount),'C') AS 'Total Sales',
+SUM(f.OrderQuantity) as 'Order Quantity', COUNT(distinct f.SalesOrdernumber) as 'Number of Orders',
 count(distinct f.Resellerkey) as 'Num of Resellers'
 FROM FactResellerSalesXL_CCI  f
 INNER JOIN [dbo].[DimDate] d ON f.OrderDateKey= d.Datekey

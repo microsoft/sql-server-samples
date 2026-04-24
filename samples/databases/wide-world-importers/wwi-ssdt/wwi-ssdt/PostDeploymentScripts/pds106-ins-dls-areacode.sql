@@ -1,6 +1,6 @@
 ﻿INSERT INTO [DataLoadSimulation].[AreaCode]
   (StateProvinceCode, AreaCode)
-VALUES 
+VALUES
     ('NJ', '201')
   , ('DC', '202')
   , ('CT', '203')

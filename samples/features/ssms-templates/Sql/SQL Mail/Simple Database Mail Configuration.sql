@@ -1,7 +1,7 @@
 -------------------------------------------------------------
 --  Database Mail Simple Configuration Template.
 --
---  This template creates a Database Mail profile, an SMTP account and 
+--  This template creates a Database Mail profile, an SMTP account and
 --  associates the account to the profile.
 --  The template does not grant access to the new profile for
 --  any database principals.  Use msdb.dbo.sysmail_add_principalprofile

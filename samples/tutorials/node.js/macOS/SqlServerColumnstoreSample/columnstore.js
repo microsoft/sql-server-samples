@@ -45,3 +45,6 @@ connection.on('connect', function(err) {
         },
     ]);
 });
+
+// Initialize the connection.
+connection.connect();

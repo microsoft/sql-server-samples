@@ -6,7 +6,7 @@ BEGIN
 	DECLARE @loop int = 0;
 	WHILE (@loop < @LineCount)
 	BEGIN
-		INSERT INTO dbo.TicketReservationDetail (TicketReservationID, Quantity, FlightID, Comment) 
+		INSERT INTO dbo.TicketReservationDetail (TicketReservationID, Quantity, FlightID, Comment)
 			VALUES(@TicketReservationID, @loop % 8 + 1, @FlightID, @Comment);
 		SET @loop += 1;
 	END
@@ -24,7 +24,7 @@ BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N'English')
 	DECLARE @loop int = 0;
 	while (@loop < @LineCount)
 	BEGIN
-		INSERT INTO dbo.TicketReservationDetail (TicketReservationID, Quantity, FlightID, Comment) 
+		INSERT INTO dbo.TicketReservationDetail (TicketReservationID, Quantity, FlightID, Comment)
 		    VALUES(@TicketReservationID, @loop % 8 + 1, @FlightID, @Comment);
 		SET @loop += 1;
 	END

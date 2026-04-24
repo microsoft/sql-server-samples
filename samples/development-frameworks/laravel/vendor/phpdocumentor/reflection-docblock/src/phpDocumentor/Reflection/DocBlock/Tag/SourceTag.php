@@ -29,7 +29,7 @@ class SourceTag extends Tag
      */
     protected $startingLine = 1;
 
-    /** 
+    /**
      * @var int|null The number of lines, relative to the starting line. NULL
      *     means "to the end".
      */
@@ -94,10 +94,10 @@ class SourceTag extends Tag
 
     /**
      * Sets the starting line.
-     * 
+     *
      * @param int $startingLine The new starting line, relative to the
      *     structural element's location.
-     * 
+     *
      * @return $this
      */
     public function setStartingLine($startingLine)
@@ -121,10 +121,10 @@ class SourceTag extends Tag
 
     /**
      * Sets the number of lines.
-     * 
+     *
      * @param int|null $lineCount The new number of lines, relative to the
      *     starting line. NULL means "to the end".
-     * 
+     *
      * @return $this
      */
     public function setLineCount($lineCount)

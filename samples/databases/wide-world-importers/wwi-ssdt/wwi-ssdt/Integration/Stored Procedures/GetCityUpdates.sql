@@ -9,7 +9,7 @@ BEGIN
     SET XACT_ABORT ON;
 
     DECLARE @EndOfTime datetime2(7) = '99991231 23:59:59.9999999';
-    DECLARE @InitialLoadDate date = '20130101';
+    DECLARE @InitialLoadDate date = '20200101';
 
     CREATE TABLE #CityChanges
     (

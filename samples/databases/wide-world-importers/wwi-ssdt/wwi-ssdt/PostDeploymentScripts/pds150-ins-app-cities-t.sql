@@ -3,10 +3,10 @@ GO
 
 BEGIN TRANSACTION
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT [Application].Cities (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo) 
+INSERT [Application].Cities (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo)
 VALUES (33494, 'Tabernacle', [DataLoadSimulation].[GetStateProvinceID] ('NJ'), 0xe6100000010ccc15945808ec434012de793d73ad52c0, NULL, 1, @CurrentDateTime, @EndOfTime)
      , (33596, 'Tampico', [DataLoadSimulation].[GetStateProvinceID] ('MT'), 0xe6100000010cedeafaaa0127484045323f92edb45ac0, NULL, 1, @CurrentDateTime, @EndOfTime)
      , (33597, 'Tamworth', [DataLoadSimulation].[GetStateProvinceID] ('NH'), 0xe6100000010c7c1eedc90dee4540eb4db10fd7d051c0, NULL, 1, @CurrentDateTime, @EndOfTime)
@@ -418,10 +418,10 @@ GO
 
 BEGIN TRANSACTION
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT [Application].Cities (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo) 
+INSERT [Application].Cities (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo)
 VALUES (34001, 'Thunderbird Bay', [DataLoadSimulation].[GetStateProvinceID] ('TX'), 0xe6100000010cb5b409e69ee83f40cae2fe2353c158c0, 663, 1, @CurrentDateTime, @EndOfTime)
      , (34002, 'Thunderbolt', [DataLoadSimulation].[GetStateProvinceID] ('GA'), 0xe6100000010cf73aa92f4b0440403bcec87b304354c0, 2668, 1, @CurrentDateTime, @EndOfTime)
      , (34003, 'Thurman', [DataLoadSimulation].[GetStateProvinceID] ('IA'), 0xe6100000010c111ac1c6f568444019a99c9bdbef57c0, 229, 1, @CurrentDateTime, @EndOfTime)
@@ -926,12 +926,12 @@ GO
 
 BEGIN TRANSACTION
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT [Application].Cities 
-  (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT [Application].Cities
+  (CityID, CityName, StateProvinceID, [Location], LatestRecordedPopulation, LastEditedBy, ValidFrom, ValidTo)
+VALUES
        (34500, 'Troy', [DataLoadSimulation].[GetStateProvinceID] ('TX'), 0xe6100000010c9bef969af3343f407b736ec9605358c0, 1645, 1, @CurrentDateTime, @EndOfTime)
      , (34501, 'Troy Grove', [DataLoadSimulation].[GetStateProvinceID] ('IL'), 0xe6100000010c995b6b39e1bb4440e2e24d23524556c0, 250, 1, @CurrentDateTime, @EndOfTime)
      , (34502, 'Troy Hills', [DataLoadSimulation].[GetStateProvinceID] ('NJ'), 0xe6100000010c1a8057152b6d444047b87f1b189952c0, NULL, 1, @CurrentDateTime, @EndOfTime)

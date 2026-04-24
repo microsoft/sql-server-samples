@@ -20,13 +20,13 @@ namespace ProductCatalog.Controllers
             this.sqlQuery = sqlQueryService;
             this.sqlCmd = sqlCommandService;
         }
-        
+
         // GET api/Product
         [HttpGet]
         public async Task Get()
         {
             await sqlQuery.Stream(
-@"select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags 
+@"select ProductID, Name, Color, Price, Quantity, JSON_VALUE(Data, '$.MadeIn') as MadeIn, JSON_QUERY(Tags) as Tags
 from Product
 FOR JSON PATH, ROOT('data')", Response.Body, EMPTY_PRODUCTS_ARRAY);
         }
@@ -44,7 +44,7 @@ FOR JSON PATH, WITHOUT_ARRAY_WRAPPER");
             cmd.Parameters.AddWithValue("id", id);
             await sqlQuery.Stream(cmd, Response.Body, "{}");
         }
-    
+
         // POST api/Product
         [HttpPost]
         public async Task Post()

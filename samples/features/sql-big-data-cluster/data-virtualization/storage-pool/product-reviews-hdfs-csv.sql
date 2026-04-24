@@ -37,8 +37,8 @@ IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'product_reviews_hd
 GO
 
 -- Join external table with local tables
--- 
-SELECT 
+--
+SELECT
     p.pr_review_sk, pc.pr_review_content
   FROM product_reviews as p
   JOIN (SELECT TOP(10) * FROM product_reviews_hdfs_csv) AS pc

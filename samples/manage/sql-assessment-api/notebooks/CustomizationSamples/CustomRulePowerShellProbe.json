@@ -1,0 +1,47 @@
+﻿{
+  "schemaVersion": "1.0",
+  "name": "NO NAME",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "PowerShellVersion",
+      "itemType": "definition",
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises",
+        "version": "[11.0,)"
+      },
+      "displayName": "PowerShell host information",
+      "description": "Information about the PowerShell console host ",
+      "message": "Upgrade PowerShell. Installed version is @{Output.Version}, latest available is @{latestVersion}.",
+      "level": "Warning",
+      "latestVersion": "7.0.2",
+      "condition": {
+        "eq": [
+          "@Output.Version",
+          "@latestVersion"
+        ]
+      },
+      "probes": [
+        "PowershellHostInformation"
+      ]
+    }
+  ],
+  "probes": {
+    "PowershellHostInformation": [
+      {
+        "type": "PowerShell",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "OnPremises",
+          "version": "[11.0,)"
+        },
+        "implementation": {
+          "command": "Get-Host"
+        }
+      }
+    ]
+  }
+}

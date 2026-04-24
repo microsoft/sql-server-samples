@@ -1,4 +1,4 @@
-# ASP.NET Core Product Catalog REST Service that uses SQL/JSON functionalities 
+# ASP.NET Core Product Catalog REST Service that uses SQL/JSON functionalities
 
 This project contains an example implementation of ASP.NET Core REST Service that enables you to get or modify list of products in catalog.
 
@@ -67,7 +67,7 @@ If database is hosted on Azure you can add something like:
 
 5. Build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
 
-6. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+6. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.
   1. Open /api/Product Url to get all products from database,
   2. Open /api/Product/18 Url to get the product with id,
   3. Send POST Http request to /api/Product Url with JSON like {"Name":"Blade","Color":"Magenta","Price":18.0000,"Quantity":45} in the body of request to create new product,
@@ -92,7 +92,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 

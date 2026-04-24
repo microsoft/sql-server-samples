@@ -4,7 +4,7 @@ DROP PROC IF EXISTS generate_customer_return_clusters;
 GO
 CREATE procedure [dbo].[generate_customer_return_clusters]
 AS
-/* 
+/*
   This procedure uses R to classify customers into different groups based on their
   purchase & return history.
 */
@@ -21,7 +21,7 @@ SELECT
   round(CASE WHEN ((orders_items = 0) OR(returns_items IS NULL) OR (orders_items IS NULL) OR ((returns_items / orders_items) IS NULL) ) THEN 0.0 ELSE (cast(returns_items as nchar(10)) / orders_items) END, 7) AS itemsRatio,
   round(CASE WHEN ((orders_money = 0) OR (returns_money IS NULL) OR (orders_money IS NULL) OR ((returns_money / orders_money) IS NULL) ) THEN 0.0 ELSE (cast(returns_money as nchar(10)) / orders_money) END, 7) AS monetaryRatio,
   round(CASE WHEN ( returns_count IS NULL                                                                        ) THEN 0.0 ELSE  returns_count                 END, 0) AS frequency
-  
+
 FROM
   (
     SELECT
@@ -47,7 +47,7 @@ FROM
       SUM( sr_return_amt ) AS returns_money
     FROM store_returns
     GROUP BY sr_customer_sk
-  ) returned ON ss_customer_sk=sr_customer_sk 
+  ) returned ON ss_customer_sk=sr_customer_sk
  '
 
 EXEC sp_execute_external_script
@@ -68,7 +68,7 @@ return_cluster = RxSqlServerData(table = "customer_return_clusters", connectionS
 # set.seed for random number generator for predictability
 set.seed(10);
 
-# generate clusters using rxKmeans and output clusters to a table called "customer_return_clusters". 
+# generate clusters using rxKmeans and output clusters to a table called "customer_return_clusters".
 clust <- rxKmeans( ~ orderRatio + itemsRatio + monetaryRatio + frequency, customer_returns, numClusters = 4
                     , outFile = return_cluster, outColName = "cluster", writeModelVars = TRUE , extraVarsToWrite = c("customer"), overwrite = TRUE);
 '
@@ -95,7 +95,7 @@ SELECT * FROM customer_return_clusters;
 --Select email addresses of customers in cluster 1
 SELECT customer.[c_email_address], customer.c_customer_sk
   FROM dbo.customer
-  JOIN 
+  JOIN
   [dbo].[customer_return_clusters] as r
   ON r.customer = customer.c_customer_sk
   WHERE r.cluster = 3

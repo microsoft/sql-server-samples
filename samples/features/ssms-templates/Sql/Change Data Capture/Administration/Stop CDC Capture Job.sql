@@ -6,5 +6,5 @@ GO
 
 EXEC [sys].[sp_cdc_stop_job]
 	@job_type = N'capture'
-GO 
+GO
 

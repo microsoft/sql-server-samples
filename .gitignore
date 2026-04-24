@@ -162,7 +162,7 @@ DocProject/Help/html
 
 # Publish Web Output
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings 
+# TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -441,3 +441,7 @@ samples/features/sql-management-objects/src/out/CodeCoverage/CodeCoverage.config
 # Certificates
 *.pem
 *.p12
+
+# Composer
+/vendor/
+/samples/databases/wide-world-importers/wwi-ssdt/wwi-ssdt/WideWorldImporters.publish.xml

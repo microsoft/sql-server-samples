@@ -1,5 +1,5 @@
-﻿-- Note this procedure is not included in the regular build, it 
--- is called during the post deployment process. 
+﻿-- Note this procedure is not included in the regular build, it
+-- is called during the post deployment process.
 -- This is due to the fact it updates temporal tables, and SSDT
 -- will throw up an error when this occurs, despite the fact we
 -- have procedures to deactivate the temporal tables and reactivate

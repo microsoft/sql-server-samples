@@ -2,7 +2,7 @@
 apiVersion: mssql.microsoft.com/v1
 kind: SqlServer
 metadata:
-  name: 
+  name:
   namespace: default
   labels:
     type: sqlservr

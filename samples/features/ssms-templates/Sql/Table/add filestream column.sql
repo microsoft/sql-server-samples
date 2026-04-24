@@ -12,7 +12,7 @@ GO
 
 CREATE TABLE <schema_name, sysname, dbo>.<table_name, sysname, sample_table>
 (
-	column1 int      NOT NULL, 
+	column1 int      NOT NULL,
 	column2 uniqueidentifier NOT NULL rowguidcol unique
 )
 GO

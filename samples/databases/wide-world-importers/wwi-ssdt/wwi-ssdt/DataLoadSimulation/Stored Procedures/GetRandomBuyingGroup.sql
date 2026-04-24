@@ -5,7 +5,7 @@ AS
 BEGIN
 /*
 Notes:
-  Retrieves a random buying group. 
+  Retrieves a random buying group.
   1 is reserved for individual buyers, so we want to
   get an ID above that.
 
@@ -15,7 +15,7 @@ Usage:
   EXEC [DataLoadSimulation].[GetRandomBuyingGroup]
       @BuyingGroupID   = @BuyingGroupID   OUTPUT
     , @BuyingGroupName = @BuyingGroupName OUTPUT
-  SELECT @BuyingGroupID, @BuyingGroupName 
+  SELECT @BuyingGroupID, @BuyingGroupName
 */
 
   SELECT TOP 1

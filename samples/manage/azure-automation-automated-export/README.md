@@ -48,7 +48,7 @@ Save the AutoExport.ps1 and AutoExportBlobRetention.ps1 files locally to make th
 	- **$waitTimeInMinutes:** This tells the script how long it can wait for an operation to complete before it fails.
 	- **$storageKeyVariableName:** This is the Azure Automation string Variable name you created to store your Storage Key.
 	- **$storageAccountName:** This is the name of the storage account you are exporting to.
-	- **$connectionAssetName:** Connection Asset Name for Authenticating (Keep as AzureClassicRunAsConnection if you created the default RunAs accounts) 
+	- **$connectionAssetName:** Connection Asset Name for Authenticating (Keep as AzureClassicRunAsConnection if you created the default RunAs accounts)
 2. In AutoExportBlobRetention, here are the values that need to be modified:
 	- **$storageKeyVariableName:** This is the Azure Automation string Variable name you created to store your Storage Key.
 	- **$storageAccountName:** This is the name of your Storage Account you exported your bacpacs to.

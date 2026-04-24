@@ -22,7 +22,7 @@ interface FunctionLike extends Node
 
     /**
      * Get the declared return type or null
-     * 
+     *
      * @return null|string|Node\Name
      */
     public function getReturnType();

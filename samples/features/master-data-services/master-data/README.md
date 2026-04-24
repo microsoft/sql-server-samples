@@ -1,6 +1,6 @@
 # Master Data Services Master Data API Sample
 
-This is a C# code sample to show how to use MDS APIs to create, read, update, and delete entity members. 
+This is a C# code sample to show how to use MDS APIs to create, read, update, and delete entity members.
 
 The sample code includes the following scenarios.
 
@@ -13,7 +13,7 @@ The sample code includes the following scenarios.
 7. 	Delete the consolidated member using MDS API.
 8. 	Delete the leaf member using MDS API.
 
-Please set the MDS URL (plus /Service/Service.svc) to mdsURL in Program.cs. 
+Please set the MDS URL (plus /Service/Service.svc) to mdsURL in Program.cs.
 
 string mdsURL = @"http://localhost/MDS/Service/Service.svc";
 
@@ -25,17 +25,17 @@ You need to expose the WSDL. Exposing the WSDL is only necessary at the time whe
 
 To enable an http/https Get on the WSDL:
 
-1.	Open the MDS web.config file in a text editor (<Program Files\Microsoft SQL Server\Master Data Services\WebApplication\web.config). 
-2.	Search for the tag serviceMetadata and set httpGetEnabled to true (or httpsGetEnabled if using SSL). 
+1.	Open the MDS web.config file in a text editor (<Program Files\Microsoft SQL Server\Master Data Services\WebApplication\web.config).
+2.	Search for the tag serviceMetadata and set httpGetEnabled to true (or httpsGetEnabled if using SSL).
 
 To also enable service exception details for additional debugging (not necessary for standard, trapped errors):
 
-1.	Search for the tag ‘serviceDebug’ and set includeExceptionDetailInFaults to true. 
+1.	Search for the tag ï¿½serviceDebugï¿½ and set includeExceptionDetailInFaults to t
 
 After that you need to add a Service Reference to http://ServerName/MdsSiteName/service/service.svc and set the namespace to the service to "MDSTestService" in the following steps using Visual Studio.
 
 1. Click "Add Service Reference".
-2. In Address, enter the URL to the MDS service which will be “http://ServerName/MdsSiteName/service/service.svc”.
+2. In Address, enter the URL to the MDS service which will be ï¿½http://ServerName/MdsSiteName/service/service.svcï¿½.
 3. Specify the namespace to the service as "MDSTestService" in the Namespace box.
 4. Click the Advanced button to configure advanced settings.
 5. Check Always generate message contracts.

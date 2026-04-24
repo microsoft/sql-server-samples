@@ -8,11 +8,11 @@ DECLARE @source_schema sysname, @source_name sysname
 SET @source_schema = N'<source_schema,sysname,source_schema>'
 DECLARE #hinstance CURSOR LOCAL fast_forward
 FOR
-	SELECT name  
+	SELECT name
 	FROM [sys].[tables]
 	WHERE SCHEMA_NAME(schema_id) = @source_schema
 	AND is_ms_shipped = 0
-    
+
 OPEN #hinstance
 FETCH #hinstance INTO @source_name
 	

@@ -23,9 +23,9 @@
 
 This sample shows one approach to Managed Instance management automation using Function App and system-assigned identity.
 
-With system-assigned identity, Function App could be assigned permissions to invoke proper actions in a safe way. 
+With system-assigned identity, Function App could be assigned permissions to invoke proper actions in a safe way.
 
-Instead of granting excessive permissions to users, admins could grant required permissions to Function App that exposes very restrained set of functionalities through API. Code running on Function App doesn't have any secrets configured or hardcoded. 
+Instead of granting excessive permissions to users, admins could grant required permissions to Function App that exposes very restrained set of functionalities through API. Code running on Function App doesn't have any secrets configured or hardcoded.
 
 Currently available functions:
 - Assign Azure AD Directory Readers permissions to Managed Instance principal
@@ -96,7 +96,7 @@ else
 
 ```
 
-### Note 
+### Note
 
 In step 3. use `Get publish profile` to get user name and password. If you are using PowerShell to upload package, put user name and password under single quotes as with double quotes character `$` has special meaning.
 

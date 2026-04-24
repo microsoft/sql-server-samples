@@ -1,9 +1,9 @@
-﻿CREATE PROCEDURE [dbo].[InsertMeterMeasurementHistory] 
+﻿CREATE PROCEDURE [dbo].[InsertMeterMeasurementHistory]
 	@MeterID INT
 AS
-BEGIN 
+BEGIN
 	BEGIN TRAN		
-		INSERT INTO dbo.MeterMeasurementHistory (MeterID, MeasurementInkWh, PostalCode, MeasurementDate) 
+		INSERT INTO dbo.MeterMeasurementHistory (MeterID, MeasurementInkWh, PostalCode, MeasurementDate)
 		SELECT MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM dbo.MeterMeasurement WITH (SNAPSHOT)
 		WHERE MeterID = @MeterID
 

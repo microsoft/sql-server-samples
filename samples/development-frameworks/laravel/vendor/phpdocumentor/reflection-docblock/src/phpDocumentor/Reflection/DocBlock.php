@@ -247,10 +247,10 @@ class DocBlock implements \Reflector
 
     /**
      * Gets the text portion of the doc block.
-     * 
+     *
      * Gets the text portion (short and long description combined) of the doc
      * block.
-     * 
+     *
      * @return string The text portion of the doc block.
      */
     public function getText()
@@ -267,12 +267,12 @@ class DocBlock implements \Reflector
 
     /**
      * Set the text portion of the doc block.
-     * 
+     *
      * Sets the text portion (short and long description combined) of the doc
      * block.
      *
      * @param string $docblock The new text portion of the doc block.
-     * 
+     *
      * @return $this This doc block.
      */
     public function setText($comment)

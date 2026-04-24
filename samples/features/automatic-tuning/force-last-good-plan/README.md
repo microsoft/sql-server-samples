@@ -12,7 +12,7 @@ This code sample demonstrates how [Automatic tuning in SQL Server 2017 CTP2.0+](
 
 <a name=about-this-sample></a>
 
-## About this sample 
+## About this sample
 1. **Applies to:** SQL Server 2017 (or higher) Enterprise / Developer / Evaluation Edition
 2. **Key features:**
     - Automatic tuning / forcing last good plan

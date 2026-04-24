@@ -30,9 +30,9 @@ namespace App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                        .AddCookie(o => 
+                        .AddCookie(o =>
                             {
                                 o.LoginPath = new PathString("/Index");
                                 o.AccessDeniedPath = new PathString("/Index");
@@ -46,11 +46,11 @@ namespace App
                                     options.SessionContext
                                             .Add("SalesTerritory", GetTerritoryFromSession);
                                     options.EnableODataExtensions = true;
-                                    
+
                                 });
 
             services.AddAuthorization();
-            
+
             // Add framework services.
             services.AddMvc();
         }

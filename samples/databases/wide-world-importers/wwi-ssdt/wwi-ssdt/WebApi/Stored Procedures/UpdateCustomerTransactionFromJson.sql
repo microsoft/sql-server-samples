@@ -22,7 +22,7 @@ AS BEGIN
 				TransactionAmount decimal(18,2),
 				OutstandingBalance decimal(18,2)
 				) as json
-		WHERE 
+		WHERE
 			Sales.CustomerTransactions.CustomerTransactionID = @CustomerTransactionID
 
 END

@@ -14,12 +14,12 @@ CREATE USER [<domain_name,,domain>\<user_name,,windows_user>]
 GO
 
 -- Grant specific access rights to use based on Schema
-GRANT 
-	DELETE, 
-	EXECUTE, 
-	INSERT, 
-	SELECT, 
-	UPDATE, 
-	VIEW DEFINITION 
-ON SCHEMA::[<default_schema, sysname, Production>] 
+GRANT
+	DELETE,
+	EXECUTE,
+	INSERT,
+	SELECT,
+	UPDATE,
+	VIEW DEFINITION
+ON SCHEMA::[<default_schema, sysname, Production>]
 	TO [<domain_name,,domain>\<user_name,,windows_user>];

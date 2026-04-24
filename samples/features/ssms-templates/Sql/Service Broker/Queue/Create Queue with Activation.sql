@@ -8,13 +8,13 @@
 -- =============================================
 
 CREATE QUEUE <queue-name, sysname, test_queue>
-   WITH 
+   WITH
    STATUS = ON,
    RETENTION = OFF ,
    ACTIVATION (
 		STATUS = ON,
 		PROCEDURE_NAME = <proc-name, sysname, test_procedure> ,
-		MAX_QUEUE_READERS = <maxreaders, int, 1>, 
+		MAX_QUEUE_READERS = <maxreaders, int, 1>,
 		EXECUTE AS <execute-options,,SELF> ),
-   POISON_MESSAGE_HANDLING (STATUS = ON) 
+   POISON_MESSAGE_HANDLING (STATUS = ON)
    ON <filegroup,,[DEFAULT]>

@@ -1,7 +1,7 @@
 // ===============================
 // 	Create From PMML
 //
-//  Replace the string with PMML.  
+//  Replace the string with PMML.
 //  Single quotes embedded in the
 //  PMML string must be doubled.
 // ===============================

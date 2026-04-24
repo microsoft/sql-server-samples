@@ -9,15 +9,15 @@ Notes:
 Usage:
   DECLARE @myPaymentDays AS INT
   EXEC [DataLoadSimulation].[GetRandomPaymentDays] @RandomPaymentDays = @myPaymentDays OUTPUT
-  SELECT @myPaymentDays 
+  SELECT @myPaymentDays
 
 */
   DECLARE @pd AS INT
 
   SET @pd = CAST((ABS(CHECKSUM(NEWID())) % 8) AS INT)
-  
+
   -- Note as 30 and 45 are the most common for payment day values,
-  -- we want them to come up more often hence we included them 
+  -- we want them to come up more often hence we included them
   -- multiple times
   SET @RandomPaymentDays = CASE WHEN @pd = 0 THEN 30
                                 WHEN @pd = 1 THEN 45

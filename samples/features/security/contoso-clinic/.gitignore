@@ -3,5 +3,5 @@ src/packages/
 src/ContosoClinic/obj
 src/ContosoClinic/bin
 src/ContosoClinicProject/ContosoClinic/Project_Readme.html
-src/ContosoClinic/ContosoClinic.csproj.user 
+src/ContosoClinic/ContosoClinic.csproj.user
 !src/ContosoClinic.sln

@@ -5,8 +5,8 @@ EXEC msdb.dbo.sp_syspolicy_rename_condition @name = N'SQL Server 2005 or a Later
 GO
 
 /*
-Notes: 
-Remove from "Surface Area Configuration for Database Engine 2005 and 2000 Features" condition all 2005 only features. 
+Notes:
+Remove from "Surface Area Configuration for Database Engine 2005 and 2000 Features" condition all 2005 only features.
 Then change "Surface Area Configuration for Database Engine 2008 Features" to apply from SQL 2005 onwards, otherwise policy evaluation fails.
 */
 
@@ -140,7 +140,7 @@ EXEC msdb.dbo.sp_syspolicy_update_policy @name='Public Not Granted Server Permis
 GO
 
 -- Fix typos or extra white spaces in descriptions
-EXEC msdb.dbo.sp_syspolicy_update_policy @name='SQL Server Affinity Mask', @description=N'Checks an instance of SQL Server for setting, affinity mask to its default value 0, since in most cases, the Microsoft Windows 2000 or Windows Server 2003 default affinity provides the best performance. 
+EXEC msdb.dbo.sp_syspolicy_update_policy @name='SQL Server Affinity Mask', @description=N'Checks an instance of SQL Server for setting, affinity mask to its default value 0, since in most cases, the Microsoft Windows 2000 or Windows Server 2003 default affinity provides the best performance.
 Confirms whether the setting affinity mask of server is set to zero.'
 GO
 
@@ -153,7 +153,7 @@ EXEC msdb.dbo.sp_syspolicy_update_policy @name='Windows Event Log Cluster Disk R
 http://support.microsoft.com/kb/311081'
 GO
 
-EXEC msdb.dbo.sp_syspolicy_update_policy @name='Windows Event Log Device Driver Control Error', @description=N'Detects Error EventID –11 in the System Log. This error could be because of a corrupted device driver, a hardware problem, a malfunctioning device, poor cabling, or termination issues.
+EXEC msdb.dbo.sp_syspolicy_update_policy @name='Windows Event Log Device Driver Control Error', @description=N'Detects Error EventID ï¿½11 in the System Log. This error could be because of a corrupted device driver, a hardware problem, a malfunctioning device, poor cabling, or termination issues.
 http://support.microsoft.com/kb/259237
 http://support.microsoft.com/kb/154690'
 GO
@@ -174,11 +174,11 @@ http://support.microsoft.com/kb/885688'
 GO
 
 EXEC msdb.dbo.sp_syspolicy_update_policy @name='Windows Event Log I/O Error During Hard Page Fault Error', @description=N'Detects I/O Error during hard page fault in System Log.
-http://support.microsoft.com/kb/304415 
+http://support.microsoft.com/kb/304415
 http://support.microsoft.com/kb/305547'
 GO
 
-EXEC msdb.dbo.sp_syspolicy_update_policy @name='Windows Event Log Storage System I/O Timeout Error', @description=N'Detects Error EventID –9 in the System Log. This error indicates that I/O time-out has occurred within the storage system, as detected from the driver for the controller. 
-http://support.microsoft.com/kb/259237  
+EXEC msdb.dbo.sp_syspolicy_update_policy @name='Windows Event Log Storage System I/O Timeout Error', @description=N'Detects Error EventID ï¿½9 in the System Log. This error indicates that I/O time-out has occurred within the storage system, as detected from the driver for the controlle
+http://support.microsoft.com/kb/259237
 http://support.microsoft.com/kb/154690'
 GO

@@ -269,7 +269,7 @@ have been distributed far and wide and demand long term support.
 
 ## 0.9.4
 
- - `isPromise` and `isPromiseAlike` now always returns a boolean 
+ - `isPromise` and `isPromiseAlike` now always returns a boolean
    (even for falsy values). #284 @lfac-pt
  - Support for ES6 Generators in `async` #288 @andywingo
  - Clear duplicate promise rejections from dispatch methods #238 @SLaks

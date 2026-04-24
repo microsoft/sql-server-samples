@@ -2,6 +2,6 @@
 // 	Test Structure Cases
 // ===============================
 
-SELECT [FLATTENED] <expression-list> 
+SELECT [FLATTENED] <expression-list>
 FROM [<mining structure,name,MyStructure>].CASES
 WHERE IsTestCase()

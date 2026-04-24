@@ -21,7 +21,7 @@
                 })
                 .fail(e => toastr.error('An error occured while trying to get the invoice.'));
         });
-    
+
     $("button#save-invoice").on("click",
         e => {
             var id = $("#InvoiceID", $formInvoiceEdit).val();

@@ -1,7 +1,7 @@
 -- CTAS (Create Table as Select) Creates tables in the SQL DW from external tables
 
 CREATE TABLE [dbo].[Date]
-WITH    
+WITH
 (   DISTRIBUTION = ROUND_ROBIN
 ,   CLUSTERED COLUMNSTORE INDEX
 )
@@ -13,7 +13,7 @@ OPTION (LABEL = 'CTAS : Load [dbo].[Date]')
 
 
 CREATE TABLE [dbo].[Geography]
-WITH    
+WITH
 (   DISTRIBUTION = ROUND_ROBIN
 ,   CLUSTERED COLUMNSTORE INDEX
 )
@@ -24,7 +24,7 @@ OPTION (LABEL = 'CTAS : Load [dbo].[Geography]')
 ;
 
 CREATE TABLE [dbo].[HackneyLicense]
-WITH    
+WITH
 (   DISTRIBUTION = ROUND_ROBIN
 ,   CLUSTERED COLUMNSTORE INDEX
 )
@@ -35,7 +35,7 @@ OPTION (LABEL = 'CTAS : Load [dbo].[HackneyLicense]')
 ;
 
 CREATE TABLE [dbo].[Medallion]
-WITH    
+WITH
 (   DISTRIBUTION = ROUND_ROBIN
 ,   CLUSTERED COLUMNSTORE INDEX
 )
@@ -46,7 +46,7 @@ OPTION (LABEL = 'CTAS : Load [dbo].[Medallion]')
 ;
 
 CREATE TABLE [dbo].[Time]
-WITH    
+WITH
 (   DISTRIBUTION = ROUND_ROBIN
 ,   CLUSTERED COLUMNSTORE INDEX
 )
@@ -57,7 +57,7 @@ OPTION (LABEL = 'CTAS : Load [dbo].[Time]')
 ;
 
 CREATE TABLE [dbo].[Weather]
-WITH    
+WITH
 (   DISTRIBUTION = ROUND_ROBIN
 ,   CLUSTERED COLUMNSTORE INDEX
 )
@@ -68,7 +68,7 @@ OPTION (LABEL = 'CTAS : Load [dbo].[Weather]')
 ;
 
 CREATE TABLE [dbo].[Trip]
-WITH    
+WITH
 (   DISTRIBUTION = ROUND_ROBIN
 ,   CLUSTERED COLUMNSTORE INDEX
 )

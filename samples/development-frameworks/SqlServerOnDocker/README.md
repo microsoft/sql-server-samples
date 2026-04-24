@@ -14,7 +14,7 @@ Prof of concept project with Microsoft SQL Server and Django Framework setup on 
 8. run `docker-compose run web python3 manage.py createsuperuser` to create admin account
 
 ## To run project:
- 
+
 1. run `docker-compose up web`
 2. point your browser to `localhost:8080`
 3. press `CTRL+C` to stop

@@ -10,23 +10,23 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE FUNCTION <Table_Function_Name, sysname, FunctionName> 
+CREATE FUNCTION <Table_Function_Name, sysname, FunctionName>
 (
 	-- Add the parameters for the function here
-	<@param1, sysname, @p1> <data_type_for_param1, , int>, 
+	<@param1, sysname, @p1> <data_type_for_param1, , int>,
 	<@param2, sysname, @p2> <data_type_for_param2, , char>
 )
-RETURNS 
-<@Table_Variable_Name, sysname, @Table_Var> TABLE 
+RETURNS
+<@Table_Variable_Name, sysname, @Table_Var> TABLE
 (
 	-- Add the column definitions for the TABLE variable here
-	<Column_1, sysname, c1> <Data_Type_For_Column1, , int>, 
+	<Column_1, sysname, c1> <Data_Type_For_Column1, , int>,
 	<Column_2, sysname, c2> <Data_Type_For_Column2, , int>
 )
 AS
 BEGIN
 	-- Fill the table variable with the rows for your result set
 	
-	RETURN 
+	RETURN
 END
 GO

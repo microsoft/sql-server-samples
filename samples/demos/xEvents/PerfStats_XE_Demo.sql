@@ -1,8 +1,8 @@
 -- Make sure Optimize for Adhoc Workloads is not active if demo'ing - that is why mt demo failed.
 
-DROP EVENT SESSION [QueryProfileXE] ON SERVER 
+DROP EVENT SESSION [QueryProfileXE] ON SERVER
 GO
-CREATE EVENT SESSION [QueryProfileXE] ON SERVER 
+CREATE EVENT SESSION [QueryProfileXE] ON SERVER
 ADD EVENT sqlserver.query_thread_profile(
     ACTION(sqlos.scheduler_id,sqlserver.database_id,sqlserver.is_system,sqlserver.plan_handle,sqlserver.query_hash_signed,sqlserver.query_plan_hash_signed,sqlserver.server_instance_name,sqlserver.session_id,sqlserver.session_nt_username,sqlserver.sql_text))
 ADD TARGET package0.event_file(SET filename=N'C:\Demos\QueryProfileXE.xel',max_file_size=(50),max_rollover_files=(2))

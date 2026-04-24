@@ -1,0 +1,64 @@
+﻿@page
+@model ContosoHR.Pages.EmployeeLedgerEntries.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Employee Ledger Entries</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLedgerEntries[0].CommitTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLedgerEntries[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLedgerEntries[0].Operation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLedgerEntries[0].Ssn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLedgerEntries[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLedgerEntries[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLedgerEntries[0].Salary)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.EmployeeLedgerEntries) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommitTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Operation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ssn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salary)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

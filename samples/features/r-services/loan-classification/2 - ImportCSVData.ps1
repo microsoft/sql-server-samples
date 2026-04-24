@@ -2,7 +2,7 @@
 
 Author: Amit Banerjee
 Contact: @mssqltiger | @banerjeeamit | http://aka.ms/sqlserverteam
-Description: 
+Description:
     1. First step is to use Lending Club CSV files and import them into an in-memory staging table
     2. Second step is to transform the staging data and move them into the table which will be used for the predictions
 
@@ -19,7 +19,7 @@ function ImportData ($csvFile)
 
     $SqlServer = "." # TODO: Change the name of SQL Server instance name
     $dbName = "LendingClub" # TODO: Change the name of the database
-    $csvData = Get-Content -Path $csvFile | Select-Object -Skip 1 | Where-Object {$_.id -notcontains "*Total amount funded in policy code*"} | ConvertFrom-Csv 
+    $csvData = Get-Content -Path $csvFile | Select-Object -Skip 1 | Where-Object {$_.id -notcontains "*Total amount funded in policy code*"} | ConvertFrom-Csv
 
     foreach ($line in $csvData)
     {
@@ -31,9 +31,9 @@ function ImportData ($csvFile)
             #Write-Host "Removing NULLs"
             $Query = $Query.Replace(",,",",NULL,")
         }
-    
+
         #Write-Host $query
-        Invoke-Sqlcmd -ServerInstance $SqlServer -Database $dbName -Query $Query -Verbose 
+        Invoke-Sqlcmd -ServerInstance $SqlServer -Database $dbName -Query $Query -Verbose
 
     }
 }

@@ -1,4 +1,4 @@
-# Implementing Regular Expressions in SQL Server using CLR UDF 
+# Implementing Regular Expressions in SQL Server using CLR UDF
 SQL Database don't have built-in support for regular expressions, so the only workaround is to use Regular Expressions that exist in .Net framework and expose them as T-SQL functions.
 This code sample demonstrates how to create CLR User-Defined functions that expose regular expression functionalities that exist in .Net framework.
 
@@ -12,7 +12,7 @@ This code sample demonstrates how to create CLR User-Defined functions that expo
 
 <a name=about-this-sample></a>
 
-## About this sample 
+## About this sample
 1. **Applies to:** SQL Server 2005+ Enterprise / Developer / Evaluation Edition
 2. **Key features:**
     - CLR

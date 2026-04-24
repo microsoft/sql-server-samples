@@ -1,7 +1,7 @@
 # Angular Heroes ASP.NET Core REST Web App
 
 This project contains an implementation of [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) implemented using ASP.NET Core REST API backend that use SQL/JSON functionalities.
-AngularJs code is modified version of johnpapa [Github sample project](https://github.com/johnpapa/angular2-tour-of-heroes). 
+AngularJs code is modified version of johnpapa [Github sample project](https://github.com/johnpapa/angular2-tour-of-heroes).
 In this example you will see how easily you can integrate Single-page apps implemented using Angular JS with SQL Server 2016 or Azure SQL Database using ASP.NET Core and JSON functions.
 
 ### Contents
@@ -45,7 +45,7 @@ To run this sample, you need the following prerequisites.
 
 ## Get this sample
 
-Sample project is placed on SQL Server GitHub repository. You can clone or download repository and locate code 
+Sample project is placed on SQL Server GitHub repository. You can clone or download repository and locate code
 in samples/features/json/angularjs/dotnet-tour-of-heroes folder.
 
 If you want to clone only this sample (without other samples), run the following commands from Git Bash:
@@ -98,8 +98,8 @@ If your database is hosted on Azure you can add something like:
 
 1. Restore NugetPackages using **dotnet restore** command.
 2. Restore npm packages using **npm install** command lines. This command will download packages in **node_modules** folder.
-3. Build project using **dotnet build** command executed from command line (from project root folder) or using Visual Studio 2017. 
-4. Run the sample app using **dotnet run** executed in the command prompt of the project root folder.  
+3. Build project using **dotnet build** command executed from command line (from project root folder) or using Visual Studio 2017.
+4. Run the sample app using **dotnet run** executed in the command prompt of the project root folder.
 
 Sequence of commands is:
 ```
@@ -111,7 +111,7 @@ dotnet run
 
 ### Run the app
 . Open /index.html Url to see heroes from database.
-See more details about functionalities in [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/) 
+See more details about functionalities in [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/)
 
 <a name=sample-details></a>
 
@@ -132,7 +132,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 - [AngularJS Heroes sample app](https://angular.io/docs/ts/latest/tutorial/).

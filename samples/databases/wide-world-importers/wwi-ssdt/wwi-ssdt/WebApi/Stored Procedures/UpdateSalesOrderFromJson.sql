@@ -22,7 +22,7 @@ AS BEGIN	UPDATE Sales.Orders SET
 					CustomerPurchaseOrderNumber nvarchar(20),
 					IsUndersupplyBackordered bit,
 					PickingCompletedWhen date) as json
-			WHERE 
+			WHERE
 				Sales.Orders.OrderID = @SalesOrderID
 
 END

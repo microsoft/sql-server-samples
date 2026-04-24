@@ -6,7 +6,7 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@DeliveryMethod)
 		WITH (DeliveryMethodName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Application.DeliveryMethods.DeliveryMethodID = @DeliveryMethodID
 
 END

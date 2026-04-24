@@ -30,7 +30,7 @@ namespace AngularHeroApp
         public void ConfigureServices(IServiceCollection services)
         {
             string ConnString = Configuration["ConnectionStrings:HeroDb"];
-            
+
             if (ConnString == null)
                 throw new System.Exception("Cannot read config: " + ConnString);
             services.AddTransient<IQueryPipe>( _=> new QueryPipe(new SqlConnection(ConnString)));
@@ -38,7 +38,7 @@ namespace AngularHeroApp
 
             // Add framework services.
             services.AddMvc();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

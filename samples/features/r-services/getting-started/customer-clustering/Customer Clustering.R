@@ -12,11 +12,11 @@ input_query <- "
   round(CASE WHEN ((orders_items = 0) OR(returns_items IS NULL) OR (orders_items IS NULL) OR ((returns_items / orders_items) IS NULL) ) THEN 0.0 ELSE (cast(returns_items as nchar(10)) / orders_items) END, 7) AS itemsRatio,
   round(CASE WHEN ((orders_money = 0) OR (returns_money IS NULL) OR (orders_money IS NULL) OR ((returns_money / orders_money) IS NULL) ) THEN 0.0 ELSE (cast(returns_money as nchar(10)) / orders_money) END, 7) AS monetaryRatio,
   round(CASE WHEN ( returns_count IS NULL                                                                        ) THEN 0.0 ELSE  returns_count                 END, 0) AS frequency
- 
+
 FROM
   (
     SELECT
-      ss_customer_sk, 
+      ss_customer_sk,
       -- return order ratio
       COUNT(distinct(ss_ticket_number)) AS orders_count,
       -- return ss_item_sk ratio
@@ -38,7 +38,7 @@ FROM
       SUM( sr_return_amt ) AS returns_money
     FROM store_returns
     GROUP BY sr_customer_sk
-  ) returned ON ss_customer_sk=sr_customer_sk 
+  ) returned ON ss_customer_sk=sr_customer_sk
 "
 # Input customer data that needs to be classified
 customer_returns <- RxSqlServerData(sqlQuery = input_query,
@@ -53,9 +53,9 @@ head(customer_data, n = 5);
 
 # Determine number of clusters
 #Using a plot of the within groups sum of squares by number of clusters extracted can help determine the appropriate number of clusters.
-#We are looking for a bend in the plot. It is at this "elbow" in the plot that we have the appropriate number of clusters 
+#We are looking for a bend in the plot. It is at this "elbow" in the plot that we have the appropriate number of clusters
 wss <- (nrow(customer_data) - 1) * sum(apply(customer_data, 2, var))
-for (i in 2:20) { 
+for (i in 2:20) {
 xt = kmeans(customer_data, centers = i)
 wss[i] <- sum(kms = kmeans(customer_data, centers = i)$withinss)
     }

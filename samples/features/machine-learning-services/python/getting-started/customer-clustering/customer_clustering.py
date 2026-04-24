@@ -61,7 +61,7 @@ def perform_clustering():
 
     data_source = revoscale.RxSqlServerData(sql_query=input_query, column_info=column_info,
                                               connection_string=conn_str)
-    
+
     # import data source and convert to pandas dataframe.
     customer_data = pd.DataFrame(revoscalepy.rx_import(data_source))
     print("Data frame:", customer_data.head(n=20))

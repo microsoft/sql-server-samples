@@ -20,7 +20,7 @@ CREATE TABLE [dbo].[DimGeography](
 	[StateProvinceName] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[CountryRegionName] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[PostalCode] [nvarchar](15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
- CONSTRAINT [PK_DimGeography_GeographyKey] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DimGeography_GeographyKey] PRIMARY KEY CLUSTERED
 (
 	[GeographyKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -28,7 +28,7 @@ CREATE TABLE [dbo].[DimGeography](
 GO
 -- Populate Data
 insert into DimGeography
-select distinct AddressID,City,StateProvince,CountryRegion,PostalCode 
+select distinct AddressID,City,StateProvince,CountryRegion,PostalCode
 from SalesLT.Address
 
 -- select * from DimGeography
@@ -50,7 +50,7 @@ CREATE TABLE [dbo].[DimCustomer](
 	[LastName] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[Suffix] [nvarchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[EmailAddress] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
- CONSTRAINT [PK_DimCustomer_CustomerKey] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DimCustomer_CustomerKey] PRIMARY KEY CLUSTERED
 (
 	[CustomerKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -90,7 +90,7 @@ CREATE TABLE [dbo].[DimDate](
 	[MonthNumberOfYear] [tinyint] NOT NULL,
 	[EnglishMonthName] [nvarchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[Year] [smallint] NOT NULL
- CONSTRAINT [PK_DimDate_DateKey] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DimDate_DateKey] PRIMARY KEY CLUSTERED
 (
 	[DateKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -109,11 +109,11 @@ AS
 	SELECT @StartDate AS [DateKey]
 	UNION ALL
 	SELECT	DATEADD(DAY,1,[DateKey])
-	FROM	DateList   
+	FROM	DateList
 	WHERE	DATEADD(DAY,1,[DateKey]) <= @EndDate
 )
 Insert into DimDate
-select 
+select
 	  [DateKey]= Cast(CONVERT(VARCHAR,[DateKey],112) as int) --YYYYMMDD
 	 ,[FullDateAlternateKey] = [DateKey]
 	  -- week
@@ -127,7 +127,7 @@ select
 	-- Year
 	 , [MonthNumberOfYear] = DATEPART(MONTH, [DateKey])
 	 , [EnglishMonthName] = DATENAME(MONTH, [DateKey])
- 
+
 
 	 ,[Year] = YEAR([DateKey])
 	 --into tbltest
@@ -160,11 +160,11 @@ CREATE TABLE [dbo].[DimProductCategory](
 	[ProductCategoryKey] [int] IDENTITY(1,1) NOT NULL,
 	[ProductCategoryAlternateKey] [int] NULL,
 	[EnglishProductCategoryName] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
- CONSTRAINT [PK_DimProductCategory_ProductCategoryKey] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DimProductCategory_ProductCategoryKey] PRIMARY KEY CLUSTERED
 (
 	[ProductCategoryKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON),
- CONSTRAINT [AK_DimProductCategory_ProductCategoryAlternateKey] UNIQUE NONCLUSTERED 
+ CONSTRAINT [AK_DimProductCategory_ProductCategoryAlternateKey] UNIQUE NONCLUSTERED
 (
 	[ProductCategoryAlternateKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -190,11 +190,11 @@ CREATE TABLE [dbo].[DimProductSubcategory](
 	[ProductSubcategoryAlternateKey] [int] NULL,
 	[EnglishProductSubcategoryName] [nvarchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ProductCategoryKey] [int] NULL,
- CONSTRAINT [PK_DimProductSubcategory_ProductSubcategoryKey] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DimProductSubcategory_ProductSubcategoryKey] PRIMARY KEY CLUSTERED
 (
 	[ProductSubcategoryKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON),
- CONSTRAINT [AK_DimProductSubcategory_ProductSubcategoryAlternateKey] UNIQUE NONCLUSTERED 
+ CONSTRAINT [AK_DimProductSubcategory_ProductSubcategoryAlternateKey] UNIQUE NONCLUSTERED
 (
 	[ProductSubcategoryAlternateKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
@@ -234,11 +234,11 @@ CREATE TABLE [dbo].[DimProduct](
 	[ProductModel] [nvarchar](400) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[StartDate] [datetime] NULL,
 	[EndDate] [datetime] NULL
- CONSTRAINT [PK_DimProduct_ProductKey] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DimProduct_ProductKey] PRIMARY KEY CLUSTERED
 (
 	[ProductKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON),
- CONSTRAINT [AK_DimProduct_ProductAlternateKey_StartDate] UNIQUE NONCLUSTERED 
+ CONSTRAINT [AK_DimProduct_ProductAlternateKey_StartDate] UNIQUE NONCLUSTERED
 (
 	[ProductAlternateKey] ASC,
 	[StartDate] ASC
@@ -325,7 +325,7 @@ CREATE TABLE [dbo].[FactResellerSalesXL_PageCompressed](
 	[ShipDate] [smalldatetime] NULL
 )
 GO
-ALTER TABLE [dbo].[FactResellerSalesXL_PageCompressed]  WITH CHECK ADD 
+ALTER TABLE [dbo].[FactResellerSalesXL_PageCompressed]  WITH CHECK ADD
 	CONSTRAINT [PK_FactResellerSalesXL_PageCompressed_SalesOrderNumber_SalesOrderLineNumber] PRIMARY KEY CLUSTERED
 	(
 		[SalesOrderNumber] ASC,
@@ -365,14 +365,14 @@ Declare	@OrderDateKey int,
 		@NumOrdersPerDateKey int,
 	    @NumSalesLineItems int
 
-Declare @CustomerPONumber nvarchar(25),@CarrierTrackingNumber nvarchar(25) 
+Declare @CustomerPONumber nvarchar(25),@CarrierTrackingNumber nvarchar(25)
 
 -- Loop through each Date Key to insert that many rows.
 DECLARE mycursor  CURSOR
-FOR SELECT NumOrdersPerDay,DateKey,FullDateAlternateKey from #temp 
+FOR SELECT NumOrdersPerDay,DateKey,FullDateAlternateKey from #temp
 
 OPEN mycursor
-FETCH NEXT FROM mycursor 
+FETCH NEXT FROM mycursor
 INTO @NumOrdersPerDateKey, @OrderDateKey,@OrderDate
 
 WHILE @@FETCH_STATUS = 0
@@ -427,7 +427,7 @@ BEGIN TRAN
 	END
 COMMIT
 
-FETCH NEXT FROM mycursor 
+FETCH NEXT FROM mycursor
 INTO @NumOrdersPerDateKey, @OrderDateKey,@OrderDate
 END
 
@@ -444,8 +444,8 @@ CREATE CLUSTERED COLUMNSTORE INDEX [IndFactResellerSales_CCI] ON [dbo].[FactRese
 GO
 
 -- Create Constraints
-ALTER TABLE [dbo].[FactResellerSalesXL_CCI]  WITH CHECK ADD 
-	CONSTRAINT [PK_FactResellerSalesXL_CCI_SalesOrderNumber_SalesOrderLineNumber] PRIMARY KEY 
+ALTER TABLE [dbo].[FactResellerSalesXL_CCI]  WITH CHECK ADD
+	CONSTRAINT [PK_FactResellerSalesXL_CCI_SalesOrderNumber_SalesOrderLineNumber] PRIMARY KEY
 	(
 		[SalesOrderNumber] ASC,
 		[SalesOrderLineNumber] ASC

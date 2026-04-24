@@ -1,12 +1,12 @@
 ﻿PRINT 'Inserting Warehouse.Colors'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT Warehouse.Colors 
-  (ColorID, ColorName, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT Warehouse.Colors
+  (ColorID, ColorName, LastEditedBy, ValidFrom, ValidTo)
+VALUES
   (1,'Azure', 1, @CurrentDateTime, @EndOfTime)
 , (2,'Beige', 1, @CurrentDateTime, @EndOfTime)
 , (3,'Black', 1, @CurrentDateTime, @EndOfTime)

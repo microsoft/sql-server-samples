@@ -1,14 +1,14 @@
 -- =============================================
 -- Create database on multiple data and transaction log files
 -- =============================================
-IF EXISTS (SELECT * 
-	   FROM   master..sysdatabases 
+IF EXISTS (SELECT *
+	   FROM   master..sysdatabases
 	   WHERE  name = N'<database_name, sysname, test_db>')
 	DROP DATABASE <database_name, sysname, test_db>
 GO
 
 CREATE DATABASE <database_name, sysname, test_db>
-ON PRIMARY 
+ON PRIMARY
 	( NAME = <logical_file_name_1, , test_db_file_1>,
           FILENAME = N'<os_file_name_1, , c:\program files\microsoft sql server\mssql\data\test_db_1.mdf>',
           SIZE = 1MB,
@@ -21,7 +21,7 @@ ON PRIMARY
           MAXSIZE = 200MB,
           FILEGROWTH = 10%)
 
-LOG ON 
+LOG ON
 	( NAME = <logical_log_file_name_1, ,test_db_log_file_1>,
 	  FILENAME = N'<os_log_file_name_1, , c:\program files\microsoft sql server\mssql\data\test_db_log_1.ldf>',
           SIZE = 512KB,

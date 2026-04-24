@@ -19,7 +19,7 @@ from utils import (AgRole, AgMode, OperatorYaml, SqlSecretsYaml,
 
 DEFAULT_K8S_AGENTS_IMAGE = (
     "mcr.microsoft.com/mssql/ha:2019-CTP2.1-ubuntu")
-  
+
 
 
 TEMPLATES_DIR = "templates"

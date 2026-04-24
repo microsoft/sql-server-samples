@@ -1,5 +1,5 @@
  --====================================
---  Drop database trigger template 
+--  Drop database trigger template
 --====================================
 IF EXISTS(
   SELECT *
@@ -8,4 +8,4 @@ IF EXISTS(
      AND parent_class_desc = N'DATABASE'
 )
 	DROP TRIGGER <trigger_name, sysname, your_trigger_name> ON DATABASE
-GO 
+GO

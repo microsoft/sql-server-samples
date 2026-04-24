@@ -1,15 +1,15 @@
-﻿//----------------------------------------------------------------------------------  
-// Copyright (c) Microsoft Corporation. All rights reserved.  
-//  
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,   
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES   
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-//----------------------------------------------------------------------------------  
-// The example companies, organizations, products, domain names,  
-// e-mail addresses, logos, people, places, and events depicted  
-// herein are fictitious.  No association with any real company,  
-// organization, product, domain name, email address, logo, person,  
-// places, or events is intended or should be inferred.  
+﻿//----------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+//----------------------------------------------------------------------------------
+// The example companies, organizations, products, domain names,
+// e-mail addresses, logos, people, places, and events depicted
+// herein are fictitious.  No association with any real company,
+// organization, product, domain name, email address, logo, person,
+// places, or events is intended or should be inferred.
 
 using System;
 using System.Collections.Generic;
@@ -94,7 +94,7 @@ namespace DataGenerator
 
         /// <summary>Creates a new instance of the SqlDataGenerator Class.</summary>
         /// <param name="sqlConnectionString">The sqlserver connectionString. Example: "Data Source=.;Initial Catalog=DbName;Integrated Security=True"</param>
-        /// <param name="sqlInsertSPName">The Insert Event sqlserver stored procedure. Example: "InsertCarEvent". Note that the sql stored procedure needs to accept exactly two parameters: @Batch AS (Your User Defined Table Type) and @BatchSize INT</param>        
+        /// <param name="sqlInsertSPName">The Insert Event sqlserver stored procedure. Example: "InsertCarEvent". Note that the sql stored procedure needs to accept exactly two parameters: @Batch AS (Your User Defined Table Type) and @BatchSize INT</param>
         /// <param name="sqlCommandTimeout">The sqlserver command timeout. Example: 600</param>
         /// <param name="numberOfCars">The total number of Cars. Example: 1000</param>
         /// <param name="initialNumberOfTasks">The number of concurrent tasks. Example: 5. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</param>
@@ -103,13 +103,13 @@ namespace DataGenerator
         /// <param name="batchDataTypes">The pipe seperated column types of the batch table. Example. identity:1:1|string|datetime|double|int|guid</param>
         /// <param name="onException">Exception call back method with TaskId(int) and exception(Exception). Example: ExceptionCallback</param>
         public SqlDataGenerator(
-            string sqlConnectionString, 
+            string sqlConnectionString,
             string sqlInsertSPName,
-            int sqlCommandTimeout, 
+            int sqlCommandTimeout,
             int numberOfCars,
-            int initialNumberOfTasks, 
-            int delayInMilliseconds, 
-            int batchSize, 
+            int initialNumberOfTasks,
+            int delayInMilliseconds,
+            int batchSize,
             Action<int, Exception> onException)
         {
 
@@ -124,13 +124,13 @@ namespace DataGenerator
             this.initialNumberOfTasks = initialNumberOfTasks;
             this.delay = delayInMilliseconds;
             this.batchSize = batchSize;
-            
+
             Validate(this.batchSize, this.initialNumberOfTasks, this.delay, this.numberOfCars);
 
         }
 
         /// <summary>Creates and Starts all the tasks asynchronously. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</summary>
-        /// <returns>Task</returns>        
+        /// <returns>Task</returns>
         public async Task RunAsync()
         {
             if (this.running)
@@ -194,13 +194,13 @@ namespace DataGenerator
         {
             int batchId = 0;
             int size = this.BatchSize;
-            
+
             using (SqlConnection connection = new SqlConnection(this.sqlConnectionString))
             {
                 await connection.OpenAsync(token);
 
                 using (SqlCommand command = new SqlCommand())
-                {                    
+                {
                     command.Connection = connection;
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandTimeout = this.sqlCommandTimeout;
@@ -210,7 +210,7 @@ namespace DataGenerator
 
                     while (!token.IsCancellationRequested)
                     {
-                        DataTable dataTable = CreateBatch(taskId, batchId++);                        
+                        DataTable dataTable = CreateBatch(taskId, batchId++);
                         command.Parameters[0].Value = dataTable;
 
                         await command.ExecuteNonQueryAsync(token);
@@ -225,7 +225,7 @@ namespace DataGenerator
         /// <returns>DataTable</returns>
         /// <param name="taskId">Task Id</param>
         private DataTable CreateBatch(int taskId, int batchId)
-        {            
+        {
             DataTable table = new DataTable();
             table.Columns.Add("RowID", typeof(int));
             table.Columns.Add("EventID", typeof(Guid));
@@ -250,15 +250,15 @@ namespace DataGenerator
             table.Columns.Add("Abs", typeof(bool));
             table.Columns.Add("PostalCode", typeof(string));
             table.Columns.Add("Timestamp", typeof(DateTime));
-               
+
             batchId = (batchId % this.numberOfBatchesPerTask);
-                        
+
             for (int i = 1; i <= this.batchSize; i++)
             {
                 int autoId = taskId * this.numberOfCarsPerTask + batchId * this.BatchSize + i;
 
                 Guid eventId = Guid.NewGuid();
-                int eventCategoryId = 3; //Informational 
+                int eventCategoryId = 3; //Informational
                 string eventMessage = "Informational";
                 string city = GetCity();
                 double outsideTemperature = GetOutsideTemp(city);
@@ -280,9 +280,9 @@ namespace DataGenerator
                 int randomPostalCode = randomValue.Value.Next(0, this.postalCodes.Length);
                 string postalCode = this.postalCodes[randomPostalCode].ToString();
 
-                table.Rows.Add(i, eventId, autoId, eventCategoryId, eventMessage, city, outsideTemperature, 
-                    engineTemperature, speed, fuel, engineOil, tirePressure, odometer, acceleratorPedalPosition, 
-                    parkingBrakeStatus, headlampStatus, brakePedalStatus, transmissionGearPosition, ignitionStatus, windshieldWiperStatus, abs, postalCode, timestamp);                
+                table.Rows.Add(i, eventId, autoId, eventCategoryId, eventMessage, city, outsideTemperature,
+                    engineTemperature, speed, fuel, engineOil, tirePressure, odometer, acceleratorPedalPosition,
+                    parkingBrakeStatus, headlampStatus, brakePedalStatus, transmissionGearPosition, ignitionStatus, windshieldWiperStatus, abs, postalCode, timestamp);
             }
             return table;
         }
@@ -349,7 +349,7 @@ namespace DataGenerator
         static int GetGearPos()
         {
             Random rnd = new Random();
-            return rnd.Next(1, 8); 
+            return rnd.Next(1, 8);
         }
 
         /// <summary>StopAsync(int numberOfTasksToStop)</summary>
@@ -359,7 +359,7 @@ namespace DataGenerator
         {
             // TODO: Lock
             if (numberOfTasksToStop >= this.RunningTasks) { this.running = false; }
-            
+
             numberOfTasksToStop = Math.Min(numberOfTasksToStop, this.RunningTasks);
             List<CancellableTask> cancellableTasksToKill = this.tasks.Take(numberOfTasksToStop).Select(kv => kv.Value).ToList();
 
@@ -384,7 +384,7 @@ namespace DataGenerator
         /// <returns>Task</returns>
         /// <param name="numberOfTasks">The number of Tasks to start/stop depending of the number of tasks currently running.</param>
         private async Task RunAsync(int numberOfTasks)
-        {            
+        {
             for (int i = 0; i < numberOfTasks; i++)
             {
                 CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -397,7 +397,7 @@ namespace DataGenerator
 
                 tasks.TryAdd(taskId, new CancellableTask(taskId, task, tokenSource));
             }
- 
+
             this.running = true;
 
             await Task.WhenAll(this.tasks.Values.Select(t => t.Task));

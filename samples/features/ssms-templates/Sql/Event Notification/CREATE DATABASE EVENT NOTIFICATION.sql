@@ -1,7 +1,7 @@
 -- =============================================
 -- Create Database Event Notification Template
 -- =============================================
-IF EXISTS (SELECT * 
+IF EXISTS (SELECT *
              FROM sys.event_notifications
             WHERE name = N'<event_notification_name, sysname, event_name>')
 DROP EVENT NOTIFICATION <event_notification_name, sysname, event_name>

@@ -16,4 +16,4 @@ ALTER PARTITION FUNCTION <partition_function_name, sysname, myRangePF> ()
 MERGE RANGE (<data_value2,,100>);
 GO
 
- 
+

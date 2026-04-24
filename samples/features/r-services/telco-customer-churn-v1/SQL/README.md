@@ -20,7 +20,7 @@ The database consists of the following tables
 - **edw\_cdr\_train**- Training data
 - **edw\_cdr\_test** - Testing data
 - **edw\_cdr\_pred** - Predicted results
- 
+
 and the following stored procedures
 
 - **generate_cdr_rx_forest** - Train decision forest model with the rxDForest algorithm in RevoScaleR library

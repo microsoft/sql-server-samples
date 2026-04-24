@@ -7,19 +7,19 @@ GO
 
 CREATE DATABASE [imoltp]
  CONTAINMENT = NONE
- ON  PRIMARY 
+ ON  PRIMARY
 ( NAME = N'imoltp_data', FILENAME = N'C:\data\imoltp_Data.mdf' , SIZE = 102400KB , MAXSIZE = 5GB, FILEGROWTH = 1024000KB )
- LOG ON 
+ LOG ON
 ( NAME = N'imoltp_log', FILENAME = N'C:\data\imoltp_Log.ldf ' , SIZE = 52400KB , MAXSIZE = 5GB , FILEGROWTH = 102400KB )
 GO
 
 
 ALTER DATABASE imoltp ADD FILEGROUP imoltp_mod CONTAINS MEMORY_OPTIMIZED_DATA
-ALTER DATABASE imoltp ADD FILE (name='imoltp_mod', filename='c:\data\imoltp_mod') TO FILEGROUP imoltp_mod 
+ALTER DATABASE imoltp ADD FILE (name='imoltp_mod', filename='c:\data\imoltp_mod') TO FILEGROUP imoltp_mod
 GO
 
 
--- drop the database with 
+-- drop the database with
 -- pool management
 DROP RESOURCE POOL  Poolimoltp
 go
@@ -105,7 +105,7 @@ select count(*) from t_colstor_hk
 
 -- look at the rowgroups
 select object_name(object_id), index_id, row_group_id, delta_store_hobt_id, state_desc, total_rows, size_in_bytes, trim_reason, trim_reason_desc, transition_to_compressed_state_desc
-from sys.dm_db_column_store_row_group_physical_stats 
+from sys.dm_db_column_store_row_group_physical_stats
 where object_id = object_id('t_colstor_hk')
 
 -- run spec proc to move rows from delta tail
@@ -113,9 +113,9 @@ where object_id = object_id('t_colstor_hk')
 -- If you set migration policy to 0, as above, migration happens regardless of policy (ie. whether or not data is cold).
 declare @oid int = object_id('t_colstor_hk')
 exec sp_memory_optimized_cs_migration @oid
-go 
- 
- 
+go
+
+
 
 
 set statistics time on
@@ -134,5 +134,5 @@ from t_colstor_hk
 
 
 select avg (convert (bigint, unitsold))
-from t_colstor_hk with (index = [pk_t_colstor_hk]) 
+from t_colstor_hk with (index = [pk_t_colstor_hk])
 

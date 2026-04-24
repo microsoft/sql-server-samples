@@ -1,6 +1,6 @@
--- =================================================================================
--- Create View template for Azure SQL Database and Azure SQL Data Warehouse Database
--- =================================================================================
+-- ================================================================================
+-- Create View template for Azure SQL Database and Azure Synapse Analytics Database
+-- ================================================================================
 
 IF object_id(N'<schema_name, sysname, dbo>.<view_name, sysname, Top10Sales>', 'V') IS NOT NULL
 	DROP VIEW <schema_name, sysname, dbo>.<view_name, sysname, Top10Sales>

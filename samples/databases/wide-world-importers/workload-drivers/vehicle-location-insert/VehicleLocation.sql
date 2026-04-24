@@ -1,5 +1,5 @@
 ﻿-- This script enables the database for In-Memory OLTP if it is not already.
--- Then, it creates comparable disk-based and memory-optimized tables, as well as corresponding stored procedures 
+-- Then, it creates comparable disk-based and memory-optimized tables, as well as corresponding stored procedures
 --   for vehicle location insertion.
 
 
@@ -7,19 +7,19 @@ SET NOCOUNT ON;
 SET XACT_ABORT ON;
 
 -- 1. validate that In-Memory OLTP is supported
-IF SERVERPROPERTY(N'IsXTPSupported') = 0 
-BEGIN                                    
+IF SERVERPROPERTY(N'IsXTPSupported') = 0
+BEGIN
     PRINT N'Error: In-Memory OLTP is not supported for this server edition or database pricing tier.';
-END 
+END
 IF DB_ID() < 5
-BEGIN                                    
+BEGIN
     PRINT N'Error: In-Memory OLTP is not supported in system databases. Connect to a user database.';
-END 
-ELSE 
-BEGIN 
+END
+ELSE
+BEGIN
 	BEGIN TRY;
 -- 2. add MEMORY_OPTIMIZED_DATA filegroup when not using Azure SQL DB
-	IF SERVERPROPERTY('EngineEdition') != 5 
+	IF SERVERPROPERTY('EngineEdition') != 5
 	BEGIN
 		DECLARE @SQLDataFolder nvarchar(max) = cast(SERVERPROPERTY('InstanceDefaultDataPath') as nvarchar(max))
 		DECLARE @MODName nvarchar(max) = DB_NAME() + N'_mod';
@@ -31,7 +31,7 @@ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM sys.filegroups WHERE type = N'FX')
 		BEGIN
 			SET @SQL = N'
-ALTER DATABASE CURRENT 
+ALTER DATABASE CURRENT
 ADD FILEGROUP ' + QUOTENAME(@MODName) + N' CONTAINS MEMORY_OPTIMIZED_DATA;';
 			EXECUTE (@SQL);
 
@@ -41,7 +41,7 @@ ADD FILEGROUP ' + QUOTENAME(@MODName) + N' CONTAINS MEMORY_OPTIMIZED_DATA;';
 				SET @SQL = N'
 ALTER DATABASE CURRENT
 ADD FILE (name = N''' + @MODName + ''', filename = '''
-						+ @MemoryOptimizedFilegroupFolder + N''') 
+						+ @MemoryOptimizedFilegroupFolder + N''')
 TO FILEGROUP ' + QUOTENAME(@MODName);
 				EXECUTE (@SQL);
 			END
@@ -50,7 +50,7 @@ TO FILEGROUP ' + QUOTENAME(@MODName);
 
 	-- 3. set compat level to 130 if it is lower
 	IF (SELECT compatibility_level FROM sys.databases WHERE database_id=DB_ID()) < 130
-		ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 130 
+		ALTER DATABASE CURRENT SET COMPATIBILITY_LEVEL = 130
 
 	-- 4. enable MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT for the database
 	ALTER DATABASE CURRENT SET MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT = ON;
@@ -123,7 +123,7 @@ CREATE TABLE InMemory.VehicleLocations
 )
 WITH (MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA);
 GO
- 
+
 CREATE PROCEDURE InMemory.InsertVehicleLocation
 @RegistrationNumber nvarchar(20),
 @TrackedWhen datetime2(2),

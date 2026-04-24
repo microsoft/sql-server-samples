@@ -5,7 +5,7 @@ BEGIN
 /*
 Notes:
   This procedure will randomly select a street name from the table
-  variable loaded herein. 
+  variable loaded herein.
 
   While it would be preferable to have implemented this as a function,
   the NEWID mechanism needed to make this work are not allowed within
@@ -19,8 +19,8 @@ Usage:
 
   DECLARE @fullStreet AS NVARCHAR(50)
   DECLARE @streetNumber AS NVARCHAR(10)
-  
-  SET @streetNumber = CAST((ABS(CHECKSUM(NEWID())) % 8999) + 100 AS NVARCHAR)  
+
+  SET @streetNumber = CAST((ABS(CHECKSUM(NEWID())) % 8999) + 100 AS NVARCHAR)
 
   DECLARE @streetName AS NVARCHAR(20)
   EXEC [DataLoadSimulation].[GetRandomStreetName] @randomStreetName = @streetName OUTPUT;
@@ -28,7 +28,7 @@ Usage:
   DECLARE @streetSuffix AS NVARCHAR(20)
   EXEC [DataLoadSimulation].[GetRandomStreetSuffix] @randomStreetSuffix = @streetSuffix OUTPUT;
 
-  SET @randomStreet = @streetNumber + N' ' 
+  SET @randomStreet = @streetNumber + N' '
                     + @streetName + N' '
                     + @streetSuffix
 

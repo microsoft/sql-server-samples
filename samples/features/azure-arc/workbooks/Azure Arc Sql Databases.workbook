@@ -1,0 +1,129 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "# Azure Arc SQL Databases"
+      },
+      "name": "text - 3"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\r\n| extend compatibilityLevel =  tostring(properties['compatibilityLevel'])\r\n| summarize Databases = count(compatibilityLevel) by compatibilityLevel",
+        "size": 3,
+        "title": "Count of Databases by Compatibility Level",
+        "queryType": 1,
+        "resourceType": "microsoft.resources/tenants",
+        "crossComponentResources": [
+          "value::tenant"
+        ],
+        "visualization": "piechart",
+        "chartSettings": {
+          "showMetrics": false,
+          "showLegend": true
+        }
+      },
+      "customWidth": "33",
+      "name": "Count of Databases by Compatibility Level"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\r\n| extend recoveryMode = tostring(properties.recoveryMode)\r\n| summarize Databases = count(recoveryMode) by recoveryMode",
+        "size": 3,
+        "title": "Count of Databases by Recovery Model",
+        "queryType": 1,
+        "resourceType": "microsoft.resources/tenants",
+        "crossComponentResources": [
+          "value::tenant"
+        ],
+        "visualization": "piechart",
+        "chartSettings": {
+          "showMetrics": false,
+          "showLegend": true
+        }
+      },
+      "customWidth": "33",
+      "name": "Query 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\r\n| extend lastFullBackup = iff(isnull(properties['backupInformation']['lastFullBackup']),'False','True')\r\n| summarize Databases = count(lastFullBackup) by lastFullBackup",
+        "size": 3,
+        "title": "Count of Databases by Full Backup",
+        "queryType": 1,
+        "resourceType": "microsoft.resources/tenants",
+        "crossComponentResources": [
+          "value::tenant"
+        ],
+        "visualization": "piechart",
+        "chartSettings": {
+          "showMetrics": false,
+          "showLegend": true,
+          "seriesLabelSettings": [
+            {
+              "seriesName": "True",
+              "color": "green"
+            },
+            {
+              "seriesName": "False",
+              "color": "redBright"
+            }
+          ]
+        }
+      },
+      "customWidth": "33",
+      "name": "Query 2 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "resources\r\n| where type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\r\n| extend compatibilityLevel =  tostring(properties['compatibilityLevel'])\r\n| extend lastFullBackup = properties['backupInformation']['lastFullBackup']\r\n| extend  lastLogBackup = properties['backupInformation']['lastLogBackup']\r\n| extend Instance = split(['id'],'/Databases')[0]\r\n| project Instance, Database = id ,lastFullBackup = format_datetime(todatetime(lastFullBackup), \"yyyy-MM-dd HH:mm:ss\"),lastLogBackup = format_datetime(todatetime(lastLogBackup), \"yyyy-MM-dd HH:mm:ss\"),compatibilityLevel,recoveryMode = properties.recoveryMode",
+        "size": 3,
+        "title": "Databases Backup State",
+        "queryType": 1,
+        "resourceType": "microsoft.resources/tenants",
+        "crossComponentResources": [
+          "value::tenant"
+        ],
+        "gridSettings": {
+          "formatters": [
+            {
+              "columnMatch": "Instance",
+              "formatter": 13,
+              "formatOptions": {
+                "linkTarget": "Resource",
+                "showIcon": true
+              }
+            },
+            {
+              "columnMatch": "Database",
+              "formatter": 0,
+              "formatOptions": {
+                "customColumnWidthSetting": "56.714ch"
+              }
+            }
+          ],
+          "rowLimit": 1000,
+          "filter": true
+        },
+        "chartSettings": {
+          "showMetrics": false,
+          "showLegend": true
+        }
+      },
+      "name": "Query2"
+    }
+  ],
+  "fallbackResourceIds": [
+    "azure monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}

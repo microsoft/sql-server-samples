@@ -45,6 +45,18 @@ To run this sample, you need the following prerequisites.
 <a name=run-this-sample></a>
 
 ## Run this sample
+1. Create a database with the name: PowerConsumption
+
+2. Run the script setup-or-reset-demo.sql to create the DB Objects
+
+3. Start the DataGenerator (WindowsForms: Client.exe OR Console: ConsoleClient.exe)application DemoWorkload.exe
+
+4. Change the connection string in the configuration settings, if needed. By default, it points to the local default SQL Server instance with integrated authentication.
+
+5. Load the Power BI Report (WindowsForms: Click on the lower left link, Console: Type REPORT)
+
+-**or**-
+
 1. Clone this repository using Git for Windows (http://www.git-scm.com/), or download the zip file.
 
 2. From Visual Studio, open the **IoT-Smart-Grid.sln** file from the root directory.
@@ -60,18 +72,18 @@ To run this sample, you need the following prerequisites.
 	- **Db**:  SQL Server connectionString. Currently it is configured to connect to the local default SQL Server Instance using Integrated Security.
 	- **insertSPName**: The name of the Natively Compiled Stored Procedure that inserted the sample data. (Default Value: InsertMeterMeasurement)
 	- **deleteSPName**: The name of the Stored Procedure that offloads historical data to a columnstore index (Default Value: InsertMeterMeasurementHistory)
-	- **numberOfDataLoadTasks**: The number of Asynchronous Tasks the Data Generator uses.  
-	- **numberOfOffLoadTasks**:  The number of Asynchronous Tasks the Data Generator uses.  
+	- **numberOfDataLoadTasks**: The number of Asynchronous Tasks the Data Generator uses.
+	- **numberOfOffLoadTasks**:  The number of Asynchronous Tasks the Data Generator uses.
 	- **numberOfMeters**: The number of IoT Power Meters to be used.
-	- **batchSize**: The sample data batch size.  
+	- **batchSize**: The sample data batch size.
 	- **dataLoadCommandDelay**: The delay between sql calls.
 	- **offLoadCommandDelay**: The delay between offload calls.
 	- **deleteBatchSize**: Delete Batch size
-	- **enableShock**: Flag that turns on/off the data shock. This should be set to 0 for max high volume workload   
-	- **commandTimeout**: SQL Command Timeout   
-	- **rpsFrequency**: The polling frequency for Rows per Second. (Default Value: 2000ms)    
+	- **enableShock**: Flag that turns on/off the data shock. This should be set to 0 for max high volume workload
+	- **commandTimeout**: SQL Command Timeout
+	- **rpsFrequency**: The polling frequency for Rows per Second. (Default Value: 2000ms)
 	- **delayStart**: Delay Graph Interval
-	- **logFileName**: Log File Name. (Default Value: log.txt)    
+	- **logFileName**: Log File Name. (Default Value: log.txt)
 	- **appRunDuration**: Run App duration time
 	- **numberOfRowsOfloadLimit**: Number Of Rows Ofload Limit
 	- **powerBIDesktopPath**: The local path to the PBIDesktop.exe. (Default Value: C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe)
@@ -111,7 +123,7 @@ This code sample simulates an IoT Smart Grid scenario where multiple IoT power m
 **Visual Studio Solution Projects**
 
 1. **ConsoleAppClient**: Console Data Generator client. Uses START | STOP | HELP | REPORT | EXIT commands.
-2. **Data Generator**: Data Generator client library. Uses multiple async tasks to produce a test data workload.  
+2. **Data Generator**: Data Generator client library. Uses multiple async tasks to produce a test data workload.
 3. **Db**: SQL Server Database project
 4. **WFClient**: Windows Forms Data Generator client.
 

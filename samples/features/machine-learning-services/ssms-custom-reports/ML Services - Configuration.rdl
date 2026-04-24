@@ -18,7 +18,7 @@
     <DataSet Name="Feature_Settings">
       <Query>
         <DataSourceName>SqlConnection</DataSourceName>
-        <CommandText>/* 
+        <CommandText>/*
    Retrieve the Machine Learning Services installation setting &amp; configuration options:
    Implied Authentication Configuration is checked by verifying if login exists for SQLRUserGroup
 */

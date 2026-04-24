@@ -14,7 +14,7 @@ namespace TransitiveClosure
     public class Group: IEnumerable<int>
     {
         private int? _groupRoot = null;
-                
+
         private Dictionary<int, bool> _group = new Dictionary<int, bool>();
         public Dictionary<int, bool>.KeyCollection Elements => _group.Keys;
         public int Count => _group.Keys.Count;
@@ -31,12 +31,12 @@ namespace TransitiveClosure
         /// <param name="to"></param>
         public void AddUnique(int from, int to)
         {
-            if (_groupRoot == null) _groupRoot = from; 
+            if (_groupRoot == null) _groupRoot = from;
             this.AddIfNotExists(from);
             this.AddIfNotExists(to);
         }
         /// <summary>
-        /// Adds the element into the current group. 
+        /// Adds the element into the current group.
         /// </summary>
         /// <param name="element">The number that should be added.</param>
         public void Add(int element)
@@ -46,7 +46,7 @@ namespace TransitiveClosure
         }
 
         /// <summary>
-        /// Adds the element to a group if it is not already there. 
+        /// Adds the element to a group if it is not already there.
         /// </summary>
         /// <param name="element"></param>
         public void AddIfNotExists(int element)
@@ -111,11 +111,11 @@ namespace TransitiveClosure
         public List<Group> FindInGroups(int from, int to)
         {
             var result = new List<Group>();
-            
+
             if (_numbers.ContainsKey(from)) result.Add(_numbers[from]);
             if (_numbers.ContainsKey(to)) result.Add(_numbers[to]);
 
-            return result;                        
+            return result;
         }
 
         public void AddPair(int from, int to)
@@ -123,7 +123,7 @@ namespace TransitiveClosure
             //Find if the inputValue is already in a group
             var foundInGroups = FindInGroups(from, to);
 
-            // no item matches: create a new group and add both the values to it            
+            // no item matches: create a new group and add both the values to it
             if (foundInGroups.Count == 0)
             {
                 var ng = new Group();
@@ -166,7 +166,7 @@ namespace TransitiveClosure
                 if (!_numbers.ContainsKey(from)) _numbers.Add(from, g1); else _numbers[from] = g1;
                 if (!_numbers.ContainsKey(to)) _numbers.Add(to, g1); else _numbers[to] = g1;
 
-                g1.MergeWith(g2);              
+                g1.MergeWith(g2);
 
                 foreach(var e in g2)
                 {
@@ -219,7 +219,7 @@ namespace TransitiveClosure
 
         public void Accumulate(int inputValue1, int inputValue2)
         {
-            _groupSet.AddPair(inputValue1, inputValue2);                       
+            _groupSet.AddPair(inputValue1, inputValue2);
         }
 
         public void Merge(Aggregate value)
@@ -236,7 +236,7 @@ namespace TransitiveClosure
                     pe = ce;
                 }
             }
-        }     
+        }
 
         public SqlString Terminate()
         {
@@ -256,7 +256,7 @@ namespace TransitiveClosure
                 g.Elements.CopyTo(ea, 0);
 
                 sb.Append(string.Join(",", ea));
-                
+
                 sb.Append("],");
 
                 c += 1;
@@ -277,7 +277,7 @@ namespace TransitiveClosure
             // For Each Group
             for (int j = 0; j < g; j++)
             {
-                var l = new Group();               
+                var l = new Group();
 
                 // List Size (or Values Count)
                 int s = r.ReadInt32();

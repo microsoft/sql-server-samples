@@ -38,7 +38,7 @@ class AuthorTag extends Tag
 
     /** @var string The email of the author */
     protected $authorEmail = '';
-    
+
     public function getContent()
     {
         if (null === $this->content) {
@@ -75,20 +75,20 @@ class AuthorTag extends Tag
 
     /**
      * Gets the author's name.
-     * 
+     *
      * @return string The author's name.
      */
     public function getAuthorName()
     {
         return $this->authorName;
     }
-    
+
     /**
      * Sets the author's name.
-     * 
+     *
      * @param string $authorName The new author name.
      *     An invalid value will set an empty string.
-     * 
+     *
      * @return $this
      */
     public function setAuthorName($authorName)
@@ -103,20 +103,20 @@ class AuthorTag extends Tag
 
     /**
      * Gets the author's email.
-     * 
+     *
      * @return string The author's email.
      */
     public function getAuthorEmail()
     {
         return $this->authorEmail;
     }
-    
+
     /**
      * Sets the author's email.
-     * 
+     *
      * @param string $authorEmail The new author email.
      *     An invalid value will set an empty string.
-     * 
+     *
      * @return $this
      */
     public function setAuthorEmail($authorEmail)

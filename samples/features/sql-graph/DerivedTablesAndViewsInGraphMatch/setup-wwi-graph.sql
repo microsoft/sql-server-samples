@@ -43,7 +43,7 @@ AS EDGE;
 GO
 
 
--- Create FriendOf edge, which connects each customer 
+-- Create FriendOf edge, which connects each customer
 -- to 3 other customers as 'friends'
 CREATE TABLE FriendOf AS EDGE
 GO
@@ -51,7 +51,7 @@ GO
 
 
 -------------------------------------------------------------------------------------
----- Populate StockItems table. 
+---- Populate StockItems table.
 -------------------------------------------------------------------------------------
 SET IDENTITY_INSERT StockItems ON;
 GO
@@ -72,7 +72,7 @@ GO
 
 
 -------------------------------------------------------------------------------------
----- Populate Customers table. 
+---- Populate Customers table.
 -------------------------------------------------------------------------------------
 INSERT INTO Customers
 (
@@ -130,7 +130,7 @@ GO
 
 
 -------------------------------------------------------------------------------------
----- Populate Supplier table. 
+---- Populate Supplier table.
 -------------------------------------------------------------------------------------
 INSERT INTO Supplier
 (
@@ -155,7 +155,7 @@ WHERE
 GO
 
 -------------------------------------------------------------------------------------
----- Populate City table. 
+---- Populate City table.
 -------------------------------------------------------------------------------------
 INSERT INTO City
 (
@@ -169,13 +169,13 @@ INSERT INTO City
   C.StateProvinceID,
   S.StateProvinceName
 FROM
-  Application.Cities C, 
+  Application.Cities C,
   Application.StateProvinces S
 WHERE C.StateProvinceID = S.StateProvinceID;
 GO
 
 -------------------------------------------------------------------------------------
----- Populate Bought edge table. 
+---- Populate Bought edge table.
 -------------------------------------------------------------------------------------
 -- Insert Customers-bought->StockItems data in the bought edge.
 INSERT INTO Bought
@@ -225,7 +225,7 @@ GO
 
 
 -------------------------------------------------------------------------------------
----- Populate FriendOf edge table. 
+---- Populate FriendOf edge table.
 -------------------------------------------------------------------------------------
 DECLARE @j INTEGER;
 DECLARE @lower INTEGER;
@@ -241,7 +241,7 @@ BEGIN
        WHILE (@j < 3)
        BEGIN
               SELECT @random = ROUND(((@Upper - @i) * RAND() + @j), 0)
-			  
+			
 			  INSERT FriendOf($from_id, $to_id)
               SELECT C1.$node_id, C2.$node_id
                 FROM Customers AS C1, Customers AS C2
@@ -288,7 +288,7 @@ GO
 
 
 -------------------------------------------------------------------------------------
----- Populate locatedIn edge table. 
+---- Populate locatedIn edge table.
 -------------------------------------------------------------------------------------
 INSERT INTO locatedIn
 (
@@ -301,14 +301,14 @@ SELECT
 FROM
 	Purchasing.Suppliers AS PS
 JOIN
-	Application.Cities AS AC ON PS.PostalCityID = AC.CityID 
+	Application.Cities AS AC ON PS.PostalCityID = AC.CityID
 JOIN
 	Supplier AS S ON S.SupplierID = PS.SupplierID
 JOIN
 	City AS C ON C.CityID = AC.CityID
 
 
--- Insert customer - city data 
+-- Insert customer - city data
 INSERT INTO locatedIn
 (
   $from_id,
@@ -320,14 +320,14 @@ SELECT
 FROM
 	Sales.Customers AS SC
 JOIN
-	Application.Cities AS AC ON SC.PostalCityID = AC.CityID 
+	Application.Cities AS AC ON SC.PostalCityID = AC.CityID
 JOIN
 	Customers AS CUS ON CUS.CustomerID = SC.CustomerID
 JOIN
 	City AS C ON C.CityID = AC.CityID
 
 
--- Insert customer locatedIn San Francisco. 
+-- Insert customer locatedIn San Francisco.
 -- We will use this data later in queries.
 INSERT INTO locatedIn
 (
@@ -339,7 +339,7 @@ SELECT
 	C.$node_id
 FROM
 	Customers AS CUS, City AS C
-WHERE 
+WHERE
 	CUS.CustomerID IN (5,1059,1060,1061,908)
   AND
 	C.cityid = 30378
@@ -350,7 +350,7 @@ INSERT INTO locatedIn
 	$from_id,
 	$to_id
 )
-SELECT 
+SELECT
 	S.$node_id,
 	C.$node_id
 FROM
@@ -363,7 +363,7 @@ AND
 
 
 -------------------------------------------------------------------------------------
----- Populate deliveryIN edge table. 
+---- Populate deliveryIN edge table.
 -------------------------------------------------------------------------------------
 INSERT INTO deliveryIn
 (
@@ -376,14 +376,14 @@ SELECT
 FROM
 	Purchasing.Suppliers AS PS
 JOIN
-	Application.Cities AS AC ON PS.DeliveryCityID = AC.CityID 
+	Application.Cities AS AC ON PS.DeliveryCityID = AC.CityID
 JOIN
 	Supplier AS S ON S.SupplierID = PS.SupplierID
 JOIN
 	City AS C ON C.CityID = AC.CityID
 
 
--- Insert customer - city data 
+-- Insert customer - city data
 INSERT INTO deliveryIn
 (
   $from_id,
@@ -395,14 +395,14 @@ SELECT
 FROM
 	Sales.Customers AS SC
 JOIN
-	Application.Cities AS AC ON SC.DeliveryCityID = AC.CityID 
+	Application.Cities AS AC ON SC.DeliveryCityID = AC.CityID
 JOIN
 	Customers AS CUS ON CUS.CustomerID = SC.CustomerID
 JOIN
 	City AS C ON C.CityID = AC.CityID
 
 
--- Insert customer deliveryIn San Francisco. 
+-- Insert customer deliveryIn San Francisco.
 -- We will use this data later in queries.
 INSERT INTO deliveryIn
 (
@@ -414,7 +414,7 @@ SELECT
 	C.$node_id
 FROM
 	Customers AS CUS, City AS C
-WHERE 
+WHERE
 	CUS.CustomerID IN (5,1059,1060,1061,908)
   AND
 	C.cityid = 30378
@@ -425,7 +425,7 @@ INSERT INTO deliveryIn
 	$from_id,
 	$to_id
 )
-SELECT 
+SELECT
 	S.$node_id,
 	C.$node_id
 FROM

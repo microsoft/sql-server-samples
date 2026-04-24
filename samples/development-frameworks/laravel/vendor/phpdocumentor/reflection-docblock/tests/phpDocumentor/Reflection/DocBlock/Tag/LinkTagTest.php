@@ -1,7 +1,7 @@
 <?php
 /**
  * phpDocumentor Link Tag Test
- * 
+ *
  * PHP version 5.3
  *
  * @author    Ben Selby <benmatselby@gmail.com>

@@ -1,0 +1,10 @@
+* text eol=lf
+*.gif -text
+*.jpg -text
+*.png -text
+*.dll -text
+*.exe -text
+*.nupkg -text
+ml/data/*.parquet binary
+*.zip binary
+*.dacpac binary

@@ -1,7 +1,7 @@
 2.4.1 / 2016/01/01
 ==================
 
-* Correctly handle nested class definitions 
+* Correctly handle nested class definitions
 * Correctly handle anonymous functions in code generation
 * Fixed rerunning on Windows platform
 * Fixed code generation on Windows platform
@@ -36,7 +36,7 @@
 * Specs can now be run by specifying a fully qualified class name
 * New shouldContain matcher for strings
 * Warning added when trying to typehint scalars or callable in spec
-* No longer truncates strings when diffing arrays in verbose mode 
+* No longer truncates strings when diffing arrays in verbose mode
 * New %resource_name% placeholder for generated specs
 * Fixed case error in class name that triggered strictness warnings on some platforms
 * Fixed undefined index error in some versions of Windows

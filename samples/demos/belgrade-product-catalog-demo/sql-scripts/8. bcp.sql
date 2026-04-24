@@ -1,4 +1,4 @@
-﻿CREATE TABLE Orders ( 
+﻿CREATE TABLE Orders (
 	OrderID int,
 	OrderDate date,
 	Status varchar(16),
@@ -6,7 +6,7 @@
 	Data nvarchar(4000)
 )
 
-CREATE TABLE OrderLines ( 
+CREATE TABLE OrderLines (
 	OrderLineID int,
 	OrderID int,
 	ProductID int,
@@ -24,7 +24,7 @@ FROM 'orders.bcp'
 WITH (	DATA_SOURCE = 'MyAzureBlobStorage',
 		FORMATFILE = 'orders.fmt',
 		FORMATFILE_DATA_SOURCE = 'MyAzureBlobStorage',
-		TABLOCK); 
+		TABLOCK);
 
 
 BULK INSERT OrderLines
@@ -32,5 +32,5 @@ FROM 'orderlines.bcp'
 WITH (	DATA_SOURCE = 'MyAzureBlobStorage',
 		FORMATFILE = 'orderlines.fmt',
 		FORMATFILE_DATA_SOURCE = 'MyAzureBlobStorage',
-		TABLOCK); 
+		TABLOCK);
 

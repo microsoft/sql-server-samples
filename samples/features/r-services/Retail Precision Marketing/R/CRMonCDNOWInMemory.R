@@ -43,7 +43,7 @@ dim(uid)
 
 # Step 1: RFM analysis
 
-# Call RFM source code 
+# Call RFM source code
 
 source(wd, "R", "RFM_Analysis_R_Source_Codes_V1.3.R")
 
@@ -64,7 +64,7 @@ df1 <-getIndependentScore(df)
 
 head(df1)
 
-# Draw the histograms in the R, F, and M dimensions 
+# Draw the histograms in the R, F, and M dimensions
 
 drawHistograms(df1)
 
@@ -129,7 +129,7 @@ colnames(RFM_Result) <- c("ID", "R", "F", "M", "R_Score", "F_Score", "M_Score", 
 head(RFM_Result)
 
 time <- system.time({
-  
+
 sqlSave(channel,
         RFM_Result,
         rownames=FALSE,
@@ -200,38 +200,38 @@ head(p1)
 tail(p1)
 
 # Decision tree
-# Grow tree 
+# Grow tree
 
 fit <- rpart(Cluster~R+F+M,
-           	 method="class", 
+           	 method="class",
              data=Train)
 
-# Display the results 
+# Display the results
 
 printcp(fit)
 
-# Visualize cross-validation results 
+# Visualize cross-validation results
 
-plotcp(fit) 
+plotcp(fit)
 
 # Detailed summary of splits
 
-summary(fit) 
+summary(fit)
 
-# Plot tree 
+# Plot tree
 
 library(rpart)
 
 plot(fit, uniform=TRUE, main="Classification Tree for CDNOW")
 text(fit, use.n=TRUE, all=TRUE, cex=.8)
 
-# Prune the tree 
+# Prune the tree
 
 pfit <- prune(fit, cp=fit$cptable[which.min(fit$cptable[,"xerror"]), "CP"])
 
-# Plot the pruned tree 
+# Plot the pruned tree
 
-plot(pfit, uniform=TRUE, 
+plot(pfit, uniform=TRUE,
   	 main="Pruned Classification Tree for CDNOW")
 text(pfit, use.n=TRUE, all=TRUE, cex=.8)
 

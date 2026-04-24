@@ -1,6 +1,6 @@
--- ============================ 
+-- ============================
 -- Create default constraint
--- ============================ 
+-- ============================
 
 ALTER TABLE <schema_name, sysname, dbo>.<table_name, sysname, table_name>
    ADD CONSTRAINT df_<column_name, sysname, column_name>

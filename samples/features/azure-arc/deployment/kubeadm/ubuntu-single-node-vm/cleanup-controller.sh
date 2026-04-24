@@ -6,6 +6,9 @@ sudo kubeadm reset --force
 
 # Clean up azdata-cli package.
 #
+azdata extension remove --name azdata-cli-dc --yes
+azdata extension remove --name azdata-cli-postgres --yes
+azdata extension remove --name azdata-cli-sqlinstance --yes
 unalias azdata
 unalias az
 sudo dpkg --remove --force-all azdata-cli
@@ -67,19 +70,19 @@ fi
 # Clean the mounted volumes.
 #
 
-for i in $(seq 1 40); do
+for i in $(seq 1 80); do
 
   vol="vol$i"
 
-  sudo umount /mnt/local-storage/$vol
+  sudo umount /azurearc/local-storage/$vol
 
-  sudo rm -rf /mnt/local-storage/$vol
+  sudo rm -rf /azurearc/local-storage/$vol
 
 done
 
 # Reset kube
 #
-sudo apt-get purge -y kubeadm --allow-change-held-packages 
+sudo apt-get purge -y kubeadm --allow-change-held-packages
 sudo apt-get purge -y kubectl --allow-change-held-packages
 sudo apt-get purge -y kubelet --allow-change-held-packages
 sudo apt-get purge -y kubernetes-cni --allow-change-held-packages
@@ -88,7 +91,7 @@ sudo apt -y autoremove
 sudo rm -rf ~/.kube
 
 # Clean up working folders.
-# 
+#
 export AZUREARCDATACONTROLLER_DIR=aadatacontroller
 if [ -d "$AZUREARCDATACONTROLLER_DIR" ]; then
     echo "Removing working directory $AZUREARCDATACONTROLLER_DIR."

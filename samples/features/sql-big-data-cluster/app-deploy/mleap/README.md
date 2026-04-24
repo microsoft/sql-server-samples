@@ -38,14 +38,14 @@ To run this sample, you need the following prerequisites.
 ## Run this sample
 
 1. Clone or download this sample on your computer.
-2. Log in to the SQL Server big data cluster using the command below using the IP address of the `controller-svc-external` in your cluster. If you are not familiar with `mssqltctl` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
+2. Log in to the SQL Server big data cluster using the command below using the IP address of the `controller-svc-external` in your cluster. If you are not familiar with `azdata` you can refer to the [documentation](https://docs.microsoft.com/en-us/sql/big-data-cluster/big-data-cluster-create-apps?view=sqlallproducts-allversions) and then return to this sample.
 
    ```bash
    azdata login -e https://<ip-address-of-controller-svc-external>:30080 -u <user-name>
    ```
 3. This example uses a TensorFlow Machine Learning Model that uses public US Census data predict income. [More details and information on the example are here](https://docs.microsoft.com/en-us/sql/big-data-cluster/train-and-create-machinelearning-models-with-spark?view=sqlallproducts-allversions). The application you will be deploying as part of this sample is a Random Forest Model that was built in Spark and has been [serialized as an MLeap bundle](https://docs.microsoft.com/en-us/sql/big-data-cluster/export-model-with-spark-mleap?view=sqlallproducts-allversions).
 
-   Deploy the app using the `create` command and pass the location of the spec file. In the example below, the spec file is expected to be in the `mleap` folder: 
+   Deploy the app using the `create` command and pass the location of the spec file. In the example below, the spec file is expected to be in the `mleap` folder:
    ```bash
    azdata app create --spec ./mleap/
    ```
@@ -56,7 +56,7 @@ To run this sample, you need the following prerequisites.
    Once the app is listed as `Ready` you can continue to the next step.
 2. Now that the app has been deployed you can test if the app works correctly by passing in a sample input that is available in the `mleap` folder. The deployed app is a RESTful webservice that is [Swagger](swagger.io) compliant. For this sample we will show you how you can test this using the CLI.
 
-   To test the app, run the command below. The input parameter is a `MLeapFrame`, a `json` file that describes the parameters and the values provided to the model for predicting income. Note that the input parameter has a special character '@' to indicate that a `json` file is being passed. This command needs to be run within the `mleap` folder. 
+   To test the app, run the command below. The input parameter is a `MLeapFrame`, a `json` file that describes the parameters and the values provided to the model for predicting income. Note that the input parameter has a special character '@' to indicate that a `json` file is being passed. This command needs to be run within the `mleap` folder.
 
    ```bash
    azdata app run --name mleap-census --version [version] --input schema=@census_frame.json

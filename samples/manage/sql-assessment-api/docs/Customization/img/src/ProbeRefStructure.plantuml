@@ -1,0 +1,16 @@
+@startjson
+{
+    "id": "<i>Probe ID</i>",
+    "alias?": "<i>Alternative local ID</i>",
+    "params?": {
+        "param_1": "<i>Expression for param 1</i>",
+        "param_2": "<i>Expression for param 2</i>",
+        "…": "…"
+    },
+    "transform?": [
+        "Transformation 1",
+        "Transformation 2",
+        "…"
+    ]
+}
+@endjson

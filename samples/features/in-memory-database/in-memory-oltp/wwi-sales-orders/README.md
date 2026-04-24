@@ -57,7 +57,7 @@ To run this sample, you need the following prerequisites.
 
 5. Build the app and run it. Do not use the debugger, as that will slow down the app.
 
-6. You can see the performance gains by switching to the In-Memory radio button option.  
+6. You can see the performance gains by switching to the In-Memory radio button option.
 
 <a name=sample-details></a>
 

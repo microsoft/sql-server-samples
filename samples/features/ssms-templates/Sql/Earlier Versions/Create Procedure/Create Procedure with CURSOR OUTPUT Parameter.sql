@@ -1,19 +1,19 @@
 -- =======================================================
--- Create stored procedure with CURSOR OUTPUT parameters 
+-- Create stored procedure with CURSOR OUTPUT parameters
 -- =======================================================
 
 -- drop stored procedure if it already exists
 IF EXISTS (
-  SELECT * 
-    FROM sysobjects 
-   WHERE name = N'<procedure_name, sysname, sample_procedure>' 
+  SELECT *
+    FROM sysobjects
+   WHERE name = N'<procedure_name, sysname, sample_procedure>'
 	 AND type = 'P'
 )
    DROP PROCEDURE <procedure_name, sysname, sample_procedure>
 GO
 
--- create the specified stored procedure 
-CREATE PROCEDURE <procedure_name, sysname, sample_procedure> 
+-- create the specified stored procedure
+CREATE PROCEDURE <procedure_name, sysname, sample_procedure>
 	<@proc_cursor_name, , @sample_procedure_cursor> CURSOR VARYING OUTPUT
 AS
    SET <@proc_cursor_name, , @sample_procedure_cursor> = CURSOR FOR

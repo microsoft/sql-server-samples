@@ -51,23 +51,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.TransactionCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ThreadCount)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // LabelReadsPerWrite
-            // 
+            //
             this.LabelReadsPerWrite.Location = new System.Drawing.Point(0, 0);
             this.LabelReadsPerWrite.Name = "LabelReadsPerWrite";
             this.LabelReadsPerWrite.Size = new System.Drawing.Size(100, 23);
             this.LabelReadsPerWrite.TabIndex = 50;
-            // 
+            //
             // ReadsPerWrite
-            // 
+            //
             this.ReadsPerWrite.Location = new System.Drawing.Point(0, 0);
             this.ReadsPerWrite.Name = "ReadsPerWrite";
             this.ReadsPerWrite.Size = new System.Drawing.Size(120, 20);
             this.ReadsPerWrite.TabIndex = 51;
-            // 
+            //
             // LabelRPT
-            // 
+            //
             this.LabelRPT.AutoSize = true;
             this.LabelRPT.BackColor = System.Drawing.Color.Transparent;
             this.LabelRPT.Location = new System.Drawing.Point(14, 101);
@@ -75,9 +75,9 @@
             this.LabelRPT.Size = new System.Drawing.Size(107, 13);
             this.LabelRPT.TabIndex = 44;
             this.LabelRPT.Text = "Requests per Thread";
-            // 
+            //
             // RequestCount
-            // 
+            //
             this.RequestCount.Location = new System.Drawing.Point(152, 99);
             this.RequestCount.Maximum = new decimal(new int[] {
             5000000,
@@ -97,9 +97,9 @@
             0,
             0,
             0});
-            // 
+            //
             // lblInstance
-            // 
+            //
             this.lblInstance.AutoSize = true;
             this.lblInstance.BackColor = System.Drawing.Color.Transparent;
             this.lblInstance.Location = new System.Drawing.Point(14, 217);
@@ -107,17 +107,17 @@
             this.lblInstance.Size = new System.Drawing.Size(91, 13);
             this.lblInstance.TabIndex = 42;
             this.lblInstance.Text = "Connection String";
-            // 
+            //
             // tbConnectionString
-            // 
+            //
             this.tbConnectionString.Location = new System.Drawing.Point(16, 243);
             this.tbConnectionString.Name = "tbConnectionString";
             this.tbConnectionString.Size = new System.Drawing.Size(271, 20);
             this.tbConnectionString.TabIndex = 40;
             this.tbConnectionString.TextChanged += new System.EventHandler(this.tbInstance_TextChanged);
-            // 
+            //
             // label3
-            // 
+            //
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Location = new System.Drawing.Point(14, 25);
@@ -125,17 +125,17 @@
             this.label3.Size = new System.Drawing.Size(109, 13);
             this.label3.TabIndex = 38;
             this.label3.Text = "Max TPS (thousands)";
-            // 
+            //
             // txtMaxTPS
-            // 
+            //
             this.txtMaxTPS.Location = new System.Drawing.Point(152, 22);
             this.txtMaxTPS.Name = "txtMaxTPS";
             this.txtMaxTPS.Size = new System.Drawing.Size(99, 20);
             this.txtMaxTPS.TabIndex = 37;
             this.txtMaxTPS.TabStop = false;
-            // 
+            //
             // lblRunningThread
-            // 
+            //
             this.lblRunningThread.AutoSize = true;
             this.lblRunningThread.BackColor = System.Drawing.Color.Transparent;
             this.lblRunningThread.Location = new System.Drawing.Point(14, 50);
@@ -143,18 +143,18 @@
             this.lblRunningThread.Size = new System.Drawing.Size(107, 13);
             this.lblRunningThread.TabIndex = 36;
             this.lblRunningThread.Text = "Max PageRead Time";
-            // 
+            //
             // txtMaxPageRead
-            // 
+            //
             this.txtMaxPageRead.Location = new System.Drawing.Point(152, 47);
             this.txtMaxPageRead.Name = "txtMaxPageRead";
             this.txtMaxPageRead.Size = new System.Drawing.Size(99, 20);
             this.txtMaxPageRead.TabIndex = 35;
             this.txtMaxPageRead.TabStop = false;
             this.txtMaxPageRead.Text = "10000";
-            // 
+            //
             // lblServerTran
-            // 
+            //
             this.lblServerTran.AutoSize = true;
             this.lblServerTran.BackColor = System.Drawing.Color.Transparent;
             this.lblServerTran.Location = new System.Drawing.Point(14, 153);
@@ -162,9 +162,9 @@
             this.lblServerTran.Size = new System.Drawing.Size(102, 13);
             this.lblServerTran.TabIndex = 34;
             this.lblServerTran.Text = "Server Transactions";
-            // 
+            //
             // TransactionCount
-            // 
+            //
             this.TransactionCount.Location = new System.Drawing.Point(152, 151);
             this.TransactionCount.Maximum = new decimal(new int[] {
             5000000,
@@ -184,9 +184,9 @@
             0,
             0,
             0});
-            // 
+            //
             // lblThreadCnt
-            // 
+            //
             this.lblThreadCnt.AutoSize = true;
             this.lblThreadCnt.BackColor = System.Drawing.Color.Transparent;
             this.lblThreadCnt.Location = new System.Drawing.Point(14, 127);
@@ -194,9 +194,9 @@
             this.lblThreadCnt.Size = new System.Drawing.Size(46, 13);
             this.lblThreadCnt.TabIndex = 31;
             this.lblThreadCnt.Text = "Threads";
-            // 
+            //
             // ThreadCount
-            // 
+            //
             this.ThreadCount.Location = new System.Drawing.Point(152, 125);
             this.ThreadCount.Maximum = new decimal(new int[] {
             200,
@@ -216,9 +216,9 @@
             0,
             0,
             0});
-            // 
+            //
             // btnSave
-            // 
+            //
             this.btnSave.Location = new System.Drawing.Point(16, 293);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(149, 23);
@@ -226,9 +226,9 @@
             this.btnSave.Text = "Save Configuration Values";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
+            //
             // FrmConfig
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(310, 332);

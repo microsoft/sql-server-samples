@@ -27,18 +27,18 @@
             <Value>=Parameters!Object.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT 
+        <CommandText>SELECT
 	 *
 	,SUBSTRING (AggEvaluatedObject, 0, CHARINDEX('\',AggEvaluatedObject)) AggEvaluatedObject_First
 FROM
 (
-	SELECT 
+	SELECT
 		  EvaluatedServer
 		, EvaluationDateTime
 		, EvaluatedPolicy
 		, EvaluatedObject
-		, CASE WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) 
-			WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\' 
+		, CASE WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1)
+			WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\'
 			WHEN EvaluatedObject = 'No Targets Found' THEN EvaluatedObject + '\'
 			ELSE RIGHT(EvaluatedObject, CHARINDEX('\',REVERSE(EvaluatedObject))-1) + '\' END AS AggEvaluatedObject
 		, PolicyResult
@@ -50,8 +50,8 @@ FROM
 	WHERE CategoryName IN (@CategoryName)
 	AND EvaluatedPolicy IN (@EvaluatedPolicy)
 	AND EvaluatedServer IN (@ServerName)
-	AND EvaluatedPolicy NOT IN (SELECT spp.name 
-			FROM msdb..syspolicy_policies spp 
+	AND EvaluatedPolicy NOT IN (SELECT spp.name
+			FROM msdb..syspolicy_policies spp
 			INNER JOIN msdb..syspolicy_policy_categories spc ON spp.policy_category_id = spc.policy_category_id
 			WHERE spc.name = 'Disabled')
 ) A
@@ -173,9 +173,9 @@ AND EvaluatedPolicy IN (@EvaluatedPolicy)
 AND (EvaluatedServer IN (SELECT server_name
 		FROM policy.pfn_ServerGroupInstances(@ServerGroupName))
 OR @ServerGroupName = '')
-AND (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, @DateMonth))+1, CAST(DateAdd(Month, -6, @DateMonth) AS DATE)) 
+AND (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, @DateMonth))+1, CAST(DateAdd(Month, -6, @DateMonth) AS DATE))
 AND EvaluationDateTime &lt; DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,@DateMonth)+1,0))
-OR (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, GETDATE()))+1, CAST(DateAdd(Month, -6, GETDATE()) AS DATE)) 
+OR (EvaluationDateTime &gt;= DATEADD(d,-day(DateAdd(Month, -6, GETDATE()))+1, CAST(DateAdd(Month, -6, GETDATE()) AS DATE))
 AND @DateMonth = '1900-01-01'))</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -209,24 +209,24 @@ AND @DateMonth = '1900-01-01'))</CommandText>
             <Value>=Parameters!ServerGroupName.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT CASE 
-	WHEN EXISTS 
-		(SELECT * 
-		FROM policy.v_PolicyHistory_LastEvaluation iple 
+        <CommandText>SELECT CASE
+	WHEN EXISTS
+		(SELECT *
+		FROM policy.v_PolicyHistory_LastEvaluation iple
 		WHERE iple.EvaluatedServer = ple.EvaluatedServer
 		AND iple.CategoryName IN (@CategoryName)
 		AND iple.EvaluatedPolicy IN (@EvaluatedPolicy)
 		AND iple.PolicyResult = 'FAIL')
 	THEN 'Out of Compliance'
-	WHEN EXISTS 
-		(SELECT * 
-		FROM policy.v_PolicyHistory_LastEvaluation iple 
+	WHEN EXISTS
+		(SELECT *
+		FROM policy.v_PolicyHistory_LastEvaluation iple
 		WHERE iple.EvaluatedServer = ple.EvaluatedServer
 		AND iple.CategoryName IN (@CategoryName)
 		AND iple.EvaluatedPolicy IN (@EvaluatedPolicy)
 		AND iple.PolicyResult = 'ERROR')
 	THEN 'Unknown'
-	ELSE 'In Compliance' 
+	ELSE 'In Compliance'
 	END AS InstanceStatus
 	, EvaluatedServer
 FROM policy.v_PolicyHistory ple
@@ -325,7 +325,7 @@ WHERE CategoryName IN (@CategoryName)</CommandText>
         </QueryParameters>
         <CommandText>SELECT DISTINCT [EvaluatedServer]
 FROM [policy].[PolicyHistoryDetail]
-WHERE 
+WHERE
 	(EvaluatedServer  COLLATE SQL_Latin1_General_CP1_CI_AI IN (SELECT server_name FROM policy.pfn_ServerGroupInstances(@ServerGroupName))
 	OR @ServerGroupName = '')
 ORDER BY [EvaluatedServer]</CommandText>
@@ -349,15 +349,15 @@ ORDER BY [EvaluatedServer]</CommandText>
 	 SUBSTRING (AggEvaluatedObject, 0, CHARINDEX('\',AggEvaluatedObject)) AggEvaluatedObject_First
 FROM
 (
-	SELECT  
-		CASE 
-			WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) 
-			WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\' 
+	SELECT
+		CASE
+			WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1)
+			WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\'
 			WHEN EvaluatedObject = 'No Targets Found' THEN EvaluatedObject + '\'
-			ELSE RIGHT(EvaluatedObject, CHARINDEX('\',REVERSE(EvaluatedObject))-1) + '\' 
+			ELSE RIGHT(EvaluatedObject, CHARINDEX('\',REVERSE(EvaluatedObject))-1) + '\'
 		END AS AggEvaluatedObject
 	FROM [policy].[PolicyHistoryDetail]
-	WHERE 
+	WHERE
 		EvaluatedServer IN (@ServerName)
 ) A
 ORDER BY AggEvaluatedObject_First</CommandText>
@@ -1492,7 +1492,7 @@ Sum(IIF(Fields!PolicyResult.Value="FAIL", 1, 0))/COUNT(Fields!PolicyResult.Value
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=SUM(SWITCH(Fields!PolicyResult.Value= "FAIL", 1, 
+                                  <Value>=SUM(SWITCH(Fields!PolicyResult.Value= "FAIL", 1,
 Fields!PolicyResult.Value= "ERROR", 1,
 Fields!PolicyResult.Value= "PASS", 0))</Value>
                                   <Style>
@@ -1540,7 +1540,7 @@ Fields!PolicyResult.Value= "PASS", 0))</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick", 
+                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   </Style>
@@ -1593,7 +1593,7 @@ Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick", 
+                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   </Style>
@@ -1650,7 +1650,7 @@ Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>g</Format>
-                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick", 
+                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   </Style>
@@ -1691,7 +1691,7 @@ Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick", 
+                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   </Style>
@@ -1748,7 +1748,7 @@ Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick", 
+                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   </Style>
@@ -1784,7 +1784,7 @@ Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick", 
+                                    <Color>=SWITCH(Fields!PolicyResult.Value = "FAIL", "Firebrick",
 Fields!PolicyResult.Value = "ERROR", "Red",
 Fields!PolicyResult.Value = "PASS", "Black")</Color>
                                   </Style>

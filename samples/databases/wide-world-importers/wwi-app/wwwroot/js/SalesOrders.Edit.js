@@ -39,7 +39,7 @@
                     console.error(e);
                 });
         });
-    
+
     $("button#save-order").on("click",
         e => {
             var id = $("#OrderID", $formOrder).val();

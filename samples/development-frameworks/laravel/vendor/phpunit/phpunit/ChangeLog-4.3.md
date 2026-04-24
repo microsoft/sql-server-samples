@@ -43,7 +43,7 @@ New release of PHPUnit as PHP Archive (PHAR) with updated dependencies
 
 * Fixed [#1216](https://github.com/sebastianbergmann/phpunit/issues/1216): Bootstrap does not have global variables set when `--bootstrap` is specified on commandline
 * Fixed [#1351](https://github.com/sebastianbergmann/phpunit/issues/1351): `TestResult` object contains serialized test class upon test failure/exception in process isolation
-* Fixed [#1437](https://github.com/sebastianbergmann/phpunit/issues/1437): Risky test messages mask failures 
+* Fixed [#1437](https://github.com/sebastianbergmann/phpunit/issues/1437): Risky test messages mask failures
 
 [4.3.5]: https://github.com/sebastianbergmann/phpunit/compare/4.3.4...4.3.5
 [4.3.4]: https://github.com/sebastianbergmann/phpunit/compare/4.3.3...4.3.4

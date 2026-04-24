@@ -49,7 +49,7 @@ $.extend($.fn, {
 		}
 		
 		validator = new $.validator( options, this[0] );
-		$.data(this[0], 'validator', validator); 
+		$.data(this[0], 'validator', validator);
 		
 		if ( validator.settings.onsubmit ) {
 		
@@ -233,7 +233,7 @@ $.validator.format = function(source, params) {
 	/// </param>
 	/// <returns type="String" />
 
-	if ( arguments.length == 1 ) 
+	if ( arguments.length == 1 )
 		return function() {
 			var args = $.makeArray(arguments);
 			args.unshift(source);
@@ -395,7 +395,7 @@ $.extend($.validator, {
 			for ( var i = 0, elements = (this.currentElements = this.elements()); elements[i]; i++ ) {
 				this.check( elements[i] );
 			}
-			return this.valid(); 
+			return this.valid();
 		},
 		
 		// http://docs.jquery.com/Plugins/Validation/Validator/element
@@ -997,7 +997,7 @@ $.extend($.validator, {
 	// http://docs.jquery.com/Plugins/Validation/Validator/addMethod
 	addMethod: function(name, method, message) {
 		/// <summary>
-		/// Add a custom validation method. It must consist of a name (must be a legal javascript 
+		/// Add a custom validation method. It must consist of a name (must be a legal javascript
 		/// identifier), a javascript based function and a default string message.
 		/// </summary>
 		/// <param name="name" type="String">
@@ -1008,8 +1008,8 @@ $.extend($.validator, {
 		/// The actual method implementation, returning true if an element is valid
 		/// </param>
 		/// <param name="message" type="String" optional="true">
-		/// (Optional) The default message to display for this method. Can be a function created by 
-		/// jQuery.validator.format(value). When undefined, an already existing message is used 
+		/// (Optional) The default message to display for this method. Can be a function created by
+		/// jQuery.validator.format(value). When undefined, an already existing message is used
 		/// (handy for localization), otherwise the field-specific messages have to be defined.
 		/// </param>
 
@@ -1051,7 +1051,7 @@ $.extend($.validator, {
 			previous.originalMessage = this.settings.messages[element.name].remote;
 			this.settings.messages[element.name].remote = previous.message;
 			
-			param = typeof param == "string" && {url:param} || param; 
+			param = typeof param == "string" && {url:param} || param;
 			
 			if ( this.pending[element.name] ) {
 				return "pending";
@@ -1135,7 +1135,7 @@ $.extend($.validator, {
 			// contributed by Scott Gonzalez: http://projects.scottsplayground.com/iri/
 			return this.optional(element) || /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
 		},
-        
+
 		// http://docs.jquery.com/Plugins/Validation/Methods/date
 		date: function(value, element) {
 			return this.optional(element) || !/Invalid|NaN/.test(new Date(value));
@@ -1187,7 +1187,7 @@ $.extend($.validator, {
 		// http://docs.jquery.com/Plugins/Validation/Methods/accept
 		accept: function(value, element, param) {
 			param = typeof param == "string" ? param.replace(/,/g, '|') : "png|jpe?g|gif";
-			return this.optional(element) || value.match(new RegExp(".(" + param + ")$", "i")); 
+			return this.optional(element) || value.match(new RegExp(".(" + param + ")$", "i"));
 		},
 		
 		// http://docs.jquery.com/Plugins/Validation/Methods/equalTo
@@ -1211,7 +1211,7 @@ $.format = $.validator.format;
 
 // ajax mode: abort
 // usage: $.ajax({ mode: "abort"[, port: "uniqueport"]});
-// if mode:"abort" is used, the previous request on that port (port can be undefined) is aborted via XMLHttpRequest.abort() 
+// if mode:"abort" is used, the previous request on that port (port can be undefined) is aborted via XMLHttpRequest.abort()
 ;(function($) {
 	var pendingRequests = {};
 		// Use a prefilter if available (1.5+)
@@ -1246,7 +1246,7 @@ $.format = $.validator.format;
 // IE has native support, in other browsers, use event caputuring (neither bubbles)
 
 // provides delegate(type: String, delegate: Selector, handler: Callback) plugin for easier event delegation
-// handler is only called when $(event.target).is(delegate), in the scope of the jquery-object for event.target 
+// handler is only called when $(event.target).is(delegate), in the scope of the jquery-object for event.target
 ;(function($) {
 	// only implement if not provided by jQuery core (since 1.4)
 	// TODO verify if jQuery 1.4's implementation is compatible with older jQuery special-event APIs

@@ -11,23 +11,23 @@ router.get('/', function (req, res) {
 
 /* GET single comment. */
 router.get('/:id', function (req, res) {
-    
+
     var conn = db.createConnection();
 
-    var request = db.createRequest("select * from comments where id = @id for json path, without_array_wrapper", conn); 
+    var request = db.createRequest("select * from comments where id = @id for json path, without_array_wrapper", conn);
     request.addParameter('id', TYPES.Int, req.params.id);
     db.stream(request, conn, res, '{}');
 });
 
 /* POST create comment. */
 router.post('/', function (req, res) {
-    
+
     var connection = db.createConnection();
     var request = db.createRequest("insert into Comments values (@author, @text)", connection);
-    
+
     request.addParameter('author', TYPES.NVarChar, req.body.author);
     request.addParameter('text', TYPES.NVarChar, req.body.text);
-    
+
     db.executeRequest(request, connection);
 });
 

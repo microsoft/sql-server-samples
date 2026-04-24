@@ -14,20 +14,20 @@ BEGIN
 /*
 Notes:
   Gets a buying group/city combination that will be used
-  as a new customer. Get one that is not already in use. 
+  as a new customer. Get one that is not already in use.
 
 Usage:
-  DECLARE @myCityID            AS INT          
-  DECLARE @myCityName          AS NVARCHAR(50) 
-  DECLARE @myStateProvinceCode AS NVARCHAR(5)  
-  DECLARE @myStateProvinceName AS NVARCHAR(50) 
-  DECLARE @myAreaCode          AS NVARCHAR(4)  
-  DECLARE @myBuyingGroupID     AS INT          
-  DECLARE @myBuyingGroupName   AS NVARCHAR(50) 
+  DECLARE @myCityID            AS INT
+  DECLARE @myCityName          AS NVARCHAR(50)
+  DECLARE @myStateProvinceCode AS NVARCHAR(5)
+  DECLARE @myStateProvinceName AS NVARCHAR(50)
+  DECLARE @myAreaCode          AS NVARCHAR(4)
+  DECLARE @myBuyingGroupID     AS INT
+  DECLARE @myBuyingGroupName   AS NVARCHAR(50)
   DECLARE @myWebDomain         AS NVARCHAR(256)
   DECLARE @myEmailDomain       AS NVARCHAR(256)
   DECLARE @myCustomerName      AS NVARCHAR(100)
-  
+
   EXEC [DataLoadSimulation].[GetRandomBuyingGroupNotInUse]
       @CityID            = @myCityID            OUTPUT
     , @CityName          = @myCityName          OUTPUT
@@ -57,27 +57,27 @@ Usage:
       , @StateProvinceCode = @StateProvinceCode OUTPUT
       , @StateProvinceName = @StateProvinceName OUTPUT
       , @AreaCode          = @AreaCode          OUTPUT
-    
+
     EXEC [DataLoadSimulation].[GetRandomBuyingGroup]
         @BuyingGroupID   = @BuyingGroupID   OUTPUT
       , @BuyingGroupName = @BuyingGroupName OUTPUT
 
     -- See if this is in use, if not it'll exit the loop and
     -- we can continue
-    SET @InUseCounter = [DataLoadSimulation].[GetCustomerCount] 
-      ( @BuyingGroupName 
-        + ' (' + @CityName + ', ' 
+    SET @InUseCounter = [DataLoadSimulation].[GetCustomerCount]
+      ( @BuyingGroupName
+        + ' (' + @CityName + ', '
         + @StateProvinceCode + ')'
       )
   END -- WHILE @InUseCounter > 0
 
-  EXEC [DataLoadSimulation].[GetBuyingGroupDomain] 
+  EXEC [DataLoadSimulation].[GetBuyingGroupDomain]
       @BuyingGroup = @BuyingGroupName
     , @WebDomain   = @WebDomain OUTPUT
     , @EmailDomain = @EmailDomain OUTPUT
 
-  SET @CustomerName = @BuyingGroupName 
-                    + ' (' + @CityName 
+  SET @CustomerName = @BuyingGroupName
+                    + ' (' + @CityName
                     + ', ' + @StateProvinceCode + ')'
 
   RETURN 0

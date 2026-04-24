@@ -1,6 +1,6 @@
 # Connect to SQL using Ruby on Ubuntu Linux
 
-Ruby sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database. 
+Ruby sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database.
 
 ### Contents
 
@@ -35,19 +35,19 @@ To run this sample, you need the following prerequisites.
 	curl -L https://get.rvm.io | bash -s stable
 	source ~/.rvm/scripts/rvm
 	```
-3. Ruby 
-     
+3. Ruby
+
 	```
 	rvm install 2.3.1
 	rvm use 2.3.1 --default
 	```
 
-4. FreeTDS 
+4. FreeTDS
 
 	```
 	sudo apt-get --assume-yes install freetds-dev freetds-bin
 	```
-    
+
 5. tiny_tds
 
 	```
@@ -56,15 +56,15 @@ To run this sample, you need the following prerequisites.
 
 **Azure prerequisites:**
 
-1. An AdventureWorks sample database: 
+1. An AdventureWorks sample database:
 
 	- The Ruby sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
 	
 ## Run this sample
 
-1. From your terminal, update the connection string details in the Ruby file with your own username, password, and hostname. 
+1. From your terminal, update the connection string details in the Ruby file with your own username, password, and hostname.
 
-2. Run the code sample by running the below in your terminal: 
+2. Run the code sample by running the below in your terminal:
 
 	```
 	ruby sample_ruby_linux.rb
@@ -74,12 +74,12 @@ To run this sample, you need the following prerequisites.
 
 ## Sample details
 
-The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement.
 
 ### Additional notes for using TinyTDS with Azure
 
 It is recommend the following settings when using TinyTDS with Azure.
-   
+
    ```
 	SET ANSI_NULLS ON
 	SET CURSOR_CLOSE_ON_COMMIT OFF

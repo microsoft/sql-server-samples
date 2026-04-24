@@ -5,7 +5,7 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE name = N'GreatLakesUser')
 BEGIN
-	CREATE LOGIN GreatLakesUser 
+	CREATE LOGIN GreatLakesUser
 	WITH PASSWORD = N'SQLRocks!00',
 	     CHECK_POLICY = OFF,
 		 CHECK_EXPIRATION = OFF,
@@ -15,7 +15,7 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE name = N'Website')
 BEGIN
-	CREATE LOGIN Website 
+	CREATE LOGIN Website
 	WITH PASSWORD = N'SQLRocks!00',
 	     CHECK_POLICY = OFF,
 		 CHECK_EXPIRATION = OFF,
@@ -43,30 +43,30 @@ GO
 --
 -- CREATE FUNCTION [Application].DetermineCustomerAccess(@CityID int)
 -- RETURNS TABLE
--- WITH SCHEMABINDING 
--- AS 
--- RETURN (SELECT 1 AS AccessResult 
---         WHERE IS_ROLEMEMBER(N'db_owner') <> 0 
---         OR IS_ROLEMEMBER((SELECT sp.SalesTerritory 
+-- WITH SCHEMABINDING
+-- AS
+-- RETURN (SELECT 1 AS AccessResult
+--         WHERE IS_ROLEMEMBER(N'db_owner') <> 0
+--         OR IS_ROLEMEMBER((SELECT sp.SalesTerritory
 --                           FROM [Application].Cities AS c
 --                           INNER JOIN [Application].StateProvinces AS sp
 --                           ON c.StateProvinceID = sp.StateProvinceID
 --                           WHERE c.CityID = @CityID) + N' Sales') <> 0
--- 	    OR (ORIGINAL_LOGIN() = N'Website' 
--- 		    AND EXISTS (SELECT 1 
+-- 	    OR (ORIGINAL_LOGIN() = N'Website'
+-- 		    AND EXISTS (SELECT 1
 -- 		                FROM [Application].Cities AS c
 -- 				        INNER JOIN [Application].StateProvinces AS sp
 -- 				        ON c.StateProvinceID = sp.StateProvinceID
--- 				        WHERE c.CityID = @CityID 
+-- 				        WHERE c.CityID = @CityID
 -- 				        AND sp.SalesTerritory = SESSION_CONTEXT(N'SalesTerritory'))));
 -- GO
 
 -- The security policy that has been applied is as follows:
 --
 -- CREATE SECURITY POLICY [Application].FilterCustomersBySalesTerritoryRole
--- ADD FILTER PREDICATE [Application].DetermineCustomerAccess(DeliveryCityID) 
+-- ADD FILTER PREDICATE [Application].DetermineCustomerAccess(DeliveryCityID)
 -- ON Sales.Customers,
--- ADD BLOCK PREDICATE [Application].DetermineCustomerAccess(DeliveryCityID)  
+-- ADD BLOCK PREDICATE [Application].DetermineCustomerAccess(DeliveryCityID)
 -- ON Sales.Customers AFTER UPDATE;
 -- GO
 
@@ -89,10 +89,10 @@ GO
 -- Now note the count and which rows are returned
 -- even though we have not changed the command
 
-SELECT * FROM Sales.Customers; 
+SELECT * FROM Sales.Customers;
 GO
 
--- where are those customers? 
+-- where are those customers?
 -- note the spatial results tab
 
 SELECT c.Border
@@ -111,7 +111,7 @@ DECLARE @NonGreatLakesCityID INT
 
 -- pick a customer in the Great Lakes sales territory
 SELECT TOP 1 @GreatLakesCustomerID=c.CustomerID
-FROM Sales.Customers c JOIN Application.Cities ci ON c.DeliveryCityID=ci.CityID 
+FROM Sales.Customers c JOIN Application.Cities ci ON c.DeliveryCityID=ci.CityID
 	JOIN Application.StateProvinces sp ON ci.StateProvinceID=sp.StateProvinceID
 WHERE sp.SalesTerritory=N'Great Lakes'
 

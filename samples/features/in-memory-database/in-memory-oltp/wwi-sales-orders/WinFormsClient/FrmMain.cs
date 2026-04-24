@@ -1,15 +1,15 @@
-﻿/*----------------------------------------------------------------------------------  
-Copyright (c) Microsoft Corporation. All rights reserved.  
-  
-THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,   
-EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES   
-OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-----------------------------------------------------------------------------------  
-The example companies, organizations, products, domain names,  
-e-mail addresses, logos, people, places, and events depicted  
-herein are fictitious.  No association with any real company,  
-organization, product, domain name, email address, logo, person,  
-places, or events is intended or should be inferred.  
+﻿/*----------------------------------------------------------------------------------
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+----------------------------------------------------------------------------------
+The example companies, organizations, products, domain names,
+e-mail addresses, logos, people, places, and events depicted
+herein are fictitious.  No association with any real company,
+organization, product, domain name, email address, logo, person,
+places, or events is intended or should be inferred.
 
 */
 
@@ -38,7 +38,7 @@ namespace Client
 
         public FrmMain()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void ExceptionCallback(int taskId, Exception exception)
@@ -50,13 +50,13 @@ namespace Client
         {
             // Uncomment for debugging
             string ex = taskId?.ToString() + " - " + exception.Message + (exception.InnerException != null ? "\n\nInner Exception\n" + exception.InnerException : "");
-            using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, ex); }               
+            using (StreamWriter w = File.AppendText(logFileName)) { w.WriteLine("\r\n{0}: {1}", DateTime.Now, ex); }
         }
 
         private async void Start_Click(object sender, EventArgs e)
         {
             try
-            {                
+            {
                 this.rpsTimer.Start();
                 this.Stop.Enabled = true;
                 this.Stop.Update();
@@ -77,7 +77,7 @@ namespace Client
         private async void Stop_Click(object sender, EventArgs e)
         {
             try
-            {                               
+            {
                 //this.UpdateChart(-1);
                 this.rpsTimer.Stop();
                 //this.lblRpsValue.Text = "0";
@@ -97,7 +97,7 @@ namespace Client
         }
 
         private void UpdateChart(double rps)
-        {            
+        {
             if (rps >= 0)
             {
                 rpsChartTime++;
@@ -136,7 +136,7 @@ namespace Client
                 {
                     this.spName = ConfigurationManager.AppSettings["sqlInMemoryWithCCISPName"];
                 }
-                
+
                 this.logFileName = ConfigurationManager.AppSettings["logFileName"];
                 this.tasks = int.Parse(ConfigurationManager.AppSettings["numberOfTasks"]);
                 this.batchSize = int.Parse(ConfigurationManager.AppSettings["batchSize"]);
@@ -146,7 +146,7 @@ namespace Client
 
                 this.dataGenerator = new SqlDataGenerator(this.connection, this.spName, this.commandTimeout, this.tasks, this.delay, this.batchSize, this.ExceptionCallback);
 
-                // Initialize Timers      
+                // Initialize Timers
                 this.rpsTimer.Interval = this.rpsFrequency;
 
                 // Initialize Labels
@@ -159,7 +159,7 @@ namespace Client
 
                 if (delay < 0) throw new SqlDataGeneratorException("Delay cannot be less than zero");
 
-                
+
             }
             catch (Exception exception) { HandleException(exception); }
         }
@@ -174,7 +174,7 @@ namespace Client
                 if (dataGenerator.IsRunning)
                 {
                     if (this.dataGenerator.RunningTasks == 0) return;
-                
+
                     if (rps > 0)
                     {
                         this.lblRpsValue.Text = string.Format("{0:#,#}", rps).ToString();

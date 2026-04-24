@@ -19,11 +19,11 @@ rules:
 - resources: ["configmaps"]
   apiGroups: [""]
   verbs: ["get", "update"]
-  resourceNames: 
+  resourceNames:
 - resources: ["endpoints"]
   apiGroups: [""]
   verbs: ["get"]
-  resourceNames: 
+  resourceNames:
 - resources: ["pods"]
   apiGroups: [""]
   verbs: ["list"]
@@ -36,7 +36,7 @@ kind: RoleBinding
 
 metadata:
   name: manual-failover
-  namespace: 
+  namespace:
 
 roleRef:
   name: manual-failover
@@ -55,7 +55,7 @@ kind: Job
 
 metadata:
   name: manual-failover
-  namespace: 
+  namespace:
 
 spec:
   template:

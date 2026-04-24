@@ -6,7 +6,7 @@
 ----------------------------------------------------------------------------
 USE DiskBasedDB
 GO
- 
+
 ---
 --- Set connection attributes
 ---
@@ -23,7 +23,7 @@ GO
 IF NOT EXISTS ( SELECT name FROM sysindexes WHERE name = 'PK_CUSTOMER' )
     CREATE UNIQUE CLUSTERED INDEX PK_CUSTOMER ON Customer( C_ID )
         WITH (FILLFACTOR = 100, SORT_IN_TEMPDB=ON, MAXDOP = 8)
-       ON DiskBased_fg 
+       ON DiskBased_fg
 GO
 
 CHECKPOINT
@@ -43,7 +43,7 @@ GO
 IF NOT EXISTS ( SELECT name FROM sysindexes WHERE name = 'PK_ORDERLINES' )
     CREATE CLUSTERED INDEX PK_ORDERLINES ON OrderLines( OL_O_ID )
         WITH (FILLFACTOR = 100, SORT_IN_TEMPDB=ON, MAXDOP = 8)
-        
+
 GO
 
 IF NOT EXISTS ( SELECT name FROM sysindexes WHERE name = 'IX_ORDERLINES_NC1' )

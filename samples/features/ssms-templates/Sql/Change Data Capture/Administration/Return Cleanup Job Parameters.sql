@@ -20,5 +20,5 @@ EXEC [sys].[sp_cdc_help_jobs]
 
 SELECT retention, threshold
 FROM @cdc_jobs
-WHERE job_type = N'cleanup' 
+WHERE job_type = N'cleanup'
 GO

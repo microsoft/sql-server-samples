@@ -26,7 +26,7 @@ class Location
 
     /** @var int Column where the DocBlock text starts. */
     protected $columnNumber = 0;
-    
+
     public function __construct(
         $lineNumber = 0,
         $columnNumber = 0
@@ -43,7 +43,7 @@ class Location
     }
 
     /**
-     * 
+     *
      * @param type $lineNumber
      * @return $this
      */
@@ -63,7 +63,7 @@ class Location
     }
 
     /**
-     * 
+     *
      * @param int $columnNumber
      * @return $this
      */

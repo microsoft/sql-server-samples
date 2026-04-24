@@ -13,7 +13,7 @@ SET @from_lsn =
 SET @to_lsn   = sys.fn_cdc_get_max_lsn()
 SET @database_transaction_begin_lsn = <database_transaction_begin_lsn,numeric(25,0),database_transaction_begin_lsn>
 
-SELECT q.* 
+SELECT q.*
 FROM cdc.fn_cdc_get_all_changes_<capture_instance,sysname,capture_instance>
   (@from_lsn, @to_lsn, N'all') q
 INNER JOIN cdc.lsn_time_mapping m

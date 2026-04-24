@@ -5,7 +5,7 @@ BEGIN
 /*
 Notes:
   This procedure will randomly select a street name from the table
-  variable loaded herein. 
+  variable loaded herein.
 
   While it would be preferable to have implemented this as a function,
   the NEWID mechanism needed to make this work are not allowed within
@@ -18,7 +18,7 @@ Usage:
 */
 
   DECLARE @streetName TABLE (street NVARCHAR(20))
-  
+
   INSERT INTO @streetName
   VALUES ('Elm')
        , ('Maple')
@@ -82,9 +82,9 @@ Usage:
        , ('19th')
        , ('20th')
        ;
-  
+
   SELECT TOP 1 @randomStreetName = street FROM @streetName ORDER BY NEWID()
-  RETURN 
+  RETURN
 
 END;
 

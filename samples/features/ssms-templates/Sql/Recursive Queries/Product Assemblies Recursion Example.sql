@@ -1,9 +1,9 @@
 -- ================================================
 -- Product Assemblies Recursion Example template
 -- ================================================
--- Uses a common table expression to selectively step through a recursive 
+-- Uses a common table expression to selectively step through a recursive
 -- relationship in a SELECT statement.
--- The following example shows the hierarchy of product assemblies and 
+-- The following example shows the hierarchy of product assemblies and
 -- components that are required to build the bicycle for ProductAssemblyID = 800.
 
 USE <database_name,sysname,AdventureWorks>;
@@ -19,13 +19,13 @@ WITH <CTE_name, sysname, Parts>(<assembly_id, sysname, AssemblyID>, <component_i
     UNION ALL
     SELECT bom.ProductAssemblyID, bom.ComponentID, p.PerAssemblyQty,
         bom.EndDate, <level_col, sysname, ComponentLevel> + 1
-    FROM Production.BillOfMaterials AS bom 
+    FROM Production.BillOfMaterials AS bom
         INNER JOIN <CTE_name, sysname, Parts> AS p
         ON bom.ProductAssemblyID = p.<component_id, sysname, ComponentID>
         AND bom.EndDate IS NULL
 )
 SELECT <assembly_id, sysname, AssemblyID>, <component_id, sysname, ComponentID>, Name, PerAssemblyQty, EndDate,
-        <level_col, sysname, ComponentLevel> 
+        <level_col, sysname, ComponentLevel>
 FROM <CTE_name, sysname, Parts> AS p
     INNER JOIN Production.Product AS pr
     ON p.<component_id, sysname, ComponentID> = pr.ProductID

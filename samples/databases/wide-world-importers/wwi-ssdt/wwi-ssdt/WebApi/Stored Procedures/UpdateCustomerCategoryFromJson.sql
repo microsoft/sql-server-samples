@@ -6,6 +6,6 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@CustomerCategory)
 		WITH (CustomerCategoryName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Sales.CustomerCategories.CustomerCategoryID = @CustomerCategoryID
 END

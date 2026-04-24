@@ -1,3 +1,11 @@
+---
+page_type: sample
+languages:
+- fsharp
+products:
+- azure-sql-database	
+---
+
 # Get started with SQL Server and F#
 
 Get started quickly with developing applications in F# on any OS with SQL Server
@@ -16,9 +24,9 @@ Get started quickly with developing applications in F# on any OS with SQL Server
 
 ## About this sample
 
-- **Applies to:** SQL Server 2016 (or higher) 
-- **Workload:** 
-    - CRUD with .NET 
+- **Applies to:** SQL Server 2016 (or higher)
+- **Workload:**
+    - CRUD with .NET
     - Performance improvements with Columnstore
 - **Programming Language:** F#
 - **Authors:** keyset
@@ -27,16 +35,16 @@ Get started quickly with developing applications in F# on any OS with SQL Server
 
 ## Before you begin
 
-To run this sample, you need the following prerequisites. 
+To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 (or higher) 
+1. SQL Server 2016 (or higher)
 2. [.NET Core](https://www.microsoft.com/net/download) v2.1 or higher
 
 ## Run this sample
 
-1. In Visual Studio, open the Program.fs file and update the connection string username and password with your own. 
+1. In Visual Studio, open the Program.fs file and update the connection string username and password with your own.
 
 2. Open a terminal in the desired sample subfolder and execute:
 	```

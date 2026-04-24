@@ -1,29 +1,33 @@
-#Requires -Modules @{ ModuleName="AzureRM.Sql"; ModuleVersion="4.12.1" }
+#Requires -Modules @{ ModuleName="Az.Sql"; ModuleVersion="3.5.1" }
 #Data Sync OMS Integration Runbook
 
-#To use this script Change all the strings below to reflect your information. 
+#To use this script Change all the strings below to reflect your information.
+#Setup a System Managed Identity in the Automation Account, with Reader permissions to the monitored SQL targets
+#Also allow the managed identity access to the Automation Account itself to read/write the Variable used
 
 #Information for Sync Group 1
-#If you want to use all the sync groups in your subscription keep the $DS_xxxx fields empty. 
-#If you want to use all sync groups in a Resource Group define the $DS_ResourceGroupName. 
+#If you want to use all the sync groups in your subscription keep the $DS_xxxx fields empty.
+#If you want to use all sync groups in a Resource Group define the $DS_ResourceGroupName.
 #If you want to use all sync groups in a Server define $DS_ResourceGroupName and $DS_ServerName.
 #If you want to use all sync groups in a Database define $DS_ResourceGroupName, $DS_ServerName and $DS_DatabaseName.
 #If you want to use a specific sync group define $DS_ResourceGroupName, $DS_ServerName, $DS_DatabaseName and $DS_SyncGroupName.
 
-$SubscriptionId = "SubscriptionId" 
+$SubscriptionId = "SubscriptionId"
 $DS_ResourceGroupName = ""
-$DS_ServerName =  "" 
-$DS_DatabaseName = "" 
-$DS_SyncGroupName = "" 
+$DS_ServerName =  ""
+$DS_DatabaseName = ""
+$DS_SyncGroupName = ""
 
+# Insert your Automation Account ResourceGroup and Account names
 $AC_ResourceGroupName = "ResourceGroupName"
 $AC_AccountName = "AutomationAccountName"
+# Insert the name of the DateTime variable in the Automation Account for storing the last synctime
 $AC_LastUpdatedTimeVariableName = "DataSyncLogLastUpdatedTime"
 
-# Replace with your OMS Workspace ID
-$CustomerId = "OMSCustomerID"  
+# Replace with your OMS Workspace ID (Log Analytics Workspace ID)
+$CustomerId = "OMSCustomerID"
 
-# Replace with your OMS Primary Key
+# Replace with your OMS Primary Key (Log Analytics Primary Key)
 $SharedKey = "SharedKey"
 
 # Specify the name of the record type that you'll be creating
@@ -32,35 +36,12 @@ $LogType = "DataSyncLog"
 # Specify a field with the created time for the records
 $TimeStampField = "DateValue"
 
-#Specify the interval of how often you want to send data to oms
-#You can use -hours, -minutes or -days, use a negative number
-#$interval = New-TimeSpan -hours -1
-
-
-#Connect to Azure
-$connectionName = "AzureRunAsConnection"
-try
-{
-    # Get the connection "AzureRunAsConnection "
-    $servicePrincipalConnection=Get-AutomationConnection -Name $connectionName         
-
-    "Logging in to Azure..."
-    Add-AzureRmAccount `
-        -ServicePrincipal `
-        -TenantId $servicePrincipalConnection.TenantId `
-        -ApplicationId $servicePrincipalConnection.ApplicationId `
-        -CertificateThumbprint $servicePrincipalConnection.CertificateThumbprint 
-}
-catch {
-    if (!$servicePrincipalConnection)
-    {
-        $ErrorMessage = "Connection $connectionName not found."
-        throw $ErrorMessage
-    } else{
-        Write-Error -Message $_.Exception
-        throw $_.Exception
-    }
-}
+# Ensures you do not inherit an AzContext in your runbook
+Disable-AzContextAutosave -Scope Process
+# Connect to Azure with system-assigned managed identity
+$AzureContext = (Connect-AzAccount -Identity).context
+# set and store context
+$AzureContext = Set-AzContext -SubscriptionName $AzureContext.Subscription -DefaultProfile $AzureContext
 
 # Create the function to create the authorization signature
 Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
@@ -78,7 +59,6 @@ Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $metho
     $authorization = 'SharedKey {0}:{1}' -f $customerId,$encodedHash
     return $authorization
 }
-
 
 # Create the function to create and post the request
 Function Post-OMSData($customerId, $sharedKey, $body, $logType)
@@ -113,19 +93,18 @@ Function Post-OMSData($customerId, $sharedKey, $body, $logType)
 
 
 #Get Log Data
-select-azurermsubscription -SubscriptionId $SubscriptionId
+#Set the endtime, get StartTime-filter from Automation Account variable
 $endtime =[System.DateTime]::UtcNow
-$StartTime = Get-AzureRmAutomationVariable -ResourceGroupName $AC_ResourceGroupName `
+$StartTime = Get-AzAutomationVariable -ResourceGroupName $AC_ResourceGroupName `
                                         –AutomationAccountName $AC_AccountName `
                                         -Name $AC_LastUpdatedTimeVariableName | Select -ExpandProperty Value
-
 
 #Get Log
 Write-Output "Getting Data Sync Log from $StartTime to $EndTime"
 
 if ($DS_ResourceGroupName -eq "")
 {
-    $ResourceGroupName = Get-AzureRmResourceGroup | select -ExpandProperty ResourceGroupName
+    $ResourceGroupName = Get-AzResourceGroup | select -ExpandProperty ResourceGroupName
 }
 else
 {
@@ -136,7 +115,7 @@ foreach ($ResourceGroup in $ResourceGroupName)
 {
     if ($DS_ServerName -eq "")
     {
-        $ServerName = Get-AzureRmSqlServer -ResourceGroupName $ResourceGroup | select -ExpandProperty ServerName
+        $ServerName = Get-AzSqlServer -ResourceGroupName $ResourceGroup | select -ExpandProperty ServerName
     }
     else
     {
@@ -147,7 +126,7 @@ foreach ($ResourceGroup in $ResourceGroupName)
     {
         if ($DS_DatabaseName -eq "")
         {
-            $DatabaseName = Get-AzureRmSqlDatabase -ResourceGroupName $ResourceGroup -ServerName $Server | select -ExpandProperty DatabaseName
+            $DatabaseName = Get-AzSqlDatabase -ResourceGroupName $ResourceGroup -ServerName $Server | select -ExpandProperty DatabaseName
         }
         else
         {
@@ -163,7 +142,7 @@ foreach ($ResourceGroup in $ResourceGroupName)
 
             if ($DS_SyncGroupName -eq "")
             {
-                $SyncGroupName = Get-AzureRmSqlSyncGroup -ResourceGroupName $ResourceGroup -ServerName $Server -DatabaseName $Database | select -ExpandProperty SyncGroupName
+                $SyncGroupName = Get-AzSqlSyncGroup -ResourceGroupName $ResourceGroup -ServerName $Server -DatabaseName $Database | select -ExpandProperty SyncGroupName
             }
             else
             {
@@ -172,7 +151,7 @@ foreach ($ResourceGroup in $ResourceGroupName)
 
             foreach ($SyncGroup in $SyncGroupName)
             {
-                $Logs = Get-AzureRmSqlSyncGroupLog -ResourceGroupName $ResourceGroup `
+                $Logs = Get-AzSqlSyncGroupLog -ResourceGroupName $ResourceGroup `
                                                   -ServerName $Server `
                                                   -DatabaseName $Database `
                                                   -SyncGroupName $SyncGroup `
@@ -187,13 +166,13 @@ foreach ($ResourceGroup in $ResourceGroupName)
                     $Log | Add-Member -Name "ResourceGroupName" -Value $ResourceGroup -MemberType NoteProperty
                     $Log | Add-Member -Name "ServerName" -Value $Server -MemberType NoteProperty
                     $Log | Add-Member -Name "HubDatabaseName" -Value $Database -MemberType NoteProperty
-                    $Log | Add-Member -Name "SyncGroupName" -Value $SyncGroup -MemberType NoteProperty 
+                    $Log | Add-Member -Name "SyncGroupName" -Value $SyncGroup -MemberType NoteProperty
 
                     #Filter out Successes to Reduce Data Volume to OMS
                     #Include the 5 commented out line below to enable the filter
                     #For($i=0; $i -lt $Log.Length; $i++ ) {
                     #    if($Log[$i].LogLevel -eq "Success") {
-                    #      $Log[$i] =""      
+                    #      $Log[$i] =""
                     #    }
                     # }
 
@@ -207,13 +186,13 @@ foreach ($ResourceGroup in $ResourceGroupName)
 
 
                 $result = Post-OMSData -customerId $customerId -sharedKey $sharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($json)) -logType $logType
-                if ($result -eq 200) 
+                if ($result -eq 200)
                 {
                     Write-Host "Success"
                 }
-                if ($result -ne 200) 
+                if ($result -ne 200)
                {
-                   throw 
+                   throw
 @"
                     Posting to OMS Failed                         
                     Runbook Name: DataSyncOMSIntegration                         
@@ -226,9 +205,10 @@ foreach ($ResourceGroup in $ResourceGroupName)
 }
 
 
-
-Set-AzureRmAutomationVariable -ResourceGroupName $AC_ResourceGroupName `
+# Write runtime into Automation Account variable
+Set-AzAutomationVariable -ResourceGroupName $AC_ResourceGroupName `
                           –AutomationAccountName $AC_AccountName `
+                          -DefaultProfile $AzureContext `
                           -Name $AC_LastUpdatedTimeVariableName `
                           -Value $EndTime `
                           -Encrypted $False

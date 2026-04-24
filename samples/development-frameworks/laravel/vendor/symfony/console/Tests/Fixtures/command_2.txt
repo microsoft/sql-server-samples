@@ -4,10 +4,10 @@
   descriptor:command2 <argument_name>
 
 <comment>Arguments:</comment>
-  <info>argument_name</info>      
+  <info>argument_name</info>
 
 <comment>Options:</comment>
-  <info>-o, --option_name</info>  
+  <info>-o, --option_name</info>
 
 <comment>Help:</comment>
  command 2 help

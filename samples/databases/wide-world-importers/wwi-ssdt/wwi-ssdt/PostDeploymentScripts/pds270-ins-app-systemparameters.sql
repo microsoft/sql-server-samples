@@ -3,7 +3,7 @@ GO
 
 DECLARE @myCityID            AS INT
 DECLARE @myCityName          AS NVARCHAR(50)
-DECLARE @myStateProvinceCode AS NVARCHAR(5) 
+DECLARE @myStateProvinceCode AS NVARCHAR(5)
 DECLARE @myStateProvinceName AS NVARCHAR(50)
 DECLARE @myAreaCode          AS NVARCHAR(3)
 
@@ -15,17 +15,17 @@ EXEC [DataLoadSimulation].[GetRandomCity]
 , @AreaCode          = @myAreaCode          OUTPUT
 
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101';
+DECLARE @CurrentDateTime datetime2(7) = '20200101';
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999';
 
-INSERT [Application].SystemParameters 
-    (DeliveryAddressLine1, DeliveryAddressLine2, DeliveryCityID, 
-     DeliveryPostalCode, DeliveryLocation, 
-     PostalAddressLine1, PostalAddressLine2, PostalCityID, PostalPostalCode, 
+INSERT [Application].SystemParameters
+    (DeliveryAddressLine1, DeliveryAddressLine2, DeliveryCityID,
+     DeliveryPostalCode, DeliveryLocation,
+     PostalAddressLine1, PostalAddressLine2, PostalCityID, PostalPostalCode,
      ApplicationSettings, LastEditedBy, LastEditedWhen)
-VALUES 
-    (N'Suite 14', N'1968 Martin Luther King Junior Drive', @myCityID, 
-     N'94129', geography::Point(37.765786, -122.504086, 4326),  
+VALUES
+    (N'Suite 14', N'1968 Martin Luther King Junior Drive', @myCityID,
+     N'94129', geography::Point(37.765786, -122.504086, 4326),
      N'PO Box 201158', N'Golden Gate Park', @myCityID, 94129,
      N'{
 	"Site": {

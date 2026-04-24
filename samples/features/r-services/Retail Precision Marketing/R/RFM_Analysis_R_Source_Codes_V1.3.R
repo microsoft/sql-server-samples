@@ -1,7 +1,7 @@
 ###############################################################################
 #Description: A set of R functions to implement the Independent RFM scoring and the RFM scoring with input breaks.
 #Author: Jack Han     http://www.DataApple.net   email: jackhan2008 # qq.com
-#Version: 1.3  
+#Version: 1.3
 #Date:   23 Dec 2013 	
 #Usage:  Read the article "RFM Customer Analysis with R Language" http://www.dataapple.net/?p=84
 ################################################################################
@@ -291,7 +291,7 @@ for (i in 1:f){
 			c[k]<- dim(tmpdf)[1]
 
 		}
-		if (i==1 & j==1) 
+		if (i==1 & j==1)
 			barplot(c,col="lightblue",names.arg=names)
 		else
 			barplot(c,col="lightblue")

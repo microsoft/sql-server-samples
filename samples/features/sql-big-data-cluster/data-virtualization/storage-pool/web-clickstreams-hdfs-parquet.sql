@@ -32,8 +32,8 @@ IF NOT EXISTS(SELECT * FROM sys.external_tables WHERE name = 'web_clickstreams_h
 GO
 
 -- Join external table with local tables
--- 
-SELECT  
+--
+SELECT
     wcs_user_sk,
     SUM( CASE WHEN i_category = 'Books' THEN 1 ELSE 0 END) AS book_category_clicks,
     SUM( CASE WHEN i_category_id = 1 THEN 1 ELSE 0 END) AS [Home & Kitchen],
@@ -72,8 +72,8 @@ AS
 	  q.clicks_in_8,
 	  q.clicks_in_9,
 	  q.wcs_user_sk
-	FROM( 
-	  SELECT 
+	FROM(
+	  SELECT
 		w.wcs_user_sk,
 		SUM( CASE WHEN i.i_category = 'Books' THEN 1 ELSE 0 END) AS clicks_in_category,
 		SUM( CASE WHEN i.i_category_id = 1 THEN 1 ELSE 0 END) AS clicks_in_1,

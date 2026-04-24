@@ -17,8 +17,8 @@ Get started quickly with developing applications in Node.js on macOS with SQL Se
 
 ## About this sample
 
-- **Applies to:** SQL Server 2016 (or higher) 
-- **Workload:** 
+- **Applies to:** SQL Server 2016 (or higher)
+- **Workload:**
     - CRUD with Node.js
     - CRUD with Sequelize ORM
     - Performance improvements with Columnstore
@@ -28,11 +28,11 @@ Get started quickly with developing applications in Node.js on macOS with SQL Se
 
 ## Before you begin
 
-To run this sample, you need the following prerequisites. 
+To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 (or higher) 
+1. SQL Server 2016 (or higher)
 2. Node.js
 3. Sequelize ORM
 4. A text editor
@@ -40,16 +40,16 @@ To run this sample, you need the following prerequisites.
 
 ## Run this sample
 
-1. Create the database to be used for the rest of the samples. From your command prompt, run the following. Update the username and password with your own. 
+1. Create the database to be used for the rest of the samples. From your command prompt, run the following. Update the username and password with your own.
 
     ```
     mssql -s localhost -u sa -p your_password -q "CREATE DATABASE SampleDB;"
     ```
 
 ### CRUD via Node.js *(SqlServerSample)*
-1. In your favorite text editor, open the **connect.js** file in the *SqlServerSample* folder and update the connection string username and password with your own. 
+1. In your favorite text editor, open the **connect.js** file in the *SqlServerSample* folder and update the connection string username and password with your own.
 
-2. From your terminal, run the project by performing the following command: 
+2. From your terminal, run the project by performing the following command:
 
     ```
     node connect.js
@@ -62,23 +62,23 @@ To run this sample, you need the following prerequisites.
     .run ./CreateTestData.sql
     ```
 
-4. From your terminal, run the CRUD sample by performing the following command: 
+4. From your terminal, run the CRUD sample by performing the following command:
 
     ```
     node crud.js
     ```
 
 ### CRUD via Sequelize *(SqlServerSequelizeSample)*
-1. In your favorite text editor, open the **orm.js** file in the *SqlServerSequelizeSample* folder and update the connection string username and password with your own. 
+1. In your favorite text editor, open the **orm.js** file in the *SqlServerSequelizeSample* folder and update the connection string username and password with your own.
 
-2. From your command prompt, connect to your database and then create the sample data to be used in the columnstore sample. Update the username and password with your own. 
+2. From your command prompt, connect to your database and then create the sample data to be used in the columnstore sample. Update the username and password with your own.
 
     ```
     node orm.js
     ```
 
 ### Performance improvements with Columnstore *(SqlServerColumnstoreSample)*
-1. In your favorite text editor, open the **columnstore.js** file in the *SqlServerColumnstoreSample* folder and update the connection string username and password with your own. 
+1. In your favorite text editor, open the **columnstore.js** file in the *SqlServerColumnstoreSample* folder and update the connection string username and password with your own.
 
 2. From your command prompt, connect to your database and then create the sample data to be used in the columnstore sample. Update the username and password with your own.
 
@@ -87,7 +87,7 @@ To run this sample, you need the following prerequisites.
     .run ./CreateSampleTable.sql
     ```
 
-4. From your terminal, run the CRUD sample by performing the following command: 
+4. From your terminal, run the CRUD sample by performing the following command:
 
     ```
     node columnstore.js

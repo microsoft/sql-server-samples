@@ -35,8 +35,8 @@ To run this sample, you need the following prerequisites.
 **Software prerequisites:**
 
 <!-- Examples -->
-1. [WideWorldImporters](../wwi-ssdt/) and [WideWorldImportersDW](../wwi-dw-ssdt/) sample databases running in SQL Server 2016 (or higher) or Azure SQL Database. Install from source code. 
-1. Power BI Desktop. Download link: [https://powerbi.microsoft.com/downloads/](https://powerbi.microsoft.com/downloads/) 
+1. [WideWorldImporters](../wwi-ssdt/) and [WideWorldImportersDW](../wwi-dw-ssdt/) sample databases running in SQL Server 2016 (or higher) or Azure SQL Database. Install from source code.
+1. Power BI Desktop. Download link: [https://powerbi.microsoft.com/downloads/](https://powerbi.microsoft.com/downloads/)
 
 <a name=run-this-sample></a>
 

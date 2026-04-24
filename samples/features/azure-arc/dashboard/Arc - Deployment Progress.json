@@ -1,0 +1,1705 @@
+{
+  "properties": {
+    "lenses": [
+       {
+        "order": 0,
+        "parts": [
+           {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 19,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style='line-height:50px;'>\n<span style='font-size:20px;font-weight:bold'>Azure Arc - Deployment Progress</span>\n<br/>\n<span style='font-size:20px'>This dashboard tracks the progress of the Azure Arc deployment.</span>\n</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 2,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Count of all Servers\nresources\n| where type =~ 'microsoft.hybridcompute/machines'\n| summarize ServerCount = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers",
+                "subtitle": "Count of servers enabled by Azure Arc"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 3,
+              "y": 2,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Count of all Cores\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| summarize CoreCount = sum(coreCount)",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Physical Core Count",
+                "subtitle": "Count of all cores on all servers enabled by Azure Arc"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 7,
+              "y": 2,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources \n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring((properties.status))\n| extend machineName = name\n| extend machineId = tolower(tostring(id))\n| where provisioningState == \"Succeeded\"\n| summarize provisionedServers = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Provisioned Servers",
+                "subtitle": "Servers where Provisioning State = \"Succeeded\""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 11,
+              "y": 2,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources \n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring((properties.status))\n| extend machineName = name\n| extend machineId = tolower(tostring(id))\n| where status == \"Connected\"\n| summarize connectedServers = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Connected Servers",
+                "subtitle": "Servers where Status is \"Success\""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 14,
+              "y": 2,
+              "colSpan": 5,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style=''>\n<span style='font-weight:bold'>Connected and Provisioned Servers</span>\n<span>Fully connected Arc enabled servers have a positive connection & provisioning status.  Total connected & provisioned servers should ideally equal total servers.</span>\n</div>.\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 4,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Standard VM Query - used to count Windows Servers\n//Can be used in other queries, pulls out the most important properties for Arc VMs and related SQL Server instances\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n| where osType == \"windows\"\n| summarize windowsCount = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Windows Servers",
+                "subtitle": "Count of Windows Servers registered to Arc"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 3,
+              "y": 4,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Standard VM Query - used to count Windows Servers\n//Can be used in other queries, pulls out the most important properties for Arc VMs and related SQL Server instances\n//Main Table - All Arc Virtual Machines\nresources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n//Machine Characteristics\n| extend coreCount = toint(properties.detectedProperties.coreCount)\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\n//Machine ID & Name\n| extend machineId = tolower(tostring(id))\n| extend machineName = name\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n//OS Edition (Datacenter or Standard) \n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\n| where osType == \"windows\"\n| summarize windowsCoreCount = sum(coreCount)",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Windows Servers Core Count",
+                "subtitle": "Count of Windows Servers Cores registered to Arc"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 7,
+              "y": 4,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Status\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring((properties.status))\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n| where provisioningState == \"Succeeded\"\n| summarize windowsServerProvisioned = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Provisioned Windows Server Servers",
+                "subtitle": "Windows Server servers where Provisioning State = \"Succeded\""
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 11,
+              "y": 4,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Status\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring((properties.status))\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n| where status == \"Connected\"\n| summarize windowsServerProvisioned = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Connected Windows Server Servers",
+                "subtitle": "WIndows Server servers which have a \"connected\" status"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 6,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n| where mssqlDiscovered == 'true'\n| summarize ServerCount = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers with SQL Server Discovered",
+                "subtitle": "Count of Servers where SQL Server has been discovered"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 3,
+              "y": 6,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "    resources\n    //Machine extensions resource type\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\n    //Machine has SQL Server extension\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\n    | summarize ExtensionCount = count()\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers with SQL Server extension installed",
+                "subtitle": "Count of servers with SQL Server extension Installed"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 7,
+              "y": 6,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//SQL VMs with at least one Instance of SQL Server\n//If MSSQLServer is discovered and agent is installed then at least 1 instance of SQL Server should be discovered\n//\n// 1) VMs with SQL\nresources \n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n| where mssqlDiscovered == 'true'\n| extend machineName = name\n| extend machineId = tolower(tostring(id))\n// 2) Does the VM host at least 1 instance of SQL Server\n| join kind=inner (\n    resources\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\n    //SQL Server Version & Edition\n    | extend sqlVersion = tostring(properties.version)\n    | extend sqlEdition = tostring(properties.edition)\n    | extend sqlInstance = name\n    //needed for join - container is \"owning\" VM hosting SQL\n    | extend containerId = tolower(tostring (properties.containerResourceId))\n    | where isnotempty(containerId)\n    //Machine may contain multiple instances of different versions & editions - this distinct narrows the count to 1\n    | distinct containerId)\non $left.machineId == $right.containerId\n| summarize vmsWithAtLeastOneSQLInstance = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers with at Least One SQL Server Engine Instance",
+                "subtitle": "Servers with SQL Server discovered and at least 1 instance of SQL Server installed"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 11,
+              "y": 6,
+              "colSpan": 8,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style=''>\n<span style='font-weight:bold'>SQL Instance Metrics</span>\n<span style=''>3 requirements for completed SQL Server Instance registration</span>\n</div>\n<div>\n<ol type=\"1\">\n<li>SQL Server discovered on Server</li>\n<li>SQL Server extension installed correctly</li>\n<li>At least 1 SQL Server engine instance created</li>\n</ol>\n</div>\n<div>These 3 metrics will be equal if all SQL Servers have been registered correctly unless some servers have SQL Server installed but not the SQL Server engine role. Some servers may have only some of the other roles like Analysis Services, Reporting Services, or Integration  Services.</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 8,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where type == 'microsoft.azurearcdata/sqlserverinstances'\n| summarize SQLInstanceCount = count()\n",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server Instances",
+                "subtitle": "Servers can host multiple SQL Server instances"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 3,
+              "y": 8,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//SQL Server Ent & Standard\n//Count of VMs with at least one Instance of SQL Server Standard or Enterprise\n//\n// 1) VMs with SQL\nresources \n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n| where mssqlDiscovered == 'true'\n| extend machineName = name\n| extend machineId = tolower(tostring(id))\n//\n// 2) Does the VM host at least 1 instance of SQL Server Standard or Enterprise\n| join kind=inner (\n    resources\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\n    //SQL Server Version & Edition\n    | extend sqlVersion = tostring(properties.version)\n    | extend sqlEdition = tostring(properties.edition)\n    | extend sqlInstance = name\n    //needed for join - container is \"owning\" VM hosting SQL\n    | extend containerId = tolower(tostring (properties.containerResourceId))\n    //Does at least one instance contain Enterprise or Standard\n    | where sqlEdition in (\"Enterprise\", \"Standard\")\n    | where isnotempty(containerId)\n    //Machine may contain multiple instances of different versions & editions - this distinct narrows the count to 1\n    | distinct containerId)\non $left.machineId == $right.containerId\n| summarize serverCount = count() ",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers with SQL Server Ent/Std Edition",
+                "subtitle": "Servers with at least one instance of Standard or Enterprise Edition"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 7,
+              "y": 8,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//SQL Server Paid/not paid Query - Count of SQL Server VMs with Enterprise or Standard and License Type of \"Paid\"\n//version 1 - returns where at least 1 SQL Server Instance is Standard or Enterprise\n//Complex Query which operates across 3 resource types\n//Goal of Query is to count Machines which have SQL Server installed AND at least one instance of Standard or Enterprise\n//Returns License Type value so we can determine which servers potentially have an incorrect or suboptimal License Type\n//\n//Resource Types used\n//1) resources where type == \"microsoft.hybridcompute/machines\" and mssqlDiscovered == 'true' - Azure Arc VMs holding at least 1 SQL Server install\n//2) resourcecontainers where type == 'microsoft.resources/subscriptions' - Owning subscription for VMs\n//3) resources where type == 'microsoft.azurearcdata/sqlserverinstances' - collection of SQL Server instances on VM\n//Note - we only need to determine if at least one SQL Server Enterprise or Standard exists on the Server, hence the distinct and filter\n//4) resources where type == \"microsoft.hybridcompute/machines/extensions\" and properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\") - Extension holding SQLServer Agent for Server\n//\n// 1) gives us the underlying SQL Server hosting VM\n// 2) gives us the owning subscription\n// 3) selects VMs with at least one instance of SQL Server Standard or Enterprise\n// 4) gets the license status (paid etc)\n//\n// 1) VMs with SQL\nresources \n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = properties.mssqlDiscovered\n| where mssqlDiscovered == 'true'\n| extend machineName = name\n| extend machineId = tolower(tostring(id))\n// 2) Does the VM host at least 1 instance of SQL Server Standard or Enterprise\n| join kind=inner (\n    resources\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\n    //SQL Server Version & Edition\n    | extend sqlVersion = tostring(properties.version)\n    | extend sqlEdition = tostring(properties.edition)\n    | extend sqlInstance = name\n    //needed for join - container is \"owning\" VM hosting SQL\n    | extend containerId = tolower(tostring (properties.containerResourceId))\n    //Does at least one instance contain Enterprise or Standard\n    | where sqlEdition in (\"Enterprise\", \"Standard\")\n    | where isnotempty(containerId)\n    //Machine may contain multiple instances of different versions & editions - this distinct narrows the count to 1\n    | distinct containerId)\non $left.machineId == $right.containerId\n//\n//3) Join for SQL Server Agent to retrieve Server Level License Type\n| join kind=inner (\n    resources\n    //Machine extensions resource type\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\n    //Machine has SQL Server extension\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\n    | extend licenseType = tostring(properties.settings.LicenseType)\n    | where licenseType ==\"Paid\"\n    //extract Machine name from ID\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\n    )\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\n| summarize paidServerCount = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Total SQL Server servers with \"Paid\" License Type",
+                "subtitle": "Count of all SQL Server servers with Ent/Std Edition and \"Paid\" license type"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 11,
+              "y": 8,
+              "colSpan": 5,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style=''>\n<span style='font-weight:bold'>SQL License Type</span>\n<span style=''>Tracks the setting of the SQL Server License Type</span>\n</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 16,
+              "y": 8,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where  type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\n| summarize countDBs = count()",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Total SQL Server Databases",
+                "subtitle": "Count of all databases across all instances"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 10,
+              "colSpan": 3,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where type == 'microsoft.azurearcdata/sqlserverinstances'\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring(properties.status)\n| where provisioningState == \"Succeeded\"\n| summarize succeedededProvisioningInstanceCount = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Provisioned SQL Server Instances",
+                "subtitle": "Count of SQL Server instances provisioned"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 3,
+              "y": 10,
+              "colSpan": 4,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where type == 'microsoft.azurearcdata/sqlserverinstances'\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring(properties.status)\n| where status == \"Connected\"\n| summarize connectedInstanceCount = count()",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Connected SQL Server Instances",
+                "subtitle": "Count of Instances connected fully to Arc"
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 7,
+              "y": 10,
+              "colSpan": 12,
+              "rowSpan": 2
+            },
+            "metadata": {
+              "inputs": [],
+              "type": "Extension/HubsExtension/PartType/MarkdownPart",
+              "settings": {
+                "content": {
+                  "content": "<div style=''>\n<span style='font-weight:bold'>Connected and Provisioned Instances</span>\n<span style=''>Windows & Linux VMs can host multiple SQL Server Instances and so the total number of SQL Server Instances can exceed the number of SQL Server servers (servers with SQL Server discovered). Some servers may have SQL Sewrver discovered but there are no SQL Server engine instances and only other SQL Server roles such as Analysis Services, Reporting Services, or Integration Services are installed.</span>  \n<span>Total Connected & Provisioned instances should ideally equal Total SQL Server instances</span>\n</div>\n",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1,
+                  "markdownUri": ""
+                }
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 12,
+              "colSpan": 13,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources \n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = tostring(properties.mssqlDiscovered)\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring((properties.status))\n| where mssqlDiscovered == 'true'\n| extend machineName = name\n| extend machineId = tolower(tostring(id))\n//\n//Join for SQL Server Agent for Upload Status\n| join kind=leftouter  (\n    resources\n    //Machine extensions resource type\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\n    //Machine has SQL Server extension\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\n    //extract Machine name from ID\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\n    )\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\n| extend uploadStatus = iff(isnotempty(uploadStatus),uploadStatus,\"Missing SQL Agent\")\n| summarize uploadStatusBreakdown = count() by uploadStatus",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server Extension -> DPS Upload Status",
+                "subtitle": "Extension -> DPS Upload Status indicates if a server is not fully connected. OK is the desired status."
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 13,
+              "y": 12,
+              "colSpan": 6,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Status\n| extend provisioningState = tostring(properties.provisioningState)\n| extend status = tostring((properties.status))\n//Operating System\n| extend osSku = tostring(properties.osSku)\n| extend osName = tostring(properties.osName)\n| extend osVersion = tostring(properties.osVersion)\n//Windows or Linux\n| extend osType = tostring(properties.osType)\n| where osType == \"windows\"\n//| where status == \"Connected\"\n| summarize windowsServerProvisioned = count() by status",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Windows Server Status",
+                "subtitle": "WIndows Server by status"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 18,
+              "colSpan": 19,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Arc Queries - All Windows Servers by Subscription, Resource Group, Type\nresources\n| where type =~ 'microsoft.hybridcompute/machines'\n| extend CoreCount = toint (properties.detectedProperties.logicalCoreCount)\n| extend OSVersion = tostring(properties.osSku)\n| extend ESUAttached = iff(properties.licenseProfile.esuProfile.esuKeyState ==\"Inactive\", 0, 1)\n| join kind=inner (\n    resourcecontainers\n    | where type == 'microsoft.resources/subscriptions'\n    | project subscriptionId, subscriptionName = name)\n    on subscriptionId\n| project subscriptionName, resourceGroup, OSVersion, ESUAttached, CoreCount\n| summarize ServerCount = count()  by subscriptionName\n| order by subscriptionName",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers enabled by Subscription",
+                "subtitle": "Servers enabled by Azure Arc by subscription"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 24,
+              "colSpan": 19,
+              "rowSpan": 7
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Arc Queries - All Windows Servers by Location\nresources\n| where type =~ 'microsoft.hybridcompute/machines'\n| extend CoreCount = toint (properties.detectedProperties.logicalCoreCount)\n| extend OSVersion = tostring(properties.osSku)\n| extend ESUAttached = iff(properties.licenseProfile.esuProfile.esuKeyState ==\"Inactive\", 0, 1)\n| extend location = tostring(tags.Location)\n| join kind=inner (\n    resourcecontainers\n    | where type == 'microsoft.resources/subscriptions'\n    | project subscriptionId, subscriptionName = name)\n    on subscriptionId\n| project subscriptionName, resourceGroup, OSVersion, ESUAttached, CoreCount, location\n| summarize ServerCount = count() by location\n| order by location",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers by \"Location\" tag",
+                "subtitle": "Servers enabled by Azure Arc by \"Location\" tag"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 31,
+              "colSpan": 9,
+              "rowSpan": 7
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Servers by OS Version\nresources\n| where type =~ 'microsoft.hybridcompute/machines'\n| extend OSVersion = tostring(properties.osSku)\n| project OSVersion\n| summarize ServerCount = count() by OSVersion\n| order by ServerCount desc  ",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers by OS",
+                "subtitle": "Servers enabled by Azure Arc by OS version"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 9,
+              "y": 31,
+              "colSpan": 10,
+              "rowSpan": 7
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Arc Queries - All Windows Servers by Subscription, Resource Group, Type\r\nresources\r\n| where type =~ 'microsoft.hybridcompute/machines'\r\n| extend CoreCount = toint (properties.detectedProperties.logicalCoreCount)\r\n| extend OSVersion = tostring(properties.osSku)\r\n| extend ESUAttached = iff(properties.licenseProfile.esuProfile.esuKeyState ==\"Inactive\", 0, 1)\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n| project subscriptionName, resourceGroup, OSVersion, ESUAttached, CoreCount\r\n| summarize ServerCount = count()  by subscriptionName, resourceGroup, OSVersion",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers - Summary",
+                "subtitle": "All servers by subscription, resource group, and OS version"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 38,
+              "colSpan": 9,
+              "rowSpan": 7
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Run query to see results.\nresources\n| where type == \"microsoft.azurearcdata/sqlserverinstances\"\n//| where type == \"microsoft.hybridcompute/machines\"\n//| where properties.detectedProperties.mssqldiscovered == \"true\"\n| extend d=parse_json(properties)\n| extend Patch=d[\"patchLevel\"]\n| extend SQLVersion=tostring(d[\"version\"])\n| extend  Edition=d[\"edition\"]\n| extend License=d[\"licenseType\"]\n| project name, Patch, SQLVersion, Edition, License\n| summarize SQLServerVersionCount=count() by SQLVersion\n| order by SQLServerVersionCount desc ",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server Instances by Version",
+                "subtitle": "SQL Server instances enabled by Azure Arc by SQL Server version"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 9,
+              "y": 38,
+              "colSpan": 10,
+              "rowSpan": 7
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources \n//Arc registered VMs (Windows & linux)\n| where type == \"microsoft.hybridcompute/machines\"\n//Boolean - SQL installed (true/false)\n| extend mssqlDiscovered = tostring(properties.mssqlDiscovered)\n//| where mssqlDiscovered == 'true'\n| extend machineName = name\n| extend machineId = tolower(tostring(id))\n//\n// 2) Subscription Name\n| join kind=inner (\n    resourcecontainers\n    | where type == 'microsoft.resources/subscriptions'\n    | project subscriptionId, subscriptionName = name)\n    on subscriptionId\n//\n// 3) Does the VM host at least 1 instance of SQL Server Standard or Enterprise\n| join kind=inner (\n    resources\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\n    //SQL Server Version & Edition\n    | extend sqlVersion = tostring(properties.version)\n    | extend sqlEdition = tostring(properties.edition)\n    | extend sqlInstance = name\n    //needed for join - container is \"owning\" VM hosting SQL\n    | extend containerId = tolower(tostring (properties.containerResourceId))\n    //Does at least one instance contain Enterprise or Standard\n    | where sqlEdition in (\"Enterprise\", \"Standard\")\n    | where isnotempty(containerId)\n    //Machine may contain multiple instances of different versions & editions - this distinct narrows the count to 1\n    | distinct containerId)\non $left.machineId == $right.containerId\n//\n//4) Join for SQL Server Agent to retrieve Server Level License Type\n| join kind=leftouter  (\n    resources\n    //Machine extensions resource type\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\n    //Machine has SQL Server extension\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\n    | extend licenseType = tostring(properties.settings.LicenseType)\n    | extend licenseType = iff(isnotempty(licenseType), licenseType, \"License Type not set\")\n    //extract Machine name from ID\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\n    )\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\n| extend licenseType = iff(isnotempty(licenseType), licenseType, \"Missing SQL Agent\")\n| project subscriptionName, resourceGroup, machineName, licenseType\n| summarize serverCount = count() by  licenseType",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server License Type for Enterprise & Standard",
+                "subtitle": "SQL Server server license type across all servers hosting Ent & Std Edition SQL Server instances"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 45,
+              "colSpan": 19,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//SQL Server Paid/not paid Query\r\n//version 1 - returns where at least 1 SQL Server Instance is Standard or Enterprise\r\n//Complex Query which operates across 3 resource types\r\n//Goal of Query is to count Machines which have SQL Server installed AND at least one instance of Standard or Enterprise\r\n//Returns License Type value so we can determine which servers potentially have an incorrect or suboptimal License Type\r\n//\r\n//Resource Types used\r\n//1) resources where type == \"microsoft.hybridcompute/machines\" and mssqlDiscovered == 'true' - Azure Arc VMs holding at least 1 SQL Server install\r\n//2) resourcecontainers where type == 'microsoft.resources/subscriptions' - Owning subscription for VMs\r\n//3) resources where type == 'microsoft.azurearcdata/sqlserverinstances' - collection of SQL Server instances on VM\r\n//Note - we only need to determine if at least one SQL Server Enterprise or Standard exists on the Server, hence the distinct and filter\r\n//4) resources where type == \"microsoft.hybridcompute/machines/extensions\" and properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\") - Extension holding SQLServer Agent for Server\r\n//\r\n// 1) gives us the underlying SQL Server hosting VM\r\n// 2) gives us the owning subscription\r\n// 3) selects VMs with at least one instance of SQL Server Standard or Enterprise\r\n// 4) gets the license status (paid etc)\r\n//\r\n// 1) VMs with SQL\r\nresources \r\n//Arc registered VMs (Windows & linux)\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n//Boolean - SQL installed (true/false)\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n| where mssqlDiscovered == 'true'\r\n| extend machineName = name\r\n| extend machineId = tolower(tostring(id))\r\n//\r\n// 2) Subscription Name\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n//\r\n// 3) Does the VM host at least 1 instance of SQL Server Standard or Enterprise\r\n| join kind=inner (\r\n    resources\r\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\r\n    //SQL Server Version & Edition\r\n    | extend sqlVersion = tostring(properties.version)\r\n    | extend sqlEdition = tostring(properties.edition)\r\n    | extend sqlInstance = name\r\n    //needed for join - container is \"owning\" VM hosting SQL\r\n    | extend containerId = tolower(tostring (properties.containerResourceId))\r\n    //Does at least one instance contain Enterprise or Standard\r\n    | where sqlEdition in (\"Enterprise\", \"Standard\")\r\n    | where isnotempty(containerId)\r\n    //Machine may contain multiple instances of different versions & editions - this distinct narrows the count to 1\r\n    | distinct containerId)\r\non $left.machineId == $right.containerId\r\n//\r\n//4) Join for SQL Server Agent to retrieve Server Level License Type\r\n| join kind=inner (\r\n    resources\r\n    //Machine extensions resource type\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    //Machine has SQL Server extension\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    //extract Machine name from ID\r\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n    )\r\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\r\n| project subscriptionName, resourceGroup, machineName, licenseType\r\n| summarize serverCount = count() by subscriptionName, resourceGroup, licenseType\r\n",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server License Type Settings by Subscription, Resource Group for Enterprise & Standard",
+                "subtitle": "SQL Server License Type settings for \"production\" SQL Server servers"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 51,
+              "colSpan": 19,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Arc Queries - All Windows Servers by Subscription, Resource Group, Type\r\nresources\r\n| where type =~ 'microsoft.hybridcompute/machines'\r\n| extend CoreCount = toint (properties.detectedProperties.logicalCoreCount)\r\n| extend OSVersion = tostring(properties.osSku)\r\n| extend ESUAttached = iff(properties.licenseProfile.esuProfile.esuKeyState ==\"Inactive\", 0, 1)\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n| project subscriptionName, resourceGroup, OSVersion, ESUAttached, CoreCount\r\n| summarize ServerCount = count() , TotalCores = sum(CoreCount), TotalESU =sum(ESUAttached) by subscriptionName, resourceGroup, OSVersion",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers - Summary",
+                "subtitle": "All servers by subscription, resource group, OS version"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 56,
+              "colSpan": 19,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Run query to see results.\r\nresources\r\n| where type == \"microsoft.azurearcdata/sqlserverinstances\"\r\n| extend d=parse_json(properties)\r\n| extend Patch=d[\"patchLevel\"]\r\n| extend SQLVersion=d[\"version\"]\r\n| extend  Edition=d[\"edition\"]\r\n| extend License=d[\"licenseType\"]\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n| project subscriptionName, resourceGroup, Patch, SQLVersion, Edition, License\r\n| summarize ServerCount=count() by subscriptionName, resourceGroup, tostring(SQLVersion)",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server instances - Summary",
+                "subtitle": "All SQL Server instances by subscription, resource group, version"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 61,
+              "colSpan": 19,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//Standard VM Query - VM alone\r\n//Can be used in other queries, pulls out the most important properties for Arc VMs\r\n//Main Table - All Arc Virtual Machines\r\nresources\r\n//Arc registered VMs (Windows & linux)\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n//Boolean - SQL installed (true/false)\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n//Machine Characteristics\r\n| extend coreCount = toint(properties.detectedProperties.coreCount)\r\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\r\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\r\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\r\n//Machine ID & Name\r\n| extend machineId = tolower(tostring(id))\r\n| extend machineName = name\r\n//Operating System\r\n| extend osSku = tostring(properties.osSku)\r\n| extend osName = tostring(properties.osName)\r\n| extend osVersion = tostring(properties.osVersion)\r\n//Windows or Linux\r\n| extend osType = tostring(properties.osType)\r\n//OS Edition (Datacenter or Standard) \r\n| extend osEdition = iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\")\r\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\r\n| extend ESU = properties.licenseProfile.esuProfile.licenseAssignmentState\r\n| extend esuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n//Type of ESU assigned (Standard/Data center)\r\n| extend serverType = tostring(properties.licenseProfile.esuProfile.serverType)\r\n//\r\n//Include below if Subscription Name needed\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n//Agent Status\r\n| join kind=leftouter  (\r\n\t//Provisioned Servers\r\n\t//It is possible for a Server to be known to Arc but not fully provisioned - this query checks that state\r\n\tresources\r\n\t//Machine extensions resource type\r\n\t| where type == \"microsoft.hybridcompute/machines/extensions\"\r\n\t//Search for Approriate Agent\r\n\t| where properties.['type'] in (\"AzureMonitorWindowsAgent\", \"AzureMonitorLinuxAgent\")\r\n\t//extract Machine name from ID\r\n\t| extend machineIdHasAgentExtensionInstalled = tolower(iff(id contains \"/extensions/AzureMonitorWindowsAgent\" or id contains \"/extensions/AzureMonitorLinuxAgent\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n\t| extend provisioningState = properties.provisioningState\r\n\t| extend status = properties.instanceView.status.message\r\n\t)\r\non $left.machineId == $right.machineIdHasAgentExtensionInstalled",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers - Detail",
+                "subtitle": "All servers enabled by Azure Arc"
+              }
+            }
+          },
+          {
+            "position": {
+              "x": 0,
+              "y": 67,
+              "colSpan": 19,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "//All Servers and all SQL Server Instances\r\n//version 1 - Comprehensive query which returns all VMs and also all SQL instances on\r\n//those VMs if they exist.\r\n//used to diagnose missing Agents, License type etc\r\n//Complex Query which operates across 3 resource types\r\n//\r\n//Resource Types used\r\n//1) resources where type == \"microsoft.hybridcompute/machines\" - All VMs\r\n//2) resourcecontainers where type == 'microsoft.resources/subscriptions' - Owning subscription for VMs\r\n//3) resources where type == 'microsoft.azurearcdata/sqlserverinstances' - collection of SQL Server instances on VM if they exist (outer join used)\r\n//4) resources where type == \"microsoft.hybridcompute/machines/extensions\" and properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\") - Extension holding SQLServer Agent for Server if it exists (again, outer join used)\r\n//\r\n// 1) gives us the underlying VM\r\n// 2) gives us the owning subscription\r\n// 3) Selects all Instances\r\n// 4) gets the license status (paid etc) & ESU Status\r\n//\r\n// 1) VMs with SQL\r\nresources \r\n//Arc registered VMs (Windows & linux)\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n| extend mssqlDiscovered = properties.mssqlDiscovered\r\n//Machine Characteristics\r\n| extend coreCount = toint(properties.detectedProperties.coreCount)\r\n| extend logicalCoreCount = toint(properties.detectedProperties.logicalcoreCount)\r\n| extend processerNames = tostring(properties.detectedProperties.processorNames)\r\n| extend totalPhysicalMemory =  toint(properties.detectedProperties.totalPhysicalMemoryInGigabytes)\r\n//Machine ID & Name\r\n| extend machineId = tolower(tostring(id))\r\n| extend machineName = name\r\n//Operating System\r\n| extend osSku = tostring(properties.osSku)\r\n| extend osName = tostring(properties.osName)\r\n| extend osVersion = tostring(properties.osVersion)\r\n//Windows or Linux\r\n| extend osType = tostring(properties.osType)\r\n//OS Edition (Datacenter or Standard) \r\n| extend osEdition = iff(osType == \"linux\", \"N/A\",iff(properties.osSku contains \"Datacenter\", \"Datacenter\", \"Standard\"))\r\n//ESU Assignment (esu eligibility - OS is ESU capable, License Assignment State - OS does/does not have ESU assigned\r\n| extend osESU = properties.licenseProfile.esuProfile.licenseAssignmentState\r\n| extend osEsuEligibility = tostring(properties.licenseProfile.esuProfile.esuEligibility)\r\n//Type of ESU assigned (Standard/Data center)\r\n| extend osESUServerType = tostring(properties.licenseProfile.esuProfile.serverType)\r\n//\r\n// 2) Subscription Name\r\n| join kind=inner (\r\n    resourcecontainers\r\n    | where type == 'microsoft.resources/subscriptions'\r\n    | project subscriptionId, subscriptionName = name)\r\n    on subscriptionId\r\n//\r\n// 3) Does the VM host at least 1 instance of SQL Server Standard or Enterprise\r\n| join kind = leftouter  (\r\n    resources\r\n    | where type == 'microsoft.azurearcdata/sqlserverinstances'\r\n    //SQL Server Version & Edition\r\n    | extend sqlVersion = tostring(properties.version)\r\n    | extend sqlEdition = tostring(properties.edition)\r\n    | extend sqlInstance = name\r\n    | extend provisioningState = tostring(properties.provisioningState)\r\n    | extend status = tostring(properties.status)\r\n    | extend sqlID = ['id']\r\n    //needed for join - container is \"owning\" VM hosting SQL\r\n    | extend containerId = tolower(tostring (properties.containerResourceId))\r\n    | where isnotempty(containerId)\r\n    | extend sqlSku = sku\r\n    | extend sqlLocation = location\r\n    | extend sqlTags = ['tags']\r\n    | extend sqlProperties = properties\r\n    | project-away subscriptionId, resourceGroup, ['type'], tenantId, name, ['id'], kind, location, ['tags'], properties\r\n)\r\non $left.machineId == $right.containerId\r\n//\r\n//4) Join for SQL Server Agent to retrieve Server Level License Type\r\n| join kind=leftouter  (\r\n    resources\r\n    //Machine extensions resource type\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    //Machine has SQL Server extension\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    | extend sqlAgentInstalled = \"Yes\"\r\n    | extend licenseType = tostring(properties.settings.LicenseType)\r\n    | extend agentName = name\r\n    //extract Machine name from ID\r\n    | extend machineIdHasSQLServerExtensionInstalled = tolower(iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n    | extend sqlEnableExtendedSecurityUpdates = properties.settings.enableExtendedSecurityUpdates\r\n    | extend  sqlESU = iff(notnull(sqlEnableExtendedSecurityUpdates), iff(sqlEnableExtendedSecurityUpdates == true,\"enabled\",\"disabled\"), \"N/A\")\r\n    | project-away name, resourceGroup, subscriptionId\r\n    )\r\non $left.machineId == $right.machineIdHasSQLServerExtensionInstalled\r\n| join kind=leftouter  (\r\n\t//Provisioned Servers\r\n\t//It is possible for a Server to be known to Arc but not fully provisioned - this query checks that state\r\n\tresources\r\n\t//Machine extensions resource type\r\n\t| where type == \"microsoft.hybridcompute/machines/extensions\"\r\n\t//Search for Approriate Agent\r\n\t| where properties.['type'] in (\"AzureMonitorWindowsAgent\", \"AzureMonitorLinuxAgent\")\r\n\t//extract Machine name from ID\r\n\t| extend machineIdHasAgentExtensionInstalled = tolower(iff(id contains \"/extensions/AzureMonitorWindowsAgent\" or id contains \"/extensions/AzureMonitorLinuxAgent\", substring(id, 0, indexof(id, \"/extensions/\")), \"\"))\r\n\t| extend provisioningState = properties.provisioningState\r\n\t| extend status = properties.instanceView.status.message\r\n\t)\r\non $left.machineId == $right.machineIdHasAgentExtensionInstalled",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {
+                "content": {}
+              },
+              "partHeader": {
+                "title": "SQL Server Instances - Detail",
+                "subtitle": "All SQL Serve instances on Arc enabled servers"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        }
+      }
+    }
+  },
+  "name": "Arc - Deployment Progress",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "Arc - Deployment Progress"
+  },
+  "apiVersion": "2022-12-01-preview"
+}

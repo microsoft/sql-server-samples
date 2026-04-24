@@ -65,7 +65,7 @@ select COMPRESS(
         {
             await sqlQuery.Sql(
 @"select    ProductID, Product.Name, Color, Price, Quantity,
-            Company.Name as Company, Company.Address, Company.Email, Company.Phone 
+            Company.Name as Company, Company.Address, Company.Email, Company.Phone
 from Product
     join Company on Product.CompanyID = Company.CompanyID
 where ProductID = @id

@@ -295,9 +295,9 @@ class HtmlBuilder
 
         foreach ($list as $key => $value) {
             $value = (array) $value;
-            
+
             $html .= "<dt>$key</dt>";
-            
+
             foreach ($value as $v_key => $v_value) {
                 $html .= "<dd>$v_value</dd>";
             }

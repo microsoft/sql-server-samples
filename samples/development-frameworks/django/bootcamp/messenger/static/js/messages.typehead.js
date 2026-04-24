@@ -28,5 +28,5 @@ $(function () {
         source: substringMatcher(data)
       });
     }
-  });  
+  });
 });

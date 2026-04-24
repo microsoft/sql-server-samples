@@ -3,13 +3,13 @@ GO
 DROP FUNCTION IF EXISTS dbo.pUserCanAccessCompanyData
 GO
 
-CREATE FUNCTION 
+CREATE FUNCTION
 dbo.pUserCanAccessCompanyData(@CompanyID int)
 	RETURNS TABLE
 	WITH SCHEMABINDING
 AS RETURN (
 	SELECT 1 as canAccess WHERE
-	 
+	
 	SESSION_CONTEXT(N'CompanyID') = '-1'
 	OR CAST(SESSION_CONTEXT(N'CompanyID') as int) = @CompanyID)
 

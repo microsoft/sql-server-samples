@@ -8,4 +8,4 @@ poolsize: 1
 inputs:
   x: integer
 output:
-  result: data.frame 
+  result: data.frame

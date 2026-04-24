@@ -1,15 +1,15 @@
-﻿//----------------------------------------------------------------------------------  
-// Copyright (c) Microsoft Corporation. All rights reserved.  
-//  
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,   
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES   
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-//----------------------------------------------------------------------------------  
-// The example companies, organizations, products, domain names,  
-// e-mail addresses, logos, people, places, and events depicted  
-// herein are fictitious.  No association with any real company,  
-// organization, product, domain name, email address, logo, person,  
-// places, or events is intended or should be inferred.  
+﻿//----------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+//----------------------------------------------------------------------------------
+// The example companies, organizations, products, domain names,
+// e-mail addresses, logos, people, places, and events depicted
+// herein are fictitious.  No association with any real company,
+// organization, product, domain name, email address, logo, person,
+// places, or events is intended or should be inferred.
 
 using System;
 using System.Collections.Concurrent;
@@ -101,7 +101,7 @@ namespace DataGenerator
 
         /// <summary>Creates a new instance of the SqlDataGenerator Class.</summary>
         /// <param name="sqlConnectionStrings">The sqlserver connectionString. Example: "Data Source=.;Initial Catalog=DbName;Integrated Security=True"</param>
-        /// <param name="sqlInsertSPName">The Insert Meter Measurement sqlserver stored procedure. Example: "InsertMeterMeasurement". Note that the sql stored procedure needs to accept exactly two parameters: @Batch AS (Your User Defined Table Type) and @BatchSize INT</param>        
+        /// <param name="sqlInsertSPName">The Insert Meter Measurement sqlserver stored procedure. Example: "InsertMeterMeasurement". Note that the sql stored procedure needs to accept exactly two parameters: @Batch AS (Your User Defined Table Type) and @BatchSize INT</param>
         /// <param name="sqlCommandTimeout">The sqlserver command timeout. Example: 600</param>
         /// <param name="numberOfMeters">The total number of Meters. Example: 1000</param>
         /// <param name="numbeOfDataLoadTasks">The number of concurrent tasks. Example: 5. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</param>
@@ -151,7 +151,7 @@ namespace DataGenerator
         }
 
         /// <summary>Creates and Starts all the tasks asynchronously. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</summary>
-        /// <returns>Task</returns>        
+        /// <returns>Task</returns>
         public async Task RunAsync()
         {
             if (this.running)
@@ -197,7 +197,7 @@ namespace DataGenerator
             using (SqlConnection connection = new SqlConnection(sqlConnectionString))
             {
                 await connection.OpenAsync(token);
-                
+
                 using (SqlCommand command = new SqlCommand())
                 {
                     command.Connection = connection;
@@ -233,7 +233,7 @@ namespace DataGenerator
                 }
             }
         }
-        
+
         /// <summary>CreateMeterMeasurementBatch(int taskId)</summary>
         /// <returns>DataTable</returns>
         /// <param name="taskId">Task Id</param>
@@ -269,7 +269,7 @@ namespace DataGenerator
         {
             // TODO: Lock
             if (numberOfTasksToStop >= this.RunningTasks) { this.running = false; }
-            
+
             numberOfTasksToStop = Math.Min(numberOfTasksToStop, this.RunningTasks);
             List<CancellableTask> cancellableTasksToKill = this.tasks.Take(numberOfTasksToStop).Select(kv => kv.Value).ToList();
 
@@ -290,7 +290,7 @@ namespace DataGenerator
             int offLoadTasksPerSqlConnection = numberOfOffLoadTasks / this.numberOfSqlConnections;
 
             string con;
-            
+
             for (int j = 0; j < this.numberOfSqlConnections; j++)
             {
                 con = connectionStrings[j]; // set connection string

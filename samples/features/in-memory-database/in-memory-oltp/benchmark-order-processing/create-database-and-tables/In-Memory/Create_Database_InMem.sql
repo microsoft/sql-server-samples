@@ -2,7 +2,7 @@
 -- With SQL Server, make sure SQL Server authentication is enabled, and the sa account is active
 
 --  create main database files; for large-scale workloads, add additional containers in the InMem_fg filegroup
-IF SERVERPROPERTY('EngineEdition') != 5 
+IF SERVERPROPERTY('EngineEdition') != 5
 BEGIN
 	DECLARE @sql nvarchar(max) = N'
 	CREATE DATABASE InMemDB

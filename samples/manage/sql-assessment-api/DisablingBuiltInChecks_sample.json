@@ -1,18 +1,18 @@
-{ 
+{
 	"schemaVersion": "1.0",
 	"version": "0.2",
-	"name": "Custom Overrides", 
-	"rules":[ 
+	"name": "Custom Overrides",
+	"rules":[
 		{
-			"id": "LatestCU", 
+			"id": "LatestCU",
 			"itemType": "override",
-			"enabled": false 
-		}, 
-		{ 
-			"id": ["TraceFlag"], 
+			"enabled": false
+		},
+		{
+			"id": ["TraceFlag"],
 			"itemType": "override",
-			"enabled": false 
-		}, 
+			"enabled": false
+		},
 		{
 			"id": ["DefaultRuleset"],
 			"itemType": "override",
@@ -22,5 +22,5 @@
 			},
 			"enabled": false
 		}
-	] 
+	]
 }

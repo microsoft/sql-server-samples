@@ -34,8 +34,8 @@ WITH
 GO
 
 -- Join external table with local tables
--- 
-SELECT  
+--
+SELECT
     wcs_user_sk,
     SUM( CASE WHEN i_category = 'Books' THEN 1 ELSE 0 END) AS book_category_clicks,
     SUM( CASE WHEN i_category_id = 1 THEN 1 ELSE 0 END) AS [Home & Kitchen],

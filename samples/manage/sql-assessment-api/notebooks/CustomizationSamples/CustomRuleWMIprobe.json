@@ -1,0 +1,59 @@
+﻿{
+  "schemaVersion": "1.0",
+  "name": "WMI check",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "Win32Volume",
+      "itemType": "definition",
+      "target": {
+        "type": "Server",
+        "platform": "Windows",
+        "engineEdition": "OnPremises",
+        "version": "[11.0,)"
+      },
+      "displayName": "Block size",
+      "description": "This is an example of using WMI query.",
+      "message": "Format volume @{Output.Name} to recommended block size of 64KB. Current size is @{Output.BlockSize} bytes",
+      "level": "Warning",
+      "BlockSize": 65536,
+      "condition": {
+        "or": [
+          {
+            "not": "@Output.Name"
+          },
+          {
+            "eq": [
+              "@Output.BlockSize",
+              "@BlockSize"
+            ]
+          }
+        ]
+      },
+      "probes": [
+        "Win32Volumes"
+      ]
+    },
+    {
+            "id": ["DefaultRuleset"],
+            "itemType": "override",
+            "enabled": false
+    }
+  ],
+  "probes": {
+    "Win32Volumes": [
+      {
+        "type": "WMI",
+        "target": {
+          "type": "Server",
+          "platform": "Windows",
+          "engineEdition": "OnPremises",
+          "version": "[11.0,)"
+        },
+        "implementation": {
+          "query": "SELECT Name, BlockSize FROM Win32_Volume WHERE Capacity <> NULL"
+        }
+      }
+    ]
+  }
+}

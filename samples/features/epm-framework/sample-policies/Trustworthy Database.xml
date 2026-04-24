@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Copyright (c) Microsoft Corporation.-->
+<!--Licensed under the MIT License-->
+<model xmlns="smlif.xsd">
+  <_locDefinition xmlns="urn:locstudio">
+    <_locDefault _loc="locNone" />
+    <_locTag _loc="locData">DMF:Name</_locTag>
+    <_locTag _loc="locData">DMF:Description</_locTag>
+    <_locTag _loc="locData">DMF:Condition</_locTag>
+    <_locTag _loc="locData">DMF:ObjectSet</_locTag>
+    <_locTag _loc="locData">DMF:RootCondition</_locTag>
+    <_locTag _loc="locData">DMF:PolicyCategory</_locTag>
+    <_locTag _loc="locData">DMF:HelpText</_locTag>
+  </_locDefinition>
+  <identity>
+    <name>urn:uuid:96fe1236-abf6-4a57-b54d-e9baab394fd1</name>
+    <baseURI>http://documentcollection/</baseURI>
+  </identity>
+  <xs:bufferSchema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <definitions xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+      <document>
+        <docinfo>
+          <aliases>
+            <alias>/system/schema/DMF</alias>
+          </aliases>
+          <sfc:version DomainVersion="3" />
+        </docinfo>
+        <data>
+          <xs:schema targetNamespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+            <xs:element name="Policy">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ObjectSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Condition">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="PolicyCategory">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSet">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="TargetSetLevel">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:any namespace="http://schemas.microsoft.com/sqlserver/DMF/2007/08" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <DMF:bufferData xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08">
+              <instances xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08">
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Policy/Trustworthy Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Policy xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:PolicyCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Database Owner Not sysadmin</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyCondition>
+                      <DMF:PolicyObjectSet>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyObjectSet>
+                      <DMF:PolicyRootCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/SQL Server 2005 or a Later Version</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyRootCondition>
+                      <DMF:PolicyPolicyCategory>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Security</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:PolicyPolicyCategory>
+                      <DMF:Name type="string">Trustworthy Database</DMF:Name>
+                      <DMF:Description type="string">Checks whether the dbo or a db_owner is assigned to a fixed server sysadmin role for databases where the trustworthy bit is set to on. Database users with the appropriate level of permissions can elevate privileges to the sysadmin role. In this role, the user can create and execute unsafe assemblies that compromise the system. The best practice is to turn off the trustworthy bit or change the dbo and db_owner to a fixed server role other than sysadmin.</DMF:Description>
+                      <DMF:Condition type="string">Database Owner Not sysadmin</DMF:Condition>
+                      <DMF:ObjectSet type="string">Trustworthy Database_ObjectSet</DMF:ObjectSet>
+                      <DMF:RootCondition type="string">SQL Server 2005 or a Later Version</DMF:RootCondition>
+                      <DMF:PolicyCategory type="string">Microsoft Best Practices: Security</DMF:PolicyCategory>
+                      <DMF:Enabled type="boolean">false</DMF:Enabled>
+                      <DMF:AutomatedPolicyEvaluationMode type="AutomatedPolicyEvaluationMode">None</DMF:AutomatedPolicyEvaluationMode>
+                      <DMF:HelpText type="string" />
+                      <DMF:HelpLink type="string">http://go.microsoft.com/fwlink/?LinkId=116327</DMF:HelpLink>
+                      <DMF:ActiveEndDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveEndDate>
+                      <DMF:ActiveStartDate type="dateTime">0001-01-01T00:00:00</DMF:ActiveStartDate>
+                    </DMF:Policy>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:ObjectSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:TargetSets>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:TargetSets>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Trustworthy Database_ObjectSet</DMF:Name>
+                      <DMF:Facet type="string">IDatabaseSecurityFacet</DMF:Facet>
+                    </DMF:ObjectSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Database Owner Not sysadmin</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">
+                        &lt;Operator&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;Attribute&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;Name&gt;IsOwnerSysadmin&lt;/Name&gt;&lt;?char 13?&gt;
+                        &lt;/Attribute&gt;&lt;?char 13?&gt;
+                        &lt;Function&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;FunctionType&gt;False&lt;/FunctionType&gt;&lt;?char 13?&gt;
+                        &lt;ReturnType&gt;Bool&lt;/ReturnType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;0&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;/Function&gt;&lt;?char 13?&gt;
+                        &lt;/Operator&gt;
+                      </DMF:Expression>
+                      <DMF:Name type="string">Database Owner Not sysadmin</DMF:Name>
+                      <DMF:Description type="string">Confirms that no login in the db_owner role has sysadmin privileges.</DMF:Description>
+                      <DMF:Facet type="string">IDatabaseSecurityFacet</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/SQL Server 2005 or a Later Version</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">
+                        &lt;Operator&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;OpType&gt;GE&lt;/OpType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;Attribute&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;Name&gt;VersionMajor&lt;/Name&gt;&lt;?char 13?&gt;
+                        &lt;/Attribute&gt;&lt;?char 13?&gt;
+                        &lt;Constant&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Numeric&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;ObjType&gt;System.Int32&lt;/ObjType&gt;&lt;?char 13?&gt;
+                        &lt;Value&gt;9&lt;/Value&gt;&lt;?char 13?&gt;
+                        &lt;/Constant&gt;&lt;?char 13?&gt;
+                        &lt;/Operator&gt;
+                      </DMF:Expression>
+                      <DMF:Name type="string">SQL Server 2005 or a Later Version</DMF:Name>
+                      <DMF:Description type="string">Confirms that the version of SQL Server is 2005 or a later version.</DMF:Description>
+                      <DMF:Facet type="string">Server</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/PolicyCategory/Microsoft Best Practices_b Security</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:PolicyCategory xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Name type="string">Microsoft Best Practices: Security</DMF:Name>
+                    </DMF:PolicyCategory>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet/TargetSet/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSet xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Levels>
+                        <sfc:Collection>
+                          <sfc:Reference sml:ref="true">
+                            <sml:Uri>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</sml:Uri>
+                          </sfc:Reference>
+                        </sfc:Collection>
+                      </DMF:Levels>
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:Enabled type="boolean">true</DMF:Enabled>
+                    </DMF:TargetSet>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/Condition/Trustworthy</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:Condition xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:Expression type="string">
+                        &lt;Operator&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;OpType&gt;EQ&lt;/OpType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;2&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;Attribute&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;Name&gt;Trustworthy&lt;/Name&gt;&lt;?char 13?&gt;
+                        &lt;/Attribute&gt;&lt;?char 13?&gt;
+                        &lt;Function&gt;&lt;?char 13?&gt;
+                        &lt;TypeClass&gt;Bool&lt;/TypeClass&gt;&lt;?char 13?&gt;
+                        &lt;FunctionType&gt;True&lt;/FunctionType&gt;&lt;?char 13?&gt;
+                        &lt;ReturnType&gt;Bool&lt;/ReturnType&gt;&lt;?char 13?&gt;
+                        &lt;Count&gt;0&lt;/Count&gt;&lt;?char 13?&gt;
+                        &lt;/Function&gt;&lt;?char 13?&gt;
+                        &lt;/Operator&gt;
+                      </DMF:Expression>
+                      <DMF:Name type="string">Trustworthy</DMF:Name>
+                      <DMF:Description type="string">Confirms that the database Trustworthy property is equal to true.</DMF:Description>
+                      <DMF:Facet type="string">IDatabaseOptions</DMF:Facet>
+                    </DMF:Condition>
+                  </data>
+                </document>
+                <document>
+                  <docinfo>
+                    <aliases>
+                      <alias>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet/TargetSet/Server_/Database/TargetSetLevel/Server_/Database</alias>
+                    </aliases>
+                    <sfc:version DomainVersion="3" />
+                  </docinfo>
+                  <data>
+                    <DMF:TargetSetLevel xmlns:DMF="http://schemas.microsoft.com/sqlserver/DMF/2007/08" xmlns:sfc="http://schemas.microsoft.com/sqlserver/sfc/serialization/2007/08" xmlns:sml="sml.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                      <DMF:Parent>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/ObjectSet/Trustworthy Database__ObjectSet/TargetSet/Server_/Database</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:Parent>
+                      <DMF:TargetSetLevelCondition>
+                        <sfc:Reference sml:ref="true">
+                          <sml:Uri>/PolicyStore/Condition/Trustworthy</sml:Uri>
+                        </sfc:Reference>
+                      </DMF:TargetSetLevelCondition>
+                      <DMF:TargetTypeSkeleton type="string">Server/Database</DMF:TargetTypeSkeleton>
+                      <DMF:LevelName type="string">Database</DMF:LevelName>
+                      <DMF:Condition type="string">Trustworthy</DMF:Condition>
+                    </DMF:TargetSetLevel>
+                  </data>
+                </document>
+              </instances>
+            </DMF:bufferData>
+          </xs:schema>
+        </data>
+      </document>
+    </definitions>
+  </xs:bufferSchema>
+</model>

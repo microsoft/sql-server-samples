@@ -13,7 +13,7 @@ AS
 GO
 
 -- Bind the rule to a specific column in a table
-EXEC sp_bindrule 
+EXEC sp_bindrule
 	'<schema_name,sysname,dbo>.<rule_name, sysname,positive_value>',
 	'<table_schema_name,,Sales>.<table_name,,SalesOrderDetail>.<column_name,,OrderQty>'
 GO

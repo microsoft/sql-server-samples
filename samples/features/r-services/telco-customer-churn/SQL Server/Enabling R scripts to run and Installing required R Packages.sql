@@ -14,27 +14,27 @@ RECONFIGURE;
 GO
 
 --InstallPackage using sp_execute_external_script
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'install.packages("ggplot")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));
 
 -- using Download.file command
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'download.file("https://cran.r-project.org/bin/windows/contrib/3.4/ggplot2_2.1.0.zip","ggplot")
                  install.packages("ggplot", repos = NULL, type = "source")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));
 
 --InstallPackage using sp_execute_external_script
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'install.packages("gplots")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));
 
 -- using Download.file command
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'download.file("https://cran.r-project.org/bin/windows/contrib/3.4/gplots_3.0.1.zip","gplots")
                  install.packages("gplots", repos = NULL, type = "source")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));
@@ -42,28 +42,28 @@ WITH RESULT SETS (( ResultSet VARCHAR(50)));
 
 
 --InstallPackage using sp_execute_external_script
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'install.packages("xgboost")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));
 
 -- using Download.file command
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'download.file("https://cran.r-project.org/bin/windows/contrib/3.4/xgboost_0.4-4.zip","xgboost")
                  install.packages("xgboost", repos = NULL, type = "source")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));
 
 
 --InstallPackage using sp_execute_external_script
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'install.packages("qcc")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));
 
 -- using Download.file command
-EXECUTE sp_execute_external_script    
-       @language = N'R'    
+EXECUTE sp_execute_external_script
+       @language = N'R'
       ,@script=N'download.file("https://cran.r-project.org/bin/windows/contrib/3.4/qcc_2.6.zip","qcc")
                  install.packages("qcc", repos = NULL, type = "source")'
 WITH RESULT SETS (( ResultSet VARCHAR(50)));

@@ -1,15 +1,15 @@
-﻿//---------------------------------------------------------------------------------- 
-// Copyright (c) Microsoft Corporation. All rights reserved. 
-// 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,  
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES  
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE. 
-//---------------------------------------------------------------------------------- 
-// The example companies, organizations, products, domain names, 
-// e-mail addresses, logos, people, places, and events depicted 
-// herein are fictitious.  No association with any real company, 
-// organization, product, domain name, email address, logo, person, 
-// places, or events is intended or should be inferred. 
+﻿//----------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+//----------------------------------------------------------------------------------
+// The example companies, organizations, products, domain names,
+// e-mail addresses, logos, people, places, and events depicted
+// herein are fictitious.  No association with any real company,
+// organization, product, domain name, email address, logo, person,
+// places, or events is intended or should be inferred.
 
 using System;
 using System.Collections.Generic;
@@ -22,13 +22,13 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Windows.Forms.Integration;
 
-/// <summary> 
-///  
-/// Documentation References:  
+/// <summary>
+///
+/// Documentation References:
 /// In-Memory OLTP (In-Memory Optimization): https://msdn.microsoft.com/en-us/library/dn133186.aspx
 /// OLTP and database management: https://www.microsoft.com/en-us/server-cloud/solutions/oltp-database-management.aspx
-/// </summary> 
-/// 
+/// </summary>
+///
 
 namespace DemoWorkload
 {
@@ -37,7 +37,7 @@ namespace DemoWorkload
         delegate void SetTextCallback(string text);
 
         public Object ErrorLock = new Object();
-        public Object StopLock = new Object();       
+        public Object StopLock = new Object();
 
         List<Thread> RunningThreads = new List<Thread>();
         Thread MonitorThread;
@@ -55,13 +55,13 @@ namespace DemoWorkload
             InitializeComponent();
             uiControls.speedDial.MaxValue = Program.MAX_TPS;
         }
-        
+
         delegate void SetInt64Callback(Int64 value);
         delegate void SetIntCallback(int value);
 
-        /// <summary> 
+        /// <summary>
         /// Adds a line of text into the message box
-        /// </summary> 
+        /// </summary>
         private void AddText(string text)
         {
             // InvokeRequired required compares the thread ID of the
@@ -78,31 +78,31 @@ namespace DemoWorkload
             }
 
         }
-        /// <summary> 
+        /// <summary>
         /// Updates the thread count display
-        /// </summary> 
+        /// </summary>
         private void UpdateCount(string TC)
         {
             try { this.lblThreads.Text = TC.ToString(); }
             catch (Exception ex) { ShowThreadExceptionDialog("UpdateCount", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Updates the elapsed time display
-        /// </summary> 
+        /// </summary>
         private void UpdateElapsed(string Elapsed)
         {
-            this.lblTime.Text = Elapsed.ToString(); 
+            this.lblTime.Text = Elapsed.ToString();
         }
 
-        /// <summary> 
-        /// Updates the CPU% bar in the chart 
+        /// <summary>
+        /// Updates the CPU% bar in the chart
         /// Note that this proc does NOT cause the chart to refresh.
         /// that is done in UpdateTPS(), which should be called after this proc.
-        /// </summary> 
+        /// </summary>
         private void UpdateCPUChart(int CPU)
         {
-            try { 
+            try {
                 if (this.statusStrip1.InvokeRequired)
                 {
                     SetIntCallback d = new SetIntCallback(UpdateCPUChart);
@@ -119,12 +119,12 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("UpdateCPUChart", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Updates Latches in the Chart
-        /// </summary> 
+        /// </summary>
         private void UpdateLatchChart(Int64 Latches)
         {
-            try { 
+            try {
                 if (this.statusStrip1.InvokeRequired)
                 {
                     SetInt64Callback d = new SetInt64Callback(UpdateLatchChart);
@@ -141,12 +141,12 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("UpdateLatchChart", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Updates the TPS bar in the chart, and causes the whole chart to be re-drawn with the new data.
-        /// </summary> 
+        /// </summary>
         private void UpdateTPSChart(Int64 TPS)
         {
-            try { 
+            try {
                 if (this.statusStrip1.InvokeRequired)
                 {
                     SetInt64Callback d = new SetInt64Callback(UpdateTPSChart);
@@ -157,9 +157,9 @@ namespace DemoWorkload
                     // Updating Speedometer
                     if (TPS >= 0)
                     {
-                        double normalizedTPS = (double)TPS / 1000;                  
+                        double normalizedTPS = (double)TPS / 1000;
                         uiControls.speedDial.CurrentValue = normalizedTPS;
-                        uiControls.speedDial.DialText = normalizedTPS.ToString("#.##");                    
+                        uiControls.speedDial.DialText = normalizedTPS.ToString("#.##");
 
                         // Updating TPS chart
                         TPSChartTime++;
@@ -183,9 +183,9 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("UpdateTPSChart", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Updates Results
-        /// </summary> 
+        /// </summary>
         private void UpdateResults(string Results)
         {
             try
@@ -211,9 +211,9 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("UpdateResults", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Executes Write/Read Commands
-        /// </summary> 
+        /// </summary>
         void OnRunClick(object sender, EventArgs e)
         {
             try
@@ -246,7 +246,7 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("OnRunClick", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Executes Transactions on the target server
         /// </summary>
         void ThreadWorker(object tp)
@@ -307,7 +307,7 @@ namespace DemoWorkload
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Thread Monitor
         /// </summary>
         void ThreadMonitor()
@@ -455,7 +455,7 @@ namespace DemoWorkload
             UpdateTPSChart(TPS);
         }
 
-        /// <summary> 
+        /// <summary>
         /// Stop Button
         /// </summary>
         private void btnStop_Click(object sender, EventArgs e)
@@ -465,7 +465,7 @@ namespace DemoWorkload
                 Stopped = true;
             }
         }
-        /// <summary> 
+        /// <summary>
         /// Application Exit
         /// </summary>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -473,7 +473,7 @@ namespace DemoWorkload
             Application.Exit();
         }
 
-        /// <summary> 
+        /// <summary>
         /// Configuratino Settings
         /// </summary>
         private void configurationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -487,7 +487,7 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("configurationToolStripMenuItem_Click", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Show Diagnostics
         /// </summary>
         private void btnToggle_Click(object sender, EventArgs e)
@@ -509,7 +509,7 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("btnToggle_Click", ex); }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Frm Main Load
         /// </summary>
         private void FrmMain_Load(object sender, EventArgs e)
@@ -529,7 +529,7 @@ namespace DemoWorkload
             catch (Exception ex) { ShowThreadExceptionDialog("FrmMain_Load", ex);}
         }
 
-        /// <summary> 
+        /// <summary>
         /// Frm Main Closing
         /// </summary>
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -545,7 +545,7 @@ namespace DemoWorkload
             }
         }
 
-        /// <summary> 
+        /// <summary>
         /// Creates an error message and displays it.
         /// </summary>
         private static DialogResult ShowThreadExceptionDialog(string title, Exception e)
@@ -558,7 +558,7 @@ namespace DemoWorkload
 
     }
 
-    /// <summary> 
+    /// <summary>
     /// ThreadParams Class
     /// </summary>
     class ThreadParams

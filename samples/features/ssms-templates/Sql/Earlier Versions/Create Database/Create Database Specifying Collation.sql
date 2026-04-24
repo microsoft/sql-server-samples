@@ -1,8 +1,8 @@
 -- =============================================
 -- Create database specifying collation
 -- =============================================
-IF EXISTS (SELECT * 
-	   FROM   master..sysdatabases 
+IF EXISTS (SELECT *
+	   FROM   master..sysdatabases
 	   WHERE  name = N'<database_name, sysname, test_db>')
 	DROP DATABASE <database_name, sysname, test_db>
 GO
@@ -14,7 +14,7 @@ GO
 -- ==========================================================
 -- sample query to retrieve all types of collations available
 -- ==========================================================
--- SELECT * 
+-- SELECT *
 -- FROM   ::fn_helpcollations()
 -- GO
 

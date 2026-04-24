@@ -23,9 +23,9 @@ logs as (
 	FROM OPENROWSET(BULK N'c:\JSON\logANSI.txt',
 					FORMATFILE = 'c:\\JSON\ldjfmt.txt',
 					CODEPAGE = '65001') as log
-	CROSS APPLY 
+	CROSS APPLY
 		OPENJSON (log.log_entry)
-			WITH ( Page varchar(30), [User] varchar(20),Time datetime2, Origin varchar(20)) 
+			WITH ( Page varchar(30), [User] varchar(20),Time datetime2, Origin varchar(20))
 
 )
 select Page, [User], Time, Origin, PrevPrice, Price,  NextPrice

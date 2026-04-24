@@ -7,7 +7,7 @@ yaml: |
     ex2: "foo # bar" # comment
     ex3: 'foo # bar' # comment
     ex4: foo # comment
-    ex5: foo	#	comment with tab before  
+    ex5: foo	#	comment with tab before
     ex6: foo#foo # comment here
     ex7: foo 	# ignore me # and me
 php: |

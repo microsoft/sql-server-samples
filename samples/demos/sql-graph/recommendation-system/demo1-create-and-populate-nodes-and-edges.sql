@@ -41,7 +41,7 @@ GO
 
 
 /*
-SELECT FullName, CustomFields, * 
+SELECT FullName, CustomFields, *
 FROM [Application].[People];
 GO
 */
@@ -102,7 +102,7 @@ GO
 -- Insert friends who speak the same language
 -- (one direction)
 -- If a person speaks Finnish, I take for granted that
--- their friends speak Finnish 
+-- their friends speak Finnish
 WITH Friends_Same_Language AS
 (
   SELECT

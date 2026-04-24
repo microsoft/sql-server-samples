@@ -1,4 +1,4 @@
-/* 
+/*
 
 SELECT * FROM sys.dm_db_resource_stats
 SELECT * FROM sys.dm_exec_requests
@@ -8,9 +8,9 @@ SELECT COUNT(*) FROM [dbo].[MeterMeasurementHistory] with (nolock)
 SELECT COUNT(*) FROM [dbo].[MeterMeasurement]
 
 */
-DROP PROCEDURE IF EXISTS [dbo].[InsertMeterMeasurement]; 
+DROP PROCEDURE IF EXISTS [dbo].[InsertMeterMeasurement];
 DROP PROCEDURE IF EXISTS [dbo].[InsertMeterMeasurementHistory];
-DROP TYPE IF EXISTS [dbo].[udtMeterMeasurement]; 
+DROP TYPE IF EXISTS [dbo].[udtMeterMeasurement];
 DROP TABLE IF EXISTS [dbo].[MeterMeasurement];
 DROP TABLE IF EXISTS [dbo].[MeterMeasurementHistory];
 DROP VIEW IF EXISTS [dbo].[vwMeterMeasurement]
@@ -50,7 +50,7 @@ CREATE TYPE [dbo].[udtMeterMeasurement] AS TABLE(
 
 ) WITH ( MEMORY_OPTIMIZED = ON );
 GO
-CREATE PROCEDURE [dbo].[InsertMeterMeasurement] 
+CREATE PROCEDURE [dbo].[InsertMeterMeasurement]
 	@Batch AS dbo.udtMeterMeasurement READONLY,
 	@BatchSize INT
 
@@ -63,12 +63,12 @@ BEGIN ATOMIC WITH (TRANSACTION ISOLATION LEVEL=SNAPSHOT, LANGUAGE=N'English')
 	
 END;
 GO
-CREATE PROCEDURE [dbo].[InsertMeterMeasurementHistory] 
+CREATE PROCEDURE [dbo].[InsertMeterMeasurementHistory]
 	@MeterID INT
 AS
-BEGIN 
+BEGIN
 	BEGIN TRAN		
-		INSERT INTO dbo.MeterMeasurementHistory (MeterID, MeasurementInkWh, PostalCode, MeasurementDate) 
+		INSERT INTO dbo.MeterMeasurementHistory (MeterID, MeasurementInkWh, PostalCode, MeasurementDate)
 		SELECT MeterID, MeasurementInkWh, PostalCode, MeasurementDate FROM dbo.MeterMeasurement WITH (SNAPSHOT)
 		WHERE MeterID = @MeterID
 
@@ -80,11 +80,11 @@ CREATE VIEW [dbo].[vwMeterMeasurement]
 AS
 SELECT	PostalCode,
 		DATETIMEFROMPARTS(
-			YEAR(MeasurementDate), 
-			MONTH(MeasurementDate), 
-			DAY(MeasurementDate), 
-			DATEPART(HOUR,MeasurementDate), 
-			DATEPART(MINUTE,MeasurementDate), 
+			YEAR(MeasurementDate),
+			MONTH(MeasurementDate),
+			DAY(MeasurementDate),
+			DATEPART(HOUR,MeasurementDate),
+			DATEPART(MINUTE,MeasurementDate),
 			DATEPART(ss,MeasurementDate)/1,
 			0
 		) AS MeasurementDate,
@@ -94,10 +94,10 @@ FROM	[dbo].[MeterMeasurement] WITH (NOLOCK)
 GROUP BY
 		PostalCode,
 		DATETIMEFROMPARTS(
-		YEAR(MeasurementDate), 
-		MONTH(MeasurementDate), 
-		DAY(MeasurementDate), 
-		DATEPART(HOUR,MeasurementDate), 
-		DATEPART(MINUTE,MeasurementDate), 
+		YEAR(MeasurementDate),
+		MONTH(MeasurementDate),
+		DAY(MeasurementDate),
+		DATEPART(HOUR,MeasurementDate),
+		DATEPART(MINUTE,MeasurementDate),
 		DATEPART(ss,MeasurementDate)/1,0);
 	GO

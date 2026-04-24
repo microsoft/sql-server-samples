@@ -32,7 +32,7 @@
                     pointRadius: 6,
                     // label with \n linebreaks
                     label : "${name}",
-                    
+
                     fontSize: "12px",
                     fontFamily: "Courier New, monospace",
                     fontWeight: "bold",
@@ -54,31 +54,31 @@
             $(function() {
                 statesMap = new OpenLayers.Map('statesMap');
                 townsMap = new OpenLayers.Map('townsMap');
-                
+
                 townsLayer = new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: "basic"} );
                 townsMap.addLayer(townsLayer);
                 backgroundLayer = new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'} );
                 statesMap.addLayer(backgroundLayer);
                 statesMap.setCenter(new OpenLayers.LonLat(-100, 40), 5);
-                
+
                 statesMap.addLayer(statesVector);
                 townsMap.addLayer(townsVector);
 
                 var selectState = new OpenLayers.Control.SelectFeature(statesVector, {
-                    clickout: false, 
+                    clickout: false,
                     toggle: false,
-                    multiple: false, 
+                    multiple: false,
                     hover: false,
                     onSelect: function(event) {
                         var feature = statesVector.selectedFeatures[0];
-                        var popup = new OpenLayers.Popup.FramedCloud("chicken", 
+                        var popup = new OpenLayers.Popup.FramedCloud("chicken",
                                      feature.geometry.getBounds().getCenterLonLat(),
                                      null,
                                      "<div style='font: bold 14px Optima'>" +
-                                     "Code: " + feature.attributes.code + 
+                                     "Code: " + feature.attributes.code +
                                      "<br>Population: " + feature.attributes.population +
                                      "<br>Area: " + feature.attributes.area + "</div>",
-                                     null, true, function (evt) {                                 
+                                     null, true, function (evt) {
                                                 statesMap.removePopup(popup);
                                             });
                         showTownsInState(feature.attributes.id, feature.geometry.getBounds());
@@ -93,9 +93,9 @@
                 selectState.activate();
 
                 var selectTown = new OpenLayers.Control.SelectFeature(townsVector, {
-                    clickout: false, 
+                    clickout: false,
                     toggle: false,
-                    multiple: false, 
+                    multiple: false,
                     hover: false
                 });
                 townsMap.addControl(selectTown);
@@ -111,7 +111,7 @@
             });
 
             function showTownsInState(stateCode, bounds) {
-                
+
                 $.ajax({
                     url: "/api/geo/Towns?stateId=" + stateCode,
                     dataType: 'json',
@@ -133,6 +133,6 @@
         <h1 id="title">GeoJSON Demo (OpenLayers2)</h1>
         <div id="statesMap" class="smallmap"></div>
         <h2>Larger towns in the state</h2>
-        <div id="townsMap" class="smallermap"></div>                             
+        <div id="townsMap" class="smallermap"></div>
     </body>
 </html>

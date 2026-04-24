@@ -1,5 +1,5 @@
 ﻿$(() => {
-    
+
     var $table = $("#customerTransactions").DataTable();
     var $form = $("#EditCustomerTransactionForm");
     var $dlg = $("#modalCustomerTransactionDialog");

@@ -5,7 +5,7 @@ JSON support enables you to represent complex user defined structures such as ob
 
 ![JSON fields in Blogging table](../../../../media/features/json-in-table.png)
 
-This way, you don't need to create separate tables for each complex object that you have in your classes. 
+This way, you don't need to create separate tables for each complex object that you have in your classes.
 In this example, rows from Blog table with JSON fields are mapped to the Blog class using Tags and Owner properties. Owner is object of Person type that don't have separate table.
 
 ```C#
@@ -83,10 +83,10 @@ To run this sample, you need the following prerequisites.
 2. From SQL Server Management Studio or Visual Studio/Sql Server Data Tools connect to your SQL Server 2016 or Azure SQL database and execute **setup.sql** script that will create and populate Blogs and Posts tables.
 
 3. Locate **Setup.cs** file and change connection string in the ConfigureServices method: `var connection = @"Server=.;Database=Blogging;Trusted_Connection=True;";`
-            
+
 4. Build the project - Open command prompt in project root folder (the folder that contains **project.json** file), and run following commands: **dotnet restore** to take all necessary NuGet packages, **dotnet build** to build the project. As an alternative, open the **EFGettingStarted.xproj** file from the root directory using Visual Studio 2015 Update 3 (or higher). Restore packages using right-click menu on the project in Visual Studio and by choosing Restore Packages item.
 
-5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+5. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.
 
 <a name=sample-details></a>
 
@@ -102,7 +102,7 @@ Blog fields are shown and inserted using ASP.NET MVC framework.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 [.Net Core download](https://www.microsoft.com/net/core#windows)
 [Entity Framework Core 1.0](https://docs.microsoft.com/en-us/ef/core/).
 

@@ -2,7 +2,7 @@
 -- Use PolyBase to load public data from Azure blob storage into the Wide World Importers Data Warehouse schema.
 --
 -- This script:
--- 
+--
 -- 1. Configures PolyBase for loading from a public blob storage container.
 -- 2. Loads the data into columnstore indexes
 -- 3. Generates millions of rows in the date dimension and sales fact tables
@@ -10,10 +10,10 @@
 --
 -- Before you begin:
 -- To run this tutorial, you need an Azure account that already has a SQL Data Warehouse database.
--- If you don't already have this, see 
--- http://azure.microsoft.com/documentation/articles/sql-data-warehouse-get-started-provision.md 
+-- If you don't already have this, see
+-- http://azure.microsoft.com/documentation/articles/sql-data-warehouse-get-started-provision.md
 --
--- You also need to have created a login and user that will be used for loading data. 
+-- You also need to have created a login and user that will be used for loading data.
 -- The server admin account is meant to perform management operations, and is not suited for running queries on user data.
 --
 -- For more explanation about the loading process, this article on azure.microsoft.com explains the process in more detail.
@@ -28,34 +28,34 @@ WITH
     TYPE = Hadoop,
     LOCATION = 'wasbs://wideworldimporters@sqldwholdata.blob.core.windows.net'
 );
-    
 
--- Specify the formatting characteristics and options for the external data file. 
--- This statement specifies the external data is stored as text and the values are separated by the pipe ('|') character.  
-CREATE EXTERNAL FILE FORMAT TextFileFormat 
-WITH 
-(   
+
+-- Specify the formatting characteristics and options for the external data file.
+-- This statement specifies the external data is stored as text and the values are separated by the pipe ('|') character.
+CREATE EXTERNAL FILE FORMAT TextFileFormat
+WITH
+(
     FORMAT_TYPE = DELIMITEDTEXT,
     FORMAT_OPTIONS
-    (   
+    (
         FIELD_TERMINATOR = '|',
-        USE_TYPE_DEFAULT = FALSE 
+        USE_TYPE_DEFAULT = FALSE
     )
 );
 
 -- ----------------------------------STEP 2: Create schema to organize loading data and local table data -----------------------------------------------------
 
--- Create ext schema. It provides a way to organize the external tables you are about to create for loading data 
+-- Create ext schema. It provides a way to organize the external tables you are about to create for loading data
 CREATE SCHEMA ext;
 GO
--- Create wwi schema. It organizes the standard tables that will contain the data. 
+-- Create wwi schema. It organizes the standard tables that will contain the data.
 CREATE SCHEMA wwi;
 GO
 
 -- ----------------------------------STEP 3: Create external table defintions --------------------------------------------------------------------------------
 
--- Create external tables.  
--- The table definitions are stored in SQL Data Warehouse, but the tables reference data that is stored in Azure blob storage. 
+-- Create external tables.
+-- The table definitions are stored in SQL Data Warehouse, but the tables reference data that is stored in Azure blob storage.
 CREATE EXTERNAL TABLE [ext].[dimension_City](
 	[City Key] [int] NOT NULL,
 	[WWI City ID] [int] NOT NULL,
@@ -72,12 +72,12 @@ CREATE EXTERNAL TABLE [ext].[dimension_City](
 	[Valid To] [datetime2](7) NOT NULL,
 	[Lineage Key] [int] NOT NULL
 )
-WITH (LOCATION='/v1/dimension_City/',   
-    DATA_SOURCE = WWIStorage,  
+WITH (LOCATION='/v1/dimension_City/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
-);  
+);
 CREATE EXTERNAL TABLE [ext].[dimension_Customer] (
 	[Customer Key] [int] NOT NULL,
 	[WWI Customer ID] [int] NOT NULL,
@@ -91,12 +91,12 @@ CREATE EXTERNAL TABLE [ext].[dimension_Customer] (
 	[Valid To] [datetime2](7) NOT NULL,
 	[Lineage Key] [int] NOT NULL
 )
-WITH (LOCATION='/v1/dimension_Customer/',   
-    DATA_SOURCE = WWIStorage,  
+WITH (LOCATION='/v1/dimension_Customer/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
-);  
+);
 CREATE EXTERNAL TABLE [ext].[dimension_Employee] (
     [Employee Key] [int] NOT NULL,
     [WWI Employee ID] [int] NOT NULL,
@@ -108,8 +108,8 @@ CREATE EXTERNAL TABLE [ext].[dimension_Employee] (
     [Valid To] [datetime2](7) NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION='/v1/dimension_Employee/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION='/v1/dimension_Employee/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -122,8 +122,8 @@ CREATE EXTERNAL TABLE [ext].[dimension_PaymentMethod] (
     [Valid To] [datetime2](7) NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/dimension_PaymentMethod/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/dimension_PaymentMethod/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -150,8 +150,8 @@ CREATE EXTERNAL TABLE [ext].[dimension_StockItem](
     [Valid To] [datetime2](7) NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/dimension_StockItem/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/dimension_StockItem/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -169,8 +169,8 @@ CREATE EXTERNAL TABLE [ext].[dimension_Supplier](
     [Valid To] [datetime2](7) NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/dimension_Supplier/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/dimension_Supplier/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -182,9 +182,9 @@ CREATE EXTERNAL TABLE [ext].[dimension_TransactionType](
     [Valid From] [datetime2](7) NOT NULL,
     [Valid To] [datetime2](7) NOT NULL,
     [Lineage Key] [int] NOT NULL
-)    
-WITH ( LOCATION ='/v1/dimension_TransactionType/',   
-    DATA_SOURCE = WWIStorage,  
+)
+WITH ( LOCATION ='/v1/dimension_TransactionType/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -202,8 +202,8 @@ CREATE EXTERNAL TABLE [ext].[fact_Movement] (
     [Quantity] [int] NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/fact_Movement/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/fact_Movement/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -229,8 +229,8 @@ CREATE EXTERNAL TABLE [ext].[fact_Order] (
     [Total Including Tax] [decimal](18, 2) NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/fact_Order/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/fact_Order/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -248,8 +248,8 @@ CREATE EXTERNAL TABLE [ext].[fact_Purchase] (
     [Is Order Finalized] [bit] NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/fact_Purchase/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/fact_Purchase/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -277,8 +277,8 @@ CREATE EXTERNAL TABLE [ext].[fact_Sale] (
     [Total Chiller Items] [int] NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/fact_Sale/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/fact_Sale/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -294,8 +294,8 @@ CREATE EXTERNAL TABLE [ext].[fact_StockHolding] (
     [Target Stock Level] [int] NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/fact_StockHolding/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/fact_StockHolding/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
@@ -320,21 +320,21 @@ CREATE EXTERNAL TABLE [ext].[fact_Transaction] (
     [Is Finalized] [bit] NOT NULL,
     [Lineage Key] [int] NOT NULL
 )
-WITH ( LOCATION ='/v1/fact_Transaction/',   
-    DATA_SOURCE = WWIStorage,  
+WITH ( LOCATION ='/v1/fact_Transaction/',
+    DATA_SOURCE = WWIStorage,
     FILE_FORMAT = TextFileFormat,
 	REJECT_TYPE = VALUE,
     REJECT_VALUE = 0
 );
-    
+
 -- ----------------------------------STEP 4: Load data into the external tables --------------------------------------------------------------------------------
 
--- The script below does not load data into the wwi.dimension_Date and wwi.fact_Sales tables. 
+-- The script below does not load data into the wwi.dimension_Date and wwi.fact_Sales tables.
 -- You will generate the data for this tables in a later step to make sure the tables have a sizeable number of rows
 
 CREATE TABLE [wwi].[dimension_City]
 WITH
-( 
+(
     DISTRIBUTION = REPLICATE,
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -345,7 +345,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[dimension_City]')
 
 CREATE TABLE [wwi].[dimension_Customer]
 WITH
-( 
+(
     DISTRIBUTION = REPLICATE,
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -356,7 +356,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[dimension_Customer]')
 
 CREATE TABLE [wwi].[dimension_Employee]
 WITH
-( 
+(
     DISTRIBUTION = REPLICATE,
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -367,7 +367,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[dimension_Employee]')
 
 CREATE TABLE [wwi].[dimension_PaymentMethod]
 WITH
-( 
+(
     DISTRIBUTION = REPLICATE,
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -378,7 +378,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[dimension_PaymentMethod]')
 
 CREATE TABLE [wwi].[dimension_StockItem]
 WITH
-( 
+(
     DISTRIBUTION = REPLICATE,
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -389,7 +389,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[dimension_StockItem]')
 
 CREATE TABLE [wwi].[dimension_Supplier]
 WITH
-( 
+(
     DISTRIBUTION = REPLICATE,
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -400,7 +400,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[dimension_Supplier]')
 
 CREATE TABLE [wwi].[dimension_TransactionType]
 WITH
-( 
+(
     DISTRIBUTION = REPLICATE,
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -411,7 +411,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[dimension_TransactionType]')
 
 CREATE TABLE [wwi].[fact_Movement]
 WITH
-( 
+(
     DISTRIBUTION = HASH([Movement Key]),
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -422,7 +422,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[fact_Movement]')
 
 CREATE TABLE [wwi].[fact_Order]
 WITH
-( 
+(
     DISTRIBUTION = HASH([Order Key]),
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -433,7 +433,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[fact_Order]')
 
 CREATE TABLE [wwi].[fact_Purchase]
 WITH
-( 
+(
     DISTRIBUTION = HASH([Purchase Key]),
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -444,7 +444,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[fact_Purchase]')
 
 CREATE TABLE [wwi].[seed_Sale]
 WITH
-( 
+(
     DISTRIBUTION = HASH([WWI Invoice ID]),
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -455,7 +455,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[seed_Sale]')
 
 CREATE TABLE [wwi].[fact_StockHolding]
 WITH
-( 
+(
     DISTRIBUTION = HASH([Stock Holding Key]),
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -466,7 +466,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[fact_StockHolding]')
 
 CREATE TABLE [wwi].[fact_Transaction]
 WITH
-( 
+(
     DISTRIBUTION = HASH([Transaction Key]),
     CLUSTERED COLUMNSTORE INDEX
 )
@@ -486,7 +486,7 @@ OPTION (LABEL = 'CTAS : Load [wwi].[fact_Transaction]')
 --     r.status,
 --     count(distinct input_name) as nbr_files,
 --     sum(s.bytes_processed)/1024/1024/1024 as gb_processed
--- FROM 
+-- FROM
 --     sys.dm_pdw_exec_requests r
 --     INNER JOIN sys.dm_pdw_dms_external_work s
 --     ON r.request_id = s.request_id
@@ -508,8 +508,8 @@ OPTION (LABEL = 'CTAS : Load [wwi].[fact_Transaction]')
 --     s.request_id,
 --     r.status
 -- ORDER BY
---     nbr_files desc, 
---     gb_processed desc; 
+--     nbr_files desc,
+--     gb_processed desc;
 
 
 -- ----------------------------------STEP 6: Generate millions of rows for the Date dimension table and Sales fact table --------------------------------------------------------------------------------
@@ -532,7 +532,7 @@ CREATE TABLE [wwi].[dimension_Date]
     [Fiscal Year Label] [nvarchar](10) NOT NULL,
     [ISO Week Number] [int] NOT NULL
 )
-WITH 
+WITH
 (
     DISTRIBUTION = REPLICATE,
     CLUSTERED INDEX ([Date])
@@ -566,9 +566,9 @@ WITH
     DISTRIBUTION = HASH ( [WWI Invoice ID] ),
     CLUSTERED COLUMNSTORE INDEX
 )
-    
 
--- Create [wwi].[InitialSalesDataPopulation] to increase the number of rows in [wwi].[seed_Sale] by a factor of eight. 
+
+-- Create [wwi].[InitialSalesDataPopulation] to increase the number of rows in [wwi].[seed_Sale] by a factor of eight.
 
 CREATE PROCEDURE [wwi].[InitialSalesDataPopulation] AS
 BEGIN
@@ -598,7 +598,7 @@ END
 -- Create this stored procedure that populates rows into wwi.dimension_Date.
 CREATE PROCEDURE [wwi].[PopulateDateDimensionForYear] @Year [int] AS
 BEGIN
-    IF OBJECT_ID('tempdb..#month', 'U') IS NOT NULL 
+    IF OBJECT_ID('tempdb..#month', 'U') IS NOT NULL
 	    DROP TABLE #month
     CREATE TABLE #month (
         monthnum int,
@@ -608,7 +608,7 @@ BEGIN
     INSERT INTO #month
         SELECT 1, 31 UNION SELECT 2, CASE WHEN (@YEAR % 4 = 0 AND @YEAR % 100 <> 0) OR @YEAR % 400 = 0 THEN 29 ELSE 28 END UNION SELECT 3,31 UNION SELECT 4,30 UNION SELECT 5,31 UNION SELECT 6,30 UNION SELECT 7,31 UNION SELECT 8,31 UNION SELECT 9,30 UNION SELECT 10,31 UNION SELECT 11,30 UNION SELECT 12,31
 
-    IF OBJECT_ID('tempdb..#days', 'U') IS NOT NULL 
+    IF OBJECT_ID('tempdb..#days', 'U') IS NOT NULL
 	    DROP TABLE #days
     CREATE TABLE #days (days int)
     WITH (DISTRIBUTION = ROUND_ROBIN, HEAP)
@@ -617,7 +617,7 @@ BEGIN
         SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15 UNION SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION SELECT 20	UNION SELECT 21 UNION SELECT 22 UNION SELECT 23 UNION SELECT 24 UNION SELECT 25 UNION SELECT 26 UNION SELECT 27 UNION SELECT 28 UNION SELECT 29 UNION SELECT 30 UNION SELECT 31
 
     INSERT [wwi].[dimension_Date] (
-        [Date], [Day Number], [Day], [Month], [Short Month], [Calendar Month Number], [Calendar Month Label], [Calendar Year], [Calendar Year Label], [Fiscal Month Number], [Fiscal Month Label], [Fiscal Year], [Fiscal Year Label], [ISO Week Number] 
+        [Date], [Day Number], [Day], [Month], [Short Month], [Calendar Month Number], [Calendar Month Label], [Calendar Year], [Calendar Year Label], [Fiscal Month Number], [Fiscal Month Label], [Fiscal Year], [Fiscal Year Label], [ISO Week Number]
     )
     SELECT
         CAST(CAST(monthnum AS VARCHAR(2)) + '/' + CAST([days] AS VARCHAR(3)) + '/' + CAST(@year AS CHAR(4)) AS DATE) AS [Date]
@@ -649,8 +649,8 @@ WHERE d.days <= m.numofdays
 DROP table #month;
 DROP table #days;
 END;
-    
--- Create procedure that populates the wwi.dimension_Date and wwi.fact_Sales tables. 
+
+-- Create procedure that populates the wwi.dimension_Date and wwi.fact_Sales tables.
 -- It calls [wwi].[PopulateDateDimensionForYear] to populate wwi.dimension_Date.
 CREATE PROCEDURE [wwi].[Configuration_PopulateLargeSaleTable] @EstimatedRowsPerDay [bigint],@Year [int] AS
 BEGIN
@@ -661,7 +661,7 @@ BEGIN
 
     DECLARE @OrderCounter bigint = 0;
     DECLARE @NumberOfSalesPerDay bigint = @EstimatedRowsPerDay;
-    DECLARE @DateCounter date; 
+    DECLARE @DateCounter date;
     DECLARE @StartingSaleKey bigint;
     DECLARE @MaximumSaleKey bigint = (SELECT MAX([Sale Key]) FROM wwi.seed_Sale);
     DECLARE @MaxDate date;
@@ -693,7 +693,7 @@ BEGIN
 	    SELECT TOP(@VariantNumberOfSalesPerDay)
 	        [City Key], [Customer Key], [Bill To Customer Key], [Stock Item Key], @DateCounter, DATEADD(day, 1, @DateCounter), [Salesperson Key], [WWI Invoice ID], [Description], Package, Quantity, [Unit Price], [Tax Rate], [Total Excluding Tax], [Tax Amount], Profit, [Total Including Tax], [Total Dry Items], [Total Chiller Items], [Lineage Key]
 	    FROM [wwi].[seed_Sale]
-	    WHERE 
+	    WHERE
              --[Sale Key] > @StartingSaleKey and /* IDENTITY DOES NOT WORK THE SAME IN SQLDW AND CAN'T USE THIS METHOD FOR VARIANT */
 		    [Invoice Date Key] >=cast(@YEAR AS CHAR(4)) + '-01-01'
 	    ORDER BY [Sale Key];
@@ -709,12 +709,12 @@ EXEC [wwi].[InitialSalesDataPopulation]
 -- Populate wwi.fact_Sales with 100,000 rows per day for each day in the year 2000.
 EXEC [wwi].[Configuration_PopulateLargeSaleTable] 100000, 2000
 
--- The data generation in the previous step might take a while as it progresses through the year.  
+-- The data generation in the previous step might take a while as it progresses through the year.
 -- To see which day the current process is on, uncomment the query below and run it:
 --SELECT MAX([Invoice Date Key]) FROM wwi.fact_Sale;
-  
+
 -- ----------------------------------STEP 7: Populate the replicated table cache to speed up later queries --------------------------------------------------------------------------------
--- SQL Data Warehouse replicates a table by caching the data to each Compute node. The cache only gets populated when a query runs against the table. 
+-- SQL Data Warehouse replicates a table by caching the data to each Compute node. The cache only gets populated when a query runs against the table.
 -- Therefore, the first query on a replicated table might require extra time to populate the cache. After the cache is populated, queries on replicated tables run faster.
 
 SELECT TOP 1 * FROM [wwi].[dimension_City];
@@ -728,7 +728,7 @@ SELECT TOP 1 * FROM [wwi].[dimension_TransactionType];
 
 -- ----------------------------------STEP 8: Create statistics on newly loaded data --------------------------------------------------------------------------------------------------
 
--- To achieve high query performance, it's important to create statistics on each column of each table after the first load. 
+-- To achieve high query performance, it's important to create statistics on each column of each table after the first load.
 -- It's also important to update statistics after substantial changes in the data.
 
 -- Create stored procedure that updates statistics on all columns of all tables.

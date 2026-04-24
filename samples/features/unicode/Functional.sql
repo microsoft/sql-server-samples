@@ -27,11 +27,11 @@ CREATE TABLE MyUtf8Table (datakind VARCHAR(100), data VARCHAR(8000) COLLATE Lati
 GO
 
 INSERT INTO MyUtf8Table
-VALUES ('ASCII - 1 byte per character', N'Thequickbrownfoxjumpsoverthelazydog'), 
-	('Cyrillic - 2 bytes per character', N'Быстраякоричневаялисапрыгаетчерезленивуюсобаку'), 
-	('Far East - 3 bytes per character', N'敏捷的棕色狐狸跳过了懒狗'), 
-	('Emojis - 4 bytes per character', N'👶👦👧👨👩👴👵👨👩👨👩👨👩👨👩'), 
-	('Emojis with Variation Selector - 6 bytes per glyph', N'⚕️⚖️↔︎↕︎↖︎↗︎↘︎↙︎↩︎↪︎↔️↕️↖️↗️↘️↙️↩️↪️'), 
+VALUES ('ASCII - 1 byte per character', N'Thequickbrownfoxjumpsoverthelazydog'),
+	('Cyrillic - 2 bytes per character', N'Быстраякоричневаялисапрыгаетчерезленивуюсобаку'),
+	('Far East - 3 bytes per character', N'敏捷的棕色狐狸跳过了懒狗'),
+	('Emojis - 4 bytes per character', N'👶👦👧👨👩👴👵👨👩👨👩👨👩👨👩'),
+	('Emojis with Variation Selector - 6 bytes per glyph', N'⚕️⚖️↔︎↕︎↖︎↗︎↘︎↙︎↩︎↪︎↔️↕️↖️↗️↘️↙️↩️↪️'),
 	('Ashi with Supplementary Variation Selector - 7 bytes per glyph', N'芦󠄀芦󠄁芦󠄂芦󠄃芦󠄄芦󠄅芦󠄆芦󠄇芦󠄈芦󠄉芦󠄃芦󠄂芦󠄁芦󠄀芦󠄁芦󠄂芦󠄃芦󠄄芦󠄈芦󠄉');
 GO
 
@@ -46,9 +46,9 @@ GO
 
 --
 -- Create a database collated with UTF-8.
--- This is to demonstrate that now string literals can be used without N'', 
+-- This is to demonstrate that now string literals can be used without N'',
 -- as string literals are collated with the database collation, and can hold any characters.
--- 
+--
 CREATE DATABASE MyUtf8Database COLLATE Lithuanian_100_CS_AI_WS_SC_UTF8;
 GO
 
@@ -59,11 +59,11 @@ CREATE TABLE MyTableWithInheritedCollation (datakind VARCHAR(100), data VARCHAR(
 GO
 
 INSERT INTO MyTableWithInheritedCollation
-VALUES ('ASCII - 1 byte per character', 'Thequickbrownfoxjumpsoverthelazydog'), 
-	('Cyrillic - 2 bytes per character', 'Быстраякоричневаялисапрыгаетчерезленивуюсобаку'), 
-	('Far East - 3 bytes per character', '敏捷的棕色狐狸跳过了懒狗'), 
-	('Emojis - 4 bytes per character', '👶👦👧👨👩👴👵👨👩👨👩👨👩👨👩'), 
-	('Emojis with Variation Selector - 6 bytes per glyph', '⚕️⚖️↔︎↕︎↖︎↗︎↘︎↙︎↩︎↪︎↔️↕️↖️↗️↘️↙️↩️↪️'), 
+VALUES ('ASCII - 1 byte per character', 'Thequickbrownfoxjumpsoverthelazydog'),
+	('Cyrillic - 2 bytes per character', 'Быстраякоричневаялисапрыгаетчерезленивуюсобаку'),
+	('Far East - 3 bytes per character', '敏捷的棕色狐狸跳过了懒狗'),
+	('Emojis - 4 bytes per character', '👶👦👧👨👩👴👵👨👩👨👩👨👩👨👩'),
+	('Emojis with Variation Selector - 6 bytes per glyph', '⚕️⚖️↔︎↕︎↖︎↗︎↘︎↙︎↩︎↪︎↔️↕️↖️↗️↘️↙️↩️↪️'),
 	('Ashi with Supplementary Variation Selector - 7 bytes per glyph', '芦󠄀芦󠄁芦󠄂芦󠄃芦󠄄芦󠄅芦󠄆芦󠄇芦󠄈芦󠄉芦󠄃芦󠄂芦󠄁芦󠄀芦󠄁芦󠄂芦󠄃芦󠄄芦󠄈芦󠄉');
 GO
 
@@ -116,7 +116,7 @@ GO
 CREATE user ToBeKeptAway without LOGIN;
 GO
 
-CREATE TABLE KeepAway (top_secret_data VARCHAR(8000) COLLATE Mapudungan_100_CS_AS_SC_UTF8 masked 
+CREATE TABLE KeepAway (top_secret_data VARCHAR(8000) COLLATE Mapudungan_100_CS_AS_SC_UTF8 masked
 WITH (FUNCTION = 'partial(2, "💩💩💩💩💩", 2)'));
 GO
 
@@ -140,8 +140,8 @@ GO
 
 ----------------------------
 /*
-See how many bytes each character requires for both UTF-8 and UTF-16 encodings. 
-Returns all 65,536 BMP (Base Multilingual Plan) characters (which is also the entire UCS-2 character set), and 3 Supplementary Characters. 
+See how many bytes each character requires for both UTF-8 and UTF-16 encodings.
+Returns all 65,536 BMP (Base Multilingual Plan) characters (which is also the entire UCS-2 character set), and 3 Supplementary Characters.
 Since all Supplementary Characters are 4 bytes in both encodings, there is no need to return more of them, but we do need to see a few of them to see that they are:
 a) all 4 bytes
 b) encoded slightly differently

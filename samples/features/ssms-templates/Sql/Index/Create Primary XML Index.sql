@@ -10,8 +10,8 @@ USE	<database_name, sysname, myDatabase>
 GO
 
 IF EXISTS (
-	SELECT	* 
-    FROM	sys.xml_indexes 
+	SELECT	*
+    FROM	sys.xml_indexes
     WHERE	name = '<xml_index_name, sysname, myPrimaryXmlIndex>' AND
 			object_id = OBJECT_ID ('<schema_name, sysname, myDatabaseSchema>.<table_name, sysname, myTable>')
 	)
@@ -20,7 +20,7 @@ DROP INDEX <xml_index_name, sysname, myPrimaryXmlIndex>
 GO
 
 CREATE PRIMARY XML INDEX <xml_index_name, sysname, myPrimaryXmlIndex>
-ON <schema_name, sysname, myDatabaseSchema>.<table_name, sysname, myTable> 
+ON <schema_name, sysname, myDatabaseSchema>.<table_name, sysname, myTable>
 (
 	<xml_column_name, sysname, myXmlColumn>
 )

@@ -1,16 +1,16 @@
 ﻿# Japanese IVS text processing
 
-This project contains an example implementation of ASP.NET Core. It shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs. 
+This project contains an example implementation of ASP.NET Core. It shows how SQL Database handles complex text processing rules such as sorting and filtering Japanese IVS ideographs.
 
 In the application you can see a table containg information about people written with Japanese symbols:
 
 ![Japanese people register app](../../../media/demos/ivs-people-register-app.PNG)
 
-If you open this page and try to sort columns by town, you might see unexpected results. Notice that rows are sorted by town column; however, people from town 芦󠄂屋 are in the 5th and 7th rows, and people from town 芦󠄆別市 are in the 4th, 6th, and 8th rows. Obviously, although the table is sorted by town column, sort order is not correct. 
+If you open this page and try to sort columns by town, you might see unexpected results. Notice that rows are sorted by town column; however, people from town 芦󠄂屋 are in the 5th and 7th rows, and people from town 芦󠄆別市 are in the 4th, 6th, and 8th rows. Obviously, although the table is sorted by town column, sort order is not correct.
 
 The reason for this behavior is that some client-side components do not understand some text comparison rules specific to some languages. In this example, the problem is with the IVS characters used in town names. If you take a better look at the towns, you will see slight differences in the shapes of the symbols used to write towns starting with symbol 芦󠄆.
 
-In written Japanese there are different shapes of the same symbol written with small differences. In the following figure, you can see 3 variations of symbol U+8FBA, 16 variations of symbol U+9089, and 10 variations of symbol U+908A: 
+In written Japanese there are different shapes of the same symbol written with small differences. In the following figure, you can see 3 variations of symbol U+8FBA, 16 variations of symbol U+9089, and 10 variations of symbol U+908A:
 
 ![Japanese IVS symbols](../../../media/demos/ivs-symbols.png)
 
@@ -109,16 +109,16 @@ As an alternative you can deploy the app directly to Azure Web App.
 
 ### Build and run sample
 
-1. Open the command prompt in your project root folder and run **dotnet restore** and **dotnet build** commands. If you are using Visual Studio, you can build your solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu. 
+1. Open the command prompt in your project root folder and run **dotnet restore** and **dotnet build** commands. If you are using Visual Studio, you can build your solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu.
 
 2. Run the sample app using **dotnet run** executed in the command prompt of the project root folder. As an alternative you can use F5 or Ctrl+F5 in Visual Studio 2015.
-   
+
 3. Open /client.html Url to get all people from database.
 
 4. Sort by town to see that some towns are not correctly sorted.
 
 5. Open /server.html Url to get all people from database using server-side processing code.
-   
+
 6. Sort by town to see that towns are correctly sorted.
 
 <a name=sample-details></a>
@@ -139,7 +139,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample in these locations: 
+You can find more information about the components that are used in this sample in these locations:
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 - [JQuery DataTables]( https://datatables.net/).

@@ -24,10 +24,10 @@ N'[
     { "name": "Magma" },
     { "name": "Tornado" }
 ]';
-  
+
 insert into Hero(name)
 select name
-from openjson(@heroes) with (name nvarchar(40));  
+from openjson(@heroes) with (name nvarchar(40));
 GO
 
 CREATE PROCEDURE dbo.InsertHero(@hero nvarchar(4000))

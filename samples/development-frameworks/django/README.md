@@ -33,7 +33,7 @@ The Q&A app works just like Stack Overflow. You can mark a question as favorite,
 - jQuery 2
 
 
-## Installation 
+## Installation
 
 ### 1 Install Python 2.7 and Django Framework 1.9
 

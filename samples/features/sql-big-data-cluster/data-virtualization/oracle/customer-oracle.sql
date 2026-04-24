@@ -46,7 +46,7 @@ GO
 
 -- Find product reviews of customers who made purchases of items in a specific time window:
 --
-SELECT pr.pr_item_sk, pc.pr_review_content, pr.pr_user_sk AS customerid 
+SELECT pr.pr_item_sk, pc.pr_review_content, pr.pr_user_sk AS customerid
 FROM dbo.product_reviews as pr
 JOIN (SELECT TOP(100) * FROM dbo.product_reviews_hdfs_csv) AS pc ON pc.pr_review_sk = pr.pr_review_sk
 JOIN dbo.customer_ora AS c ON c.C_CUSTOMER_SK = pr.pr_user_sk
@@ -55,7 +55,7 @@ INNER JOIN (
     SELECT
       ws_item_sk
     FROM web_sales ws
-    WHERE 
+    WHERE
         ws.ws_item_sk IS NOT null
         AND ws_sold_date_sk IN
             (

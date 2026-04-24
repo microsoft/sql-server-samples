@@ -21,7 +21,7 @@ IF EXISTS(SELECT * FROM sys.stats WHERE object_id = OBJECT_ID(N'[policy].[Policy
 DROP STATISTICS policy.[PolicyHistoryDetail].[Stat_EvaluatedPolicy]
 GO
 
-IF EXISTS(SELECT * FROM sys.stats WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = 'Stat_CategoryName') 
+IF EXISTS(SELECT * FROM sys.stats WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = 'Stat_CategoryName')
 DROP STATISTICS policy.[PolicyHistoryDetail].[Stat_CategoryName]
 GO
 
@@ -81,8 +81,8 @@ GO
 ALTER TABLE policy.PolicyHistoryDetail ADD CONSTRAINT
 	FK_PolicyHistoryDetail_PolicyHistory FOREIGN KEY
 	(PolicyHistoryID) REFERENCES policy.PolicyHistory
-	(PolicyHistoryID) 
-		ON UPDATE CASCADE 
+	(PolicyHistoryID)
+		ON UPDATE CASCADE
 		ON DELETE CASCADE
 GO
 
@@ -149,7 +149,7 @@ GO
 CREATE STATISTICS [Stat_EvaluationDateTime_EvaluatedPolicy] ON [policy].[PolicyHistoryDetail]([EvaluationDateTime], [EvaluatedPolicy])
 GO
 
-IF EXISTS(SELECT * FROM sys.stats WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = 'Stat_CategoryName_EvaluatedServer') 
+IF EXISTS(SELECT * FROM sys.stats WHERE object_id = OBJECT_ID(N'[policy].[PolicyHistoryDetail]') AND name = 'Stat_CategoryName_EvaluatedServer')
 DROP STATISTICS policy.[PolicyHistoryDetail].[Stat_CategoryName_EvaluatedServer]
 GO
 CREATE STATISTICS [Stat_CategoryName_EvaluatedServer] ON [policy].[PolicyHistoryDetail] ([CategoryName], [EvaluatedServer])
@@ -289,8 +289,8 @@ GO
 
 --Update the function to support server selection.
 --The following function will support nested CMS folders for the EPM Framework.
---The function must be created in a database ON the CMS server. 
---This database will also store the policy history. 
+--The function must be created in a database ON the CMS server.
+--This database will also store the policy history.
 
 USE $(ManagementDatabase)
 GO
@@ -300,14 +300,14 @@ GO
 CREATE FUNCTION [policy].[pfn_ServerGroupInstances] (@server_group_name NVARCHAR(128))
 RETURNS TABLE
 AS
-RETURN(WITH ServerGroups(parent_id, server_group_id, name) AS 
+RETURN(WITH ServerGroups(parent_id, server_group_id, name) AS
 		(
-			SELECT parent_id, server_group_id, name 
+			SELECT parent_id, server_group_id, name
 			FROM msdb.dbo.sysmanagement_shared_server_groups tg
 			WHERE is_system_object = 0
 				AND (tg.name = @server_group_name OR @server_group_name = '')	
 			UNION ALL
-			SELECT cg.parent_id, cg.server_group_id, cg.name 
+			SELECT cg.parent_id, cg.server_group_id, cg.name
 			FROM msdb.dbo.sysmanagement_shared_server_groups cg
 			INNER JOIN ServerGroups pg ON cg.parent_id = pg.server_group_id
 		)
@@ -322,13 +322,13 @@ GO
 IF EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_ServerGroups]'))
 DROP VIEW [policy].[v_ServerGroups]
 GO
-CREATE VIEW policy.v_ServerGroups AS 
-WITH ServerGroups(parent_id, server_group_id, GroupName, GroupLevel, Sort, GroupValue) 
-AS 
+CREATE VIEW policy.v_ServerGroups AS
+WITH ServerGroups(parent_id, server_group_id, GroupName, GroupLevel, Sort, GroupValue)
+AS
 (SELECT parent_id
 		, server_group_id
 		, CAST('ALL' AS varchar(500))
-		, 1 AS GroupLevel 
+		, 1 AS GroupLevel
 		, CAST('ALL' AS varchar(500)) AS Sort
 		, CAST('' AS varchar(255)) AS GroupValue
 FROM msdb.dbo.sysmanagement_shared_server_groups tg
@@ -344,7 +344,7 @@ FROM msdb.dbo.sysmanagement_shared_server_groups cg
 INNER JOIN ServerGroups pg ON cg.parent_id = pg.server_group_id)
 		
 SELECT parent_id, server_group_id, GroupName, GroupLevel, Sort, GroupValue
-FROM ServerGroups 
+FROM ServerGroups
 GO			
 
 IF EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_PolicyHistory]'))
@@ -353,7 +353,7 @@ GO
 CREATE VIEW [policy].[v_PolicyHistory]
 AS
 --The policy.v_PolicyHistory view will return all results
---and identify the policy evaluation result AS PASS, FAIL, or 
+--and identify the policy evaluation result AS PASS, FAIL, or
 --ERROR. The ERROR result indicates that the policy was not able
 --to evaluate against an object.
 SELECT PH.PolicyHistoryID
@@ -370,8 +370,8 @@ SELECT PH.PolicyHistoryID
 FROM policy.PolicyHistoryDetail PH
 INNER JOIN msdb.dbo.syspolicy_policies AS p ON p.name = PH.EvaluatedPolicy
 --INNER JOIN msdb.dbo.syspolicy_policy_categories AS c ON p.policy_category_id = c.policy_category_id
-AND PH.EvaluatedPolicy NOT IN (SELECT spp.name 
-		FROM msdb.dbo.syspolicy_policies spp 
+AND PH.EvaluatedPolicy NOT IN (SELECT spp.name
+		FROM msdb.dbo.syspolicy_policies spp
 		INNER JOIN msdb.dbo.syspolicy_policy_categories spc ON spp.policy_category_id = spc.policy_category_id
 		WHERE spc.name = 'Disabled')
 GO
@@ -379,7 +379,7 @@ GO
 IF EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_PolicyHistory_Rank]'))
 DROP VIEW policy.v_PolicyHistory_Rank
 GO
-CREATE VIEW policy.v_PolicyHistory_Rank 
+CREATE VIEW policy.v_PolicyHistory_Rank
 AS
 SELECT PolicyHistoryID
 	, EvaluatedServer
@@ -403,7 +403,7 @@ DROP VIEW policy.v_PolicyHistory_LastEvaluation
 GO
 CREATE VIEW policy.v_PolicyHistory_LastEvaluation
 AS
---The policy.v_PolicyHistory_LastEvaluation view will the last result for any given policy evaluated against an object. 
+--The policy.v_PolicyHistory_LastEvaluation view will the last result for any given policy evaluated against an object.
 --This view requires the v_PolicyHistory view exist.
 SELECT PolicyHistoryID
 	, EvaluatedServer
@@ -427,9 +427,9 @@ AND NOT EXISTS(
 		AND PH.EvaluationDateTime  > VPH.EvaluationDateTime)
 GO
 
---Create a view to return all errors.  
+--Create a view to return all errors.
 --Errors will be returned from the table EvaluationErrorHistory and the errors in the PolicyHistory table.
---Drop the view if it exists.  
+--Drop the view if it exists.
 IF EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[policy].[v_EvaluationErrorHistory]'))
 DROP VIEW policy.v_EvaluationErrorHistory
 GO
@@ -439,7 +439,7 @@ SELECT EEH.ErrorHistoryID
 	, EEH.EvaluatedServer
 	, EEH.EvaluationDateTime
 	, EEH.EvaluatedPolicy
-	, CASE WHEN CHARINDEX('\', EEH.EvaluatedServer) > 0 
+	, CASE WHEN CHARINDEX('\', EEH.EvaluatedServer) > 0
 		THEN RIGHT(EEH.EvaluatedServer, CHARINDEX('\', REVERSE(EEH.EvaluatedServer)) - 1)	
 		ELSE EEH.EvaluatedServer
 		END
@@ -487,7 +487,7 @@ SELECT ErrorHistoryID
 		ORDER BY EvaluationDateTime DESC)AS EvaluationOrderDesc
 FROM policy.v_EvaluationErrorHistory EEH
 WHERE NOT EXISTS (
-	SELECT * 
+	SELECT *
 	FROM policy.PolicyHistoryDetail PH
 	WHERE PH.EvaluatedPolicy = EEH.EvaluatedPolicy
 		AND PH.EvaluatedServer = EEH.EvaluatedServer
@@ -564,7 +564,7 @@ SELECT PolicyHistoryID
 	, policy_id
 	, CategoryName
 	, MonthYear
-	, PolicyHistorySource 
+	, PolicyHistorySource
 FROM cteEval
 WHERE cteEval.[TopRank] = 1'; -- Remove duplicates
 
@@ -598,10 +598,10 @@ SELECT PH.PolicyHistoryID
 	, PH.EvaluatedPolicy
 	, ''No Targets Found'' AS EvaluatedObject
 	, (CASE WHEN Res.Expr.value(''(../DMF:Result)[1]'', ''nvarchar(150)'')= ''FALSE'' AND Expr.value(''(../DMF:Exception)[1]'', ''nvarchar(max)'') = ''''
-		   THEN ''FAIL'' 
+		   THEN ''FAIL''
 		   WHEN Res.Expr.value(''(../DMF:Result)[1]'', ''nvarchar(150)'')= ''FALSE'' AND Expr.value(''(../DMF:Exception)[1]'', ''nvarchar(max)'')<> ''''
 		   THEN ''ERROR''
-		   ELSE ''PASS'' 
+		   ELSE ''PASS''
 		END) AS PolicyResult
 	, Expr.value(''(../DMF:Exception)[1]'', ''nvarchar(max)'') AS ExceptionMessage
 	, NULL AS ResultDetail

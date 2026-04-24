@@ -41,7 +41,7 @@ http://php.net/manual/en/mcrypt.setup.php
 
 ### 2 Install dependencies
 On the project root there is a requirements.pip file. Make sure you install all the required dependencies before running myboard
- 
+
     cd todo
     composer install
 

@@ -16,4 +16,4 @@ ALTER PARTITION FUNCTION <partition_function_name, sysname, myRangePF> ()
 SPLIT RANGE (<data_value4,,500>);
 GO
 
- 
+

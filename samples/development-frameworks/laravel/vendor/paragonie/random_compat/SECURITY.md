@@ -1,16 +1,16 @@
 # An Invitation to Security Researchers
 
-Every company says they take security "very seriously." Rather than bore anyone 
+Every company says they take security "very seriously." Rather than bore anyone
 with banal boilerplate, here are some quick answers followed by detailed
 elaboration. If you have any questions about our policies, please email them to
 `scott@paragonie.com`.
 
 ## Quick Answers
 
-* There is no compulsion to disclose vulnerabilities privately, but we 
+* There is no compulsion to disclose vulnerabilities privately, but we
   appreciate a head's up.
-* `security@paragonie.com` will get your reports to the right person. Our GPG 
-  fingerprint, should you decide to encrypt your report, is 
+* `security@paragonie.com` will get your reports to the right person. Our GPG
+  fingerprint, should you decide to encrypt your report, is
   `7F52 D5C6 1D12 55C7 3136  2E82 6B97 A1C2 8264 04DA`.
 
 * **YES**, we will reward security researchers who disclose vulnerabilities in
@@ -22,15 +22,15 @@ elaboration. If you have any questions about our policies, please email them to
 ### There is no compulsion to disclose privately.
 
 We believe vulnerability disclosure style is a personal choice and enjoy working
-with a diverse community. We understand and appreciate the importance of Full 
+with a diverse community. We understand and appreciate the importance of Full
 Disclosure in the history and practice of security research.
 
 We would *like* to know about high-severity bugs before they become public
-knowledge, so we can fix them in a timely manner, but **we do not believe in 
+knowledge, so we can fix them in a timely manner, but **we do not believe in
 threatening researchers or trying to enforce vulnerability embargoes**.
 
 Ultimately, if you discover a security-affecting vulnerability, what you do with
-it is your choice. We would like to work with people, and to celebrate and 
+it is your choice. We would like to work with people, and to celebrate and
 reward their skill, experience, and dedication. We appreciate being informed of
 our mistakes so we can learn from them and build a better product. Our goal is
 to empower the community.
@@ -75,7 +75,7 @@ ha+F/SAEJ0jEquM4TfKWWU2S5V5vgPPpIQSYRnhQW4b1
 
 ### We Will Reward Security Researchers
 
-**This process has not been formalized; nor have dollar amounts been 
+**This process has not been formalized; nor have dollar amounts been
 discussed.**
 
 However, if you report a valid security-affecting bug, we will compensate you
@@ -98,8 +98,8 @@ When in doubt, our policy is to err on the side of generosity.
 
 ### No Proof-of-Concept Required
 
-We might ask for one if we feel we do not understand some of the details 
-pertaining to a specific vulnerability. We certainly appreciate them if you 
+We might ask for one if we feel we do not understand some of the details
+pertaining to a specific vulnerability. We certainly appreciate them if you
 include them in your report, but we believe **the burden lies with the developer
 to prove their software *is* secure** rather than with the researcher to prove
 that it isn't.

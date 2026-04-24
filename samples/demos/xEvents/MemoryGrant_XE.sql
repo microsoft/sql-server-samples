@@ -6,7 +6,7 @@
 -- Detect inaccurate or insufficient memory grant, when grant is >5MB as minimum
 DROP EVENT SESSION [MemoryGrantXE] ON SERVER
 GO
-CREATE EVENT SESSION [MemoryGrantXE] ON SERVER 
+CREATE EVENT SESSION [MemoryGrantXE] ON SERVER
 /*
 ADD EVENT sqlserver.query_memory_grant_blocking(
     ACTION(sqlserver.database_name,sqlserver.is_system,sqlserver.plan_handle,sqlserver.query_hash,sqlserver.query_hash_signed,sqlserver.query_plan_hash,sqlserver.query_plan_hash_signed,sqlserver.session_nt_username,sqlserver.sql_text)),

@@ -14,7 +14,7 @@ CREATE TABLE [dbo].[TestSequentialKey](
 	[Schema] [sysname] NULL,
 	[Object] [sysname] NULL,
 	[TSQL] [nvarchar](max) NOT NULL
- CONSTRAINT [PK_TestSequentialKey_DatabaseLogID] PRIMARY KEY NONCLUSTERED 
+ CONSTRAINT [PK_TestSequentialKey_DatabaseLogID] PRIMARY KEY NONCLUSTERED
 (
 	[DatabaseLogID] ASC
 ));
@@ -35,10 +35,10 @@ CREATE TABLE [dbo].[TestSequentialKey_Optimized](
 	[Schema] [sysname] NULL,
 	[Object] [sysname] NULL,
 	[TSQL] [nvarchar](max) NOT NULL
- CONSTRAINT [PK_TestSequentialKey_Optimized_DatabaseLogID] PRIMARY KEY NONCLUSTERED 
+ CONSTRAINT [PK_TestSequentialKey_Optimized_DatabaseLogID] PRIMARY KEY NONCLUSTERED
 (
 	[DatabaseLogID] ASC
-) 
+)
 WITH (OPTIMIZE_FOR_SEQUENTIAL_KEY=ON));
 
 CREATE CLUSTERED INDEX CIX_TestSequentialKey_Optimized_PostTime ON TestSequentialKey_Optimized (PostTime) WITH (OPTIMIZE_FOR_SEQUENTIAL_KEY=ON);
@@ -51,7 +51,7 @@ CREATE OR ALTER PROCEDURE usp_InsertLogRecord @Optimized bit = 0 AS
 DECLARE @PostTime datetime2 = SYSDATETIME(), @User sysname, @Event sysname, @Schema sysname, @Object sysname, @TSQL nvarchar(max)
 
 SELECT @User = name
-FROM sys.sysusers 
+FROM sys.sysusers
 WHERE issqlrole = 0 and hasdbaccess = 1 and status = 0
 ORDER BY NEWID();
 

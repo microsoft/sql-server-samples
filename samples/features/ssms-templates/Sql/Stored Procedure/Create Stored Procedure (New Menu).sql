@@ -2,8 +2,8 @@
 -- Template generated from Template Explorer using:
 -- Create Procedure (New Menu).SQL
 --
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
+-- Use the Specify Values for Template Parameters
+-- command (Ctrl-Shift-M) to fill in the parameter
 -- values below.
 --
 -- This block of comments will not be included in
@@ -18,9 +18,9 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE <Procedure_Name, sysname, ProcedureName> 
+CREATE PROCEDURE <Procedure_Name, sysname, ProcedureName>
 	-- Add the parameters for the stored procedure here
-	<@Param1, sysname, @p1> <Datatype_For_Param1, , int> = <Default_Value_For_Param1, , 0>, 
+	<@Param1, sysname, @p1> <Datatype_For_Param1, , int> = <Default_Value_For_Param1, , 0>,
 	<@Param2, sysname, @p2> <Datatype_For_Param2, , int> = <Default_Value_For_Param2, , 0>
 AS
 BEGIN

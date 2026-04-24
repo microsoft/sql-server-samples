@@ -7,7 +7,7 @@ as
 begin
 		declare @rx_model varbinary(max) = (select model from iris_models where model_name = @model);
 		-- Predict based on the specified model:
-		exec sp_execute_external_script 
+		exec sp_execute_external_script
 						@language = N'R'
 					, @script = N'
 # Unserialize model from SQL Server

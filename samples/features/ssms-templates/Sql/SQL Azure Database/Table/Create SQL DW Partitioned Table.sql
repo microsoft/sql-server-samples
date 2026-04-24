@@ -1,6 +1,6 @@
--- =======================================================================
--- Create Partitioned Table Template for Azure SQL Data Warehouse Database
--- =======================================================================
+-- ======================================================================
+-- Create Partitioned Table Template for Azure Synapse Analytics Database
+-- ======================================================================
 
 IF OBJECT_ID('<schema_name, sysname, dbo>.<table_name, sysname, sample_table>', 'U') IS NOT NULL
     DROP TABLE <schema_name, sysname, dbo>.<table_name, sysname, sample_table>

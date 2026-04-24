@@ -42,9 +42,9 @@ SET @total_duration = 0
 
 DECLARE #session CURSOR LOCAL fast_forward
 FOR
-	SELECT command_count, duration  
+	SELECT command_count, duration
 	FROM @log_scan_sessions
-    
+
 OPEN #session
 FETCH #session INTO @command_count, @duration
 	

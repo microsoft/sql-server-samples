@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{9e972c93-0716-4442-97fc-72c52c2c5aaa}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -17,7 +17,7 @@
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
@@ -85,6 +85,7 @@
     <EnableFullTextSearch>True</EnableFullTextSearch>
     <DefaultFilegroup>USERDATA</DefaultFilegroup>
     <TargetDatabase>WideWorldImporters</TargetDatabase>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -789,6 +790,8 @@
     <Build Include="WebApi\Views\TransactionTypes.sql" />
     <Build Include="WebApi\Views\DeliveryMethods.sql" />
     <Build Include="WebApi\Views\PaymentMethods.sql" />
+    <Build Include="DataLoadSimulation\Stored Procedures\PopulateDataTo180DaysAgo.sql" />
+    <Build Include="DataLoadSimulation\Stored Procedures\PopulateOneDayOfHistory.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploymentScripts\Script.PostDeployment1.sql" />
@@ -845,5 +848,6 @@
     <None Include="PostDeploymentScripts\pds106-ins-dls-areacode.sql" />
     <None Include="PostDeploymentScripts\pds400-ins-unkown-orderline.sql" />
     <None Include="PostDeploymentScripts\pds410-update-archive-tables.sql" />
+    <None Include="WideWorldImporters.publish.xml" />
   </ItemGroup>
 </Project>

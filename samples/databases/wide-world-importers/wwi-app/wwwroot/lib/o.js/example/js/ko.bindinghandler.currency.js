@@ -4,7 +4,7 @@
 // Example binding: data-bind="$:Price"
 // Complex binding: data-bind="currency:Price,currencyUnit:'AUD',positions:4,digitGroupSeparator:false"
 //
-// By Jan Hommes 
+// By Jan Hommes
 // Date: 09.12.2014
 // +++
 
@@ -43,18 +43,18 @@ ko.bindingHandlers.currency = {
 		}
 		var currencyUnit=allBindingsAccessor().currencyUnit || ko.bindingHandlers.currency.defaultCurrencyUnit
 		var digitGroupSeparator=allBindingsAccessor().digitGroupSeparator || 'comma';
-	   
+	
 	    //format the value
-		var formattedValue = parseFloat(value).toFixed(positions); 
+		var formattedValue = parseFloat(value).toFixed(positions);
 		if(isNaN(formattedValue))
 			formattedValue=0.00.toFixed(positions);
 		if(digitGroupSeparator!==false)
-			var finalFormatted = ko.bindingHandlers.currency.digitGroupSeparatorFunc[digitGroupSeparator](formattedValue);  
-		else 
-			var finalFormatted = formattedValue; 
+			var finalFormatted = ko.bindingHandlers.currency.digitGroupSeparatorFunc[digitGroupSeparator](formattedValue);
+		else
+			var finalFormatted = formattedValue;
 			
 		//update the observable
-		ko.bindingHandlers.text.update(element, function() { return finalFormatted + " " + currencyUnit; }); 
+		ko.bindingHandlers.text.update(element, function() { return finalFormatted + " " + currencyUnit; });
 	},
 	defaultCurrencyUnit:"$",
 	defaultPositions: 2,
@@ -68,7 +68,7 @@ ko.bindingHandlers.currency = {
 			while (rgx.test(x1)) {
 				x1 = x1.replace(rgx, '$1' + ',' + '$2');
 			}
-			return x1 + x2;		 
+			return x1 + x2;		
 		},
 		point: function(original){
 		   original+= '';
@@ -79,7 +79,7 @@ ko.bindingHandlers.currency = {
 			while (rgx.test(x1)) {
 				x1 = x1.replace(rgx, '$1' + '.' + '$2');
 			}
-			return x1 + x2;		 
-		} 
+			return x1 + x2;		
+		}
 	}
 };

@@ -851,8 +851,8 @@ EXEC msdb.dbo.sp_syspolicy_add_target_set_level @target_set_id=@target_set_id, @
 GO
 
 Declare @policy_id int
-EXEC msdb.dbo.sp_syspolicy_add_policy @name=N'Non-Unique Clustered Indexes', @condition_name=N'Non-Unique Clustered Indexes', @policy_category=N'Microsoft Best Practices: Database Design', @description=N'With few exceptions, every table should have a clustered index. Very few exceptions to this, such as Bulk Load, Staging or some types of Temporary tables. 
-When creating a clustering index, remember that uniqueness is maintained in key values. Therefore, if you don’t create UNIQUE clustered index, SQL Server will add a 4-byte hidden column to make it unique, the “uniquefier”.
+EXEC msdb.dbo.sp_syspolicy_add_policy @name=N'Non-Unique Clustered Indexes', @condition_name=N'Non-Unique Clustered Indexes', @policy_category=N'Microsoft Best Practices: Database Design', @description=N'With few exceptions, every table should have a clustered index. Very few exceptions to this, such as Bulk Load, Staging or some types of Temporary tables.
+When creating a clustering index, remember that uniqueness is maintained in key values. Therefore, if you donï¿½t create UNIQUE clustered index, SQL Server will add a 4-byte hidden column to make it unique, the ï¿½uniquefierï¿½.
 Generally, an ideal candidate for a clustering key should be a unique, monotonically increasing and occasionally updated value.', @help_text=N'', @help_link=N'http://msdn.microsoft.com/en-us/library/ms177443.aspx', @schedule_uid=N'00000000-0000-0000-0000-000000000000', @execution_mode=0, @is_enabled=False, @policy_id=@policy_id OUTPUT, @root_condition_name=N'', @object_set=N'Non_Unique_Clustered_Indexes_ObjectSet'
 Select @policy_id
 GO
@@ -1376,7 +1376,7 @@ GO
 
 Declare @policy_id int
 EXEC msdb.dbo.sp_syspolicy_add_policy @name=N'TempDB Data File Configuration is Optimal', @condition_name=N'TempDB Number of Files is Optimal', @policy_category=N'Microsoft Best Practices: Performance', @description=N'Having multiple TempDB data files can reduce contention and improve performance on active systems. This is because there will be one or more SGAM pages for each file, the main point of contention for mixed allocations. If there is a need to increase above the initial 8 files, do so by multiples of 4 files.
-Dividing TempDB into multiple data files of equal size provides a high degree of parallel efficiency in operations that use TempDB. These multiple files do not necessarily need to be on different disks or spindles unless you are also encountering I/O bottlenecks as well. 
+Dividing TempDB into multiple data files of equal size provides a high degree of parallel efficiency in operations that use TempDB. These multiple files do not necessarily need to be on different disks or spindles unless you are also encountering I/O bottlenecks as well.
 One disadvantage of having too many TempDB files is that every object in TempDB will have multiple IAM pages. In addition, there will be more switching costs as objects are accessed as well as more managing overhead. On very large systems, 8 TempDB data files may be sufficient, but reconsider this based on the workload. If there is a need to increase above the initial 8 files, do so by multiples of 4 files.', @help_text=N'', @help_link=N'http://support.microsoft.com/kb/2154845/en-us', @is_enabled=False, @execution_mode=0, @policy_id=@policy_id OUTPUT, @root_condition_name=N'SQL Server Version 2005 or a Later Version', @object_set=N'TempDB_Configuration_is_Optimal_ObjectSet'
 Select @policy_id
 GO

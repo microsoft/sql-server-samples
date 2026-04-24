@@ -15,7 +15,7 @@ var ProductController =
                     .fail(function () {
                         toastr.error('An error occured while trying to get the product.');
                     });
-                
+
             },
 
             saveProduct: function (productID, product) {
@@ -76,10 +76,10 @@ $(document).ready(function () {
             }
         ]
     });// end DataTable setup
-    
+
     // Bootstrap modal setup
     $modal = $('#myModal');
-    
+
     $modal.on('hide.bs.modal', function () {
         $(this).find("input[type!=checkbox],textarea,select").val('').end();
         $(this).find("input:checkbox").prop('checked', false);

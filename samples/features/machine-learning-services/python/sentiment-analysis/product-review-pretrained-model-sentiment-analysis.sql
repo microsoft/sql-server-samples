@@ -1,8 +1,8 @@
 /*
 To install the pretrained model in SQL Server, open an elevated CMD promtp:
-1. Navigate to the SQL Server installation path: 
+1. Navigate to the SQL Server installation path:
 C:\<SQL SERVER Installation path>\Microsoft SQL Server\140\Setup Bootstrap\SQL2017\x64
-2. Run the following command: 
+2. Run the following command:
 RSetup.exe /install /component MLM /<version>/language 1033 /destdir <SQL_DB_instance_folder>\PYTHON_SERVICES\Lib\site-packages\microsoftml\mxLibs
 Example:
 RSetup.exe /install /component MLM /version 9.2.0.24 /language 1033 /destdir "C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\PYTHON_SERVICES\Lib\site-packages\microsoftml\mxLibs"
@@ -42,7 +42,7 @@ sentiment_scores["Sentiment"] = sentiment_scores.scores.apply(lambda score: "Pos
 				WITH RESULT SETS (("Review" NVARCHAR(MAX),"Score" FLOAT, "Sentiment" NVARCHAR(30)));			
 
 END
-				  
+				
 GO
 
 --******************************************************************************************************************

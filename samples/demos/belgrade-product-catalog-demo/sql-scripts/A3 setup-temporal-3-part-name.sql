@@ -22,7 +22,7 @@ GO
 
 drop procedure if exists dbo.GetProducts
 go
-create procedure dbo.GetProducts as 
+create procedure dbo.GetProducts as
 begin
 	begin tran
 	EXEC ProductCatalog.dbo.GetProducts
@@ -32,10 +32,10 @@ GO
 
 drop procedure if exists dbo.GetProductsAsOf
 go
-create procedure dbo.GetProductsAsOf (@date datetime2) as 
+create procedure dbo.GetProductsAsOf (@date datetime2) as
 begin
 	begin tran
-	EXEC ProductCatalog.dbo.GetProductsAsOf @date 
+	EXEC ProductCatalog.dbo.GetProductsAsOf @date
 	commit
 end
 GO
@@ -43,7 +43,7 @@ GO
 GO
 drop procedure if exists dbo.RestoreProduct
 GO
-create procedure dbo.RestoreProduct (@productid int, @date datetime2) as 
+create procedure dbo.RestoreProduct (@productid int, @date datetime2) as
 begin
 	begin tran
 	EXEC ProductCatalog.dbo.RestoreProduct @productid, @date

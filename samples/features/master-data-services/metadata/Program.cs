@@ -16,16 +16,16 @@ namespace MetadataSample
 {
     class Program
     {
-        // MDS service client proxy object. 
+        // MDS service client proxy object.
         private static ServiceClient clientProxy;
-        // Set the MDS URL (plus /Service/Service.svc) here. 
+        // Set the MDS URL (plus /Service/Service.svc) here.
         private static string mdsURL = @"http://localhost/MDS/Service/Service.svc";
 
         static void Main(string[] args)
         {
             try
             {
-                // Create a service proxy. 
+                // Create a service proxy.
                 clientProxy = GetClientProxy(mdsURL);
             }
             catch (Exception ex)
@@ -38,7 +38,7 @@ namespace MetadataSample
             CreateModel("TestModel");
 
             // Get a model information with specified model and version names.
-            // "VERSION_1" is a default version name for a new model. 
+            // "VERSION_1" is a default version name for a new model.
             Identifier modelIdentifier = GetModel("TestModel", "VERSION_1");
 
             // Update the model name.
@@ -88,13 +88,13 @@ namespace MetadataSample
         // Creates MDS service client proxy.
         private static ServiceClient GetClientProxy(string targetURL)
         {
-            // Create an endpoint address using the URL. 
+            // Create an endpoint address using the URL.
             EndpointAddress endptAddress = new EndpointAddress(targetURL);
 
-            // Create and configure the WS Http binding. 
+            // Create and configure the WS Http binding.
             WSHttpBinding wsBinding = new WSHttpBinding();
 
-            // Create and return the client proxy. 
+            // Create and return the client proxy.
             return new ServiceClient(wsBinding, endptAddress);
         }
 
@@ -349,7 +349,7 @@ namespace MetadataSample
                 newAttribute.Identifier = new MemberTypeContextIdentifier { Name = attributeName, ModelId = new Identifier { Id = modelId }, EntityId = new Identifier { Id = entityId }, MemberType = MemberType.Leaf };
                 newAttribute.AttributeType = AttributeType.FreeForm;
                 newAttribute.DataType = AttributeDataType.Text;
-                // When the DataType is "Text", set the length (100) to DataTypeInformation.  
+                // When the DataType is "Text", set the length (100) to DataTypeInformation.
                 newAttribute.DataTypeInformation = 100;
                 newAttribute.DisplayWidth = 100;
                 createRequest.Metadata.Attributes.Add(newAttribute);

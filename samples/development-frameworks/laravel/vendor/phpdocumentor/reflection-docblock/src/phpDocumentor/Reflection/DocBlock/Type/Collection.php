@@ -114,10 +114,10 @@ class Collection extends \ArrayObject
             }
         }
     }
-    
+
     /**
      * Returns a string representation of the collection.
-     * 
+     *
      * @return string The resolved types across the collection, separated with
      *     {@link self::OPERATOR_OR}.
      */

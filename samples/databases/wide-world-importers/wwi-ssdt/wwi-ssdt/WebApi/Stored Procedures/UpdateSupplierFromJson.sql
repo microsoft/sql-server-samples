@@ -53,7 +53,7 @@ AS BEGIN
 			PostalAddressLine1 nvarchar(60),
 			PostalAddressLine2 nvarchar(60),
 			PostalPostalCode nvarchar(10)) as json
-	WHERE 
+	WHERE
 		Purchasing.Suppliers.SupplierID = @SupplierID
 
 END

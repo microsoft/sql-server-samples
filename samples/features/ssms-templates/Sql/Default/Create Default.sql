@@ -12,7 +12,7 @@ AS
 GO
 
 -- Bind the default to a column
-EXEC sp_bindefault 
-   N'<schema_name, sysname, dbo>.<default_name, , today>', 
+EXEC sp_bindefault
+   N'<schema_name, sysname, dbo>.<default_name, , today>',
    N'<table_schema,,HumanResources>.<table_name,,Employee>.<column_name,,HireDate>'
 GO

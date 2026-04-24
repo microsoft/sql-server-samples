@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="402.5" height="181" viewBox="0 0 402.5 181">
+    <defs>
+        <clipPath id="a">
+            <rect width="384" height="143" style="fill:none"/>
+        </clipPath>
+    </defs>
+    <g transform="translate(-392.5 -626)">
+        <path d="M3346,487.094h358" transform="translate(-2909 250)" style="stroke-width:2px;stroke:#707070;fill:none"/>
+        <path d="M1-121.863H31.379l30.379-12,37.024,13,59.808,7.5,20.269-8.5,42.387,16,26.581-7.5,29.429,7.5,41.967-18.1L357-117.934V-10H1V-120.5H1" transform="translate(438 798)" style="fill-rule:evenodd;fill:none"/>
+        <path d="M-.1,17.95l30.578-3.436L57.715,18.2H86.426l34.365-3.687,31.782,3.436,30.418-.436,27.939,9.934L243.31,26.2l30.276-1.229,27.758,3,30.73-9.771,23.479-1" transform="translate(439 715)" style="stroke:#00c3ff;stroke-linejoin:round;stroke-width:2px;fill:none"/>
+        <g transform="translate(-34 387)">
+            <text class="e" transform="translate(466 385)">
+                <tspan x="1.895" y="11">-5min</tspan>
+            </text>
+            <text class="e" transform="translate(533 385)">
+                <tspan x="1.785" y="11">-4min</tspan>
+            </text>
+            <text class="e" transform="translate(599 385)">
+                <tspan x="1.895" y="11">-3min</tspan>
+            </text>
+            <text class="e" transform="translate(666 385)">
+                <tspan x="1.895" y="11">-2min</tspan>
+            </text>
+            <text class="e" transform="translate(732 385)">
+                <tspan x="2.654" y="11">-1min</tspan>
+            </text>
+            <text class="e" transform="translate(799 385)">
+                <tspan x="1.895" y="11">-0min</tspan>
+            </text>
+        </g>
+        <text class="f" transform="translate(581 793)">
+            <tspan x="21.719" y="11">Time</tspan>
+        </text>
+        <text class="f" transform="translate(392.5 733.5) rotate(-90)">
+            <tspan x="17.847" y="11">Hertz</tspan>
+        </text>
+        <g transform="translate(411 626)" style="clip-path:url(#a)">
+            <g transform="translate(-445 -370)">
+                <rect class="h" width="358" height="1" transform="translate(471 377)"/>
+                <text class="e" transform="translate(445 370)">
+                    <tspan x="14.731" y="11">5</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -344)">
+                <rect class="h" width="358" height="1" transform="translate(471 377)"/>
+                <text class="e" transform="translate(445 370)">
+                    <tspan x="14.512" y="11">4</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -318)">
+                <rect class="h" width="358" height="1" transform="translate(471 377)"/>
+                <text class="e" transform="translate(445 370)">
+                    <tspan x="14.731" y="11">3</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -292)">
+                <rect class="h" width="358" height="1" transform="translate(471 377)"/>
+                <text class="e" transform="translate(445 370)">
+                    <tspan x="14.731" y="11">2</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -266)">
+                <rect class="h" width="358" height="1" transform="translate(471 377)"/>
+                <text class="e" transform="translate(445 370)">
+                    <tspan x="16.25" y="11">1</tspan>
+                </text>
+            </g>
+            <g transform="translate(-445 -240)">
+                <rect class="h" width="358" height="1" transform="translate(471 377)"/>
+                <text class="e" transform="translate(445 370)">
+                    <tspan x="14.731" y="11">0</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>

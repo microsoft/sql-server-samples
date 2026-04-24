@@ -1,10 +1,10 @@
 --=============================================================
 -- Create CLR Function template
 --
--- This example creates an assembly named "utf8string" in the 
--- local database. Then, it creates a CLR function named 
--- "GetCurrentTimeMs" that references "GetCurrentTimeMs" 
--- of classutf8.Utils in assembly utf8string. 
+-- This example creates an assembly named "utf8string" in the
+-- local database. Then, it creates a CLR function named
+-- "GetCurrentTimeMs" that references "GetCurrentTimeMs"
+-- of classutf8.Utils in assembly utf8string.
 --=============================================================
 USE AdventureWorks
 GO

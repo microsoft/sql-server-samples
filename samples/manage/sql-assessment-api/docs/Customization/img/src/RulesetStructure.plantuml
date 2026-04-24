@@ -1,0 +1,23 @@
+@startjson
+{
+     "name": "<i>Ruleset name</i>",
+     "version": "<i>Ruleset version</i>",
+     "schemaVersion": "<i>Schema version</i>",
+     "rules?":[
+          "<i>rule A</i>",
+          "<i>rule B</i>",
+          "<i>rule C</i>",
+          "…"
+
+     ],
+     "probes?":{
+          "<i>probe 1</i>": [
+               "<i>implementation 1</i>",
+               "<i>implementation 2</i>",
+               "…"
+          ],
+          "<i>probe 2</i>": "…",
+          "…": "…"
+     }
+}
+@endjson

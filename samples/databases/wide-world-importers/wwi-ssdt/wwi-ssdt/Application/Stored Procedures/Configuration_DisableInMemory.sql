@@ -13,7 +13,7 @@ BEGIN
 /*-------------------------------------------------------------------------------------*/
       SET @SQL = N'DROP PROCEDURE IF EXISTS Website.InvoiceCustomerOrders;';
       EXECUTE (@SQL);
-      
+
       SET @SQL = N'DROP PROCEDURE IF EXISTS Website.InsertCustomerOrders;';
       EXECUTE (@SQL);
 			
@@ -23,13 +23,13 @@ BEGIN
       -- Drop the table types
       SET @SQL = N'DROP TYPE IF EXISTS Website.OrderIDList;';
       EXECUTE (@SQL);
-      
+
       SET @SQL = N'DROP TYPE IF EXISTS Website.OrderLineList;';
       EXECUTE (@SQL);
-      
+
       SET @SQL = N'DROP TYPE IF EXISTS Website.OrderList;';
       EXECUTE (@SQL);
-      
+
       SET @SQL = N'DROP TYPE IF EXISTS Website.SensorDataList;';
       EXECUTE (@SQL);
 
@@ -54,7 +54,7 @@ CREATE TABLE Warehouse.ColdRoomTemperatures_Staging
     Temperature decimal(10, 2) NOT NULL,
     ValidFrom datetime2(7) NOT NULL,
     ValidTo datetime2(7) NOT NULL,
-) ;';
+);';
             EXECUTE (@SQL);
 
             SET @SQL = N'
@@ -70,7 +70,7 @@ SET IDENTITY_INSERT Warehouse.ColdRoomTemperatures_Staging OFF;';
 
         SET @SQL = N'DROP TABLE Warehouse.ColdRoomTemperatures;';
         EXECUTE (@SQL);
-          
+
         SET @SQL = N'
 EXEC dbo.sp_rename @objname = N''Warehouse.ColdRoomTemperatures_Staging'',
                    @newname = N''ColdRoomTemperatures'',
@@ -78,14 +78,14 @@ EXEC dbo.sp_rename @objname = N''Warehouse.ColdRoomTemperatures_Staging'',
         EXECUTE (@SQL);
 
         SET @SQL = '
-CREATE NONCLUSTERED INDEX [IX_Warehouse_ColdRoomTemperatures_ColdRoomSensorNumber]  
+CREATE NONCLUSTERED INDEX [IX_Warehouse_ColdRoomTemperatures_ColdRoomSensorNumber]
   ON Warehouse.ColdRoomTemperatures (ColdRoomSensorNumber)
                       ';
         EXECUTE (@SQL);
 
         SET @SQL = '
 ALTER TABLE Warehouse.ColdRoomTemperatures
-  ADD CONSTRAINT PK_Warehouse_ColdRoomTemperatures 
+  ADD CONSTRAINT PK_Warehouse_ColdRoomTemperatures
   PRIMARY KEY CLUSTERED (ColdRoomTemperatureID)
                       ';
         EXECUTE (@SQL);
@@ -114,7 +114,7 @@ CREATE TABLE Warehouse.VehicleTemperatures_Staging
 	FullSensorData nvarchar(1000) COLLATE Latin1_General_CI_AS NULL,
   IsCompressed bit NOT NULL,
   CompressedSensorData varbinary(max) NULL
-) ;';
+);';
           EXECUTE (@SQL);
 
           SET @SQL = N'
@@ -139,7 +139,7 @@ EXEC dbo.sp_rename @objname = N''Warehouse.VehicleTemperatures_Staging'',
 
           SET @SQL = '
 ALTER TABLE Warehouse.VehicleTemperatures
-  ADD CONSTRAINT PK_Warehouse_VehicleTemperatures 
+  ADD CONSTRAINT PK_Warehouse_VehicleTemperatures
   PRIMARY KEY NONCLUSTERED (VehicleTemperatureID)
                       ';
           EXECUTE (@SQL);
@@ -352,7 +352,7 @@ CREATE PROCEDURE Website.RecordColdRoomTemperatures
 @SensorReadings Website.SensorDataList READONLY
 WITH EXECUTE AS OWNER
 AS
-BEGIN 
+BEGIN
     BEGIN TRY
 
 		DECLARE @NumberOfReadings int = (SELECT MAX(SensorDataListID) FROM @SensorReadings);

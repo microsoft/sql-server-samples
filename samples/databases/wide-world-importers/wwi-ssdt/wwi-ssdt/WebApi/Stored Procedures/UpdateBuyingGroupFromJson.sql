@@ -6,6 +6,6 @@ AS BEGIN
 		LastEditedBy = @UserID
 	FROM OPENJSON (@BuyingGroup)
 		WITH (BuyingGroupName nvarchar(50)) as json
-	WHERE 
+	WHERE
 		Sales.BuyingGroups.BuyingGroupID = @BuyingGroupID
 END

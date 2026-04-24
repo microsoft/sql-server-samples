@@ -11,11 +11,11 @@
  * BSD style license, available at:
  *   http://datatables.net/license_gpl2
  *   http://datatables.net/license_bsd
- * 
- * This source file is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
+ *
+ * This source file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
- * 
+ *
  */
 
 function fnServerOData(sUrl, aoData, fnCallback, oSettings) {
@@ -95,21 +95,21 @@ function fnServerOData(sUrl, aoData, fnCallback, oSettings) {
 
                     case 'date':
                     case 'numeric':
-                        var fnFormatValue = 
-                            (value.sType == 'numeric') ? 
+                        var fnFormatValue =
+                            (value.sType == 'numeric') ?
                                 function(val) { return val; } :
-                                function(val) { 
+                                function(val) {
                                         // Here is a mess. OData V2, V3, and V4 se different formats of DateTime literals.
                                         switch(oSettings.oInit.iODataVersion){
                                                 // V2 works with the following format:
-                                                // http://services.odata.org/V2/OData/OData.svc/Products?$filter=(ReleaseDate+lt+2014-04-29T09:00:00.000Z)                                                              
-                                                case 4: return (new Date(val)).toISOString(); 
+                                                // http://services.odata.org/V2/OData/OData.svc/Products?$filter=(ReleaseDate+lt+2014-04-29T09:00:00.000Z)
+                                                case 4: return (new Date(val)).toISOString();
                                                 // V3 works with the following format:
                                                 // http://services.odata.org/V3/OData/OData.svc/Products?$filter=(ReleaseDate+lt+datetimeoffset'2008-01-01T07:00:00')
-                                                case 3: return "datetimeoffset'" + (new Date(val)).toISOString() + "'";  
+                                                case 3: return "datetimeoffset'" + (new Date(val)).toISOString() + "'";
                                                 // V2 works with the following format:
                                                 // http://services.odata.org/V2/OData/OData.svc/Products?$filter=(ReleaseDate+lt+DateTime'2014-04-29T09:00:00.000Z')
-                                                case 2: return "DateTime'" + (new Date(val)).toISOString() + "'"; 
+                                                case 2: return "DateTime'" + (new Date(val)).toISOString() + "'";
                                         }
                                 }
 

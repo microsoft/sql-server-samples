@@ -2,7 +2,7 @@ namespace ContosoClinic.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Assignments : DbMigration
     {
         public override void Up()
@@ -19,9 +19,9 @@ namespace ContosoClinic.Migrations
                 .ForeignKey("dbo.Patients", t => t.Patient_PatientID, cascadeDelete: true)
                 .Index(t => t.ApplicationUser_Id)
                 .Index(t => t.Patient_PatientID);
-            
+
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.ApplicationUserPatients", "Patient_PatientID", "dbo.Patients");

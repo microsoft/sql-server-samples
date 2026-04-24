@@ -11,8 +11,8 @@ dbhandle <- odbcDriverConnect('driver={SQL Server};server=<yourservername>;datab
 ##Run the query to brin the data we'll use to create the model
 res <- sqlQuery(dbhandle, 'select tipped,  passenger_count, trip_time_in_secs, trip_distance, direct_distance   from nyctaxi_features')
 
-##Create the model... 
-model <- rxLogit(tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance, res)  
+##Create the model...
+model <- rxLogit(tipped ~ passenger_count + trip_distance + trip_time_in_secs + direct_distance, res)
 summary(model)
 
 ##Now, let's create the frame with the parameters for the prediction

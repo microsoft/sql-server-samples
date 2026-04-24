@@ -1,9 +1,9 @@
 -- =============================================
 -- Create basic Instead Of Trigger
 -- =============================================
-IF EXISTS (SELECT name 
-	   FROM   sysobjects 
-	   WHERE  name = N'<trigger_name, sysname, trig_test>' 
+IF EXISTS (SELECT name
+	   FROM   sysobjects
+	   WHERE  name = N'<trigger_name, sysname, trig_test>'
 	   AND 	  type = 'TR')
     DROP TRIGGER <trigger_name, sysname, trig_test>
 GO

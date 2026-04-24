@@ -1,5 +1,5 @@
 # SQLVDI for Linux
-This folder contains the latest files and samples required to build a SQL Server VDI based backup/restore application for Linux. 
+This folder contains the latest files and samples required to build a SQL Server VDI based backup/restore application for Linux.
 
 ## Files available
 1. vdi.h
@@ -21,14 +21,14 @@ There is a problem with VDF_LikeDisk and VDF_RandomAccess where the backup/resto
 1. Install the clang and uuid-dev packages in order to build the sample.
 
    Example (for Ubuntu): 
-    
+
    ```bash
    sudo apt-get install clang 
    sudo apt-get install uuid-dev 
    ```
-   
+
 1. Create a symbolic link to sqlcmd in /usr/bin
-   
+
    ```bash
    sudo ln -s /opt/mssql-tools/bin/sqlcmd /usr/bin/sqlcmd
    ```

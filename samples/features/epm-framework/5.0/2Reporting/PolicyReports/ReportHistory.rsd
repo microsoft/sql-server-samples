@@ -28,8 +28,8 @@
 	, EvaluationDateTime
 	, EvaluatedPolicy
 	, EvaluatedObject
-	, CASE WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) 
-		WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\' 
+	, CASE WHEN EvaluatedObject LIKE '%Databases\%\' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1)
+		WHEN EvaluatedObject LIKE '%Databases\%' THEN RIGHT(EvaluatedObject, CHARINDEX('\sesabataD',REVERSE(EvaluatedObject))-1) + '\'
 		WHEN EvaluatedObject = 'No Targets Found' THEN EvaluatedObject + '\'
 		ELSE RIGHT(EvaluatedObject, CHARINDEX('\',REVERSE(EvaluatedObject))-1) + '\' END AS AggEvaluatedObject
 	, PolicyResult
@@ -43,8 +43,8 @@ AND EvaluatedPolicy IN (@EvaluatedPolicy)
 AND (EvaluatedServer IN (SELECT server_name
 		FROM policy.pfn_ServerGroupInstances(@ServerGroupName))
 OR @ServerGroupName = '')
-AND EvaluatedPolicy NOT IN (SELECT spp.name 
-		FROM msdb..syspolicy_policies spp 
+AND EvaluatedPolicy NOT IN (SELECT spp.name
+		FROM msdb..syspolicy_policies spp
 		INNER JOIN msdb..syspolicy_policy_categories spc ON spp.policy_category_id = spc.policy_category_id
 		WHERE spc.name = 'Disabled')
 ORDER BY PolicyResult, EvaluatedServer</CommandText>

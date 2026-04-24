@@ -33,7 +33,7 @@ namespace TodoApp.Controllers
             cmd.Parameters.AddWithValue("id", id);
             await SqlPipe.Stream(cmd, Response.Body, "{}");
         }
-    
+
         // POST api/Todo
         [HttpPost]
         public async Task Post()

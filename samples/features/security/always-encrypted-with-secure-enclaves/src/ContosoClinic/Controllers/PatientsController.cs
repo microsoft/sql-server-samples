@@ -21,8 +21,8 @@ namespace ContosoClinic.Controllers
                            select p;
             if (!String.IsNullOrEmpty(searchString))
             {
-                patients = patients.Where(s => s.FirstName.Contains(searchString) 
-                        || s.LastName.Contains(searchString) 
+                patients = patients.Where(s => s.FirstName.Contains(searchString)
+                        || s.LastName.Contains(searchString)
                         || s.SSN.Contains(searchString));
             }
             if (maxAgeString != null)
@@ -56,7 +56,7 @@ namespace ContosoClinic.Controllers
         }
 
         // POST: Patients/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -88,7 +88,7 @@ namespace ContosoClinic.Controllers
         }
 
         // POST: Patients/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]

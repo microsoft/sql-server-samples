@@ -72,7 +72,7 @@ interface MockInterface
      * @return Mock
      */
     public function shouldDeferMissing();
-    
+
     /**
      * Set mock to defer unexpected methods to its parent if possible
      *

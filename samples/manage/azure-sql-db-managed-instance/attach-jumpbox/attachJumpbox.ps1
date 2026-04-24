@@ -2,12 +2,18 @@ $parameters = $args[0]
 $scriptUrlBase = $args[1]
 
 $subscriptionId = $parameters['subscriptionId']
+$environmentName = $parameters['environmentName']
 $resourceGroupName = $parameters['resourceGroupName']
 $virtualMachineName = $parameters['virtualMachineName']
 $virtualNetworkName = $parameters['virtualNetworkName']
 $managementSubnetName = $parameters['subnetName']
 $administratorLogin = $parameters['administratorLogin']
 $administratorLoginPassword = $parameters['administratorLoginPassword']
+
+if ($environmentName -eq '' -or ($null -eq $environmentName)) {
+    $environmentName = 'AzureCloud'
+    Write-Host "Environment: AzureCloud." -ForegroundColor Green
+}
 
 if ($virtualMachineName -eq '' -or ($null -eq $virtualMachineName)) {
     $virtualMachineName = 'Jumpbox'
@@ -22,7 +28,7 @@ if ($managementSubnetName -eq '' -or ($null -eq $managementSubnetName)) {
 function VerifyPSVersion {
     Write-Host "Verifying PowerShell version."
     if ($PSVersionTable.PSEdition -eq "Desktop") {
-        if (($PSVersionTable.PSVersion.Major -ge 6) -or 
+        if (($PSVersionTable.PSVersion.Major -ge 6) -or
         (($PSVersionTable.PSVersion.Major -eq 5) -and ($PSVersionTable.PSVersion.Minor -ge 1))) {
             Write-Host "PowerShell version verified." -ForegroundColor Green
         }
@@ -38,7 +44,7 @@ function VerifyPSVersion {
         else {
             Write-Host "You need to install PowerShell version 6.0 or heigher." -ForegroundColor Red
             Break;
-        }        
+        }
     }
 }
 
@@ -55,15 +61,18 @@ function EnsureAzModule {
             Write-Host "Module Az installed." -ForegroundColor Green
         }
     } else {
-        Write-Host "Module Az imported." -ForegroundColor Green        
+        Write-Host "Module Az imported." -ForegroundColor Green
     }
 }
 
-function EnsureLogin () {
+function EnsureLogin {
+    param (
+        $environmentName
+    )
     $context = Get-AzContext
     If ($null -eq $context.Subscription) {
         Write-Host "Sign-in..."
-        If ($null -eq (Connect-AzAccount -ErrorAction SilentlyContinue -ErrorVariable Errors)) {
+        If ($null -eq (Connect-AzAccount -Environment $environmentName -ErrorAction SilentlyContinue -ErrorVariable Errors)) {
             Write-Host ("Sign-in failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
         }
@@ -180,7 +189,7 @@ function CalculateVpnClientAddressPoolPrefix {
 
 VerifyPSVersion
 EnsureAzModule
-EnsureLogin
+EnsureLogin -environmentName $environmentName
 SelectSubscriptionId -subscriptionId $subscriptionId
 
 $virtualNetwork = LoadVirtualNetwork -resourceGroupName $resourceGroupName -virtualNetworkName $virtualNetworkName

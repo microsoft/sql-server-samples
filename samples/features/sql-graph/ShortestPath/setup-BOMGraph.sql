@@ -17,15 +17,15 @@ GO
 
 -- populate data into product node from Production.Product table
 INSERT INTO dbo.Product
-SELECT 
-	p.ProductID, 
-	p.Name, 
-	p.ProductNumber, 
-	p.StandardCost, 
-	p.ListPrice, 
-	p.Weight, 
-	p.DaysToManufacture, 
-	p.SellStartDate, 
+SELECT
+	p.ProductID,
+	p.Name,
+	p.ProductNumber,
+	p.StandardCost,
+	p.ListPrice,
+	p.Weight,
+	p.DaysToManufacture,
+	p.SellStartDate,
 	p.SellEndDate
 FROM Production.Product p;
 GO
@@ -41,7 +41,7 @@ INSERT INTO IsPartOf
 	$to_id,
 	PerAssemblyQty
 )
-SELECT 
+SELECT
 	P.$node_id,
 	PP.$node_id,
 	BOM.PerAssemblyQty

@@ -1,0 +1,18 @@
+@startjson
+{
+    "type": "<i>Probe type</i>",
+    "target?": {
+        "type": "<b>Server</b> | <b>Database</b>",
+        "version": "<i>Version pattern</i>",
+        "…": "…"
+    },
+    "implementation": {
+        "probe_param_1": "<i>Expression</i>",
+        "probe_param_2": "<i>Expression</i>",
+        "…": "…",
+        "transform?": "<i>Data transform</i>"
+    },
+    "requires?": "<i>Requirements</i>",
+    "runFor?": "<i>Requirements</i>"
+}
+@endjson

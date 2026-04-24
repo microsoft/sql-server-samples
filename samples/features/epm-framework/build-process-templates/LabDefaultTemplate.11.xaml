@@ -32,7 +32,7 @@
       <Variable x:TypeArguments="mtbc:IBuildDetail" Name="SelectedBuildDetail" />
       <Variable x:TypeArguments="x:String" Name="BuildNumber" />
       <Variable x:TypeArguments="mtlc:LabEnvironment" Name="LabEnvironment" />
-    </Sequence.Variables>   
+    </Sequence.Variables>
     <mtbwa:UpdateBuildNumber BuildNumberFormat="[BuildNumberFormat]" DisplayName="Update Build Number" sap:VirtualizedContainerService.HintSize="858,22" />
     <mtbwa:GetBuildDetail DisplayName="Get Build Details" sap:VirtualizedContainerService.HintSize="858,22" Result="[BuildDetail]" />
     <If Condition="[LabWorkflowParameters.BuildDetails.IsTeamSystemBuild = True AndAlso LabWorkflowParameters.BuildDetails.QueueNewBuild = True]" DisplayName="If Build is needed" sap:VirtualizedContainerService.HintSize="858,416">
@@ -98,7 +98,7 @@
               <mtlwa:WriteDeploymentInformation Url="{x:Null}" DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" DisplayName="Clean snapshot not specified " sap:VirtualizedContainerService.HintSize="208,208" Message="Build definition did not specify a clean snapshot. It is a best practice to use clean snapshot when running the lab workflow." />
             </If.Then>
           </If>
-        </Sequence>        
+        </Sequence>
       </If.Else>
     </If>
     <If Condition="[LabWorkflowParameters.DeploymentDetails.DeploymentNeeded = True or LabWorkflowParameters.TestParameters.RunTest = True]" DisplayName="If deployment or test needed" sap:VirtualizedContainerService.HintSize="858,1214">
@@ -108,7 +108,7 @@
     </If>
     <If Condition="[LabWorkflowParameters.DeploymentDetails.DeploymentNeeded = True]" DisplayName="If deployment needed" sap:VirtualizedContainerService.HintSize="858,1214">
       <If.Then>
-        <Sequence DisplayName="Do deployment" sap:VirtualizedContainerService.HintSize="733,1106">                    
+        <Sequence DisplayName="Do deployment" sap:VirtualizedContainerService.HintSize="733,1106">
           <mtlwa:ReserveEnvironmentForDeployment DisplayName="Reserve Environment For Deployment" sap:VirtualizedContainerService.HintSize="711,22" LabEnvironmentUri="[LabEnvironmentUri]" />
             <TryCatch DisplayName="Deploy Build on Environment">
               <TryCatch.Try>
@@ -153,13 +153,13 @@
               </Sequence>
             </If.Then>
             <If.Else>
-              <Sequence DisplayName = "No Post Deployment Snapshot"> 
+              <Sequence DisplayName = "No Post Deployment Snapshot">
                 <If Condition="[Not String.Equals(Microsoft.TeamFoundation.Lab.Client.LabEnvironment.UnmanagedProvider, labEnvironment.LabProvider)]" DisplayName= "If Virtual Environment">
                   <If.Then>
                     <mtlwa:WriteDeploymentInformation Url="{x:Null}" DeploymentInformationType="[Microsoft.TeamFoundation.Build.Common.DeploymentInformationTypes.Deploy]" DisplayName="Post deployment snapshot not specified" sap:VirtualizedContainerService.HintSize="200,518" Message="Build definition did not specify a post deployment snapshot. It is a best practice to take post deployment snapshot when running the lab workflow." />
                   </If.Then>
                 </If>
-              </Sequence>                
+              </Sequence>
             </If.Else>
           </If>
         </Sequence>

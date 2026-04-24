@@ -15,16 +15,16 @@ Usage:
   DECLARE @myStockItemIDToAdjust INT
   EXEC [DataLoadSimulation].[GetRandomStockItemToAdjust]
     10, @StockItemIDToAdjust = @myStockItemIDToAdjust OUTPUT
-  SELECT @myStockItemIDToAdjust 
+  SELECT @myStockItemIDToAdjust
 
 */
-  
-  SELECT TOP(1) 
+
+  SELECT TOP(1)
          @StockItemIDToAdjust = StockItemID
     FROM Warehouse.StockItemHoldings
    WHERE (QuantityOnHand + @QuantityToAdjust) >= 0
    ORDER BY NEWID()
-  
+
   RETURN
 
 END

@@ -1,4 +1,4 @@
-﻿# NodeJS Express4 REST API that uses SQL/JSON functionalities 
+﻿# NodeJS Express4 REST API that uses SQL/JSON functionalities
 
 This project contains an example implementation of NodeJS REST API with CRUD operations on a simple Todo table. You can learn how to build REST API on the existing database schema using NodeJS, Express4, and new JSON functionalities that are available in SQL Server 2016 (or higher) and Azure SQL Database.
 

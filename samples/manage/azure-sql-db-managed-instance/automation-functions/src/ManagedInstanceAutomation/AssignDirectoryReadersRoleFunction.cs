@@ -32,7 +32,7 @@ namespace ManagedInstanceAutomation
 
                 if (string.IsNullOrEmpty(tenantId))
                     throw new Exception($"[MSI Not Assigned]: '{managedInstance.Id}'");
-                
+
                 var directoryReadersRole = await GetAzureADDirectoryRoleAsync(tenantId, "Directory Readers");
 
                 return (await AddMemberToAzureADRole(tenantId, directoryReadersRole.ObjectId, principalId).ConfigureAwait(false)) ?

@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": ""
+        },
+        "location": {
+            "value": ""
+        },
+        "defaultDataLakeStorageAccountName": {
+            "value": ""
+        },
+        "defaultDataLakeStorageFilesystemName": {
+            "value": ""
+        },
+        "sqlAdministratorLogin": {
+            "value": ""
+        },
+        "setWorkspaceIdentityRbacOnFilesystem": {
+            "value": true
+        },
+        "allowAllConnections": {
+            "value": true
+        },
+        "poolSubnetId": {
+            "value": ""
+        },
+        "tagValues": {
+            "value": {}
+        },
+        "storageSubscriptionID": {
+            "value": "9932f414-50cd-474d-8a1a-bf0649225d73"
+        },
+        "storageResourceGroupName": {
+            "value": ""
+        },
+        "storageLocation": {
+            "value": ""
+        }
+    }
+}

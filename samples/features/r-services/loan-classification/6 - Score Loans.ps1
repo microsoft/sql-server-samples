@@ -3,7 +3,7 @@
 
 $StartCtr = 1
 $Increment = 250000
-$EndCtr = $Increment 
+$EndCtr = $Increment
 $FinalCount = 1195907
 $vServerName = $env:computername
 $vDatabaseName = "LendingClub"
@@ -27,7 +27,7 @@ while ($EndCtr -le $FinalCount)
 # Wait till jobs complete
 while (Get-Job -State Running)
 {
-       
+
     Start-Sleep 1
 }
 

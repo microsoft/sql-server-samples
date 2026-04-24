@@ -2,5 +2,5 @@
 //	Import
 // ==========================
 
-IMPORT FROM '<file, file name,C:\MyFile.dmb>' 
+IMPORT FROM '<file, file name,C:\MyFile.dmb>'
    WITH PASSWORD='<password, string,>'

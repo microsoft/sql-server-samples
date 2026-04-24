@@ -1,4 +1,4 @@
-﻿ 
+﻿
 CREATE PROCEDURE Sequences.ReseedSequenceBeyondTableValues
 @SequenceName sysname,
 @SchemaName sysname,
@@ -7,7 +7,7 @@ CREATE PROCEDURE Sequences.ReseedSequenceBeyondTableValues
 AS BEGIN
     -- Ensures that the next sequence value is above the maximum value of the supplied table column
     SET NOCOUNT ON;
- 
+
     DECLARE @SQL nvarchar(max);
     DECLARE @CurrentTableMaximumValue bigint;
     DECLARE @NewSequenceValue bigint;
@@ -19,12 +19,12 @@ AS BEGIN
     (
         CurrentValue bigint
     )
- 
+
     SET @SQL = N'INSERT #CurrentValue (CurrentValue) SELECT COALESCE(MAX(' + QUOTENAME(@ColumnName) + N'), 0) FROM ' + QUOTENAME(@SchemaName) + N'.' + QUOTENAME(@TableName) + N';';
     EXECUTE (@SQL);
     SET @CurrentTableMaximumValue = (SELECT CurrentValue FROM #CurrentValue);
     DROP TABLE #CurrentValue;
- 
+
     IF @CurrentTableMaximumValue >= @CurrentSequenceMaximumValue
     BEGIN
         SET @NewSequenceValue = @CurrentTableMaximumValue + 1;

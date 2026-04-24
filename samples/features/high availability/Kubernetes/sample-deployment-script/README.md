@@ -12,20 +12,20 @@ Sample script for doing the following:
 
 # Other semantics
  - If user runs the script multiple times with same AG name – deployment fails
-   (creating a namespace with same name will fail) 
+   (creating a namespace with same name will fail)
 
  - If user runs the script multiple times with different AG name – the script
    will create a new namespace and new operator and new instances will be
    deployed. This means that users can not use the script to create multiple
    AGs in the same instances. They will have to use the .yaml edit files route
-   to create multiple AGs in same instance. 
+   to create multiple AGs in same instance.
 
 # Setup/Requirements
  - python3.5
  - pyyaml (Python package)
  - kubernetes.client (Python package)
 
-Assuming you have `pip` pointing to the python3 version, run the following to 
+Assuming you have `pip` pointing to the python3 version, run the following to
 install the required packages:
 ```sh
 pip install --user -r requirements.txt

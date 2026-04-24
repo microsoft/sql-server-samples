@@ -4,7 +4,7 @@
 
 ALTER PROCEDURE <Schema_Name, sysname, dbo>.<Procedure_Name, sysname, Procedure_Name>
   -- Add the parameters for the stored procedure here
-  <@param1, sysname, @p1> <datatype_for_param1, , int> = <default_value_for_param1, , 0>, 
+  <@param1, sysname, @p1> <datatype_for_param1, , int> = <default_value_for_param1, , 0>,
   <@param2, sysname, @p2> <datatype_for_param2, , int> = <default_value_for_param2, , 0>
 WITH NATIVE_COMPILATION, SCHEMABINDING
 AS BEGIN ATOMIC WITH

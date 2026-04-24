@@ -4,7 +4,7 @@
   <a href="{% url 'profile' comment.user.username %}"><img src="{{ comment.user.profile.get_picture }}" class="comment-portrait"></a>
   <div class="comment-text">
     <h5>
-      <a href="{% url 'profile' comment.user.username %}">{{ comment.user.profile.get_screen_name }}</a> 
+      <a href="{% url 'profile' comment.user.username %}">{{ comment.user.profile.get_screen_name }}</a>
       <small>{{ comment.date|naturaltime }}</small>
     </h5>
     <p>{{ comment.comment }}</p>

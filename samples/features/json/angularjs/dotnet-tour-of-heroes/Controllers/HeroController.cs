@@ -19,7 +19,7 @@ namespace AngularHeroApp.Controllers
             this.SqlCommand = sqlCommand;
             this.SqlPipe = sqlPipe;
         }
-        
+
         // GET: app/heroes[?name=<<name>>]
         [HttpGet]
         public async Task Get(string name)

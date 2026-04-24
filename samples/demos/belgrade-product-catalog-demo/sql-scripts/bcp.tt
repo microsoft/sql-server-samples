@@ -1,14 +1,14 @@
-﻿<#@ output extension=".sql" #> 
+﻿<#@ output extension=".sql" #>
 <#@ template language="C#" hostspecific="True" #>
 
 SELECT *
-FROM OPENROWSET(BULK '<#=this.Host.ResolvePath("..\\logs") #>\log-20170203.ndjson', 
-				FORMATFILE = '<#=this.Host.ResolvePath("..\\logs") #>\ndjson.fmt' ) as logs; 
+FROM OPENROWSET(BULK '<#=this.Host.ResolvePath("..\\logs") #>\log-20170203.ndjson',
+				FORMATFILE = '<#=this.Host.ResolvePath("..\\logs") #>\ndjson.fmt' ) as logs;
 
 SELECT *
-FROM OPENROWSET(BULK '<#=this.Host.ResolvePath("..\\logs") #>\log-20170203.tsjson', 
-				FORMATFILE = '<#=this.Host.ResolvePath("..\\logs") #>\tsjson.fmt' ) as logs; 
- 
+FROM OPENROWSET(BULK '<#=this.Host.ResolvePath("..\\logs") #>\log-20170203.tsjson',
+				FORMATFILE = '<#=this.Host.ResolvePath("..\\logs") #>\tsjson.fmt' ) as logs;
+
  DROP TABLE IF EXISTS DataLog
 
 --{"Timestamp":"2017-02-03T08:33:32.0776155+01:00","Level":"Information","MessageTemplate":"{HostingRequestFinished:l}","Properties":{"ElapsedMilliseconds":154.2332,"StatusCode":200,"ContentType":null,"HostingRequestFinished":"Request finished in 154.2332ms 200 ","EventId":{"Id":2},"SourceContext":"Microsoft.AspNetCore.Hosting.Internal.WebHost","RequestId":"0HL2C0RQ64LNN","RequestPath":"/"},"Renderings":{"HostingRequestFinished":[{"Format":"l","Rendering":"Request finished in 154.2332ms 200 "}]}}

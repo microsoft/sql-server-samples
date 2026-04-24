@@ -1,4 +1,4 @@
-# ASP.NET Core Product Catalog application that uses SQL/JSON functionalities 
+# ASP.NET Core Product Catalog application that uses SQL/JSON functionalities
 
 This project contains an example implementation of ASP.NET Core application that shows how to display list of products, add, edit, or delete products in the list.
 
@@ -70,7 +70,7 @@ If your database is hosted on Azure you can add something like:
 
 1. Build solution using Ctrl+Shift+B, right-click on project + Build, Build/Build Solution from menu, or **dotnet build** command from the command line (from the root folder of application).
 
-2. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.  
+2. Run the sample app using F5 or Ctrl+F5 in Visual Studio 2015, or using **dotnet run** executed in the command prompt of the project root folder.
   1. Open /index.html Url to get all products from database,
   2. Use **Add** button to add a new product,
   3. Edit a product using **Edit** button in table,
@@ -95,7 +95,7 @@ You can easily modify this code to fit the architecture of your application.
 
 ## Related Links
 
-You can find more information about the components that are used in this sample on these locations: 
+You can find more information about the components that are used in this sample on these locations:
 - [ASP.NET Core](http://www.asp.net/core).
 - [JSON Support in Sql Server](https://msdn.microsoft.com/en-us/library/dn921897.aspx).
 - [JQuery](https://jquery.com/).

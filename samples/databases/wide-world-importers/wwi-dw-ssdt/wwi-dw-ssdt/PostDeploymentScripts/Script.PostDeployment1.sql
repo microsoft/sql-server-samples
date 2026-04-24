@@ -1,12 +1,12 @@
 ﻿/*
-Post-Deployment Script Template              
+Post-Deployment Script Template
 --------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.    
- Use SQLCMD syntax to include a file in the post-deployment script.      
- Example:      :r .\myfile.sql                
- Use SQLCMD syntax to reference a variable in the post-deployment script.    
- Example:      :setvar TableName MyTable              
-               SELECT * FROM [$(TableName)]          
+ This file contains SQL statements that will be appended to the build script.
+ Use SQLCMD syntax to include a file in the post-deployment script.
+ Example:      :r .\myfile.sql
+ Use SQLCMD syntax to reference a variable in the post-deployment script.
+ Example:      :setvar TableName MyTable
+               SELECT * FROM [$(TableName)]
 --------------------------------------------------------------------------------------
 */
 
@@ -41,8 +41,8 @@ DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999';
 
 IF NOT EXISTS (SELECT 1 FROM Dimension.City WHERE [City Key] = 0)
 BEGIN
-    INSERT Dimension.City 
-        ([City Key], [WWI City ID], City, [State Province], Country, Continent, [Sales Territory], Region, Subregion, 
+    INSERT Dimension.City
+        ([City Key], [WWI City ID], City, [State Province], Country, Continent, [Sales Territory], Region, Subregion,
          [Location], [Latest Recorded Population], [Valid From], [Valid To], [Lineage Key])
     VALUES
         (0, 0, N'Unknown', N'N/A', N'N/A', N'N/A', N'N/A', N'N/A', N'N/A',
@@ -52,20 +52,20 @@ END;
 IF NOT EXISTS (SELECT 1 FROM Dimension.Customer WHERE [Customer Key] = 0)
 BEGIN
     INSERT Dimension.Customer
-        ([Customer Key], [WWI Customer ID], [Customer], [Bill To Customer], Category, [Buying Group], 
+        ([Customer Key], [WWI Customer ID], [Customer], [Bill To Customer], Category, [Buying Group],
          [Primary Contact], [Postal Code], [Valid From], [Valid To], [Lineage Key])
     VALUES
-        (0, 0, N'Unknown', N'N/A', N'N/A', N'N/A', 
+        (0, 0, N'Unknown', N'N/A', N'N/A', N'N/A',
          N'N/A', N'N/A', @StartOfTime, @EndOfTime, 0);
 END;
 
 IF NOT EXISTS (SELECT 1 FROM Dimension.Employee WHERE [Employee Key] = 0)
 BEGIN
     INSERT Dimension.Employee
-        ([Employee Key], [WWI Employee ID], Employee, [Preferred Name], 
+        ([Employee Key], [WWI Employee ID], Employee, [Preferred Name],
          [Is Salesperson], Photo, [Valid From], [Valid To], [Lineage Key])
     VALUES
-        (0, 0, N'Unknown', N'N/A', 
+        (0, 0, N'Unknown', N'N/A',
          0, NULL, @StartOfTime, @EndOfTime, 0);
 END;
 
@@ -80,9 +80,9 @@ END;
 IF NOT EXISTS (SELECT 1 FROM Dimension.[Stock Item] WHERE [Stock Item Key] = 0)
 BEGIN
     INSERT Dimension.[Stock Item]
-        ([Stock Item Key], [WWI Stock Item ID], [Stock Item], Color, [Selling Package], [Buying Package], 
-         Brand, Size, [Lead Time Days], [Quantity Per Outer], [Is Chiller Stock], 
-         Barcode, [Tax Rate], [Unit Price], [Recommended Retail Price], [Typical Weight Per Unit], 
+        ([Stock Item Key], [WWI Stock Item ID], [Stock Item], Color, [Selling Package], [Buying Package],
+         Brand, Size, [Lead Time Days], [Quantity Per Outer], [Is Chiller Stock],
+         Barcode, [Tax Rate], [Unit Price], [Recommended Retail Price], [Typical Weight Per Unit],
          Photo, [Valid From], [Valid To], [Lineage Key])
     VALUES
         (0, 0, N'Unknown', N'N/A', N'N/A', N'N/A',
@@ -94,7 +94,7 @@ END;
 IF NOT EXISTS (SELECT 1 FROM Dimension.[Supplier] WHERE [Supplier Key] = 0)
 BEGIN
     INSERT Dimension.[Supplier]
-        ([Supplier Key], [WWI Supplier ID], Supplier, Category, [Primary Contact], [Supplier Reference], 
+        ([Supplier Key], [WWI Supplier ID], Supplier, Category, [Primary Contact], [Supplier Reference],
          [Payment Days], [Postal Code], [Valid From], [Valid To], [Lineage Key])
     VALUES
         (0, 0, N'Unknown', N'N/A', N'N/A', N'N/A',
@@ -118,7 +118,7 @@ BEGIN
 END
 ELSE
 BEGIN
-	UPDATE dbo.SampleVersion 
+	UPDATE dbo.SampleVersion
 	SET MajorSampleVersion=2, MinorSampleVersion=0, MinSQLServerBuild=N'13.0.4000.0'
 END
 GO

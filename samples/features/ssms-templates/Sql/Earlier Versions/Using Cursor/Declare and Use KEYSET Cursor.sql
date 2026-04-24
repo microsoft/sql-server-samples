@@ -14,10 +14,10 @@ WHILE (@@fetch_status <> -1)
 BEGIN
 	IF (@@fetch_status <> -2)
 	BEGIN
---		PRINT 'add user defined code here' 
+--		PRINT 'add user defined code here'
 --		eg.
 		PRINT 'updating record for ' + @name
-		UPDATE pubs.dbo.authors 
+		UPDATE pubs.dbo.authors
 		SET phone = replace(phone, ' ', '-')
 		WHERE CURRENT OF <cursor_name, sysname, test_cursor>
 	END

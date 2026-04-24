@@ -1,5 +1,5 @@
 --------------------------------------------------
--- Perf Improvements - Cyrillic - 2 Bytes per char 
+-- Perf Improvements - Cyrillic - 2 Bytes per char
 --------------------------------------------------
 
 USE master;
@@ -37,14 +37,14 @@ CREATE TABLE dbo.Inserts_UTF8_Compressed(
 WITH (DATA_COMPRESSION = PAGE)
 GO
 
--- INSERT perf UTF16: 
+-- INSERT perf UTF16:
 SET NOCOUNT ON;
 BEGIN TRAN
 DECLARE @i int = 1, @start datetime
 SELECT @start = GETDATE()
 WHILE @i < 1000000
 BEGIN
-    INSERT INTO dbo.Inserts_UTF16 (col1) 
+    INSERT INTO dbo.Inserts_UTF16 (col1)
 	SELECT REPLICATE(CONCAT(
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
@@ -63,14 +63,14 @@ SELECT DATEDIFF(s, @start, GETDATE()) AS 'Inserts_UTF16'
 COMMIT
 GO
 
--- INSERT perf UTF8: 
+-- INSERT perf UTF8:
 SET NOCOUNT ON;
 BEGIN TRAN
 DECLARE @i int = 1, @start datetime
 SELECT @start = GETDATE()
 WHILE @i < 1000000
 BEGIN
-    INSERT INTO dbo.Inserts_UTF8 (col1) 
+    INSERT INTO dbo.Inserts_UTF8 (col1)
 	SELECT REPLICATE(CONCAT(
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
@@ -89,14 +89,14 @@ END;
 SELECT DATEDIFF(s, @start, GETDATE()) AS 'Inserts_UTF8'
 COMMIT
 GO
--- INSERT perf UTF16 Compressed: 
+-- INSERT perf UTF16 Compressed:
 SET NOCOUNT ON;
 BEGIN TRAN
 DECLARE @i int = 1, @start datetime
 SELECT @start = GETDATE()
 WHILE @i < 1000000
 BEGIN
-    INSERT INTO dbo.Inserts_UTF16_Compressed (col1) 
+    INSERT INTO dbo.Inserts_UTF16_Compressed (col1)
 	SELECT REPLICATE(CONCAT(
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
@@ -114,14 +114,14 @@ END;
 SELECT DATEDIFF(s, @start, GETDATE()) AS 'Inserts_UTF16_Compressed'
 COMMIT
 GO
--- INSERT perf UTF8 Compressed: 
+-- INSERT perf UTF8 Compressed:
 SET NOCOUNT ON;
 BEGIN TRAN
 DECLARE @i int = 1, @start datetime
 SELECT @start = GETDATE()
 WHILE @i < 1000000
 BEGIN
-    INSERT INTO dbo.Inserts_UTF8_Compressed (col1) 
+    INSERT INTO dbo.Inserts_UTF8_Compressed (col1)
 	SELECT REPLICATE(CONCAT(
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
@@ -179,7 +179,7 @@ DECLARE @i int = 1, @start datetime
 SELECT @start = GETDATE()
 WHILE @i < 1000000
 BEGIN
-    INSERT INTO dbo.Inserts_UTF16 (col1) 
+    INSERT INTO dbo.Inserts_UTF16 (col1)
 	SELECT REPLICATE(CONCAT(
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
 	  NCHAR(FLOOR(1070 + (RAND() * 45))),
@@ -199,21 +199,21 @@ GO
 -- UTF8
 SET NOCOUNT ON;
 BEGIN TRAN
-INSERT INTO dbo.Inserts_UTF8 (col1) 
+INSERT INTO dbo.Inserts_UTF8 (col1)
 SELECT col1 FROM dbo.Inserts_UTF16
 COMMIT
 GO
 -- UTF16 Compressed
 SET NOCOUNT ON;
 BEGIN TRAN
-INSERT INTO dbo.Inserts_UTF16_Compressed (col1) 
+INSERT INTO dbo.Inserts_UTF16_Compressed (col1)
 SELECT col1 FROM dbo.Inserts_UTF16
 COMMIT
 GO
 -- UTF8 Compressed
 SET NOCOUNT ON;
 BEGIN TRAN
-INSERT INTO dbo.Inserts_UTF8_Compressed (col1) 
+INSERT INTO dbo.Inserts_UTF8_Compressed (col1)
 SELECT col1 FROM dbo.Inserts_UTF16
 COMMIT
 GO
@@ -248,14 +248,14 @@ DBCC DROPCLEANBUFFERS
 GO
 /*
 SSMS:
-CPU 141 ms 
+CPU 141 ms
 Elapsed 646 ms
 Reads 7069 + 7069
 
 SQLCMD:
 CPU  ms
 Elapsed  ms
-Reads 
+Reads
 */
 
 SELECT * FROM Inserts_UTF16
@@ -266,14 +266,14 @@ DBCC DROPCLEANBUFFERS
 GO
 /*
 SSMS:
-CPU 452 ms 
+CPU 452 ms
 Elapsed 252 ms
 Reads 7069 + 2888
 
 SQLCMD:
 CPU  ms
 Elapsed  ms
-Reads 
+Reads
 */
 SELECT * FROM Inserts_UTF8
 WHERE col1 LIKE 'ч%'
@@ -283,14 +283,14 @@ DBCC DROPCLEANBUFFERS
 GO
 /*
 SSMS:
-CPU 282 ms 
+CPU 282 ms
 Elapsed 403 ms
 Reads 4143
 
 SQLCMD:
 CPU  ms
 Elapsed  ms
-Reads 
+Reads
 */
 SELECT * FROM Inserts_UTF16_Compressed
 WHERE col1 LIKE 'ч%'
@@ -300,14 +300,14 @@ DBCC DROPCLEANBUFFERS
 GO
 /*
 SSMS:
-CPU 674 ms 
+CPU 674 ms
 Elapsed 244 ms
 Reads 6601
 
 SQLCMD:
 CPU  ms
 Elapsed  ms
-Reads 
+Reads
 */
 SELECT * FROM Inserts_UTF8_Compressed
 WHERE col1 LIKE 'ч%'

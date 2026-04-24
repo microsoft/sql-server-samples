@@ -1,8 +1,8 @@
 // ==========================
-// Base Prediction 
+// Base Prediction
 // ==========================
 
-SELECT <select list,expr list,*> 
+SELECT <select list,expr list,*>
 FROM [<mining model,name,MyModel>]
 PREDICTION JOIN
 OPENQUERY([<datasource,name,MyDataSource>],'<query,string,SELECT * FROM MyTable>')

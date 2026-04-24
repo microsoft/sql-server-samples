@@ -9,7 +9,7 @@ namespace FlgpWwiDemo.Controllers
     public class DemoController : Controller
     {
         IQueryMapper queryMapper = null;
-        
+
         public DemoController(IQueryMapper queryMapper)
         {
             this.queryMapper = queryMapper;
@@ -27,7 +27,7 @@ namespace FlgpWwiDemo.Controllers
             await this.queryMapper
                 .OnError(ex=> status = ex.Message)
                 .ExecuteReader("EXEC dbo.report 7", reader => {
-                    result = reader.GetDecimal(0);    
+                    result = reader.GetDecimal(0);
                     end = DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 });
             return "{\"x\":\"" + DateTime.Now.ToUniversalTime().ToString() + "\",\"y\":" + (end-start)  + ",\"start\":" + start + ",\"end\":" + end + ",\"result\":" + result +",\"status\":\"" + status + "\"}";

@@ -2,11 +2,11 @@
 -- Create Aggregate Template
 -- =============================================
 IF EXISTS(
-	SELECT * 
+	SELECT *
       FROM sys.objects
-	 WHERE name = N'<aggregate_name, sysname, sample_aggregate>' 
+	 WHERE name = N'<aggregate_name, sysname, sample_aggregate>'
        AND (type = 'AF')
-)  
+)
 	DROP AGGREGATE <aggregate_name, sysname, sample_aggregate>
 GO
 

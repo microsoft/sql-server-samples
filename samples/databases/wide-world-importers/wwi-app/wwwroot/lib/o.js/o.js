@@ -7,7 +7,7 @@
 //
 // By Jan Hommes
 // Date: 11/08/2017
-// Contributors: Matteo Antony Mistretta (https://github.com/IceOnFire), 
+// Contributors: Matteo Antony Mistretta (https://github.com/IceOnFire),
 //
 // --------------------
 // The MIT License (MIT)

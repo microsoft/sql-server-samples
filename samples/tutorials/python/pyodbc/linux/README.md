@@ -1,6 +1,6 @@
 # Connect to SQL using Python on Ubuntu Linux
 
-Python sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database using the **pyodbc** connector. 
+Python sample code that runs on an Ubuntu Linux client computer to connect to an Azure SQL Database using the **pyodbc** connector.
 
 ### Contents
 
@@ -39,7 +39,7 @@ To run this sample, you need the following prerequisites.
 
 	```
 	sudo su
-	wget https://gallery.technet.microsoft.com/ODBC-Driver-13-for-Ubuntu-b87369f0/file/154097/2/installodbc.sh 
+	wget https://gallery.technet.microsoft.com/ODBC-Driver-13-for-Ubuntu-b87369f0/file/154097/2/installodbc.sh
 	sh installodbc.sh
 	```
 
@@ -51,15 +51,15 @@ To run this sample, you need the following prerequisites.
 
 **Azure prerequisites:**
 
-1. An AdventureWorks sample database: 
+1. An AdventureWorks sample database:
 
 	- The Python sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
 	
 ## Run this sample
 
-1. From your terminal, update the connection string details in the Python file with your own username, password, and hostname. 
+1. From your terminal, update the connection string details in the Python file with your own username, password, and hostname.
 
-2. Run the code sample by running the below in your terminal: 
+2. Run the code sample by running the below in your terminal:
 
 	```
 	python sample_python_linux.py
@@ -69,7 +69,7 @@ To run this sample, you need the following prerequisites.
 
 ## Sample details
 
-The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement.
 
 ## Disclaimers
 The scripts and this guide are copyright Microsoft Corporations and are provided as samples. They are not part of any Azure service and are not covered by any SLA or other Azure-related agreements. They are provided as-is with no warranties express or implied. Microsoft takes no responsibility for the use of the scripts or the accuracy of this document. Familiarize yourself with the scripts before using them.

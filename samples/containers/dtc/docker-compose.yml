@@ -19,7 +19,7 @@ services:
         environment:
             SA_PASSWORD: "Sql2019isfast"
             ACCEPT_EULA: "Y"
-            MSSQL_AGENT_ENABLED: "true" 
+            MSSQL_AGENT_ENABLED: "true"
             MSSQL_RPC_PORT: 135
             MSSQL_DTC_TCP_PORT: 51999
         ports:

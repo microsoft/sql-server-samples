@@ -17,32 +17,32 @@ Get started quickly with developing applications in C# on Windows with SQL Serve
 
 ## About this sample
 
-- **Applies to:** SQL Server 2016 (or higher) 
-- **Workload:** 
-    - CRUD with .NET 
+- **Applies to:** SQL Server 2016 (or higher)
+- **Workload:**
+    - CRUD with .NET
     - CRUD with Entity Framework
     - Performance improvements with Columnstore
 - **Programming Language:** C#
-- **Authors:** ajlam 
+- **Authors:** ajlam
 
 <a name=before-you-begin></a>
 
 ## Before you begin
 
-To run this sample, you need the following prerequisites. 
+To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 (or higher) 
+1. SQL Server 2016 (or higher)
 2. .NET Framework
 3. Entity Framework
 4. Visual Studio
 
 ## Run this sample
 
-1. In Visual Studio, open the Program.cs file and update the connection string username and password with your own. 
+1. In Visual Studio, open the Program.cs file and update the connection string username and password with your own.
 
-2. From Visual Studio, hit **F5** to build and run the program. 
+2. From Visual Studio, hit **F5** to build and run the program.
 
 3. Repeat the above steps for any of the three samples provided.
 

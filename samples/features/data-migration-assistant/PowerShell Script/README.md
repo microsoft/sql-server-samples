@@ -49,7 +49,7 @@ To run this sample, you need the following prerequisites.
     - databaseName
     - jsonDirectory
     - processTo
-    
+
    For more information, see [Consolidate Assessment Reports](https://docs.microsoft.com/sql/dma/dma-consolidatereports).
 
 2. Set  PowerShell execution policy to bypass for current session, as follows.

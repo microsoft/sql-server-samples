@@ -123,7 +123,7 @@ class ExpectationTest extends MockeryTestCase
         $this->mock->foo();
         $this->assertEquals('bazzz', $this->mock->bar);
     }
-    
+
     public function testSetsPublicPropertiesWhenRequestedMoreTimesThanSetValues()
     {
         $this->mock->bar = null;

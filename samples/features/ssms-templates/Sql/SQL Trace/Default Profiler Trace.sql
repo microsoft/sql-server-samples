@@ -9,11 +9,11 @@ declare @maxfilesize bigint
 declare @traceoptions int
 declare @stoptime datetime
 set @traceoptions = <trace_options,int,0>
-set @maxfilesize = <max_file_size_mb, bigint, 5> 
+set @maxfilesize = <max_file_size_mb, bigint, 5>
 set @stoptime = <stop_time, datetime, NULL>
 
 -- Create the trace with the name of the output file - .trc extension is added to filename
-exec @rc = sp_trace_create @TraceID output, <trace_options,int,0>, N'<trace_file_name,nvarchar(245),C:\MyTrace>', @maxfilesize, <stop_time, datetime, NULL> 
+exec @rc = sp_trace_create @TraceID output, <trace_options,int,0>, N'<trace_file_name,nvarchar(245),C:\MyTrace>', @maxfilesize, <stop_time, datetime, NULL>
 if (@rc != 0) goto error
 
 -- Set the events
@@ -93,8 +93,8 @@ exec sp_trace_setstatus @TraceID, 1
 select TraceID=@TraceID
 goto finish
 
-error: 
+error:
 select ErrorCode=@rc
 
-finish: 
+finish:
 go

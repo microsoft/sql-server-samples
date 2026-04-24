@@ -36,7 +36,7 @@ but we'll probably merge any code that looks close enough.
 * Fork the [repository](https://github.com/padraic/mockery) on GitHub
 * Add the code for your feature or bug
 * Add some tests for your feature or bug
-* Optionally, but preferably, write some documentation 
+* Optionally, but preferably, write some documentation
 * Optionally, update the CHANGELOG.md file with your feature or
   [BC](http://en.wikipedia.org/wiki/Backward_compatibility) break
 * If you have created new library files, add them to the root package.xml file for PEAR install support.

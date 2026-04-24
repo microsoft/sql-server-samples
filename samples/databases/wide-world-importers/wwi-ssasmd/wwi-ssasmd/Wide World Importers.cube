@@ -2109,203 +2109,203 @@ The CALCULATE command controls the aggregation of leaf cells in the cube.
 If the CALCULATE command is deleted or modified, the data within the cube is affected.
 You should edit this command only if you manually specify how the cube is aggregated.
 */
-CALCULATE;  
+CALCULATE;
 
 /* Sales Total Excluding Tax Invoice YTD --------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Sales Total Excluding Tax Invoice YTD]
- AS SUM( YTD([Invoice Date].[Calendar].CurrentMember), [Measures].[Sales Total Excluding Tax] ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';  
+ AS SUM( YTD([Invoice Date].[Calendar].CurrentMember), [Measures].[Sales Total Excluding Tax] ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';
 CREATE MEMBER CURRENTCUBE.[Measures].[Sales Total Excluding Tax Previous Invoice YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Invoice Date].[Calendar].[Year],
                         1,
                         [Invoice Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Sales Total Excluding Tax] 
-   ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';  
+    [Measures].[Sales Total Excluding Tax]
+   ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';
 
 /* Sales Total Excluding Tax Invoice Previous YTD -----------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Sales Total Including Tax Invoice YTD]
- AS SUM( YTD([Invoice Date].[Calendar].CurrentMember), [Measures].[Sales Total Including Tax] ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';  
+ AS SUM( YTD([Invoice Date].[Calendar].CurrentMember), [Measures].[Sales Total Including Tax] ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';
 CREATE MEMBER CURRENTCUBE.[Measures].[Sales Total Including Tax Previous Invoice YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Invoice Date].[Calendar].[Year],
                         1,
                         [Invoice Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Sales Total Including Tax] 
-   ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';  
+    [Measures].[Sales Total Including Tax]
+   ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';
 
 /* Sales Quantity Invoice YTD -------------------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Sales Quantity Total Invoice YTD]
- AS SUM( YTD([Invoice Date].[Calendar].CurrentMember), [Measures].[Sales Quantity] ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';  
+ AS SUM( YTD([Invoice Date].[Calendar].CurrentMember), [Measures].[Sales Quantity] ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';
 
 /* Sales Quantity Invoice Previous YTD ----------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Sales Quantity Total Previous Invoice YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Invoice Date].[Calendar].[Year],
                         1,
                         [Invoice Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Sales Quantity] 
-   ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';  
+    [Measures].[Sales Quantity]
+   ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale';
 
 /* Transaction Total Excluding Tax Date YTD -----------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Transaction Total Excluding Tax Date YTD]
- AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Transaction Total Excluding Tax] ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';  
+ AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Transaction Total Excluding Tax] ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';
 
 /* Transaction Total Excluding Tax Previous Date YTD --------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Transaction Total Excluding Tax Previous Date YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Date].[Calendar].[Year],
                         1,
                         [Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Transaction Total Excluding Tax] 
-   ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';  
+    [Measures].[Transaction Total Excluding Tax]
+   ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';
 
 /* Transaction Total Including Tax YTD ----------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Transaction Total Including Tax Date YTD]
- AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Transaction Total Including Tax] ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';  
+ AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Transaction Total Including Tax] ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';
 
 /* Transaction Total Including Tax Date Previous YTD --------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Transaction Total Including Tax Date Previous YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Date].[Calendar].[Year],
                         1,
                         [Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Transaction Total Including Tax] 
-   ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';  
+    [Measures].[Transaction Total Including Tax]
+   ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction';
 
 /* Ordered Purchase Outers YTD ------------------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Ordered Purchase Outers Date YTD]
- AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Ordered Purchase Outers] ), 
-FORMAT_STRING = "#,##0;(#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';  
+ AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Ordered Purchase Outers] ),
+FORMAT_STRING = "#,##0;(#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';
 
 /* Ordered Purchase Outers Date Previous YTD ----------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Ordered Purchase Outers Date Previous YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Date].[Calendar].[Year],
                         1,
                         [Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Ordered Purchase Outers] 
-   ), 
-FORMAT_STRING = "#,##0;(#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';  
+    [Measures].[Ordered Purchase Outers]
+   ),
+FORMAT_STRING = "#,##0;(#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';
 
 /* Ordered Purchase Quantity YTD ----------------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Ordered Purchase Quantity Date YTD]
- AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Ordered Purchase Quantity] ), 
-FORMAT_STRING = "#,##0;(#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';  
+ AS SUM( YTD([Date].[Calendar].CurrentMember), [Measures].[Ordered Purchase Quantity] ),
+FORMAT_STRING = "#,##0;(#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';
 
 /* Ordered Purchase Outers Date Previous YTD ----------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Ordered Purchase Quantity Date Previous YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Date].[Calendar].[Year],
                         1,
                         [Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Ordered Purchase Quantity] 
-   ), 
-FORMAT_STRING = "#,##0;(#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';  
+    [Measures].[Ordered Purchase Quantity]
+   ),
+FORMAT_STRING = "#,##0;(#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase';
 
 /* Order Quantity YTD ---------------------------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Order Quantity Order Date YTD]
- AS SUM( YTD([Order Date].[Calendar].CurrentMember), [Measures].[Order Quantity] ), 
-FORMAT_STRING = "#,##0;(#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';  
+ AS SUM( YTD([Order Date].[Calendar].CurrentMember), [Measures].[Order Quantity] ),
+FORMAT_STRING = "#,##0;(#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';
 
 /* Order Quantity Order Date Previous YTD -------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Order Quantity Order Date Previous YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Order Date].[Calendar].[Year],
                         1,
                         [Order Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Order Quantity] 
-   ), 
-FORMAT_STRING = "#,##0;(#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';  
+    [Measures].[Order Quantity]
+   ),
+FORMAT_STRING = "#,##0;(#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';
 
 /* Order Total Excluding Tax Order Date YTD -----------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Order Total Excluding Tax Order Date YTD]
- AS SUM( YTD([Order Date].[Calendar].CurrentMember), [Measures].[Order Total Excluding Tax] ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';  
+ AS SUM( YTD([Order Date].[Calendar].CurrentMember), [Measures].[Order Total Excluding Tax] ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';
 
 /* Order Total Excluding Tax Order Date Previous YTD --------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Order Total Excluding Tax Order Date Previous YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Order Date].[Calendar].[Year],
                         1,
                         [Order Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Order Total Excluding Tax] 
-   ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';  
+    [Measures].[Order Total Excluding Tax]
+   ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';
 
 /* Order Total Including Tax Order Date YTD -----------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Order Total Including Tax Order Date YTD]
- AS SUM( YTD([Order Date].[Calendar].CurrentMember), [Measures].[Order Total Including Tax] ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';  
+ AS SUM( YTD([Order Date].[Calendar].CurrentMember), [Measures].[Order Total Including Tax] ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';
 
 /* Order Total Including Tax Order Date Previous YTD --------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[Order Total Including Tax Order Date Previous YTD]
- AS SUM( 
+ AS SUM(
     YTD(
         ParallelPeriod( [Order Date].[Calendar].[Year],
                         1,
                         [Order Date].[Calendar].CurrentMember
-                      ) 
+                      )
        ),
-    [Measures].[Order Total Including Tax] 
-   ), 
-FORMAT_STRING = "$#,##0;($#,##0)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order'; 
+    [Measures].[Order Total Including Tax]
+   ),
+FORMAT_STRING = "$#,##0;($#,##0)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';
 
 /*-----------------------------------------------------------------------------------------------------------*/
 /* KPIs                                                                                                      */
@@ -2314,213 +2314,213 @@ VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order';
 /* Sales Total Excluding Tax Invoice YTD --------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Sales Total Excluding Tax Current Invoice YTD]
  AS ( [Measures].[Sales Total Excluding Tax]
-    , StrToMember( "[Invoice Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Invoice Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Sales Total Excluding Tax Current Invoice YTD]
  AS ( [Measures].[Sales Total Excluding Tax]
-    , StrToMember("[Invoice Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Invoice Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Sale'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Sale'    ;
 
 
 /* Sales Total Including Tax Invoice YTD --------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Sales Total Including Tax Current Invoice YTD]
  AS ( [Measures].[Sales Total Including Tax]
-    , StrToMember( "[Invoice Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Invoice Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Sales Total Including Tax Current Invoice YTD]
  AS ( [Measures].[Sales Total Including Tax]
-    , StrToMember("[Invoice Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Invoice Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Sale'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Sale'    ;
 
 /* Sales Quantity Total Invoice YTD --------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Sales Quantity Total Current Invoice YTD]
  AS ( [Measures].[Sales Quantity]
-    , StrToMember( "[Invoice Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Invoice Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Sale'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Sales Quantity Total Current Invoice YTD]
  AS ( [Measures].[Sales Quantity]
-    , StrToMember("[Invoice Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Invoice Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Sale'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Sale'    ;
 
 /* Ordered Purchase Outers YTD ------------------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Ordered Purchase Outers Current YTD]
  AS ( [Measures].[Ordered Purchase Outers]
-    , StrToMember( "[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Ordered Purchase Outers Current YTD]
  AS ( [Measures].[Ordered Purchase Outers]
-    , StrToMember("[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Purchase'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Purchase'    ;
 
 /* Ordered Purchase Quantity YTD ----------------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Ordered Purchase Quantity Current YTD]
  AS ( [Measures].[Ordered Purchase Quantity]
-    , StrToMember( "[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Purchase'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Ordered Purchase Quantity Current YTD]
  AS ( [Measures].[Ordered Purchase Quantity]
-    , StrToMember("[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Purchase'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Purchase'    ;
 
 /* Order Quantity YTD ---------------------------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Order Quantity Current Order YTD]
  AS ( [Measures].[Order Quantity]
-    , StrToMember( "[Order Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Order Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Order Quantity Current Order YTD]
  AS ( [Measures].[Order Quantity]
-    , StrToMember("[Order Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Order Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Order'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Order'    ;
 
 /* Order Total Excluding Tax Order YTD ----------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Order Total Excluding Tax Order YTD]
  AS ( [Measures].[Order Total Excluding Tax]
-    , StrToMember( "[Order Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Order Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Order Total Excluding Tax Order YTD]
  AS ( [Measures].[Order Total Excluding Tax]
-    , StrToMember("[Order Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Order Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Order'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Order'    ;
 
 /* Order Total Including Tax Order YTD ----------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Order Total Including Tax Order YTD]
  AS ( [Measures].[Order Total Including Tax]
-    , StrToMember( "[Order Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Order Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Order'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Order Total Including Tax Order YTD]
  AS ( [Measures].[Order Total Including Tax]
-    , StrToMember("[Order Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Order Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Order'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Order'    ;
 
 /* Transaction Total Excluding Tax YTD ----------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Transaction Total Excluding Tax YTD]
  AS ( [Measures].[Transaction Total Excluding Tax]
-    , StrToMember( "[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Transaction Total Excluding Tax YTD]
  AS ( [Measures].[Transaction Total Excluding Tax]
-    , StrToMember("[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Transaction'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Transaction'    ;
 
 /* Transaction Total Including Tax YTD ----------------------------------------------------------------------*/
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Goal Transaction Total Including Tax YTD]
  AS ( [Measures].[Transaction Total Including Tax]
-    , StrToMember( "[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")  
+    , StrToMember( "[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(DATEADD("y", -1, NOW()), "yyyy")
                  + "]"
-                 ) 
-    ) * 1.10, 
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction'  ; 
+                 )
+    ) * 1.10,
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1 ,  ASSOCIATED_MEASURE_GROUP = 'Transaction'  ;
 
 CREATE MEMBER CURRENTCUBE.[Measures].[KPI Value Transaction Total Including Tax YTD]
  AS ( [Measures].[Transaction Total Including Tax]
-    , StrToMember("[Date].[Calendar].[Year].&amp;[" 
-                 + FORMAT(NOW(), "yyyy") 
+    , StrToMember("[Date].[Calendar].[Year].&amp;["
+                 + FORMAT(NOW(), "yyyy")
                  + "]"
-                 ) 
+                 )
     ),
-FORMAT_STRING = "$#,##0.00;($#,##0.00)", 
-VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Transaction'    ; 
+FORMAT_STRING = "$#,##0.00;($#,##0.00)",
+VISIBLE = 1,  ASSOCIATED_MEASURE_GROUP = 'Transaction'    ;
 </Text>
         </Command>
       </Commands>

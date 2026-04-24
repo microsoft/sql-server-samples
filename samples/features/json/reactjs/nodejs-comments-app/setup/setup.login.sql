@@ -11,5 +11,5 @@ CREATE ROLE WebUserRole
 GO
 
 GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE TO WebUserRole
-EXEC sp_addrolemember N'WebUserRole', N'WebUser' 
+EXEC sp_addrolemember N'WebUserRole', N'WebUser'
 GO

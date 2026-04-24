@@ -22,7 +22,7 @@ BEGIN
       @EmployeePersonID = @ContactPersonID OUTPUT
     EXEC [DataLoadSimulation].[GetRandomEmployeePerson]
       @EmployeePersonID = @SupplierPersonID OUTPUT
-      
+
     DECLARE @Orders TABLE
     (
         SupplierID int,

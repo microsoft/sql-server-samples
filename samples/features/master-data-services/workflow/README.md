@@ -4,9 +4,9 @@ A sample class that demonstrates how to implement a workflow type extender for S
 listener's config file should be updated to reference this class, like this:
 
 ```XML
-<code>  
-    <setting name="WorkflowTypeExtenders" serializeAs="String">  
-        <value>SPWF=Microsoft.MasterDataServices.SharePointWorkflow.SharePointWorkflowExtender, Microsoft.MasterDataServices.SharePointWorkflow, Version=1.0.0.0</value>  
-    </setting>  
-</code>  
+<code>
+    <setting name="WorkflowTypeExtenders" serializeAs="String">
+        <value>SPWF=Microsoft.MasterDataServices.SharePointWorkflow.SharePointWorkflowExtender, Microsoft.MasterDataServices.SharePointWorkflow, Version=1.0.0.0</value>
+    </setting>
+</code>
 ```

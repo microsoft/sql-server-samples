@@ -1,9 +1,9 @@
-﻿ 
+﻿
 CREATE PROCEDURE Sequences.ReseedAllSequences
 AS BEGIN
     -- Ensures that the next sequence values are above the maximum value of the related table columns
     SET NOCOUNT ON;
- 
+
     EXEC Sequences.ReseedSequenceBeyondTableValues @SequenceName = 'CityKey', @SchemaName = 'Dimension', @TableName = 'City', @ColumnName = 'City Key';
     EXEC Sequences.ReseedSequenceBeyondTableValues @SequenceName = 'CustomerKey', @SchemaName = 'Dimension', @TableName = 'Customer', @ColumnName = 'Customer Key';
     EXEC Sequences.ReseedSequenceBeyondTableValues @SequenceName = 'EmployeeKey', @SchemaName = 'Dimension', @TableName = 'Employee', @ColumnName = 'Employee Key';

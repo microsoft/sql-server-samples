@@ -3,12 +3,12 @@
 //
 //  Returns the min, max, and
 //  mean of a continuous column,
-//  or of the buckets of a 
+//  or of the buckets of a
 //  DISCRETIZED column
 // ==========================
 
-SELECT DISTINCT 
-    RangeMin([<column,name,MyColumn>]) as [Min], 
-    [<column,name,MyColumn>] as [Mean], 
+SELECT DISTINCT
+    RangeMin([<column,name,MyColumn>]) as [Min],
+    [<column,name,MyColumn>] as [Mean],
 	RangeMax([<column,name,MyColumn>]) as [Max]
 FROM [<mining model,name,MyModel>]

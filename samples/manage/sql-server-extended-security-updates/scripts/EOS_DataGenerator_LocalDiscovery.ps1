@@ -1,24 +1,24 @@
 <#
-   Discovers local SQL Server instance names. 
+   Discovers local SQL Server instance names.
    Run the following command: .\EOS_DataGenerator_LocalDiscovery.ps1
 
    Disclaimer
-   The sample scripts are not supported under any Microsoft standard support program or service. 
-   The sample scripts are provided AS IS without warranty of any kind. Microsoft further disclaims all implied warranties including, 
-   without limitation, any implied warranties of merchantability or of fitness for a particular purpose. 
-   The entire risk arising out of the use or performance of the sample scripts and documentation remains with you. 
-   In no event shall Microsoft, its authors, or anyone else involved in the creation, production, or delivery of the scripts be liable 
-   for any damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, loss of 
-   business information, or other pecuniary loss) arising out of the use of or inability to use the sample scripts or documentation, 
-   even if Microsoft has been advised of the possibility of such damages. 
+   The sample scripts are not supported under any Microsoft standard support program or service.
+   The sample scripts are provided AS IS without warranty of any kind. Microsoft further disclaims all implied warranties including,
+   without limitation, any implied warranties of merchantability or of fitness for a particular purpose.
+   The entire risk arising out of the use or performance of the sample scripts and documentation remains with you.
+   In no event shall Microsoft, its authors, or anyone else involved in the creation, production, or delivery of the scripts be liable
+   for any damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, loss of
+   business information, or other pecuniary loss) arising out of the use of or inability to use the sample scripts or documentation,
+   even if Microsoft has been advised of the possibility of such damages.
 #>
 
 Clear-Variable -name subscriptionId
 
 $CSVfilename = Read-Host "Output file will be saved in the current script path. Enter a file name for the CSV output"
 
-If ( [string]::IsNullOrEmpty($CSVfilename) ) { 
-    Throw "Parameter missing: Output file" 
+If ( [string]::IsNullOrEmpty($CSVfilename) ) {
+    Throw "Parameter missing: Output file"
 } Else {
     If ($CSVfilename -notlike "*.csv") { $CSVfilename = $CSVfilename + ".csv" }
 
@@ -37,7 +37,7 @@ If ( $IsAzureVM -eq "Y" ) {
     Try {
         Install-Module -Name Az -AllowClobber -Scope CurrentUser
         Import-Module Az
-    } 
+    }
     Catch {
         # Error if not connected
         Throw "Could not install Azure PS module"
@@ -47,7 +47,7 @@ If ( $IsAzureVM -eq "Y" ) {
     Write-Host -ForegroundColor Yellow "Connecting to Azure account..."
     Try {
         Connect-AzAccount -Subscription $subscriptionName
-    } 
+    }
     Catch {
         # Error if not installed
         Throw "Could not connect to Azure account"
@@ -69,16 +69,16 @@ If ( $IsAzureVM -eq "Y" ) {
         Elseif ($IsAzureVMOS -like "*2008*"){
             $OutVersion = '2008'}
         Elseif ($IsAzureVMOS -like "*2012 R2*"){
-            $OutVersion = '2012 R2'} 
+            $OutVersion = '2012 R2'}
         Elseif ($IsAzureVMOS -like "*2012*"){
             $OutVersion = '2012'}
         Elseif ($IsAzureVMOS -like "*2016*"){
-            $OutVersion = '2016'}  
+            $OutVersion = '2016'}
         Elseif ($IsAzureVMOS -like "*2019*"){
-            $OutVersion = '2019'}  
+            $OutVersion = '2019'}
 
         $IsAzureVMOS = $OutVersion
-    } 
+    }
     Catch {
         Throw "Could not get Azure VM information"
         Break
@@ -95,7 +95,7 @@ Function Get-SQLInstance {
     Try {
         $ServerNames = $services.Name | ForEach-Object {$env:computername + "\" + ($_).Replace("MSSQL`$","")}
         If ($ServerNames -like "*MSSQLSERVER") { $ServerNames = $env:computername }
-    } 
+    }
     Catch {
         # Error if none found
         Throw "No SQL Server instances found"
@@ -113,7 +113,7 @@ Function Get-Info {
         [String] $IsAzureVMOS )
 
     Process {
-    
+
             Write-Host "`nConnecting to $ServerName..."
 
             # Get SQL Server instance's data
@@ -141,8 +141,8 @@ Function Get-Info {
 
             Write-Host "|- Querying $ServerName..."
 
-            While ( $dr.Read() ) { 
-             $SQLEdition = $dr.GetValue(0); 
+            While ( $dr.Read() ) {
+             $SQLEdition = $dr.GetValue(0);
              $Version = $dr.GetValue(1);
             }
 
@@ -154,15 +154,15 @@ Function Get-Info {
             Elseif ($Version -eq "10.5"){
                 $OutVersion = '2008R2'}
             Elseif ($Version -eq "11.0"){
-                $OutVersion = '2012'} 
+                $OutVersion = '2012'}
             Elseif ($Version -eq "12.0"){
                 $OutVersion = '2014'}
             Elseif ($Version -eq "13.0"){
-                $OutVersion = '2016'}  
+                $OutVersion = '2016'}
             Elseif ($Version -eq "14.0"){
-                $OutVersion = '2017'} 
+                $OutVersion = '2017'}
             Elseif ($Version -eq "15.0"){
-                $OutVersion = '2019'}   
+                $OutVersion = '2019'}
             Else {
                 $OutVersion = 'Unknown'}
 
@@ -170,7 +170,7 @@ Function Get-Info {
             $dr.Close()
             $sqlconn.Close()
 
-            #Get processors information            
+            #Get processors information
             $CPU = Get-WmiObject -ComputerName $env:computername -class Win32_Processor
 
             #Get Computer model information
@@ -184,17 +184,17 @@ Function Get-Info {
                 $HostType = 'Virtual Machine'}
             Else {
                 $HostType = 'Physical Server'}
-            
+
             #Reset number of cores and use count for the CPUs counting
             $CPUs = 0
             $Cores = 0
-           
+
             ForEach ( $Processor in $CPU ) {
-                $CPUs = $CPUs + 1   
-           
-                #count the total number of cores         
-                $Cores = $Cores + $Processor.NumberOfCores      
-            } 
+                $CPUs = $CPUs + 1
+
+                #count the total number of cores
+                $Cores = $Cores + $Processor.NumberOfCores
+            }
 
             If ( [string]::IsNullOrEmpty($subscriptionId) ) {
                 $InfoRecord = New-Object -TypeName PSObject -Property @{
@@ -223,18 +223,18 @@ Function Get-Info {
 }
 
 #Loop through the server list and get information about SQL Server instances
-If ( [string]::IsNullOrEmpty($subscriptionId) ) { 
+If ( [string]::IsNullOrEmpty($subscriptionId) ) {
         Get-SQLInstance | Foreach-Object {Get-Info $_ $subscriptionId $resourceGroup $IsAzureVMName $IsAzureVMOS} `
         | Select-Object "name", "version", "edition", "cores", "hostType" `
         | ConvertTo-Csv -NoTypeInformation `
         | % { $_ -Replace '"', ""} `
-        | Out-File -FilePath $CSVfilename #-Encoding UTF8 #-NoClobber #-Append 
+        | Out-File -FilePath $CSVfilename #-Encoding UTF8 #-NoClobber #-Append
 } Else {
         Get-SQLInstance | Foreach-Object {Get-Info $_ $subscriptionId $resourceGroup $IsAzureVMName $IsAzureVMOS} `
         | Select-Object "name", "version", "edition", "cores", "hostType", "subscriptionId", "resourceGroup", "azureVmName", "azureVmOS" `
         | ConvertTo-Csv -NoTypeInformation `
         | % { $_ -Replace '"', ""} `
-        | Out-File -FilePath $CSVfilename -Encoding UTF8 #-NoClobber #-Append 
+        | Out-File -FilePath $CSVfilename -Encoding UTF8 #-NoClobber #-Append
 }
 
 Write-Host -ForegroundColor Yellow "`nDone!"

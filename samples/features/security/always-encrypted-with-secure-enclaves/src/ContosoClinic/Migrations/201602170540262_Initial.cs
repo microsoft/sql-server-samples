@@ -2,7 +2,7 @@ namespace ContosoClinic.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Initial : DbMigration
     {
         public override void Up()
@@ -23,7 +23,7 @@ namespace ContosoClinic.Migrations
                         BirthDate = c.DateTime(nullable: false, storeType: "date"),
                     })
                 .PrimaryKey(t => t.PatientID);
-            
+
             CreateTable(
                 "dbo.AspNetRoles",
                 c => new
@@ -33,7 +33,7 @@ namespace ContosoClinic.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
+
             CreateTable(
                 "dbo.AspNetUserRoles",
                 c => new
@@ -46,7 +46,7 @@ namespace ContosoClinic.Migrations
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
-            
+
             CreateTable(
                 "dbo.AspNetUsers",
                 c => new
@@ -66,7 +66,7 @@ namespace ContosoClinic.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
-            
+
             CreateTable(
                 "dbo.AspNetUserClaims",
                 c => new
@@ -79,7 +79,7 @@ namespace ContosoClinic.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
+
             CreateTable(
                 "dbo.AspNetUserLogins",
                 c => new
@@ -91,9 +91,9 @@ namespace ContosoClinic.Migrations
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
+
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");

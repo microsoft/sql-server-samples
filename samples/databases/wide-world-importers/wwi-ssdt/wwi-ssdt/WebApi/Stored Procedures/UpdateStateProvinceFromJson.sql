@@ -15,7 +15,7 @@ AS BEGIN
 				CountryID int N'strict $.CountryID',
 				SalesTerritory nvarchar(50) N'strict $.SalesTerritory',
 				LatestRecordedPopulation bigint) as json
-		WHERE 
+		WHERE
 			Application.StateProvinces.StateProvinceID = @StateProvinceID
 
 END

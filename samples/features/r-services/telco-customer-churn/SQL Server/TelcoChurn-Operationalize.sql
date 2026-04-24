@@ -28,7 +28,7 @@ create table cdr_rx_models(
 );
 go
 
---Create a stored procedure to train Xgboost model 
+--Create a stored procedure to train Xgboost model
 drop procedure if exists generate_cdr_xgboost;
 go
 create procedure generate_cdr_xgboost
@@ -45,12 +45,12 @@ begin
         dtrainData$data <- Matrix(ntrainData, sparse = TRUE)
         dtrainData$label <- as.numeric(trainData$churn) - 1
         str(dtrainData)
-         xgboost_model <- xgboost(data = dtrainData$data, 
-		                 label = dtrainData$label, 
-						 max.depth = 32, 
-						 eta = 1, 
-						 nthread = 2, 
-						 nround = 2, 
+         xgboost_model <- xgboost(data = dtrainData$data,
+		                 label = dtrainData$label,
+						 max.depth = 32,
+						 eta = 1,
+						 nthread = 2,
+						 nround = 2,
 						 objective = "binary:logistic")
 		xgboost_model <- data.frame(payload = as.raw(serialize(xgboost_model, connection=NULL)));
 '
@@ -157,7 +157,7 @@ create procedure importance (@model varchar(100))
 as
 begin
 	declare @rx_model varbinary(max) = (select model from cdr_rx_models where model_name = @model);
-	exec sp_execute_external_script 
+	exec sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
 require("RevoScaleR");
@@ -190,7 +190,7 @@ as
 begin
 	declare @rx_model varbinary(max) = (select model from cdr_rx_models where model_name = @model);
 	-- Predict based on the specified model:
-	exec sp_execute_external_script 
+	exec sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
 library(Matrix)
@@ -244,7 +244,7 @@ as
 begin
 	declare @rx_model varbinary(max) = (select model from cdr_rx_models where model_name = @model);
 	-- Predict based on the specified model:
-	exec sp_execute_external_script 
+	exec sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
 require("RevoScaleR");
@@ -297,7 +297,7 @@ as
 begin
 	declare @rx_model varbinary(max) = (select model from cdr_rx_models where model_name = @model);
 	-- Predict based on the specified model:
-	exec sp_execute_external_script 
+	exec sp_execute_external_script
 					@language = N'R'
 				  , @script = N'
 require("RevoScaleR");
@@ -419,7 +419,7 @@ roc_curve(data = edw_cdr_test_pred,
 );
 dev.off();
 OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));
-' 
+'
 	, @input_data_1 = N'
 	select * from edw_cdr_test_pred'
 	, @input_data_1_name = N'edw_cdr_test_pred'
@@ -441,17 +441,17 @@ create procedure pareto
 as
 begin
 exec sp_execute_external_script
-      @language = N'R', 
+      @language = N'R',
 	  @script = N'
 
 # Set output directory for files
 # Prior to plotting ensure there are no files with same file names as the out files below in the above directory.
-# Calculate counts(percentages) of customers churned or non-churned 
+# Calculate counts(percentages) of customers churned or non-churned
 require("RevoScaleR");
 tmp<- rxCube(~ F(churn),edw_cdr,means=FALSE)
 Results_df<- rxResultsDF(tmp)
 library(qcc)
-CountOfChurn<- 
+CountOfChurn<-
   setNames(as.numeric(Results_df[,2]), Results_df[,1])
 
 # Open a jpeg file and output plot in that file.
@@ -465,7 +465,7 @@ pareto<-pareto.chart(CountOfChurn,
 );
 dev.off();
 OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));
-' 
+'
    , @input_data_1 = N'select * from edw_cdr'
    , @input_data_1_name = N'edw_cdr'
 	with result sets ((plot varbinary(max)));
@@ -483,7 +483,7 @@ create procedure histogram
 as
 begin
 exec sp_execute_external_script
-      @language = N'R', 
+      @language = N'R',
 	  @script = N'
 require("RevoScaleR");
 # Set output directory for files
@@ -497,7 +497,7 @@ rxHistogram(~age|F(churn),edw_cdr,reportProgress=0)
 );
 dev.off();
 OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));
-' 
+'
    , @input_data_1 = N'select * from edw_cdr'
    , @input_data_1_name = N'edw_cdr'
 	with result sets ((plot varbinary(max)));
@@ -515,7 +515,7 @@ create procedure heatmap
 as
 begin
 exec sp_execute_external_script
-      @language = N'R', 
+      @language = N'R',
 	  @script = N'
 
 # Set output directory for files
@@ -530,14 +530,14 @@ library(gplots)
 image_file = tempfile();
 jpeg(filename=image_file, width=800, height = 550);
 print(
-heatmap.2(data.matrix(Results_df[,-1]), 
+heatmap.2(data.matrix(Results_df[,-1]),
           labRow=Results_df[,1], col=cm.colors(255),
           trace="none",dendrogram ="none",
           na.color=par("bg"))
 );
 dev.off();
 OutputDataSet <- data.frame(data=readBin(file(image_file, "rb"), what=raw(), n=1e6));
-' 
+'
    , @input_data_1 = N'select * from edw_cdr'
    , @input_data_1_name = N'edw_cdr'
 	with result sets ((plot varbinary(max)));

@@ -33,8 +33,8 @@ and is not part `libmcrypt`. It actually does the right thing:
 If we're on Windows and don't have access to `mcrypt`, we use `CAPICOM.Utilities.1`.
 
 Finally, we use `openssl_random_pseudo_bytes()` **as a last resort**, due to
-[PHP bug #70014](https://bugs.php.net/bug.php?id=70014). Internally, this 
+[PHP bug #70014](https://bugs.php.net/bug.php?id=70014). Internally, this
 function calls `RAND_pseudo_bytes()`, which has been [deprecated](https://github.com/paragonie/random_compat/issues/5)
 by the OpenSSL team. Furthermore, [it might silently return weak random data](https://github.com/paragonie/random_compat/issues/6#issuecomment-119564973)
-if it is called before OpenSSL's **userspace** CSPRNG is seeded. Also, 
+if it is called before OpenSSL's **userspace** CSPRNG is seeded. Also,
 [you want the OS CSPRNG, not a userspace CSPRNG](http://sockpuppet.org/blog/2014/02/25/safely-generate-random-numbers/).

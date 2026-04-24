@@ -19,14 +19,14 @@ Some results from this benchmark:
 
 ## Running this sample
 
-1. Create the database, tables, and stored procedures using the T-SQL scripts in the corresponding subfolders. 
+1. Create the database, tables, and stored procedures using the T-SQL scripts in the corresponding subfolders.
 
   - The hash indexes are sized for a scale factor of 100, which translates to a 24GB database, with bucket_count double the row count. For larger database and memory size, adjust the bucket counts accordingly.
     - The max bucket_count in SQL Server 2016 is 1 billion. It is OK to have a higher row count. The benchmark performs well with bucket_count of 1 billion and row counts of 5 billion.
   - There are plans to publish scripts for initial populate of the tables. Timeline is TBD.
   - Scripts are also provided for corresponding disk-based tables and traditional stored procedures, to compare performance between disk-based and memory-optimized tables.
   - Data size across the tables is distributed as follows:
-  
+
   |Table|Weight|
   |----------|--------|
   |Customer|1|

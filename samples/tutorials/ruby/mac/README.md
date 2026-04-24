@@ -1,6 +1,6 @@
 # Connect to SQL using Ruby on macOS
 
-Ruby sample code that runs on a macOS computer to connect to an Azure SQL Database. 
+Ruby sample code that runs on a macOS computer to connect to an Azure SQL Database.
 
 ### Contents
 
@@ -45,15 +45,15 @@ To run this sample, you need the following prerequisites.
 
 **Azure prerequisites:**
 
-1. An AdventureWorks sample database: 
+1. An AdventureWorks sample database:
 
 	- The Ruby sample relies on the AdventureWorks sample database. If you do not already have AdventureWorks, you can see how to create it at the following topic: [Create your first Azure SQL Database](http://azure.microsoft.com/documentation/articles/sql-database-get-started/)
 	
 ## Run this sample
 
-1. From your terminal, update the connection string details in the Ruby file with your own username, password, and hostname. 
+1. From your terminal, update the connection string details in the Ruby file with your own username, password, and hostname.
 
-2. Run the code sample by running the below in your terminal: 
+2. Run the code sample by running the below in your terminal:
 
 	```
 	ruby sample_ruby_mac.rb
@@ -63,12 +63,12 @@ To run this sample, you need the following prerequisites.
 
 ## Sample details
 
-The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement. 
+The above sample code just connected to your AdventureWorks database and performed a SELECT statement and an INSERT statement.
 
 ### Additional notes for using TinyTDS with Azure
 
 It is recommend the following settings when using TinyTDS with Azure.
-   
+
    ```
 	SET ANSI_NULLS ON
 	SET CURSOR_CLOSE_ON_COMMIT OFF

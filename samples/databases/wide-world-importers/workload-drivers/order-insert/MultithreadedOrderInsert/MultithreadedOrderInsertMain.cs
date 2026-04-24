@@ -151,10 +151,10 @@ namespace MultithreadedInMemoryTableInsert
                             var orderTable = new DataTable("Orders");
                             da.Fill(orderTable);
 
-                            selectCommand.CommandText = "SELECT TOP(7) 1 AS OrderReference, si.StockItemID, si.StockItemName AS [Description], FLOOR(RAND() * 10) + 1 AS Quantity FROM Warehouse.StockItems AS si WHERE IsChillerStock = 0 ORDER BY NEWID()";
+                            selectCommand.CommandText = "SELECT * FROM (SELECT TOP(7) 1 AS OrderReference, si.StockItemID, si.StockItemName AS [Description], FLOOR(RAND() * 10) + 1 AS Quantity FROM Warehouse.StockItems AS si WHERE IsChillerStock = 0 ORDER BY NEWID()) x";
                             if (rnd.Next(1, 100) < 4)
                             {
-                                selectCommand.CommandText += "UNION ALL SELECT TOP(1) 1 AS OrderReference, si.StockItemID, si.StockItemName AS [Description], FLOOR(RAND() * 10) + 1 AS Quantity FROM Warehouse.StockItems AS si WHERE IsChillerStock <> 0 ORDER BY NEWID()";
+                                selectCommand.CommandText += " UNION ALL SELECT * FROM (SELECT TOP(1) 1 AS OrderReference, si.StockItemID, si.StockItemName AS [Description], FLOOR(RAND() * 10) + 1 AS Quantity FROM Warehouse.StockItems AS si WHERE IsChillerStock <> 0 ORDER BY NEWID()) x";
                             }
                             selectCommand.CommandText += ";";
                             var orderLinesTable = new DataTable("OrderLines");

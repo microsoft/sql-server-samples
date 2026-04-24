@@ -19,8 +19,8 @@ END;
 GO
 
 -- We need a column master key. This key is used to encrypt the column encryption keys.
--- The column master key isn't really stored in the database. It's created and stored on the 
--- client system. SQL Server only holds a link to it so that SQL Server can tell the 
+-- The column master key isn't really stored in the database. It's created and stored on the
+-- client system. SQL Server only holds a link to it so that SQL Server can tell the
 -- client application where to locate the master key. The client system will encrypt a column
 -- encryption key with this master key.
 
@@ -32,14 +32,14 @@ GO
 --       If you do not see the Always Encrypted node, install the latest version of Management Studio (17.X or higher): https://aka.ms/ssms
 -- 1b. Right-click the Column Master Keys node and click New Column Master Key.
 -- 1c. For the name, enter WWI_ColumnMasterKey.
--- 1d. Note the available entries in the Key store dropdown list. Choose Windows Certificate Store - Current User. 
+-- 1d. Note the available entries in the Key store dropdown list. Choose Windows Certificate Store - Current User.
 --     This will only be a temporary location for the certificate.
 -- 1e. Click Generate Certificate to create the new certificate. Note that an Always Encrypted certificate
 --     has been created. Ensure that it is selected, then click OK.
 
--- We have used the MSSQL_CERTIFICATE_STORE which uses the Windows store 
--- but we can use any store that implements the SqlColumnEncryptionKeyStoreProvider 
--- class. (And is registered by calling the SqlConnection.RegisterColumnEncryptionKeyStoreProviders() 
+-- We have used the MSSQL_CERTIFICATE_STORE which uses the Windows store
+-- but we can use any store that implements the SqlColumnEncryptionKeyStoreProvider
+-- class. (And is registered by calling the SqlConnection.RegisterColumnEncryptionKeyStoreProviders()
 -- method). This requires .NET framework 4.6.1 or later on the client.
 
 -- The certificate could also have been created via the makecert utility and just loaded on the client.
@@ -53,7 +53,7 @@ SELECT * FROM sys.column_master_keys;
 -- On the client system, it is protected by the column master key.
 
 -- 2a. In Object Explorer, right-click the Column Encryption Keys node and click New Column Encryption Key.
--- 2b. In the Name textbox, enter WWI_ColumnEncryptionKey and from the Column master key dropdown list, 
+-- 2b. In the Name textbox, enter WWI_ColumnEncryptionKey and from the Column master key dropdown list,
 --     select WWI_ColumnMasterKey to be used to encrypt this new key. Then click OK.
 
 -- We can see the newly created encryption key.
@@ -61,12 +61,12 @@ SELECT * FROM sys.column_master_keys;
 SELECT * FROM sys.column_encryption_keys;
 
 -- Now let's create the table that will use always encrypted.
--- We'll have one deterministic encryption column and two random 
+-- We'll have one deterministic encryption column and two random
 -- encryption (salted) columns.
 
 CREATE TABLE Purchasing.Supplier_PrivateDetails
 (
-	SupplierID int 
+	SupplierID int
 		CONSTRAINT PKFK_Purchasing_Supplier_PrivateDetails PRIMARY KEY
 		CONSTRAINT FK_Purchasing_Supplier_PrivateDetails_Suppliers
 			FOREIGN KEY REFERENCES Purchasing.Suppliers (SupplierID),
@@ -89,14 +89,14 @@ GO
 -- Note the error returned. The data in the columns is only
 -- understood by the client system.
 
-INSERT Purchasing.Supplier_PrivateDetails 
+INSERT Purchasing.Supplier_PrivateDetails
 	(SupplierID, NationalID, CreditCardNumber, ExpiryDate)
 VALUES
 	(1, N'93748567', N'7382-5849-2903-2838', N'11/19');
 GO
 
 -- Let's ensure the table is empty, then we'll use a client application
--- to populate the data. Note that we can still perform standard 
+-- to populate the data. Note that we can still perform standard
 -- table operations like truncation.
 
 TRUNCATE TABLE Purchasing.Supplier_PrivateDetails;
@@ -109,10 +109,10 @@ GO
 SELECT * FROM Purchasing.Supplier_PrivateDetails ORDER BY SupplierID;
 GO
 
--- To emulate a client application that has access to the keys, we 
+-- To emulate a client application that has access to the keys, we
 -- can use SSMS to connect. Note that this can only work because
--- the client happens to be the same machine as the server in our 
--- case. 
+-- the client happens to be the same machine as the server in our
+-- case.
 
 -- 5a. Open the second query window for this demonstration and follow the instructions there.
 

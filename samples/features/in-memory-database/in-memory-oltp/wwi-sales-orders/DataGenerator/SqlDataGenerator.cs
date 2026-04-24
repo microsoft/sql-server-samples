@@ -1,15 +1,15 @@
-﻿//----------------------------------------------------------------------------------  
-// Copyright (c) Microsoft Corporation. All rights reserved.  
-//  
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,   
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES   
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
-//----------------------------------------------------------------------------------  
-// The example companies, organizations, products, domain names,  
-// e-mail addresses, logos, people, places, and events depicted  
-// herein are fictitious.  No association with any real company,  
-// organization, product, domain name, email address, logo, person,  
-// places, or events is intended or should be inferred.  
+﻿//----------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+//
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES
+// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+//----------------------------------------------------------------------------------
+// The example companies, organizations, products, domain names,
+// e-mail addresses, logos, people, places, and events depicted
+// herein are fictitious.  No association with any real company,
+// organization, product, domain name, email address, logo, person,
+// places, or events is intended or should be inferred.
 
 using System;
 using System.Collections.Generic;
@@ -83,19 +83,19 @@ namespace DataGenerator
 
         /// <summary>Creates a new instance of the SqlDataGenerator Class.</summary>
         /// <param name="sqlConnectionString">The sqlserver connectionString. Example: "Data Source=.;Initial Catalog=DbName;Integrated Security=True"</param>
-        /// <param name="sqlInsertSPName">The Insert Orders sqlserver stored procedure. Example: "InsertOrdersSP". </param>        
+        /// <param name="sqlInsertSPName">The Insert Orders sqlserver stored procedure. Example: "InsertOrdersSP". </param>
         /// <param name="sqlCommandTimeout">The sqlserver command timeout. Example: 600</param>
         /// <param name="initialNumberOfTasks">The number of concurrent tasks. Example: 5. Note that every task 1.Creates and opens a new sql connection 2.Creates sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</param>
         /// <param name="delayInMilliseconds">Delay in Millisecods betweeen Sql Commands. Example. 100</param>
         /// <param name="batchSize">The row count of the batch size to be used by every task. Example: 200</param>
         /// <param name="onException">Exception call back method with TaskId(int) and exception(Exception). Example: ExceptionCallback</param>
         public SqlDataGenerator(
-            string sqlConnectionString, 
+            string sqlConnectionString,
             string sqlInsertSPName,
-            int sqlCommandTimeout, 
-            int initialNumberOfTasks, 
-            int delayInMilliseconds, 
-            int batchSize, 
+            int sqlCommandTimeout,
+            int initialNumberOfTasks,
+            int delayInMilliseconds,
+            int batchSize,
             Action<int, Exception> onException)
         {
 
@@ -108,13 +108,13 @@ namespace DataGenerator
             this.initialNumberOfTasks = initialNumberOfTasks;
             this.delay = delayInMilliseconds;
             this.batchSize = batchSize;
-            
+
             Validate(this.batchSize, this.initialNumberOfTasks, this.delay);
 
         }
 
         /// <summary>Creates and Starts all the tasks asynchronously. Note that every task 1.Creates and opens a new sql connection 2.Creates a batch of BatchSize sample data and 3.Executes the sql stored procedure passed in sqlStoredProcedureName endless times until stopped by the user.</summary>
-        /// <returns>Task</returns>        
+        /// <returns>Task</returns>
         public async Task RunAsync()
         {
             if (this.running)
@@ -184,7 +184,7 @@ namespace DataGenerator
                 await connection.OpenAsync(token);
 
                 using (var insertCommand = connection.CreateCommand())
-                {                    
+                {
                     insertCommand.CommandType = CommandType.StoredProcedure;
                     insertCommand.CommandTimeout = this.sqlCommandTimeout;
                     insertCommand.CommandText = this.sqlInsertSPName;
@@ -192,7 +192,7 @@ namespace DataGenerator
                     insertCommand.Parameters.Add("@OrderLines", SqlDbType.Structured);
                     insertCommand.Parameters.Add("@OrdersCreatedByPersonID", SqlDbType.Int);
                     insertCommand.Parameters.Add("@SalespersonPersonID", SqlDbType.Int);
-                   
+
                     while (!token.IsCancellationRequested)
                     {
                         using (var selectCommand = connection.CreateCommand())
@@ -235,7 +235,7 @@ namespace DataGenerator
         {
             // TODO: Lock
             if (numberOfTasksToStop >= this.RunningTasks) { this.running = false; }
-            
+
             numberOfTasksToStop = Math.Min(numberOfTasksToStop, this.RunningTasks);
             List<CancellableTask> cancellableTasksToKill = this.tasks.Take(numberOfTasksToStop).Select(kv => kv.Value).ToList();
 
@@ -251,7 +251,7 @@ namespace DataGenerator
         /// <returns>Task</returns>
         /// <param name="numberOfTasks">The number of Tasks to start/stop depending of the number of tasks currently running.</param>
         private async Task RunAsync(int numberOfTasks)
-        {            
+        {
             for (int i = 0; i < numberOfTasks; i++)
             {
                 CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -264,7 +264,7 @@ namespace DataGenerator
 
                 tasks.TryAdd(taskId, new CancellableTask(taskId, task, tokenSource));
             }
- 
+
             this.running = true;
 
             await Task.WhenAll(this.tasks.Values.Select(t => t.Task));
@@ -305,7 +305,7 @@ namespace DataGenerator
             {
                 throw new SqlDataGeneratorException("Delay cannot be less than zero");
             }
-            
+
             // Reset Rps
             RpsReset();
         }

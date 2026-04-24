@@ -9,7 +9,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(bodyParser.text()); 
+app.use(bodyParser.text());
 app.use('/todo', require('./routes/todo'));
 
 // catch 404 and forward to error handler

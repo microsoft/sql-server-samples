@@ -17,40 +17,40 @@ Get started quickly with developing applications in Java on RHEL with SQL Server
 
 ## About this sample
 
-- **Applies to:** SQL Server 2016 (or higher) 
-- **Workload:** 
+- **Applies to:** SQL Server 2016 (or higher)
+- **Workload:**
     - CRUD with Java
     - CRUD with Hibernate ORM
     - Performance improvements with Columnstore
 - **Programming Language:** Java
-- **Authors:** ajlam 
+- **Authors:** ajlam
 
 <a name=before-you-begin></a>
 
 ## Before you begin
 
-To run this sample, you need the following prerequisites. 
+To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 (or higher) 
+1. SQL Server 2016 (or higher)
 2. Java
 3. Apache Maven
 4. A text editor
 
 ## Run this sample
 
-1. Select the specific tutorial you want to run through. 
+1. Select the specific tutorial you want to run through.
 
-2. From your favorite text editor, open the App.java file and update the connection string username and password with your own. 
+2. From your favorite text editor, open the App.java file and update the connection string username and password with your own.
 
-3. From your terminal, change directories to the tutorial folder (ex. SqlServerSample) you're running through. Build the project and jar by performing the following command: 
+3. From your terminal, change directories to the tutorial folder (ex. SqlServerSample) you're running through. Build the project and jar by performing the following command:
 
     ```
     mvn package
     ```
 
-4. Run the program by performing the following command: 
+4. Run the program by performing the following command:
 
     ```
     mvn -q exec:java -Dexec.mainClass=com.sqlsamples.App.java

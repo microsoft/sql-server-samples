@@ -1,7 +1,7 @@
 # Evaluate specific Policies against a Server List
 # Uses the Invoke-PolicyEvaluation Cmdlet
 
-#SAMPLE: #.\EPM_EnterpriseEvaluation_5.ps1 -ConfigurationGroup "DEV" -PolicyCategoryFilter "Name Pattern" –EvalMode “Check”
+#SAMPLE: #.\EPM_EnterpriseEvaluation_5.ps1 -ConfigurationGroup "DEV" -PolicyCategoryFilter "Name Pattern" ï¿½EvalMode ï¿½Checkï¿½
 
 <#
 Run Powershell ISE as Admin
@@ -25,12 +25,12 @@ param([string]$ConfigurationGroup=$(Throw `
 Remove-Module SQLPS -Force -ErrorAction SilentlyContinue
 Import-Module SqlServer -DisableNameChecking -MinimumVersion "21.0.171.78"
 
-# Parameter -ConfigurationGroup specifies the 
+# Parameter -ConfigurationGroup specifies the
 # Central Management Server group to evaluate
-# Parameter -PolicyCategoryFilter specifies the 
+# Parameter -PolicyCategoryFilter specifies the
 # category of policies to evaluate
 # Parameter -EvalMode accepts "Check" to report policy
-# results, "Configure" to reconfigure any violations 
+# results, "Configure" to reconfigure any violations
 
 # Declare variables to define the central warehouse
 # in which to write the output, store the policies
@@ -41,7 +41,7 @@ $ResultDir = "E:\Results\"
 # End of variables
 
 #Function to insert policy evaluation results into SQL Server - table policy.PolicyHistory
-function PolicyHistoryInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResults) 
+function PolicyHistoryInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResults)
 {
    &{
 	$sqlQueryText = "INSERT INTO policy.PolicyHistory (EvaluatedServer, EvaluatedPolicy, EvaluationResults) VALUES(N'$EvaluatedServer', N'$EvaluatedPolicy', N'$EvaluationResults')"
@@ -49,12 +49,12 @@ function PolicyHistoryInsert($sqlServerVariable, $sqlDatabaseVariable, $Evaluate
 	}
 	trap
 	{
-	  $ExceptionText = $_.Exception.Message -replace "'", "" 
+	  $ExceptionText = $_.Exception.Message -replace "'", ""
 	}
 }
 
 #Function to insert policy evaluation errors into SQL Server - table policy.EvaluationErrorHistory
-function PolicyErrorInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResultsEscape) 
+function PolicyErrorInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedServer, $EvaluatedPolicy, $EvaluationResultsEscape)
 {
 	&{
 	$sqlQueryText = "INSERT INTO policy.EvaluationErrorHistory (EvaluatedServer, EvaluatedPolicy, EvaluationResults) VALUES(N'$EvaluatedServer', N'$EvaluatedPolicy', N'$EvaluationResultsEscape')"
@@ -67,7 +67,7 @@ function PolicyErrorInsert($sqlServerVariable, $sqlDatabaseVariable, $EvaluatedS
 }
 
 #Function to delete files from this policy only
-function PolicyFileDelete($File) 
+function PolicyFileDelete($File)
 {
 	# Delete evaluation files in the directory.
 	Remove-Item -Path $File
@@ -95,7 +95,7 @@ $dr = $cmd.ExecuteReader();
 # the policies. For each server and policy,
 # call cmdlet to evaluate policy on server and delete xml file afterwards
 
-while ($dr.Read()) { 
+while ($dr.Read()) {
 	$ServerName = $dr.GetValue(0);
 	foreach ($Policy in $PolicyStore.Policies)
    {
@@ -105,22 +105,22 @@ while ($dr.Read()) {
 			$OutputFile = $ResultDir + ("{0}_{1}.xml" -f (Encode-SqlName $ServerName ), ($Policy.Name));
 			Invoke-PolicyEvaluation -Policy $Policy -TargetServerName $ServerName -AdHocPolicyEvaluationMode $EvalMode -OutputXML > $OutputFile;
 			$PolicyResult = Get-Content $OutputFile -encoding UTF8;
-			$PolicyResult = $PolicyResult -replace "'", "" 
+			$PolicyResult = $PolicyResult -replace "'", ""
 			PolicyHistoryInsert $CentralManagementServer $HistoryDatabase $ServerName $Policy.Name $PolicyResult;
 			$File = $ResultDir + ("*_{0}.xml" -f ($Policy.Name));
 			PolicyFileDelete $File;
 	 	}
 			trap [Exception]
-			{ 
+			{
 				  $File = $ResultDir + ("*_{0}.xml" -f ($Policy.Name));
 				  PolicyFileDelete $File;
-				  $ExceptionText = $_.Exception.Message -replace "'", "" 
+				  $ExceptionText = $_.Exception.Message -replace "'", ""
 				  $ExceptionMessage = $_.Exception.GetType().FullName + ", " + $ExceptionText
 				  PolicyErrorInsert $CentralManagementServer $HistoryDatabase $ServerName $Policy.Name $ExceptionMessage;
-				  continue;   
+				  continue;
 			}		
 	}
-   } 
+   }
  }
 
 $dr.Close()

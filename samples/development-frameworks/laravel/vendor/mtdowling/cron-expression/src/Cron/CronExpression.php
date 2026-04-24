@@ -164,7 +164,7 @@ class CronExpression
     public function setMaxIterationCount($maxIterationCount)
     {
         $this->maxIterationCount = $maxIterationCount;
-        
+
         return $this;
     }
 

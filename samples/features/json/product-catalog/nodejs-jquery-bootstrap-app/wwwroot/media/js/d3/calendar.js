@@ -63,7 +63,7 @@ svg.append("g")
             .key(function(d) { return _fnGetDate(d); })
             .rollup(function(d) { return _fnGetValue(d); })
             .object(json);
-        
+
         rect.filter(function(d) { return d in data; })
             .attr("fill", function(d) { return color(data[d]); })
             .append("title")

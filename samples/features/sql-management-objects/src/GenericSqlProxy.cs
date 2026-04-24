@@ -65,7 +65,7 @@ namespace Microsoft.SqlServer.SmoSamples
 
         private void AsyncInit(TcpListener tcpListener, string hostName, int port)
         {
-            
+
             while (!disposed)
             {
                 var accept = tcpListener.AcceptTcpClientAsync();
@@ -82,8 +82,6 @@ namespace Microsoft.SqlServer.SmoSamples
                     remoteClient.ConnectAsync(hostName, port).Wait(tokenSource.Token);
                     if (!tokenSource.IsCancellationRequested)
                     {
-                        
-
                         Task.Factory.StartNew(() => { ForwardToSql(localClient, remoteClient); });
                         Task.Factory.StartNew(() => { ForwardToClient(localClient, remoteClient); });
                     }
@@ -96,7 +94,7 @@ namespace Microsoft.SqlServer.SmoSamples
         }
 
         /// <summary>
-        /// Fires before the proxy writes a buffer to the host 
+        /// Fires before the proxy writes a buffer to the host
         /// </summary>
         public event EventHandler<StreamWriteEventArgs> OnWriteHost;
 

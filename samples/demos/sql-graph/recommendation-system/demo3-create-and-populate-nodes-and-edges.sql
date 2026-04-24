@@ -52,7 +52,7 @@ IF OBJECT_ID('Nodes.StockItems', 'U') IS NULL
     StockItemID INTEGER IDENTITY(1, 1) NOT NULL
     ,StockItemName NVARCHAR(100) NOT NULL
     ,Barcode NVARCHAR(50) NULL
-    ,Photo VARBINARY(MAX)  
+    ,Photo VARBINARY(MAX)
     ,LastEditedBy INTEGER NOT NULL
   )
   AS NODE;

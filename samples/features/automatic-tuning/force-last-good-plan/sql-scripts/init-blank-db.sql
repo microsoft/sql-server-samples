@@ -17,13 +17,13 @@ GO
 
 CREATE SCHEMA [Sequences];
 GO
-CREATE SEQUENCE [Sequences].[OrderLineID] 
+CREATE SEQUENCE [Sequences].[OrderLineID]
  AS [int]
  START WITH 231413
  INCREMENT BY 1
  MINVALUE -2147483648
  MAXVALUE 2147483647
- CACHE; 
+ CACHE;
 GO
 
 CREATE TABLE Sales.OrderLines(
@@ -39,10 +39,10 @@ CREATE TABLE Sales.OrderLines(
 	PickingCompletedWhen datetime2(7) NULL,
 	LastEditedBy int NOT NULL,
 	LastEditedWhen datetime2(7) NOT NULL
-); 
+);
 GO
 ALTER TABLE [Sales].[OrderLines]
-	ADD  CONSTRAINT [DF_Sales_OrderLines_OrderLineID] 
+	ADD  CONSTRAINT [DF_Sales_OrderLines_OrderLineID]
 			DEFAULT (NEXT VALUE FOR [Sequences].[OrderLineID]) FOR [OrderLineID]
 GO
 ALTER TABLE [Sales].[OrderLines]

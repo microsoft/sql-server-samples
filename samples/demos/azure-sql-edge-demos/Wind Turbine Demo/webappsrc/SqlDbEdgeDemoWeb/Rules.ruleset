@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SmartRetail" Description=" " ToolsVersion="10.0">
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA1101" Action="None" />
+    <Rule Id="SA1133" Action="None" />
+    <Rule Id="SA1200" Action="None" />
+    <Rule Id="SA1309" Action="None" />
+    <Rule Id="SA1402" Action="None" />
+    <Rule Id="SA1611" Action="None" />
+    <Rule Id="SA1615" Action="None" />
+    <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1649" Action="None" />
+    <Rule Id="SA1652" Action="None" />
+    <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA0001" Action="None" />
+    <Rule Id="SA1413" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.Usage" RuleNamespace="Microsoft.Usage">
+    <Rule Id="CA2235" Action="None" />
+    <Rule Id="CA2007" Action="None" />
+    <Rule Id="CA1031" Action="None" />
+  </Rules>
+</RuleSet>

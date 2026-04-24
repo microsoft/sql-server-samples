@@ -1,22 +1,22 @@
 <?php
 /**
- * Random_* Compatibility Library 
+ * Random_* Compatibility Library
  * for using the new PHP 7 random_* API in PHP 5 projects
- * 
+ *
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2015 Paragon Initiative Enterprises
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,26 +28,26 @@
 
 /**
  * Fetch a random integer between $min and $max inclusive
- * 
+ *
  * @param int $min
  * @param int $max
- * 
+ *
  * @throws Exception
- * 
+ *
  * @return int
  */
 function random_int($min, $max)
 {
     /**
      * Type and input logic checks
-     * 
+     *
      * If you pass it a float in the range (~PHP_INT_MAX, PHP_INT_MAX)
      * (non-inclusive), it will sanely cast it to an int. If you it's equal to
-     * ~PHP_INT_MAX or PHP_INT_MAX, we let it fail as not an integer. Floats 
+     * ~PHP_INT_MAX or PHP_INT_MAX, we let it fail as not an integer. Floats
      * lose precision, so the <= and => operators might accidentally let a float
      * through.
      */
-    
+
     try {
         $min = RandomCompat_intval($min);
     } catch (TypeError $ex) {
@@ -63,7 +63,7 @@ function random_int($min, $max)
             'random_int(): $max must be an integer'
         );
     }
-    
+
     /**
      * Now that we've verified our weak typing system has given us an integer,
      * let's validate the logic then we can move forward with generating random
@@ -81,7 +81,7 @@ function random_int($min, $max)
 
     /**
      * Initialize variables to 0
-     * 
+     *
      * We want to store:
      * $bytes => the number of random bytes we need
      * $mask => an integer bitmask (for use with the &) operator
@@ -104,11 +104,11 @@ function random_int($min, $max)
         /**
          * Still safely calculate wider ranges.
          * Provided by @CodesInChaos, @oittaa
-         * 
+         *
          * @ref https://gist.github.com/CodesInChaos/03f9ea0b58e8b2b8d435
-         * 
+         *
          * We use ~0 as a mask in this case because it generates all 1s
-         * 
+         *
          * @ref https://eval.in/400356 (32-bit)
          * @ref http://3v4l.org/XX9r5  (64-bit)
          */
@@ -118,7 +118,7 @@ function random_int($min, $max)
     } else {
 
         /**
-         * $bits is effectively ceil(log($range, 2)) without dealing with 
+         * $bits is effectively ceil(log($range, 2)) without dealing with
          * type juggling
          */
         while ($range > 0) {
@@ -159,10 +159,10 @@ function random_int($min, $max)
 
         /**
          * Let's turn $randomByteString into an integer
-         * 
+         *
          * This uses bitwise operators (<< and |) to build an integer
          * out of the values extracted from ord()
-         * 
+         *
          * Example: [9F] | [6D] | [32] | [0C] =>
          *   159 + 27904 + 3276800 + 201326592 =>
          *   204631455

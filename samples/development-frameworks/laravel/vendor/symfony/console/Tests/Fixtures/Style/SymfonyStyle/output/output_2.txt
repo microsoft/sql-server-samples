@@ -1,13 +1,13 @@
 
- [WARNING] Warning                                                                                                      
+ [WARNING] Warning
 
- ! [CAUTION] Caution                                                                                                    
+ ! [CAUTION] Caution
 
- [ERROR] Error                                                                                                          
+ [ERROR] Error
 
- [OK] Success                                                                                                           
+ [OK] Success
 
- ! [NOTE] Note                                                                                                          
+ ! [NOTE] Note
 
-X [CUSTOM] Custom block                                                                                                 
+X [CUSTOM] Custom block
 

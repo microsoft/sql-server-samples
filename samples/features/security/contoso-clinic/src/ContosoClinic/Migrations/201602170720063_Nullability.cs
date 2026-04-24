@@ -2,7 +2,7 @@ namespace ContosoClinic.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Nullability : DbMigration
     {
         public override void Up()
@@ -16,7 +16,7 @@ namespace ContosoClinic.Migrations
             AlterColumn("dbo.Visits", "Reason", c => c.String(nullable: false, maxLength: 4000));
             AlterColumn("dbo.Visits", "Treatment", c => c.String(nullable: false, maxLength: 4000));
         }
-        
+
         public override void Down()
         {
             AlterColumn("dbo.Visits", "Treatment", c => c.String(maxLength: 4000));

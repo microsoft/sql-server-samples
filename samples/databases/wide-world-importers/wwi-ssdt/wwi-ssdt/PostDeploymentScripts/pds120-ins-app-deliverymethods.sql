@@ -1,12 +1,12 @@
 ﻿PRINT 'Inserting Application.DeliveryMethods'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
-INSERT [Application].DeliveryMethods 
-  (DeliveryMethodID, DeliveryMethodName, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT [Application].DeliveryMethods
+  (DeliveryMethodID, DeliveryMethodName, LastEditedBy, ValidFrom, ValidTo)
+VALUES
   (1,'Post', 1, @CurrentDateTime, @EndOfTime)
 , (2,'Courier', 1, @CurrentDateTime, @EndOfTime)
 , (3,'Delivery Van', 1, @CurrentDateTime, @EndOfTime)

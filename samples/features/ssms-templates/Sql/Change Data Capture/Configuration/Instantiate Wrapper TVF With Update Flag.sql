@@ -6,7 +6,7 @@ GO
 
 DECLARE @wrapper_functions table (
 		function_name			sysname,
-		create_script			nvarchar(max))		 
+		create_script			nvarchar(max))		
 
 DECLARE @create_script nvarchar(max),
 	@capture_instance sysname,
@@ -20,7 +20,7 @@ EXEC [sys].[sp_cdc_generate_wrapper_function]
 	@capture_instance = @capture_instance,
 	@update_flag_list = @update_flag_list
 			
-SELECT @create_script = create_script  
+SELECT @create_script = create_script
 FROM @wrapper_functions
 WHERE function_name like N'fn_net_changes%'
 	

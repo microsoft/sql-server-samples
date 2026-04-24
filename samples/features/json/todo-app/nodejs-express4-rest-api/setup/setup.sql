@@ -28,7 +28,7 @@ create procedure dbo.createTodo(@todo nvarchar(max))
 as begin
 	insert into Todo
 	select *
-	from OPENJSON(@todo) 
+	from OPENJSON(@todo)
 			WITH (	title nvarchar(30), description nvarchar(4000),
 					completed bit, dueDate datetime2)
 end

@@ -26,13 +26,13 @@ CREATE FUNCTION Security.patientAccessPredicate(@PatientID int)
 AS
 	RETURN SELECT 1 AS isAccessible
 	FROM dbo.ApplicationUserPatients
-	WHERE 
+	WHERE
 	(
 		-- application users can access only patients assigned to them
 		Patient_PatientID = @PatientID
-		AND ApplicationUser_Id = CAST(SESSION_CONTEXT(N'UserId') AS nvarchar(128)) 
+		AND ApplicationUser_Id = CAST(SESSION_CONTEXT(N'UserId') AS nvarchar(128))
 	)
-	OR 
+	OR
 	(
 		-- DBAs can access all patients
 		IS_MEMBER('db_owner') = 1

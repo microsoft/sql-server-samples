@@ -21,11 +21,11 @@ BEGIN
     DECLARE @BackorderOrderID int;
     DECLARE @BillToCustomerID int;
     DECLARE @InvoicingPersonID int --= (SELECT TOP(1) PersonID FROM [Application].People WHERE IsEmployee <> 0 ORDER BY NEWID());
-    EXEC [DataLoadSimulation].[GetRandomEmployeePerson] 
+    EXEC [DataLoadSimulation].[GetRandomEmployeePerson]
       @EmployeePersonID = @InvoicingPersonID OUTPUT
 
     DECLARE @PackedByPersonID int --= (SELECT TOP(1) PersonID FROM [Application].People WHERE IsEmployee <> 0 ORDER BY NEWID());
-    EXEC [DataLoadSimulation].[GetRandomEmployeePerson] 
+    EXEC [DataLoadSimulation].[GetRandomEmployeePerson]
       @EmployeePersonID = @PackedByPersonID OUTPUT
 
     DECLARE @TotalDryItems int;

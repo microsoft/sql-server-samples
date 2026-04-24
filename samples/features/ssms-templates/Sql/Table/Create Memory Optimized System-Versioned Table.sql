@@ -1,16 +1,16 @@
 -- ======================================================
 -- Create Memory Optimized System-Versioned Temporal Table Template
 -- Use the Specify Values for Template Parameters command (Ctrl-Shift-M) to fill in the parameter values below.
--- 
+--
 -- This template creates a memory optimized system-versioned temporal table and indexes on the memory optimized table.
--- 
+--
 -- The database must have a MEMORY_OPTIMIZED_DATA filegroup before the memory optimized table can be created.
 -- To learn about prerequistes for creating memory-optimized tables, take a look at "Creating a Memory-Optimized Table and a Natively Compiled Stored Procedure":
 -- https://msdn.microsoft.com/en-us/library/dn133079.aspx
--- 
+--
 -- For more details on system-versioned temporal tables please refer to MSDN documentation:
 -- https://msdn.microsoft.com/en-IN/library/dn935015.aspx#Anchor_0
--- 
+--
 -- To learn more how to use system-versioned tables in your applications, take a look at "Getting Started with System-Versioned Temporal Tables":
 -- https://msdn.microsoft.com/en-US/library/mt604462.aspx
 -- =========================================
@@ -19,7 +19,7 @@ USE <database, sysname, AdventureWorks>
 GO
 
 BEGIN
-       IF ((SELECT temporal_type FROM SYS.TABLES WHERE object_id = OBJECT_ID('<schema_name, sysname, dbo>.<table_name, sysname, sample_memoryoptimizedtable>', 'U')) = 2)
+       IF ((SELECT temporal_type FROM sys.tables WHERE object_id = OBJECT_ID('<schema_name, sysname, dbo>.<table_name, sysname, sample_memoryoptimizedtable>', 'U')) = 2)
        BEGIN
             ALTER TABLE [<schema_name, sysname, dbo>].[<table_name, sysname, sample_memoryoptimizedtable>] SET (SYSTEM_VERSIONING = OFF)
        END
@@ -44,11 +44,11 @@ CREATE TABLE <schema_name, sysname, dbo>.<table_name,sysname,sample_memoryoptimi
     -- See SQL Server Books Online for guidelines on determining appropriate bucket count for the index
     INDEX <index2_name, sysname, hash_index_sample_memoryoptimizedtable_c2> HASH (<column2_name, sysname, c2>) WITH (BUCKET_COUNT = <sample_bucket_count, int, 131072>)
 )
-WITH 
+WITH
 (
     MEMORY_OPTIMIZED = ON,
     DURABILITY = <durability_type, , SCHEMA_AND_DATA>,
-    --Set SYSTEM_VERSIONING to ON and provide reference to HISTORY_TABLE. 
+    --Set SYSTEM_VERSIONING to ON and provide reference to HISTORY_TABLE.
     SYSTEM_VERSIONING = ON
     (
         --If HISTORY_TABLE does not exists, default table will be created.

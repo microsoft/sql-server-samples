@@ -1,0 +1,6 @@
+"Subscription Name","Subscription ID","ResourceGroupName","Name","Location","SKU","vCores","OS Type","OS Version","SQL Version","SQL Edition","IaaS registration"
+"geodr_m2_365640","10a238d6-a139-46d0-818d-d091394072b6","MABOJARG2","maboja-dnsalias","westus","Standard_B8ms","8","WindowsServer","2016-Datacenter","","","No VM access"
+"geodr_m2_365640","10a238d6-a139-46d0-818d-d091394072b6","NICHELLAAUTOMATEDBACKUP_GROUP","nichellaAutomatedBackup","centralus","Standard_DS1_v2","1","sql2019-ws2019","standard","SQL2019-WS2019","Standard","SQL Server registered"
+"geodr_m2_365640","10a238d6-a139-46d0-818d-d091394072b6","DLEM-RG1","dlem-testvm2","southeastasia","Standard_D8s_v3","8","WindowsServer","2012-R2-Datacenter","","Developer","SQL Server not registered"
+"geodr_m2_365640","10a238d6-a139-46d0-818d-d091394072b6","SASHAN-ARC-RG","Sashan-SQL2019","westus2","Standard_B2s","2","sql2019-ws2019","standard","SQL2019-WS2019","Standard","SQL Server registered"
+"geodr_m2_365640","10a238d6-a139-46d0-818d-d091394072b6","NICHELLAEXTNMEMORYLEAK_GROUP","nichellaExtnMemoryLeak","eastus2euap","Standard_DS1_v2","1","sql2019-ws2019","web","SQL2019-WS2019","Web","SQL Server registered"

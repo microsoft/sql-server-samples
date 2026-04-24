@@ -1,7 +1,7 @@
 <?php
 /**
  * phpDocumentor Method Tag Test
- * 
+ *
  * PHP version 5.3
  *
  * @author    Mike van Riel <mike.vanriel@naenius.com>
@@ -33,7 +33,7 @@ class MethodTagTest extends \PHPUnit_Framework_TestCase
      * @param bool   $paramCount      Number of parameters in the signature.
      * @param string $description     The short description mentioned in the
      *     signature.
-     * 
+     *
      * @covers \phpDocumentor\Reflection\DocBlock\Tag\MethodTag
      * @dataProvider getTestSignatures
      *

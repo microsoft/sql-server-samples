@@ -32,7 +32,7 @@ When prompted, provide your input for:
 To deploy from your private repository, use the steps described in the [deployment guide](deployment-guidance.md), but customize the following environment variables to match your private Docker repository.
 
 - **DOCKER_USERNAME**
-- **DOCKER_PASSWORD**  
+- **DOCKER_PASSWORD**
 
 You must also customize the deployment configuration file to point to the correct docker repository:
 

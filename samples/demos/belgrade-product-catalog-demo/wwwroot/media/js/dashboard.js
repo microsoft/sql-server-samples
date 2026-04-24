@@ -48,7 +48,7 @@
             });
 
         });
-    
+
     //$.ajax('data/nvd3-multibar.js', { "dataType": "json" })
     $.ajax('api/Product/report2', { "dataType": "json" })
              .done(function (exampleData) {

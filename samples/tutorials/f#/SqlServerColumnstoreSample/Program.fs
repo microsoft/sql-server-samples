@@ -48,7 +48,7 @@ let main argv =
         // Insert 5 million rows into the table 'Table_with_5M_rows'
         printf "Inserting 5 million rows into table 'Table_with_5M_rows'. This takes ~1 minute, please wait ... "
         let sql = "
-            USE FSharpSampleDB; 
+            USE FSharpSampleDB;
             WITH a AS (SELECT * FROM (VALUES(1),(2),(3),(4),(5),(6),(7),(8),(9),(10)) AS a(a))
             SELECT TOP(5000000)
             ROW_NUMBER() OVER (ORDER BY a.a) AS OrderItemId

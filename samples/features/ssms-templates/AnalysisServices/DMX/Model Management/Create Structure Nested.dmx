@@ -9,7 +9,7 @@ CREATE MINING STRUCTURE [<mining structure,name,MyStructure>]
 	<table column definition,col def,[My Table] TABLE>
 	(  <nested key column, col def, [Nested Key] TEXT KEY>,
 	   <nested column definition list,col def list,> )
-) 
-[WITH HOLDOUT (<holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES> 
-[OR <holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES>]) 
+)
+[WITH HOLDOUT (<holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES>
+[OR <holdout-specifier,holdout-maxpercent PERCENT,holdout-maxcases CASES>])
 [REPEATABLE(<holdout-seed>)]]

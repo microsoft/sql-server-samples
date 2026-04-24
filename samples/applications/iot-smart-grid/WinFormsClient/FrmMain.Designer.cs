@@ -45,9 +45,9 @@
             this.bottomToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RpsChart)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // bottomToolStrip
-            // 
+            //
             this.bottomToolStrip.BackColor = System.Drawing.Color.White;
             this.bottomToolStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.bottomToolStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -59,26 +59,26 @@
             this.bottomToolStrip.Size = new System.Drawing.Size(1351, 25);
             this.bottomToolStrip.TabIndex = 0;
             this.bottomToolStrip.Text = "toolStrip1";
-            // 
+            //
             // lblTasksTitle
-            // 
+            //
             this.lblTasksTitle.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblTasksTitle.ForeColor = System.Drawing.Color.DimGray;
             this.lblTasksTitle.Name = "lblTasksTitle";
             this.lblTasksTitle.Size = new System.Drawing.Size(129, 22);
             this.lblTasksTitle.Text = "Number of Tasks:";
             this.lblTasksTitle.Visible = false;
-            // 
+            //
             // lblTasksValue
-            // 
+            //
             this.lblTasksValue.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblTasksValue.Name = "lblTasksValue";
             this.lblTasksValue.Size = new System.Drawing.Size(19, 22);
             this.lblTasksValue.Text = "0";
             this.lblTasksValue.Visible = false;
-            // 
+            //
             // Stop
-            // 
+            //
             this.Stop.Enabled = false;
             this.Stop.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.Stop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -90,14 +90,14 @@
             this.Stop.Text = "Close";
             this.Stop.UseVisualStyleBackColor = true;
             this.Stop.Click += new System.EventHandler(this.Stop_Click);
-            // 
+            //
             // rpsTimer
-            // 
+            //
             this.rpsTimer.Interval = 500;
             this.rpsTimer.Tick += new System.EventHandler(this.rpsTimer_Tick);
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.DimGray;
@@ -106,9 +106,9 @@
             this.label1.Size = new System.Drawing.Size(255, 36);
             this.label1.TabIndex = 104;
             this.label1.Text = "rows inserted/sec:";
-            // 
+            //
             // lblRpsValue
-            // 
+            //
             this.lblRpsValue.AutoSize = true;
             this.lblRpsValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRpsValue.ForeColor = System.Drawing.Color.Red;
@@ -117,14 +117,14 @@
             this.lblRpsValue.Size = new System.Drawing.Size(39, 42);
             this.lblRpsValue.TabIndex = 105;
             this.lblRpsValue.Text = "0";
-            // 
+            //
             // stopTimer
-            // 
+            //
             this.stopTimer.Interval = 6000;
             this.stopTimer.Tick += new System.EventHandler(this.stopTimer_Tick);
-            // 
+            //
             // RpsChart
-            // 
+            //
             this.RpsChart.BackColor = System.Drawing.Color.Transparent;
             this.RpsChart.BorderlineColor = System.Drawing.Color.Black;
             chartArea1.AxisX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
@@ -169,9 +169,9 @@
             this.RpsChart.Size = new System.Drawing.Size(1324, 419);
             this.RpsChart.TabIndex = 106;
             this.RpsChart.Text = "Rows / Sec";
-            // 
+            //
             // FrmMain
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;

@@ -1,5 +1,5 @@
 --====================================
---  Drop server trigger template 
+--  Drop server trigger template
 --====================================
 IF EXISTS(
   SELECT *

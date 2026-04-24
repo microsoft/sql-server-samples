@@ -13,7 +13,7 @@ Pacemaker cluster vendors require STONITH to be enabled and a fencing device con
 
 * On many baremetal recommended seems to be ilo ( ilo/ilo2/ilo3/ilo4 which go over ipmi )  or second option is the ssh equivalents ( ilo3_ssh/ilo4_ssh)
     * Have to find out what version of ilo machine supports
-    * For _ssh agents, have to add public key/auth to ilo  under the Administration—security to enable passwordless auth 
+    * For _ssh agents, have to add public key/auth to ilo  under the Administration—security to enable passwordless auth
 
 
 ## Other fencing configurations

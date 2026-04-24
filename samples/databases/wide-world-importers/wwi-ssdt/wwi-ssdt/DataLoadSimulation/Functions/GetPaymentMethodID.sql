@@ -13,9 +13,9 @@ Usage:
 
 */
   DECLARE @PayMethodId INT
-  SELECT TOP 1 
-         @PayMethodId = PaymentMethodID 
-    FROM [Application].PaymentMethods 
+  SELECT TOP 1
+         @PayMethodId = PaymentMethodID
+    FROM [Application].PaymentMethods
    WHERE PaymentMethodName = @PaymentMethodName
      AND ValidTo = '99991231 23:59:59.9999999'
 

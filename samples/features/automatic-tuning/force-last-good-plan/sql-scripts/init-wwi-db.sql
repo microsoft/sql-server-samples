@@ -18,7 +18,7 @@ CREATE NONCLUSTERED COLUMNSTORE INDEX [NCCX_Sales_OrderLines] ON [Sales].[OrderL
 	[UnitPrice],
 	[PickedQuantity],
 	[PackageTypeID] -- adding package type id for demo purpose
-)WITH (DROP_EXISTING = OFF, COMPRESSION_DELAY = 0) 
+)WITH (DROP_EXISTING = OFF, COMPRESSION_DELAY = 0)
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[initialize]

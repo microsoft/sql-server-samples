@@ -39,8 +39,8 @@ namespace Microsoft.MasterDataServices.SharePointWorkflow
         private const string WorkflowTypeSharePoint = "SPWF";
 
         /// <summary>
-        /// A cache of SharePoint sites. 
-        ///    Key = serverUrl 
+        /// A cache of SharePoint sites.
+        ///    Key = serverUrl
         ///    Value = SharePoint site
         /// </summary>
         private Dictionary<string, SPSite> Sites = new Dictionary<string, SPSite>();
@@ -72,7 +72,7 @@ namespace Microsoft.MasterDataServices.SharePointWorkflow
             {
                 string serverUrl = dataElement["Server_URL"].InnerText;
                 string workflowName = dataElement["Action_ID"].InnerText;
-                
+
                 // Look for the site in the cache.
                 SPSite site = null;
                 if (!this.Sites.TryGetValue(serverUrl, out site))

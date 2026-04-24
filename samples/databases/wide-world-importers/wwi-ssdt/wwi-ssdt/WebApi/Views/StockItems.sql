@@ -2,7 +2,7 @@
 AS
 SELECT	si.StockItemID, si.StockItemName, s.SupplierName, s.SupplierReference, c.ColorName,
 		opt.PackageTypeName AS OuterPackage, upt.PackageTypeName AS UnitPackage,
-		si.Brand, si.Size, si.LeadTimeDays, si.QuantityPerOuter, si.IsChillerStock, 
+		si.Brand, si.Size, si.LeadTimeDays, si.QuantityPerOuter, si.IsChillerStock,
 		si.Barcode, si.TaxRate, si.UnitPrice, si.RecommendedRetailPrice, si.TypicalWeightPerUnit,
 		si.MarketingComments, si.InternalComments, si.CustomFields, sih.QuantityOnHand, sih.BinLocation,
 		sih.LastStocktakeQuantity, sih.LastCostPrice, sih.ReorderLevel, sih.TargetStockLevel,

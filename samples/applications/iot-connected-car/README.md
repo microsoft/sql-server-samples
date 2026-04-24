@@ -33,7 +33,7 @@ To run this sample, you need the following prerequisites.
 
 **Software prerequisites:**
 
-1. SQL Server 2016 (or higher) or a Premium Azure SQL Database 
+1. SQL Server 2016 (or higher) or a Premium Azure SQL Database
 2. Visual Studio 2017 (or higher) with the latest SSDT installed
 
 **Azure prerequisites:**
@@ -51,14 +51,14 @@ To run this sample, you need the following prerequisites.
 
 4. In Visual Studio Build menu, select **Build Solution** (or Press F6).
 
-5. Modify the **Db** connection string in **App.config Settings** (located in the **Solution Items** solution folder) to provide YOUR_SERVER, YOUR_USERNAME, and YOUR_PASSWORD 
+5. Modify the **Db** connection string in **App.config Settings** (located in the **Solution Items** solution folder) to provide YOUR_SERVER, YOUR_USERNAME, and YOUR_PASSWORD
 
 6. Create the Database and Sample reference data
-- Note: For publishing to Azure SQL you need to create a premium database before setting up the schema and sample data 
+- Note: For publishing to Azure SQL you need to create a premium database before setting up the schema and sample data
 
-7. Build the app and run it. 
+7. Build the app and run it.
 
-8. Press the **Setup/Reset DB** button to create the DB schema and sample reference data 
+8. Press the **Setup/Reset DB** button to create the DB schema and sample reference data
 
 9. Start the workload by pressing the **Start** button
 
@@ -72,7 +72,7 @@ To run this sample, you need the following prerequisites.
 
 **Visual Studio Solution Projects**
 
-1. **Data Generator**: Data Generator client library. Uses multiple async tasks to produce a test data workload.  
+1. **Data Generator**: Data Generator client library. Uses multiple async tasks to produce a test data workload.
 2. **WinFormsClient**: Windows Forms Data Generator client.
 
 <a name=disclaimers></a>

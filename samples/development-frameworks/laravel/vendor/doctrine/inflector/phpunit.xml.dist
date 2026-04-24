@@ -22,7 +22,7 @@
             <directory>./lib/Doctrine/</directory>
         </whitelist>
     </filter>
-    
+
     <groups>
         <exclude>
             <group>performance</group>

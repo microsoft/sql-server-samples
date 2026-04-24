@@ -1,6 +1,6 @@
 /* POPULATE NODE TABLES */
 
--- for performance purposes, disable default indexes on edge and node tables. 
+-- for performance purposes, disable default indexes on edge and node tables.
  ALTER INDEX ALL ON Graph.Customers disable;
  ALTER INDEX ALL ON Graph.Suppliers disable;
  ALTER INDEX ALL ON Graph.StockItems disable;
@@ -629,7 +629,7 @@ GO
 
 /*
 Rebuild default indexes on node table. We advise against rebuilding default indexes on edge tables unless you eant to create a global view of all edge tables.
-Add nonclustered indexes 
+Add nonclustered indexes
 */
 ALTER INDEX ALL ON Graph.Customers rebuild;
 ALTER INDEX ALL ON Graph.Suppliers rebuild;

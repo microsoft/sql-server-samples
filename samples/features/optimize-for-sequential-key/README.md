@@ -39,7 +39,7 @@ To run this sample, you need the following prerequisites.
 2. A server (physical or virtual) with multiple cores
 3. The [AdventureWorks2016_EXT](https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2016_EXT.bak) sample database
 
-[!NOTE] 
+[!NOTE]
 > This sample was designed for a server with 8 logical cores. If you run the sample on a server with more cores, you may need to increase the number of concurrent threads in order to observe the improvement.
 
 

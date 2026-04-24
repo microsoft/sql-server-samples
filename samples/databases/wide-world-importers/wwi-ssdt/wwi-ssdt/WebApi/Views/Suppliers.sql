@@ -19,7 +19,7 @@ SELECT s.SupplierID,
 		s.PostalPostalCode,
 		s.PaymentDays,
 		s.SupplierCategoryID,
-	   DeliveryLocation = JSON_QUERY((SELECT 
+	   DeliveryLocation = JSON_QUERY((SELECT
 				[type] = 'Feature',
 				[geometry.type] = 'Point',
 				[geometry.coordinates] = JSON_QUERY(CONCAT('[',s.DeliveryLocation.Long,',',s.DeliveryLocation.Lat ,']')),

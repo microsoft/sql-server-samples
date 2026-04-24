@@ -10,7 +10,7 @@ SELECT SUSER_SNAME();
 GO
 
 -- Note that no customers are visible as yet
-SELECT * FROM Sales.Customers; 
+SELECT * FROM Sales.Customers;
 GO
 
 -- Set the session context (the website would set this on behalf of the user)
@@ -22,7 +22,7 @@ SELECT SESSION_CONTEXT(N'SalesTerritory');
 GO
 
 -- Note that the user can now access the users based upon the sales territory in the session_context
-SELECT * FROM Sales.Customers; 
+SELECT * FROM Sales.Customers;
 GO
 
 USE tempdb;

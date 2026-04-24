@@ -5,7 +5,7 @@ namespace Mockery;
 class ReceivedMethodCalls
 {
     private $methodCalls = array();
-    
+
     public function push(MethodCall $methodCall)
     {
         $this->methodCalls[] = $methodCall;

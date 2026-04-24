@@ -1,5 +1,5 @@
 // ===============================
-// 	Clear Mining Structure 
+// 	Clear Mining Structure
 // ===============================
 
 DELETE FROM MINING STRUCTURE [<mining structure,name,MyStructure>]

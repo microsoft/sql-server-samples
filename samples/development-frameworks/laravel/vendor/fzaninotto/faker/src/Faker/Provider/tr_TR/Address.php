@@ -13,7 +13,7 @@ class Address extends \Faker\Provider\Address
     protected static $postcode = array('#####');
 
     /**
-    * @var array Cities of Turkey, for future updates please use @link https://tr.wikipedia.org/wiki/T%C3%BCrkiye'nin_illeri
+    * @var array Cities of Türkiye, for future updates please use @link https://tr.wikipedia.org/wiki/T%C3%BCrkiye'nin_illeri
     */
     protected static $cityNames = array(
         'Adana','Adıyaman','Afyonkarahisar','Ağrı','Aksaray','Amasya','Ankara','Antalya','Ardahan','Artvin','Aydın',

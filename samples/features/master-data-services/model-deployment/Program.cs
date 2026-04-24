@@ -88,7 +88,7 @@ namespace ModelDUtil
 
                 stopwatch.Stop();
                 Console.WriteLine(string.Empty);
-                Console.WriteLine("Operation completed successfully. Elapsed time: {0}", stopwatch.Elapsed.ToString("c", CultureInfo.CurrentCulture)); 
+                Console.WriteLine("Operation completed successfully. Elapsed time: {0}", stopwatch.Elapsed.ToString("c", CultureInfo.CurrentCulture));
             }
             catch (Exception e)
             {
@@ -203,11 +203,11 @@ namespace ModelDUtil
                     default:
                         // Unknown enum value.
                         return Modes.Help;
-                }            
+                }
             }
 
             return mode;
-        }    
+        }
 
         /// <summary>
         /// Displays help on how to use this console app.
@@ -273,11 +273,11 @@ namespace ModelDUtil
             List<Package> packages = reader.CreatePackage(true).ToList();
 
             // Save the package
-            Console.WriteLine("Saving package to file {0}", packageFile);            
+            Console.WriteLine("Saving package to file {0}", packageFile);
             using (var stream = new FileStream(packageFile, FileMode.CreateNew))
             {
                 var firstPackage = packages.FirstOrDefault();
-                if (firstPackage != null) 
+                if (firstPackage != null)
                     firstPackage.Serialize(stream);
             }
         }
@@ -290,9 +290,9 @@ namespace ModelDUtil
         {
             Console.WriteLine("Deploying clone of package {0}", packageFile);
             ModelDeployer deployer = new ModelDeployer();
-            
+
             // Deploy the package.
-            
+
             Warnings errorsAsWarnings = null;
             using (var package = new PackageReader(packageFile))
             {
@@ -302,7 +302,7 @@ namespace ModelDUtil
 
             Console.WriteLine("Package was deployed with {0} warnings", errorsAsWarnings.Count);
         }
-        
+
         /// <summary>
         /// Deploys a copy of a model from a package, with a new name.
         /// </summary>
@@ -335,7 +335,7 @@ namespace ModelDUtil
             ModelDeployer deployer = new ModelDeployer();
             ModelReader reader = new ModelReader();
 
-            
+
             // Deploy it.
             Warnings errorsAsWarnings = null;
             using (var package = new PackageReader(packageFile))
@@ -393,7 +393,7 @@ namespace ModelDUtil
                 Console.WriteLine(versionId.Name);
             }
         }
-        
+
         #endregion Model Deployment Sample methods
 
         #region Reader helpers

@@ -95,7 +95,7 @@ namespace PopulateAlwaysEncryptedData
         {
             string nationalID = "";
             Random rnd = new Random();
-            
+
             for (int counter = 0;counter < 8;counter++)
             {
                 int digit = rnd.Next(0, 9);

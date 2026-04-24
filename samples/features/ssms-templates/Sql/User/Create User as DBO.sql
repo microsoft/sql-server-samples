@@ -12,6 +12,6 @@ CREATE USER [<user_name, sysname, user_name>]
 GO
 
 -- Add user to the database owner role
-ALTER ROLE [db_owner] 
+ALTER ROLE [db_owner]
 ADD MEMBER [<user_name, sysname, user_name>]
 GO

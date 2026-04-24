@@ -1,7 +1,7 @@
 ﻿PRINT 'Inserting Warehouse.StockItems'
 GO
 
-DECLARE @CurrentDateTime datetime2(7) = '20130101'
+DECLARE @CurrentDateTime datetime2(7) = '20200101'
 DECLARE @EndOfTime datetime2(7) =  '99991231 23:59:59.9999999'
 
 -- Rather than looking up some of these IDs on every row,
@@ -56,9 +56,9 @@ SELECT @ColorIDLightBrown = ColorID FROM Warehouse.Colors WHERE ColorName = N'Li
 SELECT @ColorIDBrown      = ColorID FROM Warehouse.Colors WHERE ColorName = N'Brown'
 SELECT @ColorIDNull       = ColorID FROM Warehouse.Colors WHERE ColorName = N'NULL'
 
-INSERT Warehouse.StockItems 
-  (StockItemID, StockItemName, SupplierID, ColorID,  UnitPackageID, OuterPackageID, Brand, Size, LeadTimeDays, QuantityPerOuter, IsChillerStock, Barcode, TaxRate, UnitPrice, RecommendedRetailPrice, TypicalWeightPerUnit, MarketingComments, InternalComments, Photo, CustomFields, LastEditedBy, ValidFrom, ValidTo) 
-VALUES 
+INSERT Warehouse.StockItems
+  (StockItemID, StockItemName, SupplierID, ColorID,  UnitPackageID, OuterPackageID, Brand, Size, LeadTimeDays, QuantityPerOuter, IsChillerStock, Barcode, TaxRate, UnitPrice, RecommendedRetailPrice, TypicalWeightPerUnit, MarketingComments, InternalComments, Photo, CustomFields, LastEditedBy, ValidFrom, ValidTo)
+VALUES
   (1,'USB missile launcher (Green)', @SupplierIDPhoneCo, @ColorIDGreen, @PackageTypeIDEach, @PackageTypeIDEach, NULL, NULL, 14, 1,0, NULL, 15,25,37.38,0.3,'Complete with 12 projectiles', NULL, NULL, NULL, 1, @CurrentDateTime, @EndOfTime)
 , (2,'USB rocket launcher (Gray)', @SupplierIDPhoneCo, @ColorIDGray, @PackageTypeIDEach, @PackageTypeIDEach, NULL, NULL, 14, 1,0, NULL, 15,25,37.38,0.3,'Complete with 12 projectiles', NULL, NULL, NULL, 1, @CurrentDateTime, @EndOfTime)
 , (3,'Office cube periscope (Black)', @SupplierIDPhoneCo, @ColorIDBlack, @PackageTypeIDEach, @PackageTypeIDCarton, NULL, NULL, 14, 10,0, NULL, 15, 18.5,27.66,0.25,'Need to see over your cubicle wall? This is just what''s needed.', NULL, NULL, NULL, 1, @CurrentDateTime, @EndOfTime)

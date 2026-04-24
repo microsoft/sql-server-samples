@@ -4,8 +4,8 @@
 
 USE AdventureWorks2014
 --USE AdventureWorks2016CTP3
-GO 
---Execute  
+GO
+--Execute
 DBCC FREEPROCCACHE
 GO
 SELECT *

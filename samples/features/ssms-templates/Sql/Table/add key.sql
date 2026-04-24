@@ -1,7 +1,7 @@
 -- =============================================
 -- Add Key template
 --
--- This template creates a table, then it  
+-- This template creates a table, then it
 -- adds a PRIMARY KEY constraint to the table
 -- =============================================
 USE <database, sysname, AdventureWorks>
@@ -13,7 +13,7 @@ GO
 
 CREATE TABLE <schema_name, sysname, dbo>.<table_name, sysname, sample_table>
 (
-	<columns_in_primary_key, , column1>      int      NOT NULL, 
+	<columns_in_primary_key, , column1>      int      NOT NULL,
 	column2      char(8)  NOT NULL
 )
 GO

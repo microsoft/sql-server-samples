@@ -8,8 +8,8 @@ GO
 
 ALTER TABLE <schema_name, sysname, dbo>.<table_name, sysname, table_name>
 	ENABLE CHANGE_TRACKING	
-	WITH 
+	WITH
 	(
-		TRACK_COLUMNS_UPDATED = <track_columns_updated,bit,<track_columns_updated> 
+		TRACK_COLUMNS_UPDATED = <track_columns_updated,bit,<track_columns_updated>
 	)
 GO

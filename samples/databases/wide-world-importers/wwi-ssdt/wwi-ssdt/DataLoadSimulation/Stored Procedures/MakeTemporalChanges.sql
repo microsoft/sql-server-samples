@@ -1,5 +1,5 @@
-﻿-- Note this procedure is not included in the regular build, it 
--- is called during the post deployment process. 
+﻿-- Note this procedure is not included in the regular build, it
+-- is called during the post deployment process.
 -- This is due to the fact it updates temporal tables, and SSDT
 -- will throw up an error when this occurs, despite the fact we
 -- have procedures to deactivate the temporal tables and reactivate
@@ -70,7 +70,7 @@ BEGIN
         END;
     END;
 
-    IF CAST(@StartingWhen AS date) = '20150101'
+    IF CAST(@StartingWhen AS date) = '20210101'
     BEGIN
         UPDATE [Application].DeliveryMethods
             SET DeliveryMethodName = N'Chilled Van',
@@ -79,7 +79,7 @@ BEGIN
             WHERE DeliveryMethodName = N'Van with Chiller';
     END;
 
-    IF CAST(@StartingWhen AS date) = '20160101'
+    IF CAST(@StartingWhen AS date) = '20220101'
     BEGIN
         UPDATE [Application].PaymentMethods
             SET PaymentMethodName = N'Credit-Card',
@@ -118,7 +118,7 @@ BEGIN
             WHERE StockGroupName = N'Footwear';
     END;
 
-    IF CAST(@StartingWhen AS date) = '20150101'
+    IF CAST(@StartingWhen AS date) = '20210101'
     BEGIN
         UPDATE Purchasing.SupplierCategories
             SET SupplierCategoryName = N'Courier Services Supplier',
@@ -127,7 +127,7 @@ BEGIN
             WHERE SupplierCategoryName = N'Courier';
     END;
 
-    IF CAST(@StartingWhen AS date) = '20140101'
+    IF CAST(@StartingWhen AS date) = '20200701'
     BEGIN
         INSERT Sales.CustomerCategories
             (CustomerCategoryName, LastEditedBy, ValidFrom, ValidTo)

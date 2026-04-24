@@ -29,7 +29,7 @@ class MethodTag extends ReturnTag
 
     /** @var string */
     protected $arguments = '';
-    
+
     /** @var bool */
     protected $isStatic = false;
 
@@ -180,10 +180,10 @@ class MethodTag extends ReturnTag
 
         return $arguments;
     }
-    
+
     /**
      * Checks whether the method tag describes a static method or not.
-     * 
+     *
      * @return bool TRUE if the method declaration is for a static method, FALSE
      *     otherwise.
      */
@@ -191,12 +191,12 @@ class MethodTag extends ReturnTag
     {
         return $this->isStatic;
     }
-    
+
     /**
      * Sets a new value for whether the method is static or not.
-     * 
+     *
      * @param bool $isStatic The new value to set.
-     * 
+     *
      * @return $this
      */
     public function setIsStatic($isStatic)

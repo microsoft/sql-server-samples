@@ -1,7 +1,7 @@
 <?php
 /**
  * phpDocumentor Var Tag Test
- * 
+ *
  * PHP version 5.3
  *
  * @author    Daniel O'Connor <daniel.oconnor@gmail.com>
@@ -25,10 +25,10 @@ use phpDocumentor\Reflection\DocBlock\Context;
  */
 class TagTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * @expectedException \InvalidArgumentException
-     * 
+     *
      * @return void
      */
     public function testInvalidTagLine()
@@ -38,7 +38,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::registerTagHandler
-     * 
+     *
      * @return void
      */
     public function testTagHandlerUnregistration()
@@ -71,7 +71,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::registerTagHandler
-     * 
+     *
      * @return void
      */
     public function testTagHandlerCorrectRegistration()
@@ -115,12 +115,12 @@ TAG_HANDLER
 
         $this->assertTrue(Tag::registerTagHandler('var', $currentHandler));
     }
-    
+
     /**
      * @depends testTagHandlerCorrectRegistration
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::registerTagHandler
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::createInstance
-     * 
+     *
      * @return void
      */
     public function testNamespacedTagHandlerCorrectRegistration()
@@ -159,12 +159,12 @@ TAG_HANDLER
             Tag::registerTagHandler('\MyNamespace\MyTag', null)
         );
     }
-    
+
     /**
      * @depends testTagHandlerCorrectRegistration
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::registerTagHandler
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::createInstance
-     * 
+     *
      * @return void
      */
     public function testNamespacedTagHandlerIncorrectRegistration()
@@ -202,7 +202,7 @@ TAG_HANDLER
 
     /**
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::registerTagHandler
-     * 
+     *
      * @return void
      */
     public function testNonExistentTagHandlerRegistration()
@@ -233,7 +233,7 @@ TAG_HANDLER
 
     /**
      * @covers \phpDocumentor\Reflection\DocBlock\Tag::registerTagHandler
-     * 
+     *
      * @return void
      */
     public function testIncompatibleTagHandlerRegistration()

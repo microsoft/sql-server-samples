@@ -59,7 +59,7 @@ To run this sample, you need the following prerequisites.
 
 2. In Visual Studio Build menu, select **Build Solution** (or Press F6).
 
-3. Step 3 ... 
+3. Step 3 ...
 
 <a name=sample-details></a>
 

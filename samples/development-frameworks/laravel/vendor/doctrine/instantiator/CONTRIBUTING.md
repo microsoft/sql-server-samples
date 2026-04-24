@@ -30,6 +30,6 @@ The PHPUnit version to be used is the one installed as a dev- dependency via com
 $ ./vendor/bin/phpunit
 ```
 
-Accepted coverage for new contributions is 80%. Any contribution not satisfying this requirement 
+Accepted coverage for new contributions is 80%. Any contribution not satisfying this requirement
 won't be merged.
 

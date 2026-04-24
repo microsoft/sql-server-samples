@@ -1,6 +1,6 @@
 # Perform customer clustering with SQL Server R Services
 
-In this sample, we are going to get ourselves familiar with clustering. 
+In this sample, we are going to get ourselves familiar with clustering.
 Clustering can be explained as organizing data into groups where members of a group are similar in some way.
 
 ### Contents
@@ -15,7 +15,7 @@ Clustering can be explained as organizing data into groups where members of a gr
 
 ## About this sample
 
-We will be using the Kmeans algorithm to perform the clustering of customers. This can for example be used to target a specific group of customers for marketing efforts. 
+We will be using the Kmeans algorithm to perform the clustering of customers. This can for example be used to target a specific group of customers for marketing efforts.
 Kmeans clustering is an unsupervised learning algorithm that tries to group data based on similarities. Unsupervised learning means that there is no outcome to be predicted, and the algorithm just tries to find patterns in the data.
 
 In this sample, you will learn how to perform Kmeans clustering in R and deploying the solution in SQL Server 2016.

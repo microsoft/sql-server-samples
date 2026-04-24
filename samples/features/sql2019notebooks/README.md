@@ -14,7 +14,7 @@ The [What's New](https://docs.microsoft.com/sql/sql-server/what-s-new-in-sql-ser
 * **[Memory_Grant_Feedback.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Memory_Grant_Feedback.ipynb)** - In this notebook, you will learn about how Memory Grant Feedback for Batch mode and Row mode can help execute queries faster on SQL Server 2019.
 * **[Approximate_QP.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/intelligent-query-processing/notebooks/Approximate_QP.ipynb)** - In this notebook, you will learn about the new area of approximate query processing on SQL Server 2019.
 
-### Security 
+### Security
 * **[TDE_on_Standard.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/security/tde-sql2019-standard/TDE_on_Standard.ipynb)** - This notebook demonstrates the ability to enable TDE on SQL Server 2019 Standard Edition along with Encryption Scan SUSPEND and RESUME.
 * **[TDE_on_Standard_EKM.ipynb](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/security/tde-sql2019-standard/TDE_on_Standard_EKM.ipynb)** - This notebook demonstrates the ability to enable TDE on a SQL Server 2019 Standard Edition using EKM and Azure Key Vault.
 
@@ -49,14 +49,14 @@ The [What's New](https://docs.microsoft.com/sql/sql-server/what-s-new-in-sql-ser
   * Configure - Configure a spark session using a notebook
   * Install - Install 3rd party packages
   * Restful-Access - Access Spark in BDC via restful Livy APIs
- 
+
 * **Machine Learning**
   * **[Powerplant Output Prediction](https://github.com/microsoft/sql-server-samples/blob/master/samples/features/sql-big-data-cluster/machine-learning/spark/h2o/h2o-automl-powerplant.ipynb)** - This sample uses the automated machine learning capabilities of the third party H2O package running in Spark in a SQL Server 2019 Big Data Cluster to build a machine learning model that predicts powerplant output.
   * **[TensorFlow on GPUs in SQL Server 2019 big data cluster](https://github.com/microsoft/sql-server-samples/tree/master/samples/features/sql-big-data-cluster/machine-learning/spark/tensorflow)** - The notebooks in this directory illustrate fitting TensorFlow image classification models using GPU acceleration.
-  
+
 ### SQL Server Troubleshooting Notebooks
 * **[SQL Server Troubleshooting Notebooks](https://github.com/microsoft/tigertoolbox/tree/master/Troubleshooting-Notebooks)** - This repository of notebooks helps you troubleshooting common scenarios that you could encounter with SQL Server including Big Data Clusters.
 
 ### SQL Assessment API
 * **[SQL Assessment API Quick Start and Tutorial Notebooks](https://github.com/microsoft/sql-server-samples/tree/master/samples/manage/sql-assessment-api/notebooks)** - SQL Assessment API provides a mechanism to evaluate the configuration of your SQL Server for best practices. In this repository, you will find two Azure Data Studio notebooks, one is for quick start in two steps and the other is a comprehensive tutorial that will step you through all the features of SQL Assessment API including customizing the existing rules and creating your own ones.
- 
+

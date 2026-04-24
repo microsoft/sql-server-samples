@@ -11,7 +11,7 @@ AS BEGIN
 			CityName nvarchar(50) N'strict $.CityName',
 			StateProvinceID int N'strict $.StateProvinceID',
 			LatestRecordedPopulation bigint) as json
-	WHERE 
+	WHERE
 		Application.Cities.CityID = @CityID
 
 END

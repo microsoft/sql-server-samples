@@ -1,7 +1,7 @@
 # Connect to MSSQL using the Microsoft ODBC Driver on Linux
 
 
-[C code sample](sample_c_linux.c) that runs on Linux. The sample connects to MSSQL (SQL Server, Azure SQL DB, Azure SQL DW) using the Microsoft ODBC Driver for Linux. 
+[C code sample](sample_c_linux.c) that runs on Linux. The sample connects to MSSQL (SQL Server, Azure SQL DB, Azure SQL DW) using the Microsoft ODBC Driver for Linux.
 
 
 ## Prerequisites

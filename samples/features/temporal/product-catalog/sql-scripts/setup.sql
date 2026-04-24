@@ -95,7 +95,7 @@ return (
 )
 GO
 
-create procedure dbo.GetProducts as 
+create procedure dbo.GetProducts as
 begin
 
 	select * from Product
@@ -108,7 +108,7 @@ begin
 end
 GO
 
-create procedure dbo.GetProductsAsOf (@date datetime2) as 
+create procedure dbo.GetProductsAsOf (@date datetime2) as
 begin
 
 	select * from Product FOR SYSTEM_TIME AS OF @date
@@ -119,7 +119,7 @@ begin
 end
 GO
 
-create procedure dbo.RestoreProduct (@productid int, @date datetime2) as 
+create procedure dbo.RestoreProduct (@productid int, @date datetime2) as
 begin
 
 	with restored as (

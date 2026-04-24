@@ -12,7 +12,7 @@ BEGIN ATOMIC WITH
 	DECLARE @DelayInSeconds int
 	DECLARE @SensorCounter int
 	DECLARE @Temperature decimal(10,2);
-	DECLARE @ColdRoomTemperatureID bigint 
+	DECLARE @ColdRoomTemperatureID bigint
 
 	SELECT @ColdRoomTemperatureID = ISNULL(MAX(ColdRoomTemperatureID), 0) + 1
 	FROM DataLoadSimulation.[ColdRoomTemperatures_temp]

@@ -8,7 +8,7 @@
 -- Description:	<Description,,>
 -- =============================================
 
-CREATE MESSAGE TYPE <message-type-name, sysname, test_msg> 
-AUTHORIZATION <owner-name ,database-user  ,dbo> 
+CREATE MESSAGE TYPE <message-type-name, sysname, test_msg>
+AUTHORIZATION <owner-name ,database-user  ,dbo>
 VALIDATION = <validation-type-name ,sysname , NONE>
- 
+

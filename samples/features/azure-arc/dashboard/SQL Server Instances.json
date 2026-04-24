@@ -1,0 +1,823 @@
+{
+  "properties": {
+    "lenses": [
+       {
+        "order": 0,
+        "parts": [
+           {
+            "position": {
+              "x": 0,
+              "y": 0,
+              "colSpan": 3,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Count of all resources\nresources\n| where  type == \"microsoft.sql/managedinstances\" or \n  type == \"microsoft.azurearcdata/sqlserverinstances\" or \n  type == \"microsoft.sql/servers\" or \n  type==\"microsoft.sqlvirtualmachine/sqlvirtualmachines\"\n| summarize Servers=count()\n",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Number of Servers",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 3,
+              "y": 0,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where  type == \"microsoft.sql/managedinstances\" or \n  type == \"microsoft.azurearcdata/sqlserverinstances\" or \n  type == \"microsoft.sql/servers\" or \n  type == \"microsoft.sqlvirtualmachine/sqlvirtualmachines\"\n| summarize ResourceCount=count() by iff( \n  type==\"microsoft.sql/managedinstances\",\"Azure SQL Manage Instance\"\n  ,iif(\n    type==\"microsoft.azurearcdata/sqlserverinstances\",\"Arc Enable SQL Server\"\n    ,iif(\n      type==\"microsoft.sql/servers\",\"Azure SQL DB\"\n      ,iif(\n        type==\"microsoft.sqlvirtualmachine/sqlvirtualmachines\",\"Azure SQL Server On VM\",\"Not Found\"\n        )\n      )\n    )\n  )\n",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Sql Server Type Distributions",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 9,
+              "y": 0,
+              "colSpan": 3,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// Count of all resources\nresources\n| where  (type == \"microsoft.sql/managedinstances/databases\" or \n  type == \"microsoft.azurearcdata/sqlserverinstances/databases\" or \n  type == \"microsoft.sql/servers/databases\" ) and \n  (name !in (\"master\",\"model\",\"msdb\") and \n  name !contains \"tempdb\")\n| count \n\n\n",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Number of Databases",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 0,
+              "colSpan": 7,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// top ten resource types by number of resources\n// Count of all resources\nresources\n| where  (type == \"microsoft.sql/managedinstances/databases\" or \n  type == \"microsoft.azurearcdata/sqlserverinstances/databases\" or \n  type == \"microsoft.sql/servers/databases\" or \n  type==\"microsoft.sqlvirtualmachine/sqlvirtualmachines/databases\") and \n  (name !in (\"master\",\"model\",\"msdb\") and \n  name !contains \"tempdb\")\n| summarize ResourceCount=count() by iff( \n  type==\"microsoft.sql/managedinstances/databases\",\"Azure SQL Manage Instance\"\n  ,iif(\n    type==\"microsoft.azurearcdata/sqlserverinstances/databases\",\"Arc Enable SQL Server\"\n    ,iif(\n      type==\"microsoft.sql/servers/databases\",\"Azure SQL DB\"\n      ,iif(\n        type==\"microsoft.sqlvirtualmachine/sqlvirtualmachines/databases\",\"Azure SQL Server On VM\",\"Not Found\"\n        )\n      )\n    )\n  )",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Databases per Type",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 5,
+              "colSpan": 19,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\r\n| where type == \"microsoft.hybridcompute/machines\"\r\n| where properties.detectedProperties.mssqldiscovered == \"true\"\r\n| extend machineIdHasSQLServerDiscovered = id\r\n| project name, machineIdHasSQLServerDiscovered, resourceGroup, subscriptionId\r\n| join kind= leftouter (\r\n    resources\r\n    | where type == \"microsoft.hybridcompute/machines/extensions\"\r\n    | where properties.type in (\"WindowsAgent.SqlServer\",\"LinuxAgent.SqlServer\")\r\n    | extend machineIdHasSQLServerExtensionInstalled = iff(id contains \"/extensions/WindowsAgent.SqlServer\" or id contains \"/extensions/LinuxAgent.SqlServer\", substring(id, 0, indexof(id, \"/extensions/\")), \"\")\r\n    | project Provisioning_State = properties.provisioningState,\r\n    License_Type = properties.settings.LicenseType,\r\n    ESU = iff(notnull(properties.settings.enableExtendedSecurityUpdates), \"enabled\", \"\"),\r\n    Extension_Version = properties.instanceView.typeHandlerVersion,\r\n    Exlcuded_instaces = properties.ExcludedSqlInstances,\r\n    Purview = iff(notnull(properties.settings.ExternalPolicyBasedAuthorization),\"enabled\",\"\"),\r\n    Entra = iff(notnull(properties.settings.AzureAD),\"enabled\",\"\"),\r\n    BPA = iff(notnull(properties.settings.AssessmentSettings),\"enabled\",\"\"),\r\n    machineIdHasSQLServerExtensionInstalled)\r\non $left.machineIdHasSQLServerDiscovered == $right.machineIdHasSQLServerExtensionInstalled\r\n| where isnotempty(machineIdHasSQLServerExtensionInstalled)\r\n| project-away machineIdHasSQLServerDiscovered, machineIdHasSQLServerExtensionInstalled",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Arc SQL details",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 9,
+              "colSpan": 19,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\r\n| where  (type == \"microsoft.sql/managedinstances/databases\" or \r\n  type == \"microsoft.azurearcdata/sqlserverinstances/databases\" or \r\n  type == \"microsoft.sql/servers/databases\" ) and \r\n  (name !in (\"master\",\"model\",\"msdb\") and \r\n  name !contains \"tempdb\")\r\n| summarize Dbs=count(),Offline=sum(toint(iif(tostring(properties[\"state\"])!=\"Online\" and tostring(properties[\"status\"])!=\"Online\" and tostring(properties[\"status\"])!=\"Paused\" ,1,0)))\r\n,SizeMB=sum(toint(iif(tostring(properties[\"sizeMB\"])!=\"\",properties[\"sizeMB\"],0)))\r\n,Type=max(\r\n        iff( type==\"microsoft.sql/managedinstances/databases\",\"Azure SQL Manage Instance\"\r\n            ,iif(type==\"microsoft.azurearcdata/sqlserverinstances/databases\",\"Arc Enable SQL Server\"\r\n                ,iif(type==\"microsoft.sql/servers/databases\",\"Azure SQL DB\"\r\n                ,iif(type==\"microsoft.sqlvirtualmachine/sqlvirtualmachines/databases\",\"Azure SQL Server On VM\",\"Not Found\")\r\n                )\r\n              )\r\n            )\r\n          ) by Instances = tostring(split(tostring(id),\"/\")[8])\r\n| order by Offline",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Dbs per Servers",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 13,
+              "colSpan": 6,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 2",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// If distinct count is small (e.g. < 1000)\n// run next query to get count of each value\nresources\n| where  type == \"microsoft.sql/managedinstances\" or \n  type == \"microsoft.azurearcdata/sqlserverinstances\" or \n  type == \"microsoft.sqlvirtualmachine/sqlvirtualmachines\"\n| summarize Count=count() by iif(type==\"microsoft.azurearcdata/sqlserverinstances\"\n,tostring(properties['edition'])\n, iif(type==\"microsoft.sql/managedinstances\", tostring(sku['tier'])\n,tostring(properties['sqlImageSku'])))\n| order by Count desc",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Servers per SQL Server Editions",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 6,
+              "y": 13,
+              "colSpan": 7,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\r\n| where type == \"microsoft.azurearcdata/sqlserverinstances\"\r\n| summarize Count=sum(toint(properties['vCore'])) by  tostring(properties['edition'])\r\n| order by Count desc",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Cores Per Editions",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 13,
+              "y": 13,
+              "colSpan": 6,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 2",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "// If distinct count is small (e.g. < 1000)\n// run next query to get count of each value\nresources\n| where type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\n|summarize Count=count() by tostring(properties['compatibilityLevel'])\n| order by Count desc",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Compatibility Mode",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 19,
+              "colSpan": 6,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 2",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where  type == \"microsoft.azurearcdata/sqlserverinstances\"\n| summarize Count=count() by iff(tostring(properties['azureDefenderStatus'])==\"Unknown\", \"Not Protected\",tostring(properties['azureDefenderStatus']))\n| order by Count desc",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Defender for SQL",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 6,
+              "y": 19,
+              "colSpan": 6,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where ['type']  ==\"microsoft.azurearcdata/sqlserverinstances/databases\"\n| summarize Count=count() by Encrypte=iif(tostring(properties['databaseOptions'].isEncrypted)==\"false\",\"No\", \"Yes\")",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "Encrypted",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 12,
+              "y": 19,
+              "colSpan": 7,
+              "rowSpan": 6
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where type == \"microsoft.azurearcdata/sqlserverinstances\"\n| summarize Count=count() by tostring(properties['version'])",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 1,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server Versions",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 25,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\n| where name != \"tempdb\"\n| extend prop_db=parse_xml(properties) \n| extend prop_db_recoveryMode = prop_db.recoveryMode\n| extend prop_db_databaseCreationDate = todatetime(prop_db.databaseCreationDate)\n| extend prop_db_backupInformation = prop_db.backupInformation\n| extend prop_db_backupInformation_lastFullBackup = todatetime(prop_db.backupInformation.lastFullBackup)\n| extend calc_lastBackupAgeDays = iff(isnull(prop_db_backupInformation_lastFullBackup),\n                                        datetime_diff('Day',now(),prop_db_databaseCreationDate),\n                                        datetime_diff('Day',now(),prop_db_backupInformation_lastFullBackup)\n                                    )\n| extend Backup_1day = iif( calc_lastBackupAgeDays <=1 , 1 , 0)\n| extend Backup_7day = iif( calc_lastBackupAgeDays >1  and calc_lastBackupAgeDays <=7 , 1 , 0)\n| extend Backup_over7day = iif( calc_lastBackupAgeDays >7 , 1 , 0)\n| extend Backup_desc = case(\n                            isnull(prop_db_backupInformation_lastFullBackup), \"no backups at all\", \n                            datetime_diff('Day',now(),prop_db_backupInformation_lastFullBackup) <= 1, \"1 day\", \n                            datetime_diff('Day',now(),prop_db_backupInformation_lastFullBackup) <= 7, \"7 days\", \n                            datetime_diff('Day',now(),prop_db_backupInformation_lastFullBackup) <= 30, \"1 Month\", \n                            \"older than a month\")\n| project database_name = name, RecoveryModel = prop_db_recoveryMode, Last_Full_Backup = prop_db_backupInformation_lastFullBackup , Backup_Age_Days = calc_lastBackupAgeDays  ,Backup_1day  ,Backup_7day  ,Backup_over7day, Backup_desc\n| summarize Count=count() by Backup_desc",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server Backups Intervals",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 6,
+              "y": 25,
+              "colSpan": 6,
+              "rowSpan": 5
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\n| where type == \"microsoft.azurearcdata/sqlserverinstances/databases\"\n| where name != \"tempdb\"\n| where name != \"model\"\n| where name != \"master\"\n| where name != \"msdb\"\n| extend prop_db=parse_xml(properties) \n| extend Recovery_Model = prop_db.recoveryMode\n| summarize Count = count() by tostring(Recovery_Model)",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "value": 2,
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryChartTile",
+              "settings": {},
+              "partHeader": {
+                "title": "SQL Server Recovery Mode",
+                "subtitle": ""
+              }
+            }
+          },
+           {
+            "position": {
+              "x": 0,
+              "y": 30,
+              "colSpan": 19,
+              "rowSpan": 4
+            },
+            "metadata": {
+              "inputs": [
+                {
+                  "name": "partTitle",
+                  "value": "Query 1",
+                  "isOptional": true
+                },
+                {
+                  "name": "chartType",
+                  "isOptional": true
+                },
+                {
+                  "name": "isShared",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryId",
+                  "isOptional": true
+                },
+                {
+                  "name": "formatResults",
+                  "isOptional": true
+                },
+                {
+                  "name": "queryScope",
+                  "value": {
+                    "scope": 0,
+                    "values": []
+                  },
+                  "isOptional": true
+                },
+                {
+                  "name": "query",
+                  "value": "resources\r\n    | where type =~ 'microsoft.hybridcompute/machines/extensions'\r\n    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')\r\n    | parse id with * '/providers/Microsoft.HybridCompute/machines/' machineName '/extensions/' *\r\n    | parse properties with * 'uploadStatus : ' uploadStatus ';' *\r\n    | project uploadStatus, subscriptionId, resourceGroup, machineName\r\n    | where uploadStatus !in ('OK') //comment this out to see all upload stats\r\n    | order by uploadStatus desc",
+                  "isOptional": true
+                }
+              ],
+              "type": "Extension/HubsExtension/PartType/ArgQueryGridTile",
+              "settings": {
+                "content": {}
+              },
+              "partHeader": {
+                "title": "Servers with Errors communicating with Azure DPS Service",
+                "subtitle": "For more information see https://learn.microsoft.com/en-us/sql/sql-server/azure-arc/troubleshoot-telemetry-endpoint"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "model": {
+        "timeRange": {
+          "value": {
+            "relative": {
+              "duration": 24,
+              "timeUnit": 1
+            }
+          },
+          "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+        }
+      }
+    }
+  },
+  "name": "SQL Server Instances",
+  "type": "Microsoft.Portal/dashboards",
+  "location": "INSERT LOCATION",
+  "tags": {
+    "hidden-title": "SQL Server Instances"
+  },
+  "apiVersion": "2022-12-01-preview"
+}

@@ -1,8 +1,8 @@
 
-                    
-  [Exception]       
-  エラーメッセージ  
-                    
+
+  [Exception]
+  エラーメッセージ
+
 
 foo
 
