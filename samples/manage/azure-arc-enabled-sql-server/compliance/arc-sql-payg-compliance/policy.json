@@ -1,0 +1,14 @@
+{
+  "properties": {
+    "displayName": "Paygo-SQLArc (Windows only)",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Policy to replace all SQL Arc server that use License type = 'Paid' with License type = 'PAYG'. Treat License type = 'LicenseOnly' as compliant",
+    "metadata": {
+      "category": "SQLArc",
+      "version": "1.0.0"
+    },
+    "parameters": "./params.json",
+    "policyRule": "./rules.json"
+  }
+}

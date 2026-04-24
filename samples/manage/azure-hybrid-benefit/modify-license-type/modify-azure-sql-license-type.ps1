@@ -154,7 +154,9 @@ if (-not $TenantId) {
 } else {
     Write-Output "Using provided TenantId: $TenantId"
 }
-# Ensure connection with both PowerShell and CLI.
+
+# Ensure connection with both PowerShell and CLI. Use V1 login.
+Update-AzConfig -LoginExperienceV2 Off
 if ($UseManagedIdentity) {
     Connect-Azure ($TenantId, $UseManagedIdentity)
 }else{
@@ -264,7 +266,7 @@ foreach ($sub in $subscriptions) {
             Write-Output "Seeking SQL Virtual Machines that require a license update to $SqlVmLicenseType..."
             
             # Build SQL VM query
-            $sqlVmQuery = "[?sqlServerLicenseType!='${SqlVmLicenseType}' && sqlServerLicenseType!= 'DR'"
+            $sqlVmQuery = "[?sqlServerLicenseType!='${SqlVmLicenseType}' && sqlServerLicenseType!='DR'"
             
             # Add resource group filter if specified
             if ($rgFilter) {
@@ -296,7 +298,7 @@ foreach ($sub in $subscriptions) {
                 if($null -ne (az vm list --query "[?name=='$($sqlvm.name)' && resourceGroup=='$($sqlvm.resourceGroup)' $tagsFilter]"))
                 {
                     $vmStatus = az vm get-instance-view --resource-group $sqlvm.resourceGroup --name $sqlvm.name --query "{Name:name, ResourceGroup:resourceGroup, PowerState:instanceView.statuses[?starts_with(code, 'PowerState/')].displayStatus | [0]}" -o json | ConvertFrom-Json
-                    if ($vmStatus.PowerState -eq "VM running") {
+                    if (($vmStatus.PowerState -eq "VM running") -and ($sqlvm.sqlServerLicenseType -ne "DR")) {
                         
                         # Collect data before modification
                         $modifiedResources += [PSCustomObject]@{
@@ -333,14 +335,13 @@ foreach ($sub in $subscriptions) {
             Write-Error "An error occurred while updating SQL VMs: $_"
         }
 
-        # --- Section: Update SQL Managed Instances (Stopped then Ready) "hybridSecondaryUsage": "Passive"---
+        # --- Section: Update SQL Managed Instances (Stopped then Ready) "
         $sqlMIsToUpdate = [System.Collections.ArrayList]::new()
         try {
             
-            Write-Output "Processing SQL Managed Instances that are running to $LicenseType..."
-            
+          
             # Build Managed Instance query
-            $miRunningQuery = "[?licenseType!='${LicenseType}' && hybridSecondaryUsage!='Passive' && state=='Ready'"
+            $miRunningQuery = "[?licenseType!='${LicenseType}' && state=='Ready'"
 
             # Add resource group filter if specified
             if ($rgFilter) {
@@ -619,8 +620,8 @@ foreach ($sub in $subscriptions) {
         try {
             Write-Output "Searching for SQL Instance Pools that require a license update..."
             
-            # Build instance pool query
-            $instancePoolsQuery = "[?licenseType!='${LicenseType}'"
+            # Build instance pool query (skip the passive replicas)
+            $instancePoolsQuery = "[?licenseType!='${LicenseType}' && state=='Ready'"
             
             # Add resource group filter if specified
             if ($rgFilter) {

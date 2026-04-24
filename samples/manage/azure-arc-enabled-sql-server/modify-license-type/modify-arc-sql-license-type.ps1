@@ -119,7 +119,8 @@ function Connect-Azure {
     }
     Write-Output "Environment detected: $envType"
 
-    # 2) Ensure Az.PowerShell context
+    # 2) Ensure Az.PowerShell context. Use login V1
+    Update-AzConfig -LoginExperienceV2 Off
     $currentCtx = Get-AzContext -ErrorAction SilentlyContinue
     if ($currentCtx -and $currentCtx.Account) {
         if ($TenantId) {
@@ -431,8 +432,12 @@ foreach ($sub in $subscriptions) {
 
             if (-not $ReportOnly) {
                 If ($WriteSettings) {
-                    try { 
-                        $ext | Set-AzConnectedMachineExtension -Name $setID.Name -ResourceGroupName $setID.ResourceGroup -MachineName $setID.MachineName -NoWait -ErrorAction SilentlyContinue | Out-Null
+                    try {
+                        $settings = @{}
+                        foreach ($h in $ext.Setting.Keys) {
+                           $settings[$h]=$($ext.Setting[$h])
+                        }                        
+                        Set-AzConnectedMachineExtension -Name $setID.Name -ResourceGroupName $setID.ResourceGroup -Location $setID.Location -MachineName $setID.MachineName -Publisher $setID.Publisher -ExtensionType $setID.ExtensionType -Setting $settings -NoWait # -ErrorAction SilentlyContinue | Out-Null
                         Write-Output "Updated -- Resource group: [$($setID.ResourceGroup)], Connected machine: [$($setID.MachineName)]"
                     } catch {
                         write-Output "The request to modify the extension object failed with the following error:"

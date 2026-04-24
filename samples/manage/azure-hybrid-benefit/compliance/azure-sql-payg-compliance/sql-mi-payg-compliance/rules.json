@@ -1,0 +1,53 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "field": "type",
+        "equals": "Microsoft.Sql/managedInstances"
+      },
+      {
+        "field": "Microsoft.Sql/managedInstances/licenseType",
+        "equals": "BasePrice"
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]",
+    "details": {
+      "type": "Microsoft.Sql/managedInstances",
+      "name": "[field('name')]",
+      "roleDefinitionIds": [
+        "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+      ],
+      "evaluationDelay": "AfterProvisioningSuccess",
+      "existenceCondition": {
+        "allOf": [
+          {
+            "field": "Microsoft.Sql/managedInstances/licenseType",
+            "equals": "LicenseIncluded"
+          },
+          {
+            "field": "Microsoft.Sql/managedInstances/administrators.azureADOnlyAuthentication",
+            "equals": true
+          }
+        ]
+      },
+      "deployment": {
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "<link-to-remediation-template>"
+          },
+          "parameters": {
+            "miName": {
+              "value": "[field('name')]"
+            },
+            "location": {
+              "value": "[field('location')]"
+            }
+          }
+        }
+      }
+    }
+  }
+}

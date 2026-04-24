@@ -36,7 +36,7 @@
     "babel-preset-minify": "^0.2.0",
     "del": "^3.0.0",
     "es6-promise": "^4.1.1",
-    "eslint": "^4.13.1",
+    "eslint": "^9.32.0",
     "google-closure-compiler": "^20171203.0.0",
     "gulp": "^4.0.2",
     "gulp-add-src": "^1.0.0",

@@ -1,6 +1,0 @@
-pycrypto==2.6.1
-pycryptodome==3.19.1
-cryptography==43.0.1
-hvac==0.10.11
-azure-identity==1.16.1
-azure-keyvault-keys==4.3.1

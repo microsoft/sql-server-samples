@@ -1,0 +1,118 @@
+{
+  "properties": {
+    "displayName": "Paygo-SQLMI",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Ensures SQL Managed Instance uses PAYG licensing. If a managed instance is created/updated with Azure Hybrid Benefit ('BasePrice'), this policy modifies licenseType to 'LicenseIncluded' (PAYG). The remediation is compliant with the Entra‑only authentication initiative",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "SQL",
+      "source": "github.com/your-org/azure-policy-paygo-sqlmi"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Use DeployIfNotExists to remediate; use Disabled to turn off."
+        },
+        "allowedValues": [
+          "DeployIfNotExists",
+          "Disabled"
+        ],
+        "defaultValue": "DeployIfNotExists"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Sql/managedInstances"
+          }
+        ]
+      },
+      "then": {
+        "effect": "[parameters('effect')]",
+        "details": {
+          "type": "Microsoft.Sql/managedInstances",
+          "name": "[field('name')]",
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "evaluationDelay": "AfterProvisioningSuccess",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Sql/managedInstances/licenseType",
+                "equals": "LicenseIncluded"
+              },
+              {
+                "field": "Microsoft.Sql/managedInstances/administrators.azureADOnlyAuthentication",
+                "equals": true
+              }
+            ]
+          },
+          "deployment": {
+            "properties": {
+              "mode": "Incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "miName": { "type": "string" },
+                  "location": { "type": "string" }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Resources/deployments",
+                    "apiVersion": "2021-04-01",
+                    "name": "updateMiAdminAndLicense",
+                    "properties": {
+                      "mode": "Incremental",
+                      "template": {
+                        "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                        "contentVersion": "1.0.0.0",
+                        "parameters": {
+                          "miName": { "type": "string" },
+                          "location": { "type": "string" }
+                        },
+                        "resources": [
+                          {
+                            "type": "Microsoft.Sql/managedInstances",
+                            "apiVersion": "2023-08-01",
+                            "name": "[parameters('miName')]",
+                            "location": "[parameters('location')]",
+                            "properties": {
+                              "licenseType": "LicenseIncluded",
+                              "administrators": {
+                                "administratorType": "ActiveDirectory",
+                                "principalType": "Application",
+                                "login": "[parameters('miName')]",
+                                "sid": "[reference(resourceId('Microsoft.Sql/managedInstances', parameters('miName')), '2023-08-01', 'Full').identity.principalId]",
+                                "tenantId": "[subscription().tenantId]",
+                                "azureADOnlyAuthentication": true
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "parameters": {
+                        "miName": { "value": "[parameters('miName')]" },
+                        "location": { "value": "[parameters('location')]" }
+                      }
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "miName": { "value": "[field('name')]" },
+                "location": { "value": "[field('location')]" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@ services: Azure SQL
 platforms: Azure
 author: anosov1960,rodrigomonteiro-gbb
 ms.author: sashan.romontei
-ms.date: 06/21/2025
+ms.date: 10/13/2025
 ---
 
 # About this sample
@@ -22,12 +22,14 @@ ms.date: 06/21/2025
 
     06/10/2025 - Fixed a RG filter for SQL DB
 
+    10/13/2025 - blocked modification of the DR replica
+
 
 # Overview
 
 This script provides a scaleable solution to change the license type of various Azure SQL resources within the selected scope. It automates the process of modifying license settings for SQL Databases, Elastic Pools, SQL Managed Instances, SQL Instance Pools, SQL Virtual Machines, and DataFactory SSIS Integration Runtimes. The script supports targeting a single subscription, a list of subscriptions defined in a CSV file, or all accessible subscriptions. Optionally, it can also start resources that are stopped (if the -ForceStartOnResources parameter is enabled).
 
-This script is designed to help administrators standardize SQL licensing across their Azure environment by automating license updates. It accepts a subscription ID or CSV file (for a list of subscriptions). If no subscription is specified, it defaults to updating resources in all accessible subscriptions.
+This script is designed to help administrators standardize SQL licensing across their Azure environment by automating license updates. It accepts a subscription ID or CSV file (for a list of subscriptions). If no subscription is specified, it defaults to updating resources in all accessible subscriptions. The update will preserve the existing configuration of the passive replicas with failover rights (with License type value set to "DR").
 
 # Target Resource Types
 
@@ -70,13 +72,14 @@ The scripts is seamlessly integrated with Azure Authentication. It uses managed 
 |`-SubId`|`subscription_id` *or* a file_name|Optional: Subscription id or a .csv file with the list of subscriptions<sup>1</sup>. If not specified all subscriptions will be scanned|
 |`-ResourceGroup` |`resource_group_name`|Optional: Limits the scope  to a specific resource group|
 |`-ResourceName` |`resource_name`|Optional: Limits the scope  to resources associated with this name. For SQL Server - updates all databases under the specified server. For SQL Managed Instance - updates the specified instance. For SQL VM - updates the specified VM |
-|`-LicenseType` | `LicenseIncluded` (default) or `BasePrice` | Optional: Sets the license type to the specified value |
+|`-LicenseType` | `LicenseIncluded` (default) or `BasePrice` | Optional: Sets the license type to the specified value<sup>2</sup> |
 |`-ExclusionTags`| `'{"tag1":"value1","tag2":"value2"}'` |*Optional*. If specified, excludes the resources that have these tags assigned.|
 |`-TenantId`| `tenant_id` |*Optional*. If specified, uses this tenant id to log in. Otherwise, the current context is used.|
 |`-ReportOnly`| |*Optional*. If true, generates a csv file with the list of resources that are to be modified, but doesn't make the actual change.|
 |`-UseManagedIdentity`| |*Optional*. If true, logs in both PowerShell and CLI using managed identity. Required to run the script as a runbook.|
 
 <sup>1</sup>You can generate a .csv file that lists only specific subscriptions. E.g., the following command will include only production subscriptions (exclude dev/test).
+<sup>2</sup>The script will skip the resources with the LicenseType property set to "DR"
 ```PowerShell
 $tenantId = "<your-tenant-id>"
 Get-AzSubscription -TenantId $tenantId | Where-Object {
@@ -108,7 +111,7 @@ The script produces a report listing the affected resources by creating a `Modif
 - Location
 
 > [!NOTE]
-> - If `-ReportOnly` is specified, the report shows the resources that would be affected without the actuall change being applied.
+> - If `-ReportOnly` is specified, the report shows the resources that would be affected without the actual change being applied.
 
 
 # Script execution examples

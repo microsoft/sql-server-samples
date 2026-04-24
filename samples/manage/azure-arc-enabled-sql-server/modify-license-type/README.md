@@ -3,7 +3,7 @@ services: Azure Arc-enabled SQL Server
 platforms: Azure
 author: anosov1960
 ms.author: sashan
-ms.date: 05/01/2025
+ms.date: 10/13/2025
 ---
 
 # About this sample
@@ -14,11 +14,13 @@ ms.date: 05/01/2025
 - **Authors:** Alexander (Sasha) Nosov
 - **Update history:** 
     
-    05/01/2025 - added the consent parameter for teh CSP-managed subscriptions
+    05/01/2025 - added the consent parameter for the CSP-managed subscriptions
 
     05/09/2025 - added *-ReportOnly* and *-TenandId* parameters
 
-    05/13/2025 - added support for a .CSV file with the machine names 
+    05/13/2025 - added support for a .CSV file with the machine names
+
+    10/13/2025 - turn off Azure login V2
 
 # Overview
 
@@ -141,7 +143,7 @@ This option is recommended because Cloud shell has the Azure PowerShell modules 
 1. Upload the script to your cloud shell using the following command:
 
     ```console
-    curl https://raw.githubusercontent.com/microsoft/sql-server-samples/master/samples/manage/azure-arc-enabled-sql-server/modify-arc-sql-license-type/modify-arc-sql-license-type.ps1 -o modify-arc-sql-license-type.ps1
+    curl https://raw.githubusercontent.com/microsoft/sql-server-samples/refs/heads/master/samples/manage/azure-arc-enabled-sql-server/modify-license-type/modify-arc-sql-license-type.ps1
     ```
 
 1. Run the script by following an appropriate example. 

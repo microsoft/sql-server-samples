@@ -1,3 +1,0 @@
-name: mleap-census
-version: v1
-inputs: ./census_frame.json
