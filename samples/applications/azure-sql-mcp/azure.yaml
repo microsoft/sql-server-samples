@@ -1,0 +1,15 @@
+name: azure-sql-mcp
+metadata:
+  template: azure-sql-mcp
+hooks:
+  postprovision:
+    windows:
+      shell: pwsh
+      run: ./scripts/post-provision.ps1
+      interactive: true
+      continueOnError: false
+    posix:
+      shell: bash
+      run: ./scripts/post-provision.sh
+      interactive: true
+      continueOnError: false

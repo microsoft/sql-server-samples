@@ -1,0 +1,3 @@
+.azure/
+dab-config.generated.json
+infra/main.json
