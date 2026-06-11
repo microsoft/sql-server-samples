@@ -116,25 +116,25 @@ if [ -z "$TOKEN" ]; then
 fi
 
 # --- Step 3: Seed the database ---
-echo "[3/4] Seeding the database with BlogPost table..."
+echo "[3/4] Seeding the database with BlogPosts table..."
 
-SEED_SQL="IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'BlogPost')
+SEED_SQL="IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'BlogPosts')
 BEGIN
-    CREATE TABLE dbo.BlogPost (
+    CREATE TABLE dbo.BlogPosts (
         Id int IDENTITY(1,1) PRIMARY KEY,
         Title nvarchar(300) NOT NULL,
         Url nvarchar(1000) NOT NULL,
         Source nvarchar(100) NOT NULL
     );
 END;
-IF NOT EXISTS (SELECT 1 FROM dbo.BlogPost WHERE Url = N'https://learn.microsoft.com/en-us/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp')
+IF NOT EXISTS (SELECT 1 FROM dbo.BlogPosts WHERE Url = N'https://learn.microsoft.com/en-us/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp')
 BEGIN
-    INSERT INTO dbo.BlogPost (Title, Url, Source)
+    INSERT INTO dbo.BlogPosts (Title, Url, Source)
     VALUES (N'Hosted MCP servers in Azure Connector Namespace', N'https://learn.microsoft.com/en-us/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp', N'Microsoft Learn');
 END;
-IF NOT EXISTS (SELECT 1 FROM dbo.BlogPost WHERE Url = N'https://devblogs.microsoft.com/dotnet/durable-workflows-in-microsoft-agent-framework/')
+IF NOT EXISTS (SELECT 1 FROM dbo.BlogPosts WHERE Url = N'https://devblogs.microsoft.com/dotnet/durable-workflows-in-microsoft-agent-framework/')
 BEGIN
-    INSERT INTO dbo.BlogPost (Title, Url, Source)
+    INSERT INTO dbo.BlogPosts (Title, Url, Source)
     VALUES (N'Durable Workflows in Microsoft Agent Framework', N'https://devblogs.microsoft.com/dotnet/durable-workflows-in-microsoft-agent-framework/', N'.NET Blog');
 END;"
 
@@ -193,9 +193,9 @@ cat > "$SCRIPT_DIR/../dab-config.generated.json" <<EOF
     }
   },
   "entities": {
-    "BlogPost": {
-      "source": { "object": "dbo.BlogPost", "type": "table" },
-      "graphql": { "enabled": true, "type": { "singular": "BlogPost", "plural": "BlogPosts" } },
+    "BlogPosts": {
+      "source": { "object": "dbo.BlogPosts", "type": "table" },
+      "graphql": { "enabled": true, "type": { "singular": "BlogPosts", "plural": "BlogPosts" } },
       "rest": { "enabled": true },
       "permissions": [{ "role": "anonymous", "actions": [{ "action": "*" }] }]
     }

@@ -22,7 +22,7 @@ Deploy a hosted Azure SQL Model Context Protocol (MCP) server to [Azure Connecto
 - **Workload:** AI agent data access
 - **Programming Language:** Bicep, PowerShell, Bash, JSON
 
-This sample deploys a hosted `mcp-sql` server in Azure Connector Namespace. The hosted MCP server uses Data API Builder configuration to expose a SQL table through MCP tools. The SQL database is seeded with a `dbo.BlogPost` table containing links to Microsoft Learn and .NET Blog posts. For more background, see [Hosted MCP servers in Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp).
+This sample deploys a hosted `mcp-sql` server in Azure Connector Namespace. The hosted MCP server uses Data API Builder configuration to expose a SQL table through MCP tools. The SQL database is seeded with a `dbo.BlogPosts` table containing links to Microsoft Learn and .NET Blog posts. For more background, see [Hosted MCP servers in Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp).
 
 <a name=before-you-begin></a>
 
@@ -148,7 +148,7 @@ Resource names use the pattern `<type>-<environment-name>-<short-suffix>` where 
 | Step | Action |
 |------|--------|
 | **Provision** | Deploys Azure SQL, SQL firewall rules, Log Analytics, Application Insights, Connector Namespace, hosted `mcp-sql`, and MCP access policy. |
-| **Post-provision** | Allows your public IP through the SQL firewall, creates and seeds `dbo.BlogPost`, creates the Connector Namespace managed identity SQL user, grants SQL permissions, generates `dab-config.generated.json`, and prints the MCP endpoint plus Azure Portal resource group link. |
+| **Post-provision** | Allows your public IP through the SQL firewall, creates and seeds `dbo.BlogPosts`, creates the Connector Namespace managed identity SQL user, grants SQL permissions, generates `dab-config.generated.json`, and prints the MCP endpoint plus Azure Portal resource group link. |
 
 The hosted MCP server receives:
 
@@ -175,7 +175,7 @@ To allow additional users to connect to the MCP server:
 
 ### Sample data
 
-The post-provision hook creates and seeds `dbo.BlogPost` with these entries:
+The post-provision hook creates and seeds `dbo.BlogPosts` with these entries:
 
 | Title | Source |
 |-------|--------|

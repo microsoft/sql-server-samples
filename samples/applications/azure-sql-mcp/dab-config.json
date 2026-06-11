@@ -34,15 +34,15 @@
     }
   },
   "entities": {
-    "BlogPost": {
+    "BlogPosts": {
       "source": {
-        "object": "dbo.BlogPost",
+        "object": "dbo.BlogPosts",
         "type": "table"
       },
       "graphql": {
         "enabled": true,
         "type": {
-          "singular": "BlogPost",
+          "singular": "BlogPosts",
           "plural": "BlogPosts"
         }
       },

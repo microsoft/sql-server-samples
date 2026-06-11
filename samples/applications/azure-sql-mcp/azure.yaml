@@ -9,7 +9,7 @@ hooks:
       interactive: true
       continueOnError: false
     posix:
-      shell: bash
+      shell: sh
       run: ./scripts/post-provision.sh
       interactive: true
       continueOnError: false

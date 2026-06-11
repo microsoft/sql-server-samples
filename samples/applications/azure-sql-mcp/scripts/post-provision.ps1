@@ -117,29 +117,29 @@ if (-not $token) {
 }
 
 # --- Step 3: Seed the database ---
-Write-Host "[3/4] Seeding the database with BlogPost table..." -ForegroundColor Yellow
+Write-Host "[3/4] Seeding the database with BlogPosts table..." -ForegroundColor Yellow
 
 $seedSql = @"
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'BlogPost')
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'BlogPosts')
 BEGIN
-    CREATE TABLE dbo.BlogPost (
+    CREATE TABLE dbo.BlogPosts (
         Id int IDENTITY(1,1) PRIMARY KEY,
         Title nvarchar(300) NOT NULL,
         Url nvarchar(1000) NOT NULL,
         Source nvarchar(100) NOT NULL
     );
 END
-IF NOT EXISTS (SELECT 1 FROM dbo.BlogPost WHERE Url = N'https://learn.microsoft.com/en-us/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp')
+IF NOT EXISTS (SELECT 1 FROM dbo.BlogPosts WHERE Url = N'https://learn.microsoft.com/en-us/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp')
 BEGIN
-    INSERT INTO dbo.BlogPost (Title, Url, Source)
+    INSERT INTO dbo.BlogPosts (Title, Url, Source)
     VALUES (N'Hosted MCP servers in Azure Connector Namespace', N'https://learn.microsoft.com/en-us/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp', N'Microsoft Learn');
 END
-IF NOT EXISTS (SELECT 1 FROM dbo.BlogPost WHERE Url = N'https://devblogs.microsoft.com/dotnet/durable-workflows-in-microsoft-agent-framework/')
+IF NOT EXISTS (SELECT 1 FROM dbo.BlogPosts WHERE Url = N'https://devblogs.microsoft.com/dotnet/durable-workflows-in-microsoft-agent-framework/')
 BEGIN
-    INSERT INTO dbo.BlogPost (Title, Url, Source)
+    INSERT INTO dbo.BlogPosts (Title, Url, Source)
     VALUES (N'Durable Workflows in Microsoft Agent Framework', N'https://devblogs.microsoft.com/dotnet/durable-workflows-in-microsoft-agent-framework/', N'.NET Blog');
 END
-PRINT 'BlogPost table seeded.';
+PRINT 'BlogPosts table seeded.';
 "@
 
 $grantSql = @"
@@ -214,15 +214,15 @@ $dabConfig = @{
         }
     }
     'entities' = @{
-        'BlogPost' = @{
+        'BlogPosts' = @{
             'source' = @{
-                'object' = 'dbo.BlogPost'
+                'object' = 'dbo.BlogPosts'
                 'type' = 'table'
             }
             'graphql' = @{
                 'enabled' = $true
                 'type' = @{
-                    'singular' = 'BlogPost'
+                    'singular' = 'BlogPosts'
                     'plural' = 'BlogPosts'
                 }
             }
