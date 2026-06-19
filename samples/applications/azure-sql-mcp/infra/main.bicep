@@ -15,7 +15,7 @@ param environmentName string
     type: 'location'
   }
 })
-param location string = 'eastasia'
+param location string
 
 @description('Location for the Connector Namespace. Preview regions: westcentralus, eastasia, centralus, northeurope.')
 param connectorNamespaceLocation string = location
