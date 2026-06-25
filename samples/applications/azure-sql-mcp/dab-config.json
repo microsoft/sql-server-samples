@@ -1,0 +1,64 @@
+{
+  "$schema": "https://github.com/Azure/data-api-builder/releases/download/v1.7.90/dab.draft.schema.json",
+  "data-source": {
+    "database-type": "mssql",
+    "connection-string": "@env('SQL_CONNECTION_STRING')",
+    "options": {
+      "set-session-context": false
+    }
+  },
+  "runtime": {
+    "rest": {
+      "enabled": false,
+      "path": "/api",
+      "request-body-strict": true
+    },
+    "graphql": {
+      "enabled": false,
+      "path": "/graphql",
+      "allow-introspection": true
+    },
+    "mcp": {
+      "enabled": true,
+      "path": "/mcp"
+    },
+    "host": {
+      "cors": {
+        "origins": [],
+        "allow-credentials": false
+      },
+      "authentication": {
+        "provider": "AppService"
+      },
+      "mode": "development"
+    }
+  },
+  "entities": {
+    "BlogPosts": {
+      "source": {
+        "object": "dbo.BlogPosts",
+        "type": "table"
+      },
+      "graphql": {
+        "enabled": true,
+        "type": {
+          "singular": "BlogPosts",
+          "plural": "BlogPosts"
+        }
+      },
+      "rest": {
+        "enabled": true
+      },
+      "permissions": [
+        {
+          "role": "anonymous",
+          "actions": [
+            {
+              "action": "*"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
