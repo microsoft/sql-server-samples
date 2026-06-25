@@ -1,0 +1,55 @@
+# CI for the Azure SQL Vector Search TypeScript quickstart sample.
+# Security: uses `pull_request` (read-only token, no secrets on forks)
+# with an explicit same-repo check to skip fork PRs entirely.
+
+name: "Vector Search TypeScript — Build"
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "samples/features/vector-search/vector-search-query-typescript/**"
+  push:
+    branches: [master]
+    paths:
+      - "samples/features/vector-search/vector-search-query-typescript/**"
+
+# Cancel redundant runs for the same PR / branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & type-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Skip CI on fork PRs — prevents external actors from consuming minutes.
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
+
+    defaults:
+      run:
+        working-directory: samples/features/vector-search/vector-search-query-typescript
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: samples/features/vector-search/vector-search-query-typescript/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check (build)
+        run: npm run build
