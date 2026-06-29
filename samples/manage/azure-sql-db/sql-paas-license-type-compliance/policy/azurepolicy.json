@@ -1,0 +1,116 @@
+{
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy."
+      },
+      "allowedValues": [
+        "DeployIfNotExists",
+        "Disabled"
+      ],
+      "defaultValue": "DeployIfNotExists"
+    },
+    "targetLicenseType": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Target license type",
+        "description": "License type to enforce on the Azure SQL Database. LicenseIncluded = Pay-as-you-go, BasePrice = Azure Hybrid Benefit."
+      },
+      "allowedValues": [
+        "LicenseIncluded",
+        "BasePrice"
+      ],
+      "defaultValue": "LicenseIncluded"
+    }
+  },
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Sql/servers/databases"
+        },
+        {
+          "field": "Microsoft.Sql/servers/databases/sku.tier",
+          "notEquals": "Basic"
+        },
+        {
+          "field": "name",
+          "notEquals": "master"
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]",
+      "details": {
+        "type": "Microsoft.Sql/servers/databases",
+        "roleDefinitionIds": [
+          "/providers/Microsoft.Authorization/roleDefinitions/9b7fa17d-e63e-47b0-bb0a-15c516ac86ec",
+          "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+        ],
+        "name": "[field('fullName')]",
+        "existenceCondition": {
+          "field": "Microsoft.Sql/servers/databases/licenseType",
+          "equals": "[parameters('targetLicenseType')]"
+        },
+        "evaluationDelay": "AfterProvisioningSuccess",
+        "deployment": {
+          "properties": {
+            "mode": "incremental",
+            "template": {
+              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+              "contentVersion": "1.0.0.0",
+              "parameters": {
+                "databaseFullName": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The full name of the database (server/database)."
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The location of the database."
+                  }
+                },
+                "targetLicenseType": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The license type to enforce."
+                  }
+                }
+              },
+              "functions": [],
+              "variables": {},
+              "resources": [
+                {
+                  "type": "Microsoft.Sql/servers/databases",
+                  "apiVersion": "2023-08-01-preview",
+                  "name": "[parameters('databaseFullName')]",
+                  "location": "[parameters('location')]",
+                  "properties": {
+                    "licenseType": "[parameters('targetLicenseType')]"
+                  }
+                }
+              ],
+              "outputs": {}
+            },
+            "parameters": {
+              "databaseFullName": {
+                "value": "[field('fullName')]"
+              },
+              "location": {
+                "value": "[field('location')]"
+              },
+              "targetLicenseType": {
+                "value": "[parameters('targetLicenseType')]"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

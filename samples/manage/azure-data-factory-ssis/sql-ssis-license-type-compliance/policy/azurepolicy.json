@@ -1,0 +1,109 @@
+{
+  "displayName": "Audit Azure Data Factory SSIS Integration Runtime license type",
+  "policyType": "Custom",
+  "mode": "All",
+  "description": "Audits Azure Data Factory Managed SSIS Integration Runtimes whose licenseType does not match the target value (LicenseIncluded = PAYG, BasePrice = Azure Hybrid Benefit). Remediate non-compliant IRs by running start-remediation.ps1 (see metadata.helpLink) during a maintenance window: stop the IR, set licenseType, restart. DeployIfNotExists is not supported because the ARM PUT requires the IR to be in Initial or Stopped state.",
+  "metadata": {
+    "category": "Data Factory",
+    "helpLink": "https://github.com/microsoft/sql-server-samples/blob/master/samples/manage/azure-data-factory-ssis/sql-ssis-license-type-compliance/scripts/start-remediation.ps1",
+    "source": "https://github.com/microsoft/sql-server-samples/tree/master/samples/manage/azure-data-factory-ssis/sql-ssis-license-type-compliance"
+  },
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy."
+      },
+      "allowedValues": [
+        "AuditIfNotExists",
+        "Disabled"
+      ],
+      "defaultValue": "AuditIfNotExists"
+    },
+    "targetLicenseType": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Target license type",
+        "description": "License type to enforce on the SSIS Integration Runtime. LicenseIncluded = Pay-as-you-go, BasePrice = Azure Hybrid Benefit."
+      },
+      "allowedValues": [
+        "LicenseIncluded",
+        "BasePrice"
+      ],
+      "defaultValue": "LicenseIncluded"
+    },
+    "licenseTypesToOverwrite": {
+      "type": "Array",
+      "metadata": {
+        "displayName": "Current license types to overwrite",
+        "description": "Select which current license type states are eligible for update."
+      },
+      "allowedValues": [
+        "LicenseIncluded",
+        "BasePrice"
+      ],
+      "defaultValue": [
+        "LicenseIncluded",
+        "BasePrice"
+      ]
+    }
+  },
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.DataFactory/factories/integrationRuntimes"
+        },
+        {
+          "field": "Microsoft.DataFactory/factories/integrationruntimes/type",
+          "equals": "Managed"
+        },
+        {
+          "field": "Microsoft.DataFactory/factories/integrationRuntimes/Managed.typeProperties.ssisProperties.licenseType",
+          "exists": "true"
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]",
+      "details": {
+        "type": "Microsoft.DataFactory/factories/integrationRuntimes",
+        "name": "[field('fullName')]",
+        "existenceCondition": {
+          "anyOf": [
+            {
+              "field": "Microsoft.DataFactory/factories/integrationRuntimes/Managed.typeProperties.ssisProperties.licenseType",
+              "equals": "[parameters('targetLicenseType')]"
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.DataFactory/factories/integrationRuntimes/Managed.typeProperties.ssisProperties.licenseType",
+                  "equals": "LicenseIncluded"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'LicenseIncluded')]",
+                  "equals": false
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.DataFactory/factories/integrationRuntimes/Managed.typeProperties.ssisProperties.licenseType",
+                  "equals": "BasePrice"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'BasePrice')]",
+                  "equals": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}
