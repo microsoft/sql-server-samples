@@ -2,12 +2,42 @@
 
 This repo deploys and remediates a custom Azure Policy that configures and enforces Arc-enabled SQL Server extension `LicenseType` to a selected target value (for example `Paid` or `PAYG`).
 
+> **Looking for Windows Server instead?** To activate **Windows Server** Azure benefits (Software Assurance / pay-as-you-go) on Arc machines, use the companion policy: **[Activate Azure Benefits for Windows Arc Machines](https://github.com/Azure/Community-Policy/tree/main/policyDefinitions/Compute/activate-azure-benefits-for-windows-arc-machines)**. This sample is for **Arc-enabled SQL Server** only.
+
 ## What Is In This Folder
 
 - `policy/azurepolicy.json`: Custom policy definition (DeployIfNotExists).
+- `policy/azurepolicy.portal.json`: Portal paste version of the definition (`properties` contents only) for creating the policy by hand in the Azure portal.
 - `scripts/deployment.ps1`: Creates/updates the policy definition and policy assignment.
 - `scripts/start-remediation.ps1`: Starts a remediation task for the created assignment.
 - `docs/screenshots/`: Visual references.
+
+## Deployment paths at a glance
+
+| Path | Use when | Files |
+|---|---|---|
+| **Command line / pipeline** | You want scope, assignment, role grant and remediation handled for you. | `policy/azurepolicy.json` + `scripts/deployment.ps1` + `scripts/start-remediation.ps1` |
+| **Azure Portal** | You want to create the definition by hand and assign it yourself. | `policy/azurepolicy.portal.json` |
+
+## Choosing the license type by edition (compliance)
+
+`Paid` = **"License with Software Assurance"** and is a **customer attestation** of active SA / a SQL Server subscription. Free editions are **not** SA-eligible and must be `LicenseOnly`. See [Manage licensing and billing of SQL Server enabled by Azure Arc](https://learn.microsoft.com/sql/sql-server/azure-arc/manage-license-billing?view=sql-server-ver17#license-sql-server-instances-by-virtual-cores).
+
+**Rule:** if a host has **any** Standard or Enterprise instance → `Paid`. If a host has **only** free editions → `LicenseOnly`. Use `PAYG` for pay-as-you-go hourly billing of Standard/Enterprise.
+
+| Edition / combination | License type |
+|---|---|
+| Standard | `Paid` |
+| Enterprise | `Paid` |
+| Developer | `LicenseOnly` |
+| Express | `LicenseOnly` |
+| Evaluation | `LicenseOnly` |
+| Enterprise + Express | `Paid` |
+| Enterprise + Developer | `Paid` |
+| Standard + Express | `Paid` |
+| Standard + Developer | `Paid` |
+
+> This sample applies **one** `targetLicenseType` per assignment and is **not yet edition-aware**. To stay compliant on a mixed estate, **scope each assignment** to hosts of one category (e.g. an assignment over Standard/Enterprise hosts → `Paid`; another over free-only hosts → `LicenseOnly`). The scripted path (`deployment.ps1`) currently accepts only `Paid`/`PAYG`; the portal file additionally supports `LicenseOnly` and defaults to it (the safe, non-attesting default). Automatic edition/combination detection is tracked in [issue #1492](https://github.com/microsoft/sql-server-samples/issues/1492).
 
 ## Prerequisites
 
@@ -106,6 +136,15 @@ This will:
 ```
 
 > **Note:** `deployment.ps1` automatically grants required roles to the policy assignment managed identity at assignment scope, preventing common `PolicyAuthorizationFailed` errors during DeployIfNotExists deployments.
+
+## Deploy via the Azure Portal (copy & paste)
+
+Prefer the portal? The **Policy definition → Policy rule** box expects the `properties` contents. The repo's `policy/azurepolicy.json` also carries a read-only `policyType` and a top-level `version` that the portal rejects, so `policy/azurepolicy.portal.json` has those removed (nothing else changed, plus `LicenseOnly` added to the allowed license types).
+
+1. **Policy → Definitions → + Policy definition.**
+2. Set **Definition location**, **Name** (e.g. *Configure Arc-enabled SQL Server license type*), and **Category** = `Azure Arc`.
+3. Open [`policy/azurepolicy.portal.json`](./policy/azurepolicy.portal.json), copy its entire contents, clear the **Policy rule** box and paste it in.
+4. **Save**, then **Assign**. On the *Parameters* tab choose your **Target license type** per the edition table above. Because the effect is `DeployIfNotExists`, the assignment needs a **system-assigned managed identity + location**; the portal grants the required roles. Create a **remediation task** to update existing instances.
 
 ## Start Remediation
 
