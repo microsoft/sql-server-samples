@@ -1,8 +1,8 @@
 ![](../../../media/solutions-microsoft-logo-small.png)
 
-# Azure SQL MCP Server with Connector Namespace
+# Hosted MCP in Connector Namespace — Azure SQL Database
 
-Deploy a hosted Azure SQL Model Context Protocol (MCP) server to [Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp). The sample provisions Azure SQL Database, exposes a `BlogPost` table through Data API Builder MCP, and configures managed identity access so MCP clients such as GitHub Copilot in Visual Studio Code can query the database.
+This sample deploys a hosted Model Context Protocol (MCP) server in [Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp), backed by Azure SQL Database. It uses [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/) (`azd`) and Bicep to provision the infrastructure, seed a sample `dbo.BlogPosts` table through a post-provision SQL script, and configure managed identity access. After deployment, MCP clients such as GitHub Copilot in Visual Studio Code can query the database through the hosted MCP server.
 
 ### Contents
 
@@ -18,11 +18,11 @@ Deploy a hosted Azure SQL Model Context Protocol (MCP) server to [Azure Connecto
 ## About this sample
 
 - **Applies to:** Azure SQL Database
-- **Key features:** Azure Connector Namespace, hosted MCP server, Data API Builder, managed identity, Application Insights
+- **Key features:** Azure Connector Namespace, hosted MCP server, Data API builder, managed identity, Application Insights
 - **Workload:** AI agent data access
 - **Programming Language:** Bicep, PowerShell, Bash, JSON
 
-This sample deploys a hosted `mcp-sql` server in Azure Connector Namespace. The hosted MCP server uses Data API Builder configuration to expose a SQL table through MCP tools. The SQL database is seeded with a `dbo.BlogPosts` table containing links to Microsoft Learn and .NET Blog posts. For more background, see [Hosted MCP servers in Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp).
+This sample deploys a hosted MCP server in [Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp). The server uses a [Data API builder](https://learn.microsoft.com/azure/data-api-builder/overview) configuration to expose an Azure SQL Database table through MCP tools. A post-provision SQL script creates and seeds the `dbo.BlogPosts` table with sample rows linking to Microsoft Learn and .NET Blog posts.
 
 <a name=before-you-begin></a>
 
@@ -35,12 +35,13 @@ To run this sample, you need the following prerequisites.
 1. [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli) (`az`)
 1. [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/install-azd) (`azd`)
 1. PowerShell 7+ on Windows, or Bash on Linux/macOS
+1. [Visual Studio Code](https://code.visualstudio.com/) with the [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) extension (to connect to the deployed MCP server)
 
 **Azure prerequisites:**
 
 1. An Azure subscription with permissions to create resource groups and resources.
 1. Permission to create Azure SQL Database, Application Insights, Log Analytics workspace, and Connector Namespace resources.
-1. Permission to create an Azure SQL Microsoft Entra administrator for the signed-in user.
+1. Permission to create an Azure SQL Database Microsoft Entra ID administrator for the signed-in user.
 
 <a name=run-this-sample></a>
 
@@ -53,6 +54,8 @@ azd auth login
 azd init
 azd up
 ```
+
+> **Cross-platform:** `azd up` works on Windows (runs the PowerShell post-provision hook), macOS, and Linux (runs the Bash post-provision hook). No additional tools are required beyond the prerequisites listed above. A standalone `deploy.ps1` script is also included as an alternative for PowerShell users.
 
 #### `azd init` prompts
 
@@ -77,19 +80,21 @@ When you run `azd up`, you are prompted for:
   ```
 - **`connectorNamespaceIdentityType` infrastructure parameter:** Enter `SystemAssigned` for the default Connector Namespace managed identity, or `UserAssigned` to create and attach a user-assigned managed identity.
 
-The `deployerLoginName` value is used to create the Azure SQL server with Microsoft Entra-only authentication and set you as the SQL Entra admin.
+The `deployerLoginName` value is used to create the Azure SQL Database server with Microsoft Entra ID-only authentication and set you as the SQL admin.
 
 ### Optional: use a user-assigned managed identity
 
 When `azd up` prompts for `connectorNamespaceIdentityType`, enter `UserAssigned` to test with a user-assigned managed identity.
 
-When set to `UserAssigned`, the template creates a user-assigned managed identity, attaches it to the Connector Namespace, passes its client ID to the hosted MCP server, and grants that identity access to Azure SQL.
+When set to `UserAssigned`, the template creates a user-assigned managed identity, attaches it to the Connector Namespace, passes its client ID to the hosted MCP server, and grants that identity access to Azure SQL Database.
 
 Choose the identity type before the first deployment. Connector Namespace doesn't allow changing attached user-assigned identities after the namespace is created. To switch between `SystemAssigned` and `UserAssigned`, create a new azd environment or run `azd down --purge` and deploy again.
 
+For more information about managed identity options in Azure Connector Namespace, see [Hosted MCP servers in Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp).
+
 ### Connect from Visual Studio Code
 
-After `azd up` completes, the MCP endpoint URL is printed. Add it to VS Code using the UI:
+After `azd up` completes, the MCP endpoint URL is printed. Add it to VS Code using the UI. For full details, see the [VS Code MCP servers documentation](https://code.visualstudio.com/docs/copilot/chat/mcp-servers).
 
 1. In VS Code, open the Command Palette:
    - Windows/Linux: <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>
@@ -101,7 +106,17 @@ After `azd up` completes, the MCP endpoint URL is printed. Add it to VS Code usi
 1. Choose whether to save the server in user settings or workspace settings.
 1. Start the `sql-mcp` server when VS Code prompts you.
 
-VS Code prompts you to sign in with Microsoft. Then use Copilot Chat to query your database, for example: *"List the blog posts in the database."*
+VS Code prompts you to sign in with Microsoft.
+
+### Try it out
+
+Once the MCP server is connected in VS Code, open Copilot Chat (Agent mode) and try prompts like:
+
+- *"List the blog posts in the database."*
+- *"What tables are available?"*
+- *"Show me the blog post from the .NET Blog."*
+
+Copilot uses the MCP tools (`describe_entities`, `read_records`) exposed by Data API builder to query Azure SQL Database and return results.
 
 <a name=sample-details></a>
 
@@ -109,36 +124,28 @@ VS Code prompts you to sign in with Microsoft. Then use Copilot Chat to query yo
 
 ### Architecture
 
-```
-┌─────────────────────────────────────┐
-│         Connector Namespace         │
-│  (Microsoft.Web/connectorGateways)  │
-│                                     │
-│  ┌───────────────────────────────┐  │
-│  │   Hosted SQL MCP Server       │  │
-│  │   (Data API Builder)          │  │
-│  │                               │  │
-│  │    MI ───► Azure SQL DB       │  │
-│  └───────────────────────────────┘  │
-└─────────────────────────────────────┘
-         ▲
-         │  MCP (HTTP + SSE)
-         │
-    VS Code / Copilot / MCP Client
+```mermaid
+graph TB
+    Client["VS Code / Copilot / MCP Client"]
+    Client -->|"MCP (HTTP + SSE)"| CN
+    subgraph CN["Connector Namespace"]
+        MCP["Hosted MCP Server\n(Data API builder)"]
+    end
+    MCP -->|"Managed Identity"| SQL[("Azure SQL Database")]
 ```
 
 ### Resources deployed
 
 | Resource | Purpose |
 |----------|---------|
-| **Resource Group** | Container for all deployed resources |
-| **Azure SQL Server** | Entra-only auth, with you as SQL admin |
-| **Azure SQL Database** | Basic SKU database with a `BlogPost` sample table used by the MCP server |
+| **Resource Group** | Logical container for all deployed resources |
+| **Azure SQL Database logical server** | Microsoft Entra ID-only authentication, with you as the server admin |
+| **Azure SQL Database** | Basic SKU database with a seeded `dbo.BlogPosts` sample table used by the MCP server |
 | **SQL Firewall Rules** | Allows Azure services/resources, Azure Portal Query Editor, and your public IP for setup |
 | **Log Analytics Workspace** | Stores Application Insights telemetry |
 | **Application Insights** | Collects telemetry from the hosted MCP server |
 | **Connector Namespace** | Hosts MCP servers with system-assigned managed identity by default, or user-assigned managed identity when configured |
-| **Hosted SQL MCP Server** | `mcp-sql` server config on the namespace |
+| **Hosted MCP server** | Data API builder MCP server configuration deployed to the Connector Namespace |
 | **MCP Access Policy** | Grants you access to invoke MCP tools |
 
 Resource names use the pattern `<type>-<environment-name>-<short-suffix>` where possible, for example `sql-mcp-dev-a1b2c3d4`. The suffix is deterministic for the subscription, environment name, and location so names are readable and stable across redeployments.
@@ -147,25 +154,25 @@ Resource names use the pattern `<type>-<environment-name>-<short-suffix>` where 
 
 | Step | Action |
 |------|--------|
-| **Provision** | Deploys Azure SQL, SQL firewall rules, Log Analytics, Application Insights, Connector Namespace, hosted `mcp-sql`, and MCP access policy. |
+| **Provision** | Deploys Azure SQL Database, SQL firewall rules, Log Analytics, Application Insights, Connector Namespace, hosted MCP server, and MCP access policy. |
 | **Post-provision** | Allows your public IP through the SQL firewall, creates and seeds `dbo.BlogPosts`, creates the Connector Namespace managed identity SQL user, grants SQL permissions, generates `dab-config.generated.json`, and prints the MCP endpoint plus Azure Portal resource group link. |
 
 The hosted MCP server receives:
 
-- the included `dab-config.json` as `properties.hostedMcpServer.configuration.configFile`
-- the generated SQL connection string as `SQL_CONNECTION_STRING`
+- the included `dab-config.json` (the Data API builder configuration file) as `properties.hostedMcpServer.configuration.configFile`
+- the generated connection string as `SQL_CONNECTION_STRING`
 - the Application Insights connection string as `APPLICATIONINSIGHTS_CONNECTION_STRING`
 - `AZURE_CLIENT_ID` when the sample is configured to use a user-assigned managed identity
 
-No SQL or Application Insights connection string is checked in.
+No database or Application Insights connection strings are checked in.
 
-This sample includes a ready-to-use `dab-config.json`. If you want to create or customize a Data API Builder configuration from scratch, install the DAB CLI and use it to generate a config file. For more information, see [Install the Data API Builder CLI](https://learn.microsoft.com/azure/data-api-builder/command-line/install).
+This sample includes a ready-to-use `dab-config.json`, the Data API builder configuration file that defines which database entities are exposed through MCP tools. If you want to create or customize a Data API builder configuration from scratch, install the DAB CLI and use it to generate a config file. For more information, see [Install the Data API builder CLI](https://learn.microsoft.com/azure/data-api-builder/command-line/install).
 
-For details about the hosted MCP server resource model and supported server types, see [Hosted MCP servers in Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp). For a walkthrough focused on the SQL hosted MCP server, see [Hosted MCP server quickstart for SQL](https://learn.microsoft.com/azure/logic-apps/connector-namespace/hosted-mcp-quickstart?pivots=sql).
+For details about the hosted MCP server resource model and supported server types, see [Hosted MCP servers in Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp). For a walkthrough focused on the Azure SQL Database hosted MCP server, see [Hosted MCP server quickstart for SQL](https://learn.microsoft.com/azure/logic-apps/connector-namespace/hosted-mcp-quickstart?pivots=sql).
 
 ### Inspect resources in Azure Portal
 
-After deployment, the post-provision output includes a link to the Azure resource group in the Azure Portal. Use that page to inspect the SQL server, Application Insights resource, Log Analytics workspace, Connector Namespace, and hosted MCP server.
+After deployment, the post-provision output includes a link to the Azure resource group in the Azure Portal. Use that page to inspect the Azure SQL Database logical server, Application Insights resource, Log Analytics workspace, Connector Namespace, and hosted MCP server.
 
 To allow additional users to connect to the MCP server:
 
@@ -218,8 +225,8 @@ az deployment sub delete --name <environment-name>
 ## Related links
 
 - [Hosted MCP servers in Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp)
-- [Hosted MCP server quickstart for SQL](https://learn.microsoft.com/azure/logic-apps/connector-namespace/hosted-mcp-quickstart?pivots=sql)
-- [Azure SQL MCP server support in Data API Builder](https://learn.microsoft.com/azure/data-api-builder/mcp/overview)
-- [Install the Data API Builder CLI](https://learn.microsoft.com/azure/data-api-builder/command-line/install)
+- [Hosted MCP server quickstart for Azure SQL Database](https://learn.microsoft.com/azure/logic-apps/connector-namespace/hosted-mcp-quickstart?pivots=sql)
+- [Azure SQL Database MCP server support in Data API builder](https://learn.microsoft.com/azure/data-api-builder/mcp/overview)
+- [Install the Data API builder CLI](https://learn.microsoft.com/azure/data-api-builder/command-line/install)
 - [Connector Namespace overview](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-overview)
 - [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/)

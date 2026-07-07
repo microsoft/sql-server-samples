@@ -1,11 +1,16 @@
 <#
 .SYNOPSIS
-    Deploy a Connector Namespace with a hosted SQL MCP Server.
+    Deploy a Connector Namespace with a hosted Azure SQL Database MCP server.
 
 .DESCRIPTION
-    Single-script deployment: provisions Azure SQL, Connector Namespace,
-    hosted MCP server (mcp-sql), seeds the database, grants managed identity access,
-    and prints the MCP endpoint URL ready for VS Code.
+    Standalone PowerShell deployment script (alternative to azd). Provisions
+    Azure SQL Database, Connector Namespace, hosted MCP server, seeds the
+    database, grants managed identity access, and prints the MCP endpoint URL
+    ready for VS Code.
+
+    Note: This script requires PowerShell 7+. For cross-platform deployment
+    without PowerShell, use 'azd up' instead — it runs the Bash post-provision
+    script on macOS/Linux automatically.
 
 .PARAMETER DabConfigPath
     Path to the DAB configuration file. Defaults to dab-config.json in the project root.
