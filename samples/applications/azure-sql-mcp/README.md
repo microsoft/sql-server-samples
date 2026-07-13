@@ -4,26 +4,6 @@
 
 This sample deploys a hosted Model Context Protocol (MCP) server in [Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp), backed by Azure SQL Database. It uses [Azure Developer CLI](https://learn.microsoft.com/azure/developer/azure-developer-cli/) (`azd`) and Bicep to provision the infrastructure, seed a sample `dbo.BlogPosts` table through a post-provision SQL script, and configure managed identity access. After deployment, MCP clients such as GitHub Copilot in Visual Studio Code can query the database through the hosted MCP server.
 
-### Contents
-
-[About this sample](#about-this-sample)<br/>
-[Before you begin](#before-you-begin)<br/>
-[Run this sample](#run-this-sample)<br/>
-[Sample details](#sample-details)<br/>
-[Clean up](#clean-up)<br/>
-[Related links](#related-links)<br/>
-
-<a name=about-this-sample></a>
-
-## About this sample
-
-- **Applies to:** Azure SQL Database
-- **Key features:** Azure Connector Namespace, hosted MCP server, Data API builder, managed identity, Application Insights
-- **Workload:** AI agent data access
-- **Programming Language:** Bicep, PowerShell, Bash, JSON
-
-This sample deploys a hosted MCP server in [Azure Connector Namespace](https://learn.microsoft.com/azure/logic-apps/connector-namespace/connector-namespace-hosted-mcp). The server uses a [Data API builder](https://learn.microsoft.com/azure/data-api-builder/overview) configuration to expose an Azure SQL Database table through MCP tools. A post-provision SQL script creates and seeds the `dbo.BlogPosts` table with sample rows linking to Microsoft Learn and .NET Blog posts.
-
 <a name=before-you-begin></a>
 
 ## Before you begin
