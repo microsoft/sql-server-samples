@@ -373,18 +373,36 @@ GO
 PRINT '';
 PRINT '20. ABC Inventory Classification (by value)';
 PRINT '---------------------------------------------------------------------';
-WITH InventoryValue AS (
+WITH InventoryTotals AS
+(
     SELECT
         ItemCode,
         ItemName,
         ItemType,
         QuantityOnHand,
         InventoryValue,
-        SUM(InventoryValue) OVER () AS TotalInventoryValue,
-        InventoryValue * 100.0 / SUM(InventoryValue) OVER () AS PercentOfTotal,
-        SUM(InventoryValue * 100.0 / SUM(InventoryValue) OVER ())
-            OVER (ORDER BY InventoryValue DESC) AS CumulativePercent
+        SUM(InventoryValue) OVER () AS TotalInventoryValue
     FROM vw_InventoryValuation
+),
+InventoryValueAnalysis AS
+(
+    SELECT
+        ItemCode,
+        ItemName,
+        ItemType,
+        QuantityOnHand,
+        InventoryValue,
+
+        InventoryValue * 100.0
+            / NULLIF(TotalInventoryValue, 0) AS PercentOfTotal,
+
+        SUM(InventoryValue) OVER
+        (
+            ORDER BY InventoryValue DESC
+            ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+        ) * 100.0
+            / NULLIF(TotalInventoryValue, 0) AS CumulativePercent
+    FROM InventoryTotals
 )
 SELECT
     ItemCode,
@@ -399,7 +417,7 @@ SELECT
         WHEN CumulativePercent <= 95 THEN 'B'
         ELSE 'C'
     END AS ABCClass
-FROM InventoryValue
+FROM InventoryValueAnalysis
 WHERE InventoryValue > 0
 ORDER BY InventoryValue DESC;
 GO
@@ -444,10 +462,10 @@ SELECT
     END AS Status
 FROM MaterialNeeds mn
 LEFT JOIN (
-    SELECT ItemID, i.ItemCode, SUM(QuantityAvailable) AS QuantityAvailable
+    SELECT i.ItemID, i.ItemCode, SUM(QuantityAvailable) AS QuantityAvailable
     FROM Inventory inv
     INNER JOIN Items i ON inv.ItemID = i.ItemID
-    GROUP BY ItemID, i.ItemCode
+    GROUP BY i.ItemID, i.ItemCode
 ) inv ON mn.ComponentItemCode = inv.ItemCode
 ORDER BY mn.ComponentType, mn.ComponentItemName;
 GO
@@ -462,7 +480,7 @@ PRINT '---------------------------------------------------------------------';
 SELECT
     'Total Inventory Value' AS KPI,
     CAST(SUM(InventoryValue) AS DECIMAL(18,2)) AS Value,
-    NULL AS Percent,
+    NULL AS [Percent],
     'USD' AS Unit
 FROM vw_InventoryValuation
 
@@ -471,7 +489,7 @@ UNION ALL
 SELECT
     'Production Orders On Time',
     COUNT(*),
-    CAST(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM ProductionOrder WHERE Status = 'Completed') AS DECIMAL(5,2)),
+    CAST(COUNT(*) * 100.0 / NULLIF((SELECT COUNT(*) FROM ProductionOrder WHERE Status = 'Completed'), 0) AS DECIMAL(5,2)),
     '%'
 FROM ProductionOrder
 WHERE Status = 'Completed' AND ActualCompletionDate <= PlannedCompletionDate

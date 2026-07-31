@@ -299,6 +299,7 @@ GO
 
 CREATE OR ALTER VIEW vw_Sales_ReturnsAnalysis AS
 SELECT
+    sr.ReturnID,
     DATEPART(YEAR, sr.ReturnDate) AS Year,
     DATEPART(MONTH, sr.ReturnDate) AS Month,
     rr.ReasonCode,
@@ -306,7 +307,6 @@ SELECT
     c.CustomerName,
     c.CustomerType,
     sc.ChannelName,
-    COUNT(DISTINCT sr.ReturnID) AS ReturnCount,
     SUM(sr.RefundAmount) AS TotalRefunds,
     AVG(sr.RefundAmount) AS AvgRefundAmount,
     SUM(sr.RestockingFee) AS TotalRestockingFees,
@@ -326,6 +326,7 @@ INNER JOIN SalesChannel sc ON so.SalesChannelID = sc.SalesChannelID
 INNER JOIN SalesReturnDetail srd ON sr.ReturnID = srd.ReturnID
 INNER JOIN Items i ON srd.ItemID = i.ItemID
 GROUP BY
+    sr.ReturnID,
     DATEPART(YEAR, sr.ReturnDate),
     DATEPART(MONTH, sr.ReturnDate),
     rr.ReasonCode,
@@ -709,6 +710,7 @@ SELECT
     ChannelName,
     CustomerType,
     ProductMix,
+    UniqueProducts,
     COUNT(*) AS OrderCount,
     SUM(OrderValue) AS TotalRevenue,
     AVG(OrderValue) AS AvgOrderValue,
@@ -718,7 +720,8 @@ FROM ProductMix
 GROUP BY
     ChannelName,
     CustomerType,
-    ProductMix;
+    ProductMix,
+    UniqueProducts;
 GO
 
 -- =============================================
@@ -827,8 +830,8 @@ SELECT
     Value,
     LAG(Count) OVER (ORDER BY StageOrder) AS PriorStageCount,
     LAG(Value) OVER (ORDER BY StageOrder) AS PriorStageValue,
-    CAST(Count * 100.0 / NULLIF(LAG(Count) OVER (ORDER BY StageOrder), 0) AS DECIMAL(5,2)) AS ConversionRate,
-    CAST(Value * 100.0 / NULLIF(LAG(Value) OVER (ORDER BY StageOrder), 0) AS DECIMAL(5,2)) AS ValueRetentionRate
+    CAST(Count * 100.0 / NULLIF(LAG(Count) OVER (ORDER BY StageOrder), 0) AS DECIMAL(10,2)) AS ConversionRate,
+    CAST(Value * 100.0 / NULLIF(LAG(Value) OVER (ORDER BY StageOrder), 0) AS DECIMAL(10,2)) AS ValueRetentionRate
 FROM PipelineMetrics;
 GO
 
