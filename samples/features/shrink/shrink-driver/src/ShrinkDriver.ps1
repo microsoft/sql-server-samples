@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.0.0
+.VERSION 1.1.0
 .GUID 1b801c08-f374-45df-ba3e-34d9983e9133
 .AUTHOR Microsoft
 .COMPANYNAME Microsoft
@@ -7,8 +7,6 @@
 .TAGS SQL SQLServer AzureSQL DBCC SHRINKFILE shrink maintenance
 .LICENSEURI https://github.com/microsoft/sql-server-samples/blob/master/license.txt
 .PROJECTURI https://github.com/microsoft/sql-server-samples
-.RELEASENOTES
-Initial version.
 #>
 
 <#
@@ -557,6 +555,39 @@ SELECT CAST(SERVERPROPERTY('EngineEdition') AS int) AS engine_edition,
             try { if ($rd.Read()) { @{ Alloc = [long]$rd['a']; Used = [long]$rd['u'] } } else { $null } }
             finally { $rd.Dispose(); $cmd.Dispose() }
         }
+        function Get-ShrinkOldestTran($conn) {
+            # Oldest active transaction in this database; on Hyperscale it can hold the low watermark
+            # that blocks shrink.
+            $cmd = $conn.CreateCommand()
+            $cmd.CommandText = @'
+SELECT TOP (1) s.session_id AS spid,
+       DATEDIFF(SECOND, dt.database_transaction_begin_time, SYSDATETIME()) AS age_s,
+       s.program_name AS prog,
+       snap.is_snapshot
+FROM sys.dm_tran_database_transactions AS dt
+JOIN sys.dm_tran_session_transactions AS st ON st.transaction_id = dt.transaction_id
+JOIN sys.dm_exec_sessions AS s ON s.session_id = st.session_id
+LEFT JOIN sys.dm_tran_active_snapshot_database_transactions AS snap ON snap.transaction_id = dt.transaction_id
+WHERE dt.database_id = DB_ID() AND dt.database_transaction_begin_time IS NOT NULL
+ORDER BY dt.database_transaction_begin_time ASC;
+'@
+            try {
+                $rd = $cmd.ExecuteReader()
+                try {
+                    if ($rd.Read()) {
+                        $prog = if ($rd['prog'] -is [DBNull]) { '' } else { [string]$rd['prog'] }
+                        $who = if ($prog) { "session $([int]$rd['spid']), $prog" } else { "session $([int]$rd['spid'])" }
+                        $snapTag = ''
+                        if (-not ($rd['is_snapshot'] -is [DBNull])) {
+                            $snapTag = if ([int]$rd['is_snapshot'] -eq 1) { '; snapshot isolation transaction holding row versions' } else { '; transaction holding row versions' }
+                        }
+                        $age = Format-ShrinkDuration -TimeSpan ([TimeSpan]::FromSeconds([int]$rd['age_s']))
+                        "oldest active transaction in the database is $age old ($who)$snapTag"
+                    } else { $null }
+                } finally { $rd.Dispose() }
+            } catch { $null }
+            finally { $cmd.Dispose() }
+        }
         function Get-WConnResilient {
             # Re-establish the worker connection, tolerating a server that is briefly offline (for
             # example during an Azure SQL restart or failover). New-WConn's connection-level retry
@@ -756,11 +787,25 @@ SELECT CAST(SERVERPROPERTY('EngineEdition') AS int) AS engine_edition,
                         if ($num -eq 5201) {
                             if ($before -lt $startAlloc) {
                                 $bucket = 'Shrunk'
-                                Emit "File $($file.FileId) shrunk to $(Format-ShrinkSize $before) (MSSQL 5201: no more reclaimable space)"
+                                Emit "File $($file.FileId) shrunk to $(Format-ShrinkSize $before) (MSSQL error 5201: no more reclaimable space)"
                             } else {
                                 $bucket = 'AlreadyMinimal'
                                 Emit "File $($file.FileId) cannot be shrunk (MSSQL error 5201: no reclaimable space)"
                             }
+                            break
+                        }
+                        if ($num -eq 49537) {
+                            # 49537: a page shrink must relocate is pinned by the database low watermark - a
+                            # long-running transaction on the primary (possibly another concurrent shrink moving
+                            # pages) or a lagging/long-queried secondary. The engine has already exhausted its
+                            # own retries and the watermark rarely advances within a client retry, so stop and let
+                            # a later run reclaim the space once the watermark moves.
+                            $after = if ($conn.State -eq 'Open') { (Get-Size $conn $file.FileId).Alloc } else { $before }
+                            $held = if ($conn.State -eq 'Open') { Get-ShrinkOldestTran $conn } else { $null }
+                            $bucket = Get-ShrinkGaveUpBucket -StartAllocMB $startAlloc -FinalAllocMB $after
+                            $bucketReason = 'blocked by the database low watermark (MSSQL error 49537): a page to be moved is pinned by a long-running transaction or a lagging secondary; run shrink again later'
+                            if ($held) { $bucketReason += "; $held" }
+                            Emit ("File $($file.FileId) blocked by the low watermark (MSSQL error 49537); run shrink again later" + $(if ($held) { " ($held)" } else { '' }))
                             break
                         }
                         if ($conn.State -ne 'Open') {
