@@ -472,7 +472,9 @@ foreach ($sub in $subscriptions) {
                         }
 
         
-                        if (-not $ReportOnly) {
+                        if ($ReportOnly) {
+                            Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' (would change '$($sqlvm.sqlServerLicenseType)' -> '$SqlVmLicenseType')."
+                        } else {
                             Write-Output "Updating SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' to license type '$SqlVmLicenseType'..."
                             $result = az sql vm update -n $sqlvm.name -g $sqlvm.resourceGroup --license-type $SqlVmLicenseType -o json | ConvertFrom-Json
                             $finalStatus += $result
@@ -484,7 +486,7 @@ foreach ($sub in $subscriptions) {
                 }
             }
             if($sqlVmsToUpdate.Count -eq 0) {
-                Write-Output "No SQL VMs found to start that require a license update."
+                Write-Output "No stopped SQL VMs needed to be started for a license update."
             } else {
                 Write-Output "Found $($sqlVmsToUpdate.Count) to Start SQL VMs that require a license update."
             }
@@ -618,11 +620,19 @@ foreach ($sub in $subscriptions) {
                 $allServers | ForEach-Object {
                      Write-Output   "  - $($_.name) (Resource Group: $($_.resourceGroup))"
                 }
-                
-                # Use all servers if no specific resource name was provided
-                if (-not $ResourceName) {
-                     Write-Output   "Proceeding with all SQL Servers since no specific ResourceName was provided."
+
+                # Only fall back to scanning every server in the subscription when the
+                # caller did not restrict the scope. Falling back while -ResourceGroup
+                # (or -ResourceName) was supplied would silently widen the blast radius
+                # far beyond what was asked for: the elastic pool query below is not
+                # resource-group filtered, so pools on out-of-scope servers would be
+                # modified.
+                if (-not $ResourceName -and -not $ResourceGroup) {
+                     Write-Output   "Proceeding with all SQL Servers since no specific ResourceName or ResourceGroup was provided."
                     $servers = $allServers
+                } else {
+                     Write-Output   "Scope was explicitly restricted; not falling back to all SQL Servers. Skipping SQL Database and Elastic Pool processing."
+                    $servers = @()
                 }
             } else {
                  Write-Output   "Found $($servers.Count) SQL Servers matching the criteria."
