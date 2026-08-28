@@ -76,7 +76,17 @@ param (
 )
 
 
-Start-Transcript -Path "$env:TEMP\modify-azure-sql-license-type.log"
+# Transcription is not available in every host (for example Azure Automation
+# runbooks) and can also fail if the log path is not writable. Track whether it
+# actually started so the matching Stop-Transcript at the end of the script does
+# not throw "The host is not currently transcribing".
+$transcriptStarted = $false
+try {
+    Start-Transcript -Path "$env:TEMP\modify-azure-sql-license-type.log" -ErrorAction Stop | Out-Null
+    $transcriptStarted = $true
+} catch {
+    Write-Warning "Unable to start transcript logging: $($_.Exception.Message) Continuing without a transcript."
+}
 $scriptStartTime = Get-Date
 Write-Output "Script execution started at: $($scriptStartTime.ToString('yyyy-MM-dd HH:mm:ss'))"
 
@@ -767,4 +777,6 @@ $scriptEndTime = Get-Date
 $executionDuration = $scriptEndTime - $scriptStartTime
 Write-Output "Script execution ended at: $($scriptEndTime.ToString('yyyy-MM-dd HH:mm:ss'))"
 Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))"
-Stop-Transcript
+if ($transcriptStarted) {
+    try { Stop-Transcript | Out-Null } catch { Write-Warning "Unable to stop transcript logging: $($_.Exception.Message)" }
+}
