@@ -196,6 +196,9 @@ if($RunMode -eq "Single") {
         $fileName = Split-Path $scriptUrls.Arc.URL -Leaf
         $dest     = Join-Path $downloadFolder $fileName
 
+        Write-Host "Downloading $($scriptUrls.Arc.URL) to $dest..."
+        Invoke-RestMethod -Uri $scriptUrls.Arc.URL -OutFile $dest
+
         $lines = @("$dest")
         foreach ($arg in $scriptUrls.Arc.Args.Keys) {
             if ("" -ne $scriptUrls.Arc.Args[$arg]) {
@@ -214,6 +217,9 @@ if($RunMode -eq "Single") {
     if ($Target -eq "Both" -or $Target -eq "Azure") {
         $fileName = Split-Path $scriptUrls.Azure.URL -Leaf
         $dest     = Join-Path $downloadFolder $fileName
+
+        Write-Host "Downloading $($scriptUrls.Azure.URL) to $dest..."
+        Invoke-RestMethod -Uri $scriptUrls.Azure.URL -OutFile $dest
 
         $lines = @("$dest")
         foreach ($arg in $scriptUrls.Azure.Args.Keys) {
