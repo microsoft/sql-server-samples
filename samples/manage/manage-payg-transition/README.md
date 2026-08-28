@@ -45,6 +45,7 @@ The script accepts the following command line parameters:
 |`-ResourceGroup` |`<name>`|*Optional*: Limits the scope of transition to a specified resource|
 |`-RunAt` |`YYYY-MM-DD HH:MM:SS` |*Optional*: Sets the transition time in UTC time zone. E.g. 2025-05-01 14:00:00 means May 1, 2025 at 2pm UTC time. If not specified, the transition will be executed immediately.|
 |`-UsePcoreLicense` | `Yes`, `No` |*Optional*. Passed to Arc script to control PCore licensing behavior. Set to `No` if not specified.|
+|`-TargetLicenseType`|`PAYG`, `AHUB`|*Optional*. License type to transition resources to. Defaults to `PAYG`.|
 |`-AutomationAccount`| `<name>`|*Required* if `-RunAt` is specified. The script will automatically create an automation account with this name unless one with this name alreday exists. It will be used for the “General” runbook import operation. |
 |`-Location`|`<region>`|*Required* if `-RunAt` is specified. Azure region for the “General” runbook import operation.|
 |`-ExclusionTag`|`<name:value>`|*Optional*. Specifies the tag name and value to exclude the tagged offline VMs from the forced activation during the transition |
@@ -57,15 +58,24 @@ Get-AzSubscription | Export-Csv .\mysubscriptions.csv -NoTypeInformation
 
 ## How It Works
 
-- This script internally runs the following scripts
+- This script is **fully self-contained**: the logic of the following three scripts is
+  embedded directly in `manage-payg-transition.ps1` and requires no external downloads
+  to run:
 
    `set-azurerunbook.ps1` - imports & publishes the helper runbook that and run if a scheduled execution is selected. 
 
-   `modify-azure-sql-license-type.ps1` - configures the Azure SQL resources to pay-as-you-go
+   `modify-azure-sql-license-type.ps1` - configures the Azure SQL resources
 
-   `modify-license-type.ps1` configures the existing Arc SQL resources to pay-as-you-go
+   `modify-arc-sql-license-type.ps1` - configures the existing Arc SQL resources
 
-- The dependent scripts are downloaded to `.\PaygTransitionDownloads\`. It is created automatically if doesn't exist. The downloaded scripts are refreshed automatically on each run to ensure that the up-to-date version is used.
+- At runtime, the embedded content of each script is written to local files under
+  `.\manage-payg-transition\` (created automatically if it doesn't exist) so it can be
+  invoked as a normal PowerShell script / imported as an Azure Automation runbook. No
+  network calls to GitHub are made to fetch these dependent scripts.
+- Use `-TargetLicenseType` (`PAYG` by default, or `AHUB`) to control which license
+  model resources are transitioned to. This value is translated internally to the
+  vocabulary each embedded script expects (e.g. `LicenseIncluded`/`BasePrice` for Azure
+  SQL resources, `PAYG`/`LicenseOnly` for Arc SQL Server).
 - The offline Azure VMs will be reactivated for a brief period to change the configuration. If the VM should not be recativated, use `-ExclusionTag` option.
 - The subscriptions in scope of the transition will be automatically tagged with `ArcSQLServerExtensionDeployment:PAYG` to ensure that the furure SQL Servers onboarded to Azure Arc are configured to use the pay-as-you-go subscription.  For details, see [Manage automatic connection for SQL Server enabled by Azure Arc](https://learn.microsoft.com/sql/sql-server/azure-arc/manage-autodeploy).
 
