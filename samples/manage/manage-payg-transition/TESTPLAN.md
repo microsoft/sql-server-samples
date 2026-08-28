@@ -23,6 +23,17 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
      `term ... is not recognized` errors. Added the missing `Invoke-RestMethod`
      download calls (mirroring the existing `Invoke-RemoteScript` logic used for
      `RunMode Scheduled`).
+   - Made the script fully **self-contained**: embedded the complete logic of
+     `modify-azure-sql-license-type.ps1`, `modify-arc-sql-license-type.ps1`, and
+     `set-azurerunbook.ps1` directly in `manage-payg-transition.ps1`. No external
+     downloads from `raw.githubusercontent.com` occur anymore — the embedded
+     content is materialized to local files at runtime (required for local
+     script invocation and Azure Automation runbook import).
+   - Added `-TargetLicenseType` parameter (`PAYG` default, or `AHUB`) to control
+     which license model resources are transitioned to, translated internally to
+     each embedded script's own vocabulary (`LicenseIncluded`/`BasePrice` for
+     Azure SQL resources, `PAYG`/`LicenseOnly` for Arc SQL Server). Previously
+     the Arc transition target was hardcoded to `PAYG` only.
 
 ## Test environment
 
@@ -45,6 +56,8 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 7 | Wrapper line-continuation formatting (Scheduled mode) | Code review of the `for` loop building `$wrapper` lines for both Arc and Azure blocks | ✅ Confirmed a trailing backtick is appended to every line except the last, for any number of arguments |
 | 8 | SQL Managed Instance transition (regression, prior fixes) | Ran against `abhisqlmi` (`BasePrice` → `LicenseIncluded`) | ✅ Passed; exactly 1 resource modified out of 247 unrelated SQL Servers in the subscription |
 | 9 | Azure Policy-based compliance sample (PR #1490, IaaS SQL VM variant) | End-to-end: policy definition, assignment, compliance scan, remediation against `rajpoTest` | ✅ Passed (separate from this branch's fixes, but validated as an alternate transition method during the same testing session) |
+| 10 | Self-contained script: no external downloads | Ran `manage-payg-transition.ps1 -Target Azure -RunMode Single` (default `-TargetLicenseType PAYG`) against `rajpoTest` (reset to `AHUB`) | ✅ Passed; log shows only "Writing embedded script ... to ..." (local file write), no `Invoke-RestMethod`/network download calls; `rajpoTest` transitioned `AHUB`→`PAYG`, CSV report generated with exactly 1 resource |
+| 11 | `-TargetLicenseType AHUB` reverse transition | Ran the same command with `-TargetLicenseType AHUB` against `rajpoTest` (now `PAYG`) | ✅ Passed; internal query correctly used `BasePrice` filter (Azure SQL vocabulary); `rajpoTest` transitioned `PAYG`→`AHUB`, CSV report generated with exactly 1 resource |
 
 ## Cleanup
 
