@@ -240,7 +240,7 @@ if ($null -eq $principalId) {
         }
     }
 }
-$downloadFolder = './PayTransitionDownloads/'
+$downloadFolder = './manage-payg-transition/'
 # Import the runbook into the Automation Account.
 if ((Get-AzAutomationRunbook -ResourceGroupName $ResourceGroupName -AutomationAccountName $AutomationAccountName -Name $RunbookName -ErrorAction SilentlyContinue)) {
     Write-Output "Removing old Runbook '$RunbookName' from Automation Account '$AutomationAccountName'..."
