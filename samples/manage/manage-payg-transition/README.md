@@ -20,6 +20,19 @@ If not specified, all subscriptions your role has access to are scanned.
 - You must have a *Tag Contributor* *Contributor* RBAC role in each subscription you modify.
 - You must be connected to Azure AD and logged in to your Azure account. If your account have access to multiple tenants, make sure to log in with a specific tenant ID.
 
+### Detailed permissions by resource type
+
+*Contributor* is a superset of everything below and is the simplest option. If you
+prefer a least-privilege role assignment instead, the dependent scripts require:
+
+| Resource type modified | Built-in role needed |
+|---|---|
+| SQL Server VMs, Managed Instances, Azure SQL Databases, Elastic Pools, Instance Pools | *SQL DB Contributor* |
+| Azure Arc-enabled SQL Server (Arc machine extensions) | *Azure Connected Machine Resource Administrator* |
+| Azure Data Factory Azure-SSIS Integration Runtimes (only if present) | *Data Factory Contributor* |
+| Reading/enumerating subscriptions and resources (all of the above) | *Reader* (included in every role above) |
+| Tagging subscriptions with `ArcSQLServerExtensionDeployment:PAYG` | *Tag Contributor* |
+
 ---
 
 # Launching the script
