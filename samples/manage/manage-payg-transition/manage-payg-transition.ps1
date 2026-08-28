@@ -1792,8 +1792,14 @@ if($RunMode -eq "Single") {
 
         $lines = @("$dest")
         foreach ($arg in $scriptFiles.Arc.Args.Keys) {
-            if ("" -ne $scriptFiles.Arc.Args[$arg]) {
-                $lines += "-$($arg) '$($scriptFiles.Arc.Args[$arg])'"
+            $val = $scriptFiles.Arc.Args[$arg]
+            if ($val -is [bool]) {
+                # Switch parameters (e.g. -Force) take no value; PowerShell would
+                # otherwise bind a literal 'True'/'False' token to the next
+                # positional parameter instead of the switch.
+                if ($val) { $lines += "-$($arg)" }
+            } elseif ("" -ne $val) {
+                $lines += "-$($arg) '$($val)'"
             }
         }
         for ($i = 0; $i -lt $lines.Count; $i++) {
@@ -1810,8 +1816,11 @@ if($RunMode -eq "Single") {
 
         $lines = @("$dest")
         foreach ($arg in $scriptFiles.Azure.Args.Keys) {
-            if ("" -ne $scriptFiles.Azure.Args[$arg]) {
-                $lines += "-$($arg) '$($scriptFiles.Azure.Args[$arg])'"
+            $val = $scriptFiles.Azure.Args[$arg]
+            if ($val -is [bool]) {
+                if ($val) { $lines += "-$($arg)" }
+            } elseif ("" -ne $val) {
+                $lines += "-$($arg) '$($val)'"
             }
         }
         for ($i = 0; $i -lt $lines.Count; $i++) {
