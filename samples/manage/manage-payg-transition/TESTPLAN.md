@@ -66,8 +66,9 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 17 | Arc update outcome reported truthfully | Code review + dry run producing the CSV report | ✅ Passed after fix. `Set-AzConnectedMachineExtension` runs with `-NoWait` and had no `-ErrorAction`, so service-side failures (e.g. *"An extension of type ... is still processing"*) were non-terminating: the `catch` never fired and the script printed `Updated --` for resources that had actually failed. Added `-ErrorAction Stop` plus `UpdateResult`/`UpdateError` CSV columns (`NotAttempted`/`RequestSubmitted`/`Failed`). |
 | 18 | Idempotent re-run | Re-ran the default (`-TargetLicenseType PAYG`) against an already-converged scope | ✅ Passed; reported `Found 0 resource(s) to update`. Resources already at the target license type are excluded by the discovery query (`properties.settings.LicenseType != '<target>'`) by design, so repeat runs are safe. |
 | 19 | README parameters match the script | Automated cross-check of every `-Param` used in a README example against the script's AST parameter block | ✅ Passed after fix. Previously 5 documented parameters did not exist (`-SubId`, `-ResourceGroup`, `-RunAt`, `-AutomationAccount`, `-ExclusionTag`), so every documented example would have failed. All 11 parameters now resolve. |
-
-| 20 | `Stop-Transcript` no longer errors when transcription never started | Reproduced by pointing `Start-Transcript` at an unwritable path (`Z:\...`), then ran the script end-to-end | ✅ Passed after fix. Previously `Start-Transcript` could fail silently (unwritable log path, or a host that does not support transcription such as an Azure Automation runbook) and the unguarded `Stop-Transcript` at the end threw *"An error occurred stopping transcription: The host is not currently transcribing"* — surfacing a spurious failure after an otherwise successful run. Now emits `WARNING: Unable to start transcript logging: ... Continuing without a transcript.` and completes cleanly. Verified in all four copies (Arc/Azure × standalone/embedded). |
+| 20 | `Stop-Transcript` no longer errors when transcription never started | Reproduced by pointing `Start-Transcript` at an unwritable path (`Z:\...`), then ran the script end-to-end | ✅ Passed after fix. Previously `Start-Transcript` could fail silently (unwritable log path, or a host that does not support transcription such as an Azure Automation runbook) and the unguarded `Stop-Transcript` at the end threw *"An error occurred stopping transcription: The host is not currently transcribing"* — surfacing a spurious failure after an otherwise successful run. Now emits `WARNING: Unable to start transcript logging: ... Continuing without a transcript.` and completes cleanly. Verified in all four copies (Arc/Azure × standalone/embedded). |
+| 21 | Scope is not silently widened when `-targetResourceGroup` matches no SQL Servers | Ran `-Target Azure -targetSubscription 6a37df99-... -targetResourceGroup rajpobuddy` (an RG containing a SQL VM but **no** `Microsoft.Sql/servers`) | ✅ Passed after fix. Previously the script fell back to `$servers = $allServers` whenever the server query returned nothing and `-ResourceName` was absent, logging *"Proceeding with all SQL Servers since no specific ResourceName was provided"* and scanning 3 servers in unrelated resource groups. Because the elastic-pool query filters only on `licenseType`/tags — **with no resource-group filter** — a real (non-`ReportOnly`) run would have modified out-of-scope elastic pools; this test only escaped damage because those servers happened to have no pools. The fallback now requires **both** `-ResourceName` and `-ResourceGroup` to be absent, and the log correctly reads *"Scope was explicitly restricted; not falling back to all SQL Servers. Skipping SQL Database and Elastic Pool processing."* |
+| 22 | End-to-end real (non-`ReportOnly`) run with all fixes applied | Ran `-Target Azure -RunMode Single -TenantId 72f988bf-... -targetSubscription 6a37df99-... -targetResourceGroup rajpobuddy -TargetLicenseType PAYG` against `rajpoTest` (`AHUB`) | ✅ Passed. Duration 2m22s. Transcript opened and closed cleanly (#20), the tenant was taken from `-TenantId` rather than the persisted context (#13), scope stayed inside `rajpobuddy` (#21), and the SQL VM transitioned `AHUB`→`PAYG`. **Verified independently of the script's own logging** via `az sql vm show -n rajpoTest -g rajpobuddy --query sqlServerLicenseType` → `PAYG`, and via `Search-AzGraph` across the whole resource group. Note the script prints `Updating SQL VM ...` *before* the `az sql vm update` call and does not inspect its result, so the log line alone is not proof of success — out-of-band verification is required. |
 
 ## Cleanup
 
@@ -77,8 +78,9 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 - A `.gitignore` was added to the sample folder so these runtime artifacts
   (`manage-payg-transition/`, `runnow.ps1`, `ModifiedResources_*.csv`, `*.log`)
   cannot be committed by accident.
-- `rajpoTest` was left in `AHUB` state and `abhisqlmi` in `LicenseIncluded` at the
-  user's explicit request (for portal verification); they were deliberately **not** reverted.
+- `rajpoTest` was left in `PAYG` state (following the final end-to-end run, test #22) and
+  `abhisqlmi` in `LicenseIncluded` at the user's explicit request (for portal
+  verification); they were deliberately **not** reverted.
 
 ## Known gaps / follow-ups
 
@@ -101,6 +103,13 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
   their standalone sources; test #16 was performed manually via `Compare-Object`.
 - The generated wrapper interpolates values into single-quoted strings without escaping
   embedded `'` characters.
+- Both scripts write their transcript to a **fixed** path (`$env:TEMP\modify-azure-sql-license-type.log`
+  and `.\modify-arc-sql-license-type.log`), so every run overwrites the previous run's log.
+  This destroys evidence when diagnosing an earlier run; timestamped log names would be an
+  improvement.
+- The Azure-side CSV report does not carry the `UpdateResult`/`UpdateError` columns added to
+  the Arc-side report in test #17, and `az sql vm update` results are not inspected, so an
+  Azure-side failure is not reflected in the report.
 
 ## Required permissions
 
