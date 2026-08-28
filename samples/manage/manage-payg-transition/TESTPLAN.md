@@ -59,3 +59,25 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
   Arc SQL Server resource with a non-PAYG `Microsoft.AzureData` extension is available.
 - `RunMode Scheduled` was validated via code review and log output only, not via an
   actual Windows Scheduled Task registration/execution.
+
+## Required permissions
+
+Derived from every Azure CLI/PowerShell call made by the two scripts:
+
+| Script | Operations performed | Minimum built-in role(s) |
+|---|---|---|
+| `modify-azure-sql-license-type.ps1` | `az sql vm/mi/db/elastic-pool/instance-pool list` and `update`; `Get-AzDataFactoryV2(IntegrationRuntime)` / `Set-AzDataFactoryV2IntegrationRuntime`; `Get-AzSubscription`; `Set-AzContext` | **SQL DB Contributor** (covers `Microsoft.SqlVirtualMachine/*`, `Microsoft.Sql/managedInstances/*`, `Microsoft.Sql/servers/databases/*`, `Microsoft.Sql/servers/elasticPools/*`, `Microsoft.Sql/instancePools/*`) **+** write access to `Microsoft.DataFactory/factories/integrationRuntimes/*` (e.g. **Data Factory Contributor**) |
+| `modify-arc-sql-license-type.ps1` | `Search-AzGraph` (Azure Resource Graph query over `microsoft.hybridcompute/machines` and `.../extensions`); `Get-AzConnectedMachine`; `Get/Set-AzConnectedMachineExtension` | **Azure Connected Machine Resource Administrator** (covers `Microsoft.HybridCompute/machines/extensions/*` write) — Resource Graph read is included in any role with `Microsoft.Resources/subscriptions/resourceGroups/resources/read` (e.g. **Reader**) |
+| Both | `Get-AzSubscription`, `az account show` / `az account set` | **Reader** at minimum on every subscription scanned |
+
+**Practical recommendation:** assign **Contributor** at the target subscription or
+resource-group scope — it is a superset of all the writes above (SQL VM/MI/DB/elastic
+pool/instance pool, Arc machine extensions, Data Factory integration runtimes) and
+includes all required reads. For least-privilege, combine **SQL DB Contributor** +
+**Azure Connected Machine Resource Administrator** (+ **Data Factory Contributor** if
+SSIS Integration Runtime license updates are needed).
+
+**Authentication prerequisite (not an RBAC role):** the executing identity must be able
+to complete `Connect-AzAccount` / `az login` for the target tenant (or use an already
+authenticated session / service principal) — required by the `Connect-Azure` function
+in both scripts.
