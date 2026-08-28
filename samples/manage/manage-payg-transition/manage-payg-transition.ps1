@@ -27,6 +27,16 @@
       - PAYG  (default) : Pay-as-you-go / consumption-based licensing.
       - AHUB             : Azure Hybrid Benefit / License-only (bring-your-own-license).
 
+.PARAMETER TenantId
+    Azure AD tenant to operate against. If omitted, the tenant of the current
+    Az PowerShell context ((Get-AzContext).Tenant.Id) is used. Specify this
+    explicitly to avoid accidentally running against whichever tenant happens
+    to be selected in the current session.
+
+.PARAMETER ReportOnly
+    Perform a read-only dry run: discover and report the resources that would be
+    changed, without modifying any license types.
+
 .PARAMETER AutomationAccResourceGroupName
     Required only when -RunMode is 'Scheduled'. Resource group for the Azure
     Automation Account that will host the recurring runbook. Not needed/used for
@@ -47,6 +57,10 @@
 .EXAMPLE
     # Run immediately for both Azure and Arc, transitioning back to AHUB
     .\manage-payg-transition.ps1 -Target Both -RunMode Single -TargetLicenseType AHUB
+
+.EXAMPLE
+    # Dry run against a specific tenant - reports what would change, modifies nothing
+    .\manage-payg-transition.ps1 -TenantId 'd1623670-9777-4399-aaf6-01d87b84ef1d' -ReportOnly
 
 .EXAMPLE
     # Schedule daily runs for Azure only (AutomationAccResourceGroupName/Location required in this mode)
@@ -78,6 +92,12 @@ param(
 
     [Parameter(Mandatory=$false)]
     [string]$targetSubscription=$null,
+
+    [Parameter(Mandatory=$false)]
+    [string]$TenantId=$null,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$ReportOnly,
 
     [Parameter(Mandatory=$false)]
     [string]$AutomationAccResourceGroupName=$null,
@@ -1191,13 +1211,14 @@ foreach ($sub in $subscriptions) {
 
     Write-Output $query
 
-    Write-Output "Found $($resources.Count) resource(s) to update"
     $allResults = [System.Collections.Generic.List[PSObject]]::new()
     do{
         $resources = Search-AzGraph -Query "$($query)" -First $batchSize -SkipToken $skipToken
         $allResults.AddRange($resources)
         $skipToken = $resources.SkipToken
     }while($skipToken)
+
+    Write-Output "Found $($allResults.Count) resource(s) to update"
 
 
     $count = $allResults.Count
@@ -1673,6 +1694,8 @@ $scriptFiles = @{
             LicenseType = $azureLicenseType
             SubId = [string]$targetSubscription
             ResourceGroup = [string]$targetResourceGroup
+            TenantId = [string]$TenantId
+            ReportOnly = [bool]$ReportOnly
         }
     }
     Arc   = @{
@@ -1683,6 +1706,8 @@ $scriptFiles = @{
             UsePcoreLicense=[string]$UsePcoreLicense
             SubId = [string]$targetSubscription
             ResourceGroup = [string]$targetResourceGroup
+            TenantId = [string]$TenantId
+            ReportOnly = [bool]$ReportOnly
         }
    }
 }
@@ -1744,6 +1769,8 @@ function Invoke-RemoteScript {
 LicenseType= '$arcLicenseType'
 Force = `$true
 $(if ($null -ne $UsePcoreLicense) { "UsePcoreLicense='$UsePcoreLicense'" } else { "" })
+$(if ($null -ne $TenantId -and $TenantId -ne "") { "TenantId='$TenantId'" })
+$(if ($ReportOnly) { "ReportOnly=`$true" })
 $(if ($null -ne $targetSubscription -and $targetSubscription -ne "") { "SubId='$targetSubscription'" })
 $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "ResourceGroup='$targetResourceGroup'" })
 }
@@ -1766,6 +1793,8 @@ $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "Resour
         $wrapper += @"
 `$RunbookArg =@{
     LicenseType= '$azureLicenseType'
+    $(if ($null -ne $TenantId -and $TenantId -ne "") { "TenantId= '$TenantId'" })
+    $(if ($ReportOnly) { "ReportOnly= `$true" })
     $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "ResourceGroup= '$targetResourceGroup'" })
     $(if ($null -ne $targetSubscription -and $targetSubscription -ne "") { "SubId= '$targetSubscription'" })
 

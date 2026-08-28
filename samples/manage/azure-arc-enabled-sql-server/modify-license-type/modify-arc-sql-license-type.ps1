@@ -305,13 +305,14 @@ foreach ($sub in $subscriptions) {
 
     Write-Output $query
 
-    Write-Output "Found $($resources.Count) resource(s) to update"
     $allResults = [System.Collections.Generic.List[PSObject]]::new()
     do{
         $resources = Search-AzGraph -Query "$($query)" -First $batchSize -SkipToken $skipToken
         $allResults.AddRange($resources)
         $skipToken = $resources.SkipToken
     }while($skipToken)
+
+    Write-Output "Found $($allResults.Count) resource(s) to update"
 
 
     $count = $allResults.Count
