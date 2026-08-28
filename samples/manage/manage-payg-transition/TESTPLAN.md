@@ -52,26 +52,53 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 3 | `Az.Accounts` version check | Ran on a machine with `Az.Accounts 5.5.2` (not the `Az` meta-package) installed | ✅ Correctly detected as satisfying `>= 4.2.0`; no reinstall attempted |
 | 4 | `RunMode Single -Target Azure`, SQL VM (AHUB→PAYG) | Reset `rajpoTest` to `AHUB`, ran `manage-payg-transition.ps1 -Target Azure -RunMode Single` end-to-end | ✅ Passed after fixing the missing-download bug; CSV report generated with exactly 1 resource (`rajpoTest`, `AHUB`→`PAYG`); final state confirmed via `az resource show` |
 | 5 | `RunMode Single -Target Both` | Ran with `-Target Both` against `rajpoTest` (already PAYG) | ✅ No hangs; both Arc and Azure branches executed; correctly reported "no resources require update" (no false modification) |
-| 6 | `RunMode Single -Target Arc`, real transition | Attempted against `rajpobuddy` RG Arc resources | ⚠️ Blocked — no Arc-extension-based resource (`Microsoft.AzureData` extension with `LicenseType != PAYG`) currently exists in the RG to exercise a real flip. The KQL query executed without error and returned 0 matches, confirming no regression in query logic, but an actual AHUB→PAYG transition was not exercised for Arc. |
+| 6 | `RunMode Single -Target Arc`, real transition | Ran end-to-end against Arc-enabled machines in subscription `fbaf508b-cb61-4383-9cda-a42bfa0c7bc9` (tenant `d1623670`, AdaptiveCloudLab) | ✅ Passed (originally blocked — see note below). 12 machines transitioned to `PAYG`, including `sqltvm`, `az-sqlnode1` and `sac-mabs` (the latter two were `Paid`, confirming `-Force` works). Verified independently via `Search-AzGraph` against `microsoft.hybridcompute/machines/extensions` and via the per-resource CSV report. |
 | 7 | Wrapper line-continuation formatting (Scheduled mode) | Code review of the `for` loop building `$wrapper` lines for both Arc and Azure blocks | ✅ Confirmed a trailing backtick is appended to every line except the last, for any number of arguments |
 | 8 | SQL Managed Instance transition (regression, prior fixes) | Ran against `abhisqlmi` (`BasePrice` → `LicenseIncluded`) | ✅ Passed; exactly 1 resource modified out of 247 unrelated SQL Servers in the subscription |
 | 9 | Azure Policy-based compliance sample (PR #1490, IaaS SQL VM variant) | End-to-end: policy definition, assignment, compliance scan, remediation against `rajpoTest` | ✅ Passed (separate from this branch's fixes, but validated as an alternate transition method during the same testing session) |
 | 10 | Self-contained script: no external downloads | Ran `manage-payg-transition.ps1 -Target Azure -RunMode Single` (default `-TargetLicenseType PAYG`) against `rajpoTest` (reset to `AHUB`) | ✅ Passed; log shows only "Writing embedded script ... to ..." (local file write), no `Invoke-RestMethod`/network download calls; `rajpoTest` transitioned `AHUB`→`PAYG`, CSV report generated with exactly 1 resource |
 | 11 | `-TargetLicenseType AHUB` reverse transition | Ran the same command with `-TargetLicenseType AHUB` against `rajpoTest` (now `PAYG`) | ✅ Passed; internal query correctly used `BasePrice` filter (Azure SQL vocabulary); `rajpoTest` transitioned `PAYG`→`AHUB`, CSV report generated with exactly 1 resource |
+| 12 | `-Force` emitted as a bare switch | Ran `-RunMode Single` with no `-targetSubscription` and inspected the generated `runnow.ps1` | ✅ Passed after fix. Previously the generator emitted `-Force 'True'`; since `-Force` is a `[switch]` it does not consume the following token, so the orphaned `'True'` bound to the first positional parameter (`$SubId`), producing *"Subscription True was not found in tenant"*. Now emitted as a bare `-Force`. |
+| 13 | `-TenantId` / `-ReportOnly` pass-through | Ran `-Target Arc -TenantId d1623670-... -targetResourceGroup rajposqltvm -TargetLicenseType AHUB -ReportOnly` | ✅ Passed; log shows "Using provided TenantId: d1623670-...", `Found 1 resource(s) to update`, "ReportOnly mode enabled. Skipping modification for: sqltvm". No resource was modified; generated `runnow.ps1` contains a bare `-ReportOnly` switch. |
+| 14 | Resource count reported correctly | Same dry run as #13, before and after the fix | ✅ Passed after fix. `Found N resource(s) to update` read `$resources.Count` *before* the paging loop populated `$resources`, so it always printed `0` even when resources were found and modified. Now reads `$allResults.Count` after the loop and correctly reports `Found 1 resource(s) to update`. |
+| 15 | Self-containment in an isolated folder | Copied **only** `manage-payg-transition.ps1` into an empty temp directory and ran it there with `-ReportOnly` | ✅ Passed; with zero sibling files present the script materialized `manage-payg-transition\modify-arc-sql-license-type.ps1` (19,100 B) from its embedded here-string, generated `runnow.ps1`, and produced a valid CSV report. Confirms no dependency on co-located files. |
+| 16 | Embedded vs standalone Arc script in sync | `Compare-Object` between the embedded `Arc` here-string block and the standalone `modify-arc-sql-license-type.ps1` | ✅ Passed; 1 difference, a trailing blank line only — functionally identical. |
+| 17 | Arc update outcome reported truthfully | Code review + dry run producing the CSV report | ✅ Passed after fix. `Set-AzConnectedMachineExtension` runs with `-NoWait` and had no `-ErrorAction`, so service-side failures (e.g. *"An extension of type ... is still processing"*) were non-terminating: the `catch` never fired and the script printed `Updated --` for resources that had actually failed. Added `-ErrorAction Stop` plus `UpdateResult`/`UpdateError` CSV columns (`NotAttempted`/`RequestSubmitted`/`Failed`). |
+| 18 | Idempotent re-run | Re-ran the default (`-TargetLicenseType PAYG`) against an already-converged scope | ✅ Passed; reported `Found 0 resource(s) to update`. Resources already at the target license type are excluded by the discovery query (`properties.settings.LicenseType != '<target>'`) by design, so repeat runs are safe. |
+| 19 | README parameters match the script | Automated cross-check of every `-Param` used in a README example against the script's AST parameter block | ✅ Passed after fix. Previously 5 documented parameters did not exist (`-SubId`, `-ResourceGroup`, `-RunAt`, `-AutomationAccount`, `-ExclusionTag`), so every documented example would have failed. All 11 parameters now resolve. |
 
 ## Cleanup
 
-- All temporary test artifacts (generated wrapper scripts, downloaded sub-scripts,
-  CSV reports, a local test harness copy of the orchestrator script used to bypass
-  `raw.githubusercontent.com` during local-only testing) were removed after each run.
-- `rajpoTest` was left in `PAYG` state at the end of testing.
+- All temporary test artifacts (generated wrapper scripts, materialized sub-scripts,
+  CSV reports, transcript logs, and isolated temp-folder copies of the orchestrator
+  used for self-containment testing) were removed after each run.
+- A `.gitignore` was added to the sample folder so these runtime artifacts
+  (`manage-payg-transition/`, `runnow.ps1`, `ModifiedResources_*.csv`, `*.log`)
+  cannot be committed by accident.
+- `rajpoTest` was left in `AHUB` state and `abhisqlmi` in `LicenseIncluded` at the
+  user's explicit request (for portal verification); they were deliberately **not** reverted.
 
 ## Known gaps / follow-ups
 
-- Live Arc-target transition (test #6) should be re-validated once a suitable
-  Arc SQL Server resource with a non-PAYG `Microsoft.AzureData` extension is available.
-- `RunMode Scheduled` was validated via code review and log output only, not via an
-  actual Windows Scheduled Task registration/execution.
+- `RunMode Scheduled` has **never been executed end-to-end**. The runbook import-path fix
+  (the embedded `set-azurerunbook.ps1` hardcoded `./PayTransitionDownloads/` while the
+  orchestrator materializes to `./manage-payg-transition/`) is validated by code review
+  and parse checks only. Confirming it requires provisioning a real Azure Automation
+  Account.
+- 9 Arc machines in the test subscription could not be transitioned because their agents
+  are `Disconnected` or `Expired` (`ASRTEST`, `ASTTest`, `kerimASRvm1`, `sql2022image-Rajpo`,
+  `az-sqln01`, and four `Tag-TVM-sql2-*`). The extension setting can only be pushed to a
+  reachable agent, so these need to be re-run once the machines reconnect. One
+  (`Tag-TVM-sql2-fab2ee81`) also has `provisioningState = Failed` and is excluded by the
+  discovery query regardless.
+- `microsoft.azurearcdata/SqlServerInstances` resources with `hostType = "Azure Virtual Machine"`
+  are read-only discovery mirrors; Azure rejects direct `licenseType` writes on them
+  ("must be set to 'Undefined'"). The writable resource for VM-hosted SQL is
+  `Microsoft.SqlVirtualMachine/SqlVirtualMachines/<name>`.
+- There is no automated check that the three embedded here-string copies stay in sync with
+  their standalone sources; test #16 was performed manually via `Compare-Object`.
+- The generated wrapper interpolates values into single-quoted strings without escaping
+  embedded `'` characters.
 
 ## Required permissions
 
