@@ -78,13 +78,12 @@ $scriptUrls = @{
     Azure = @{
         URL = "https://raw.githubusercontent.com/$($environment)/$($git)/refs/heads/master/samples/manage/azure-hybrid-benefit/modify-license-type/modify-azure-sql-license-type.ps1"
         Args = @{
-            Force_Start_On_Resources = $true
             SubId = [string]$targetSubscription
             ResourceGroup = [string]$targetResourceGroup
         }
     }
     Arc   = @{
-        URL = "https://raw.githubusercontent.com/$($environment)/$($git)/refs/heads/master/samples/manage/azure-hybrid-benefit/modify-license-type/modify-arc-sql-license-type.ps1"
+        URL = "https://raw.githubusercontent.com/$($environment)/$($git)/refs/heads/master/samples/manage/azure-arc-enabled-sql-server/modify-license-type/modify-arc-sql-license-type.ps1"
         Args =@{
             LicenseType= "PAYG"
             Force = $true
@@ -172,7 +171,6 @@ $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "Resour
         $nextline2 = if(($null -ne $targetSubscription -and $targetSubscription -ne "")){"``"}
         $wrapper += @"
 `$RunbookArg =@{
-    Force_Start_On_Resources = `$true
     $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "ResourceGroup= '$targetResourceGroup'" })
     $(if ($null -ne $targetSubscription -and $targetSubscription -ne "") { "SubId= '$targetSubscription'" })
 
@@ -198,12 +196,18 @@ if($RunMode -eq "Single") {
         $fileName = Split-Path $scriptUrls.Arc.URL -Leaf
         $dest     = Join-Path $downloadFolder $fileName
 
-        
-        $wrapper +="$dest ``" 
+        $lines = @("$dest")
         foreach ($arg in $scriptUrls.Arc.Args.Keys) {
             if ("" -ne $scriptUrls.Arc.Args[$arg]) {
-                $wrapper+="-$($arg)='$($scriptUrls.Arc.Args[$arg])'"
-            }   
+                $lines += "-$($arg) '$($scriptUrls.Arc.Args[$arg])'"
+            }
+        }
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($i -lt $lines.Count - 1) {
+                $wrapper += "$($lines[$i]) ``"
+            } else {
+                $wrapper += $lines[$i]
+            }
         }
     }
 
@@ -211,12 +215,18 @@ if($RunMode -eq "Single") {
         $fileName = Split-Path $scriptUrls.Azure.URL -Leaf
         $dest     = Join-Path $downloadFolder $fileName
 
-       
-        $wrapper +="$dest ``" 
+        $lines = @("$dest")
         foreach ($arg in $scriptUrls.Azure.Args.Keys) {
             if ("" -ne $scriptUrls.Azure.Args[$arg]) {
-                $wrapper+="-$($arg)='$($scriptUrls.Azure.Args[$arg])'"
-            }   
+                $lines += "-$($arg) '$($scriptUrls.Azure.Args[$arg])'"
+            }
+        }
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($i -lt $lines.Count - 1) {
+                $wrapper += "$($lines[$i]) ``"
+            } else {
+                $wrapper += $lines[$i]
+            }
         }
     }
 

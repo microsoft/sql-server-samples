@@ -108,28 +108,41 @@ function Connect-Azure {
     }
     Write-Verbose "Environment detected: $envType"
 
-    # 2) Ensure Az.PowerShell context
-    Write-Output "Not connected to Azure PowerShell. Running Connect-AzAccount..."
-    if ($UseManagedIdentity -or $envType -eq 'AzureAutomation') {
-        $ctx = Connect-AzAccount -Tenant $TenantId -Identity -ErrorAction Stop | Out-Null
+    # 2) Ensure Az.PowerShell context - reuse an existing, already-authenticated context for the
+    #    requested tenant instead of forcing a fresh interactive/managed-identity login every run.
+    $currentCtx = Get-AzContext -ErrorAction SilentlyContinue
+    if ($currentCtx -and $currentCtx.Account -and $currentCtx.Tenant.Id -eq $TenantId) {
+        Write-Output "Already connected to Azure PowerShell as: $($currentCtx.Account) (tenant $TenantId). Reusing existing context."
     }
     else {
-        $ctx = Connect-AzAccount -Tenant $TenantId -ErrorAction Stop | Out-Null
-    }
-    Write-Output "Connected to Azure PowerShell as: $($ctx.Account)"
-
-    # 3) Sync Azure CLI if available
-    if (Get-Command az -ErrorAction SilentlyContinue) {
-        Write-Output "Running az login..."
+        Write-Output "Not connected to Azure PowerShell for tenant $TenantId. Running Connect-AzAccount..."
         if ($UseManagedIdentity -or $envType -eq 'AzureAutomation') {
-            az login --tenant $TenantId --identity | Out-Null
+            $ctx = Connect-AzAccount -Tenant $TenantId -Identity -ErrorAction Stop
         }
         else {
-            az login --tenant $TenantId | Out-Null
+            $ctx = Connect-AzAccount -Tenant $TenantId -ErrorAction Stop
         }
-        $acct = az account show --output json | ConvertFrom-Json
+        Write-Output "Connected to Azure PowerShell as: $($ctx.Context.Account)"
     }
-    Write-Output "Azure CLI logged in as: $($acct.user.name)"        
+
+    # 3) Sync Azure CLI if available - reuse an existing az CLI session for the same tenant when possible.
+    if (Get-Command az -ErrorAction SilentlyContinue) {
+        $acct = az account show --output json 2>$null | ConvertFrom-Json
+        if ($acct -and $acct.tenantId -eq $TenantId) {
+            Write-Output "Azure CLI already logged in as: $($acct.user.name) (tenant $TenantId). Reusing existing session."
+        }
+        else {
+            Write-Output "Running az login..."
+            if ($UseManagedIdentity -or $envType -eq 'AzureAutomation') {
+                az login --tenant $TenantId --identity | Out-Null
+            }
+            else {
+                az login --tenant $TenantId | Out-Null
+            }
+            $acct = az account show --output json | ConvertFrom-Json
+        }
+        Write-Output "Azure CLI logged in as: $($acct.user.name)"
+    }
 }
 
 
@@ -170,26 +183,28 @@ if (-not (Get-PackageProvider -Name NuGet -ErrorAction SilentlyContinue)) {
     Install-PackageProvider -Name NuGet -Force
 }
 
-# Check if Az module is installed
-$installedModule = Get-InstalledModule -Name Az -ErrorAction SilentlyContinue
+# Check if the required Az.Accounts module (at the minimum version this script needs) is already
+# available. Checking Get-InstalledModule -Name "Az" only detects the "Az" meta-package and false
+# -positives as "not found" when the individual Az.* modules were installed some other way (e.g.
+# preinstalled on the machine, installed individually, or via a package manager). That mismatch
+# triggered an unnecessary "Install-Module -Name Az -Force", which fails/hangs when the modules are
+# already loaded/in use. Instead, check directly for the module/version this script actually needs.
+$requiredAzAccountsVersion = [version]"4.2.0"
+$azAccountsAvailable = Get-Module -ListAvailable -Name Az.Accounts |
+    Where-Object { $_.Version -ge $requiredAzAccountsVersion } |
+    Sort-Object Version -Descending |
+    Select-Object -First 1
 
-if (-not $installedModule) {
-    Write-Output "Az module not found. Installing latest version..."
-    Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+if (-not $azAccountsAvailable) {
+    Write-Output "Az.Accounts module (>= $requiredAzAccountsVersion) not found. Installing latest version..."
+    Install-Module -Name Az.Accounts -MinimumVersion $requiredAzAccountsVersion -Scope CurrentUser -Repository PSGallery -Force
 } else {
-    # Get the latest version available in the PSGallery
-    $latestVersion = (Find-Module -Name Az -Repository PSGallery).Version
-    if ($installedModule.Version -lt $latestVersion) {
-        Write-Output "Az module is outdated. Updating to latest version..."
-        Update-Module -Name Az -Force
-    } else {
-        Write-Output "Az module is already up to date. No action needed."
-    }
+    Write-Output "Az.Accounts module $($azAccountsAvailable.Version) already satisfies the minimum required version ($requiredAzAccountsVersion). No action needed."
 }
 
 # Import Az.Accounts with minimum version requirement
 try {
-    Import-Module Az.Accounts -MinimumVersion 4.2.0 -Force
+    Import-Module Az.Accounts -MinimumVersion $requiredAzAccountsVersion -Force
     Write-Output "Az.Accounts module imported successfully."
 } catch {
     Write-Error "Failed to import Az.Accounts: $_"
