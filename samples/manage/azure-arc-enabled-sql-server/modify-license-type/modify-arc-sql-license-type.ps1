@@ -358,8 +358,11 @@ foreach ($sub in $subscriptions) {
         $WriteSettings = $false
         $ext = Get-AzConnectedMachineExtension -Name $setID.Name -ResourceGroupName $setID.ResourceGroup -MachineName $setID.MachineName
 
-        # Collect data before modification
-        $modifiedResources += [PSCustomObject]@{
+        # Collect data before modification. UpdateResult/UpdateError are populated
+        # after the actual Set-AzConnectedMachineExtension call below (or left as
+        # "NotAttempted" if the resource was skipped) so the CSV/console output
+        # reflects what actually happened, not just what was intended.
+        $resourceRecord = [PSCustomObject]@{
             TenantID            = $TenantId
             SubID               = $setID.SubscriptionId
             ResourceName        = $setID.MachineName
@@ -368,8 +371,11 @@ foreach ($sub in $subscriptions) {
             OriginalLicenseType = $ext.Setting["LicenseType"]
             ResourceGroup       = $setID.ResourceGroup
             Location            = $setID.Location
+            UpdateResult        = "NotAttempted"
+            UpdateError         = ""
             # Cores             <To be added>
         }
+        $modifiedResources += $resourceRecord
 
         if($ext.ProvisioningState -ne "Succeeded") {
             write-Output "Extension is not in a valid state. Skipping..."
@@ -437,11 +443,21 @@ foreach ($sub in $subscriptions) {
                         $settings = @{}
                         foreach ($h in $ext.Setting.Keys) {
                            $settings[$h]=$($ext.Setting[$h])
-                        }                        
-                        Set-AzConnectedMachineExtension -Name $setID.Name -ResourceGroupName $setID.ResourceGroup -Location $setID.Location -MachineName $setID.MachineName -Publisher $setID.Publisher -ExtensionType $setID.ExtensionType -Setting $settings -NoWait # -ErrorAction SilentlyContinue | Out-Null
+                        }
+                        # -ErrorAction Stop is required here: Set-AzConnectedMachineExtension
+                        # can emit a non-terminating error (e.g. "An extension of type ... is
+                        # still processing. Only one instance of an extension may be in
+                        # progress at a time...") which, combined with -NoWait, would otherwise
+                        # be printed to the console and then fall through to the "Updated"
+                        # success message below without ever entering the catch block.
+                        Set-AzConnectedMachineExtension -Name $setID.Name -ResourceGroupName $setID.ResourceGroup -Location $setID.Location -MachineName $setID.MachineName -Publisher $setID.Publisher -ExtensionType $setID.ExtensionType -Setting $settings -NoWait -ErrorAction Stop
                         Write-Output "Updated -- Resource group: [$($setID.ResourceGroup)], Connected machine: [$($setID.MachineName)]"
+                        $resourceRecord.UpdateResult = "RequestSubmitted"
                     } catch {
-                        write-Output "The request to modify the extension object failed with the following error:"
+                        $errorMessage = $_.Exception.Message
+                        Write-Output "The request to modify the extension object for [$($setID.MachineName)] failed with the following error: $errorMessage"
+                        $resourceRecord.UpdateResult = "Failed"
+                        $resourceRecord.UpdateError = $errorMessage
                         continue
                     }
                 }
