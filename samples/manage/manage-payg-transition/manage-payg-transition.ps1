@@ -27,20 +27,29 @@
       - PAYG  (default) : Pay-as-you-go / consumption-based licensing.
       - AHUB             : Azure Hybrid Benefit / License-only (bring-your-own-license).
 
+.PARAMETER AutomationAccResourceGroupName
+    Required only when -RunMode is 'Scheduled'. Resource group for the Azure
+    Automation Account that will host the recurring runbook. Not needed/used for
+    -RunMode Single.
+
+.PARAMETER Location
+    Required only when -RunMode is 'Scheduled'. Azure region for the Automation
+    Account/resource group. Not needed/used for -RunMode Single.
+
 .EXAMPLE
     # Run immediately for both Azure and Arc, transitioning to PAYG (all defaults)
-    .\manage-payg-transition.ps1 -AutomationAccResourceGroupName myRG -Location eastus
+    .\manage-payg-transition.ps1
 
 .EXAMPLE
     # Run immediately for both Azure and Arc, transitioning to PAYG (explicit)
-    .\manage-payg-transition.ps1 -Target Both -RunMode Single -AutomationAccResourceGroupName myRG -Location eastus
+    .\manage-payg-transition.ps1 -Target Both -RunMode Single
 
 .EXAMPLE
     # Run immediately for both Azure and Arc, transitioning back to AHUB
-    .\manage-payg-transition.ps1 -Target Both -RunMode Single -TargetLicenseType AHUB -AutomationAccResourceGroupName myRG -Location eastus
+    .\manage-payg-transition.ps1 -Target Both -RunMode Single -TargetLicenseType AHUB
 
 .EXAMPLE
-    # Schedule daily runs for Azure only
+    # Schedule daily runs for Azure only (AutomationAccResourceGroupName/Location required in this mode)
     .\manage-payg-transition.ps1 -Target Azure -RunMode Scheduled -AutomationAccResourceGroupName myRG -Location eastus
 #>
 
@@ -70,15 +79,27 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$targetSubscription=$null,
 
-    [Parameter(Mandatory=$true)]
-    [string]$AutomationAccResourceGroupName,
+    [Parameter(Mandatory=$false)]
+    [string]$AutomationAccResourceGroupName=$null,
 
     [Parameter(Mandatory=$false)]
     [string]$AutomationAccountName="aaccAzureArcSQLLicenseType",
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
     [string]$Location=$null
 )
+
+# -AutomationAccResourceGroupName and -Location are only actually used by the
+# Azure Automation setup path (RunMode Scheduled). Only require them in that mode,
+# so a one-time -RunMode Single run doesn't need an Automation Account at all.
+if ($RunMode -eq "Scheduled") {
+    if ([string]::IsNullOrWhiteSpace($AutomationAccResourceGroupName)) {
+        throw "-AutomationAccResourceGroupName is required when -RunMode is 'Scheduled'."
+    }
+    if ([string]::IsNullOrWhiteSpace($Location)) {
+        throw "-Location is required when -RunMode is 'Scheduled'."
+    }
+}
 
 # Translate the simplified -TargetLicenseType switch into the vocabulary each
 # embedded script expects:
