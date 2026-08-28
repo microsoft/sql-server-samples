@@ -14,13 +14,13 @@
     Which environment(s) to process:
       - Arc
       - Azure
-      - Both
+      - Both (default)
 
 .PARAMETER RunMode
     Whether to run immediately or schedule recurring runs:
-      - Single     : Run once, then exit.
-      - Scheduled  : Create or update the scheduled Automation runbook calling this
-                     logic daily.
+      - Single     (default) : Run once, then exit.
+      - Scheduled             : Create or update the scheduled Automation runbook calling this
+                                logic daily.
 
 .PARAMETER TargetLicenseType
     The license type to transition resources to:
@@ -28,26 +28,30 @@
       - AHUB             : Azure Hybrid Benefit / License-only (bring-your-own-license).
 
 .EXAMPLE
-    # Run immediately for both Azure and Arc, transitioning to PAYG
-    .\manage-payg-transition.ps1 -Target Both -RunMode Single
+    # Run immediately for both Azure and Arc, transitioning to PAYG (all defaults)
+    .\manage-payg-transition.ps1 -AutomationAccResourceGroupName myRG -Location eastus
+
+.EXAMPLE
+    # Run immediately for both Azure and Arc, transitioning to PAYG (explicit)
+    .\manage-payg-transition.ps1 -Target Both -RunMode Single -AutomationAccResourceGroupName myRG -Location eastus
 
 .EXAMPLE
     # Run immediately for both Azure and Arc, transitioning back to AHUB
-    .\manage-payg-transition.ps1 -Target Both -RunMode Single -TargetLicenseType AHUB
+    .\manage-payg-transition.ps1 -Target Both -RunMode Single -TargetLicenseType AHUB -AutomationAccResourceGroupName myRG -Location eastus
 
 .EXAMPLE
     # Schedule daily runs for Azure only
-    .\manage-payg-transition.ps1 -Target Azure -RunMode Scheduled
+    .\manage-payg-transition.ps1 -Target Azure -RunMode Scheduled -AutomationAccResourceGroupName myRG -Location eastus
 #>
 
 param(
-    [Parameter(Mandatory, Position=0)]
+    [Parameter(Mandatory = $false, Position=0)]
     [ValidateSet("Arc","Azure","Both")]
-    [string]$Target,
+    [string]$Target="Both",
 
-    [Parameter(Mandatory, Position=1)]
+    [Parameter(Mandatory = $false, Position=1)]
     [ValidateSet("Single","Scheduled")]
-    [string]$RunMode,
+    [string]$RunMode="Single",
 
     [Parameter(Mandatory = $false, Position=2)]
     [bool]$cleanDownloads=$false,
