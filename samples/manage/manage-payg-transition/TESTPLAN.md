@@ -67,6 +67,8 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 18 | Idempotent re-run | Re-ran the default (`-TargetLicenseType PAYG`) against an already-converged scope | ✅ Passed; reported `Found 0 resource(s) to update`. Resources already at the target license type are excluded by the discovery query (`properties.settings.LicenseType != '<target>'`) by design, so repeat runs are safe. |
 | 19 | README parameters match the script | Automated cross-check of every `-Param` used in a README example against the script's AST parameter block | ✅ Passed after fix. Previously 5 documented parameters did not exist (`-SubId`, `-ResourceGroup`, `-RunAt`, `-AutomationAccount`, `-ExclusionTag`), so every documented example would have failed. All 11 parameters now resolve. |
 
+| 20 | `Stop-Transcript` no longer errors when transcription never started | Reproduced by pointing `Start-Transcript` at an unwritable path (`Z:\...`), then ran the script end-to-end | ✅ Passed after fix. Previously `Start-Transcript` could fail silently (unwritable log path, or a host that does not support transcription such as an Azure Automation runbook) and the unguarded `Stop-Transcript` at the end threw *"An error occurred stopping transcription: The host is not currently transcribing"* — surfacing a spurious failure after an otherwise successful run. Now emits `WARNING: Unable to start transcript logging: ... Continuing without a transcript.` and completes cleanly. Verified in all four copies (Arc/Azure × standalone/embedded). |
+
 ## Cleanup
 
 - All temporary test artifacts (generated wrapper scripts, materialized sub-scripts,
