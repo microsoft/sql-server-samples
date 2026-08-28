@@ -1,0 +1,8 @@
+# Artifacts generated at runtime by manage-payg-transition.ps1.
+# The embedded dependency scripts are materialized into ./manage-payg-transition/,
+# the generated invocation wrapper is written to runnow.ps1, and each run emits a
+# CSV report plus a PowerShell transcript. None of these belong in source control.
+manage-payg-transition/
+runnow.ps1
+ModifiedResources_*.csv
+*.log
