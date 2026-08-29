@@ -155,8 +155,39 @@ function Connect-Azure {
     }
 }
 
+<#
+.SYNOPSIS
+    Runs an 'az ... update' command and reports whether it actually succeeded.
+.DESCRIPTION
+    The Azure CLI signals failure through its exit code, not through a thrown
+    exception, so piping its output straight into ConvertFrom-Json silently
+    swallows errors and makes a failed update indistinguishable from a
+    successful one. This wrapper checks $LASTEXITCODE and returns a result
+    object used to populate the UpdateResult/UpdateError columns of the report.
+#>
+function Invoke-AzCliLicenseUpdate {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$Arguments,
+        [Parameter(Mandatory = $true)][string]$Description
+    )
 
-# Initialize final status and report counters.
+    $output = & az @Arguments 2>&1
+
+    if ($LASTEXITCODE -ne 0) {
+        $message = ($output | Out-String).Trim()
+        Write-Warning "Failed to update $Description`: $message"
+        return [PSCustomObject]@{ Success = $false; Result = $null; ErrorMessage = $message }
+    }
+
+    $parsed = $null
+    try { $parsed = $output | ConvertFrom-Json } catch { $parsed = $output }
+    # Note: this function must not write to the success stream. Anything emitted there
+    # would be merged into the return value, turning it into an array and hiding the
+    # message from the caller. Callers log their own success line.
+    return [PSCustomObject]@{ Success = $true; Result = $parsed; ErrorMessage = "" }
+}
+
+
 $finalStatus = @()
 
 # Convert to hashtable explicitly
@@ -332,17 +363,10 @@ foreach ($sub in $subscriptions) {
                             Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' (would change '$($sqlvm.sqlServerLicenseType)' -> '$SqlVmLicenseType')."
                         } else {
                             Write-Output "Updating SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' to license type '$SqlVmLicenseType'..."
-                            $azOutput = az sql vm update -n $sqlvm.name -g $sqlvm.resourceGroup --license-type $SqlVmLicenseType -o json 2>&1
-                            if ($LASTEXITCODE -ne 0) {
-                                $vmResult = "Failed"
-                                $vmError = ($azOutput | Out-String).Trim()
-                                Write-Warning "Failed to update SQL VM '$($sqlvm.name)': $vmError"
-                            } else {
-                                $result = $azOutput | ConvertFrom-Json
-                                $finalStatus += $result
-                                $vmResult = "Updated"
-                                Write-Output "-- SQL VM '$($sqlvm.name)' updated to license type '$SqlVmLicenseType'"
-                            }
+                            $update = Invoke-AzCliLicenseUpdate -Description "SQL VM '$($sqlvm.name)'" -Arguments @(
+                                'sql','vm','update','-n',$sqlvm.name,'-g',$sqlvm.resourceGroup,'--license-type',$SqlVmLicenseType,'-o','json')
+                            if ($update.Success) { $finalStatus += $update.Result; $vmResult = "Updated"; Write-Output "-- SQL VM '$($sqlvm.name)' updated to license type '$SqlVmLicenseType'" }
+                            else { $vmResult = "Failed"; $vmError = $update.ErrorMessage }
                         }
 
                         # Collect data after the attempt so the recorded outcome is accurate
@@ -408,8 +432,19 @@ foreach ($sub in $subscriptions) {
                 Write-Output "Found $($runningMIs.Count) SQL Managed Instances that require a license update."
             }
             foreach ($mi in $runningMIs) {
-                        
-                # Collect data before modification
+
+                $miResult = "NotAttempted"
+                $miError = ""
+
+                if (-not $ReportOnly) {
+                    Write-Output "Updating SQL Managed Instance '$($mi.name)' in RG '$($mi.resourceGroup)' to license type '$LicenseType'..."
+                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Managed Instance '$($mi.name)'" -Arguments @(
+                        'sql','mi','update','--name',$mi.name,'--resource-group',$mi.resourceGroup,'--license-type',$LicenseType,'-o','json')
+                    if ($update.Success) { $finalStatus += $update.Result; $miResult = "Updated"; Write-Output "-- SQL Managed Instance '$($mi.name)' updated to license type '$LicenseType'" }
+                    else { $miResult = "Failed"; $miError = $update.ErrorMessage }
+                }
+
+                # Collect data after the attempt so the recorded outcome is accurate
                 $modifiedResources += [PSCustomObject]@{
                     TenantID            = $TenantId
                     SubID               = ($mi.id -split '/')[2]
@@ -419,12 +454,8 @@ foreach ($sub in $subscriptions) {
                     OriginalLicenseType = $mi.licenseType
                     ResourceGroup       = $mi.resourceGroup
                     Location            = $mi.location
-                }
-                
-                if (-not $ReportOnly) {
-                    Write-Output "Updating SQL Managed Instance '$($mi.name)' in RG '$($mi.resourceGroup)' to license type '$LicenseType'..."
-                    $result = az sql mi update --name $mi.name --resource-group $mi.resourceGroup --license-type $LicenseType -o json | ConvertFrom-Json
-                    $finalStatus += $result
+                    UpdateResult        = $miResult
+                    UpdateError         = $miError
                 }
             }
         }
@@ -560,7 +591,19 @@ foreach ($sub in $subscriptions) {
                         }
                         
                         foreach ($db in $dbs) {
-                            # Collect data before modification
+
+                            $dbResult = "NotAttempted"
+                            $dbError = ""
+
+                            if (-not $ReportOnly) {
+                                 Write-Output   "Updating SQL Database '$($db.name)' on server '$($server.name)' to license type '$LicenseType'..."
+                                $update = Invoke-AzCliLicenseUpdate -Description "SQL Database '$($db.name)' on server '$($server.name)'" -Arguments @(
+                                    'sql','db','update','--name',$db.name,'--server',$server.name,'--resource-group',$server.resourceGroup,'--set',"licenseType=$LicenseType",'-o','json')
+                                if ($update.Success) { $finalStatus += $update.Result; $dbResult = "Updated"; Write-Output "-- SQL Database '$($db.name)' updated to license type '$LicenseType'" }
+                                else { $dbResult = "Failed"; $dbError = $update.ErrorMessage }
+                            }
+
+                            # Collect data after the attempt so the recorded outcome is accurate
                             $modifiedResources += [PSCustomObject]@{
                                 TenantID            = $TenantId
                                 SubID               = ($db.id -split '/')[2]
@@ -570,21 +613,8 @@ foreach ($sub in $subscriptions) {
                                 OriginalLicenseType = $db.licenseType
                                 ResourceGroup       = $db.resourceGroup
                                 Location            = $db.location
-                            }
-                            
-                            if (-not $ReportOnly) {
-                                 Write-Output   "Updating SQL Database '$($db.name)' on server '$($server.name)' to license type '$LicenseType'..."
-                                try {
-                                    $result = az sql db update --name $db.name --server $server.name --resource-group $server.resourceGroup --set licenseType=$LicenseType -o json | ConvertFrom-Json
-                                    if ($result) {
-                                         Write-Output   "Successfully updated database '$($db.name)' license to '$LicenseType'"
-                                        $finalStatus += $result
-                                    } else {
-                                         Write-Output   "Failed to update database '$($db.name)' license. No result returned."
-                                    }
-                                } catch {
-                                     Write-Output   "Error updating database '$($db.name)': $_"
-                                }
+                                UpdateResult        = $dbResult
+                                UpdateError         = $dbError
                             }
                         }
                     }
@@ -627,7 +657,19 @@ foreach ($sub in $subscriptions) {
                             }
                             
                             foreach ($pool in $elasticPools) {
-                                # Collect data before modification
+
+                                $poolResult = "NotAttempted"
+                                $poolError = ""
+
+                                if (-not $ReportOnly) {
+                                     Write-Output   "Updating Elastic Pool '$($pool.name)' on server '$($server.name)' to license type '$LicenseType'..."
+                                    $update = Invoke-AzCliLicenseUpdate -Description "Elastic Pool '$($pool.name)' on server '$($server.name)'" -Arguments @(
+                                        'sql','elastic-pool','update','--name',$pool.name,'--server',$server.name,'--resource-group',$server.resourceGroup,'--set',"licenseType=$LicenseType",'--only-show-errors','-o','json')
+                                    if ($update.Success) { $finalStatus += $update.Result; $poolResult = "Updated"; Write-Output "-- Elastic Pool '$($pool.name)' updated to license type '$LicenseType'" }
+                                    else { $poolResult = "Failed"; $poolError = $update.ErrorMessage }
+                                }
+
+                                # Collect data after the attempt so the recorded outcome is accurate
                                 $modifiedResources += [PSCustomObject]@{
                                     TenantID            = $TenantId
                                     SubID               = ($pool.id -split '/')[2]
@@ -637,21 +679,8 @@ foreach ($sub in $subscriptions) {
                                     OriginalLicenseType = $pool.licenseType
                                     ResourceGroup       = $pool.resourceGroup
                                     Location            = $pool.location
-                                }
-                                
-                                if (-not $ReportOnly) {
-                                     Write-Output   "Updating Elastic Pool '$($pool.name)' on server '$($server.name)' to license type '$LicenseType'..."
-                                    try {
-                                        $result = az sql elastic-pool update --name $pool.name --server $server.name --resource-group $server.resourceGroup --set licenseType=$LicenseType --only-show-errors -o json 2>$null | ConvertFrom-Json -ErrorAction SilentlyContinue
-                                        if ($result) {
-                                             Write-Output   "Successfully updated elastic pool '$($pool.name)' license to '$LicenseType'"
-                                            $finalStatus += $result
-                                        } else {
-                                             Write-Output   "Failed to update elastic pool '$($pool.name)' license. No result returned."
-                                        }
-                                    } catch {
-                                         Write-Output   "Error updating elastic pool '$($pool.name)': $_"
-                                    }
+                                    UpdateResult        = $poolResult
+                                    UpdateError         = $poolError
                                 }
                             }
                         }
@@ -696,8 +725,19 @@ foreach ($sub in $subscriptions) {
                 Write-Output "Found $($poolsToUpdate.Count) SQL Instance Pools that require a license update."
             }
             foreach ($pool in $poolsToUpdate) {
-                
-                # Collect data before modification
+
+                $ipResult = "NotAttempted"
+                $ipError = ""
+
+                if (-not $ReportOnly) {
+                    Write-Output "Updating SQL Instance Pool '$($pool.name)' in RG '$($pool.resourceGroup)' to license type '$LicenseType'..."
+                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Instance Pool '$($pool.name)'" -Arguments @(
+                        'sql','instance-pool','update','--name',$pool.name,'--resource-group',$pool.resourceGroup,'--license-type',$LicenseType,'-o','json')
+                    if ($update.Success) { $finalStatus += $update.Result; $ipResult = "Updated"; Write-Output "-- SQL Instance Pool '$($pool.name)' updated to license type '$LicenseType'" }
+                    else { $ipResult = "Failed"; $ipError = $update.ErrorMessage }
+                }
+
+                # Collect data after the attempt so the recorded outcome is accurate
                 $modifiedResources += [PSCustomObject]@{
                     TenantID            = $TenantId
                     SubID               = ($pool.id -split '/')[2]
@@ -707,11 +747,8 @@ foreach ($sub in $subscriptions) {
                     OriginalLicenseType = $pool.licenseType
                     ResourceGroup       = $pool.resourceGroup
                     Location            = $pool.location
-                }
-                if (-not $ReportOnly) {
-                    Write-Output "Updating SQL Instance Pool '$($pool.name)' in RG '$($pool.resourceGroup)' to license type '$LicenseType'..."
-                    $result = az sql instance-pool update --name $pool.name --resource-group $pool.resourceGroup --license-type $LicenseType -o json | ConvertFrom-Json
-                    $finalStatus += $result
+                    UpdateResult        = $ipResult
+                    UpdateError         = $ipError
                 }
             }
         }

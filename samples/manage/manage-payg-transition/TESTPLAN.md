@@ -73,6 +73,8 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 24 | DataFactory update failures reported truthfully | Same scenario as #23, before the fix | ✅ Passed after fix. Same class of bug as #17: `Set-AzDataFactoryV2IntegrationRuntime` had no `-ErrorAction Stop`, so the Conflict above was **non-terminating** — the surrounding `catch` never fired and the script still printed `-- DataFactory 'jhomerDataFactory' integration runtime updated to license type LicenseIncluded` immediately after two error blocks. Now wrapped in a per-runtime `try/catch` with `-ErrorAction Stop`, emitting a warning and recording `UpdateResult = Failed` with the service message. |
 | 25 | SQL VM update result checked and recorded | Real run `-targetResourceGroup rajpobuddy -TargetLicenseType AHUB` against `rajpoTest` (`PAYG`) | ✅ Passed after fix. Previously `az sql vm update` output was piped straight to `ConvertFrom-Json` with no exit-code check, and the CSV row was appended *before* the attempt — so a failed update was recorded identically to a successful one (the gap noted in #22). Now checks `$LASTEXITCODE`, logs `-- SQL VM '<name>' updated to license type '<type>'` only on success, and appends the row *after* the attempt with `UpdateResult`/`UpdateError`. Verified: CSV recorded `OriginalLicenseType = PAYG`, `UpdateResult = Updated`, and `az sql vm show` independently confirmed `AHUB`. |
 | 26 | CSV schema consistent across resource types | Inspected the header of a report containing a SQL VM row | ✅ Passed after fix. `Export-Csv` derives its header from the **first** object only, so once the DataFactory and SQL VM sections began emitting `UpdateResult`/`UpdateError`, a report whose first row came from any other section would have silently dropped those columns. Rows are now projected through an explicit 10-column `Select-Object` before export. Verified header: `TenantID,SubID,ResourceName,ResourceType,Status,OriginalLicenseType,ResourceGroup,Location,UpdateResult,UpdateError`. |
+| 27 | All Azure resource types report update outcomes consistently | Code change plus real runs against `rajpoTest` (`AHUB`→`PAYG`→`AHUB`) | ✅ Passed. The result-checking added for SQL VMs in #25 was extended to the Managed Instance, SQL Database, elastic pool and instance pool sections, which all still piped `az ... update` into `ConvertFrom-Json` without inspecting the exit code and appended their CSV row *before* the attempt. The elastic pool section was the worst case: it used `2>$null | ConvertFrom-Json -ErrorAction SilentlyContinue`, discarding the error text entirely and reporting only *"No result returned"*. All five `az` update paths now route through a shared `Invoke-AzCliLicenseUpdate` helper that checks `$LASTEXITCODE`, surfaces the real service error via `Write-Warning`, and returns a result object. Verified 6 row builders, 6 `UpdateResult` fields, and zero remaining raw `az ... update` pipes. |
+| 28 | Helper does not corrupt its own return value | Unit-tested `Invoke-AzCliLicenseUpdate` in isolation against a succeeding and a failing `az` command | ✅ Passed after fix. The first implementation called `Write-Output "-- ... updated successfully"` inside the function; in PowerShell that merges into the **return value**, so the caller received a 2-element array instead of the result object and the message never reached the transcript. Caught during verification when the expected success line was missing from an otherwise-successful run. The helper is now silent on the success stream and each caller logs its own message. Verified both paths return `count=1`, `type=PSCustomObject`, with the failure path capturing the genuine service error (`ResourceGroupNotFound ... could not be found`). |
 
 ## Cleanup
 
@@ -111,12 +113,11 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
   and `.\modify-arc-sql-license-type.log`), so every run overwrites the previous run's log.
   This destroys evidence when diagnosing an earlier run; timestamped log names would be an
   improvement.
-- The Azure-side CSV report now carries `UpdateResult`/`UpdateError` for SQL VM and
-  DataFactory integration runtime rows (tests #24–#26), but the Managed Instance, SQL
-  Database, elastic pool and instance pool sections still append their rows *before* the
-  update attempt and do not inspect the `az ... update` exit code, so a failure in those
-  sections is still recorded as though it succeeded. Extending the same pattern to them is
-  the remaining work.
+- The Azure-side CSV report now carries `UpdateResult`/`UpdateError` for **all** resource
+  types (tests #24–#27). Failure paths for Managed Instances, SQL Databases, elastic pools
+  and instance pools are implemented and unit-verified via the shared helper (#28), but have
+  not been observed against a genuine service-side failure on those specific resource types —
+  only the SQL VM and DataFactory paths have been exercised end-to-end against real errors.
 
 ## Required permissions
 
