@@ -37,6 +37,14 @@
     Perform a read-only dry run: discover and report the resources that would be
     changed, without modifying any license types.
 
+.PARAMETER WaitForCompletion
+    Applies to Arc-connected machines only. Arc extension updates are submitted
+    asynchronously, so by default the report records 'RequestSubmitted', meaning the
+    service accepted the request rather than that the agent applied it. Use this switch
+    to poll each extension until it reaches a terminal state and report the confirmed
+    outcome. Azure SQL resources are always updated synchronously and are unaffected.
+    This makes the run substantially slower on large estates.
+
 .PARAMETER AutomationAccResourceGroupName
     Required only when -RunMode is 'Scheduled'. Resource group for the Azure
     Automation Account that will host the recurring runbook. Not needed/used for
@@ -98,6 +106,9 @@ param(
 
     [Parameter(Mandatory=$false)]
     [switch]$ReportOnly,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$WaitForCompletion,
 
     [Parameter(Mandatory=$false)]
     [string]$AutomationAccResourceGroupName=$null,
@@ -1054,6 +1065,19 @@ $EmbeddedScripts['Arc'] = @'
 .PARAMETER UseManagedIdentity
     Optional. If true, logs in both PowerShell and CLI using managed identity. Required to run the script as a runbook.
 
+.PARAMETER WaitForCompletion
+    Optional. If specified, waits for each submitted extension update to reach a terminal
+    provisioning state and reports the confirmed outcome, instead of returning as soon as the
+    request is accepted. Extension updates are normally submitted with -NoWait, so by default
+    the report records "RequestSubmitted", which means the service accepted the request - not
+    that the Arc agent has applied it. Use this switch when you need confirmed results;
+    it makes the run substantially slower because each machine is polled individually.
+
+.PARAMETER WaitTimeoutSeconds
+    Optional. Maximum number of seconds to wait per resource when -WaitForCompletion is used.
+    Defaults to 300. Reaching the timeout is not treated as a failure: the outcome is recorded
+    as "TimedOut" because the update may still be applied by the agent afterwards.
+
 #>
 
 param (
@@ -1096,6 +1120,13 @@ param (
    
     [Parameter (Mandatory= $false)]
     [switch] $UseManagedIdentity,
+
+    [Parameter (Mandatory= $false)]
+    [switch] $WaitForCompletion,
+
+    [Parameter (Mandatory= $false)]
+    [int] $WaitTimeoutSeconds = 300,
+
     [Parameter (Mandatory= $false)]
     [int] $batchSize = 500
 )
@@ -1113,6 +1144,79 @@ try {
 }
 $scriptStartTime = Get-Date
 Write-Output "Script execution started at: $($scriptStartTime.ToString('yyyy-MM-dd HH:mm:ss'))"
+
+<#
+.SYNOPSIS
+    Polls an Arc machine extension until its provisioning state is terminal.
+.DESCRIPTION
+    Extension updates are submitted with -NoWait, so the service accepting the request says
+    nothing about whether the Arc agent applied it. When -WaitForCompletion is used this
+    polls the extension and reports the confirmed outcome.
+
+    A timeout is deliberately NOT reported as a failure: the agent may still apply the
+    setting after the script gives up, so the run is recorded as inconclusive rather than
+    unsuccessful.
+#>
+function Wait-ArcExtensionProvisioning {
+    param(
+        [Parameter(Mandatory = $true)][string]$ResourceGroupName,
+        [Parameter(Mandatory = $true)][string]$MachineName,
+        [Parameter(Mandatory = $true)][string]$ExtensionName,
+        [Parameter(Mandatory = $true)][string]$ExpectedLicenseType,
+        [Parameter(Mandatory = $true)][int]$TimeoutSeconds
+    )
+
+    $terminalStates = @('Succeeded', 'Failed', 'Canceled')
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $delay = 5
+    $lastState = 'Unknown'
+
+    while ((Get-Date) -lt $deadline) {
+        Start-Sleep -Seconds $delay
+        try {
+            $current = Get-AzConnectedMachineExtension -ResourceGroupName $ResourceGroupName `
+                -MachineName $MachineName -Name $ExtensionName -ErrorAction Stop
+        } catch {
+            return [PSCustomObject]@{ Result = 'Failed'; ErrorMessage = $_.Exception.Message; State = 'Unknown' }
+        }
+
+        $lastState = "$($current.ProvisioningState)"
+
+        if ($terminalStates -contains $lastState) {
+            if ($lastState -ne 'Succeeded') {
+                return [PSCustomObject]@{ Result = 'Failed'; ErrorMessage = "Extension provisioning state is '$lastState'."; State = $lastState }
+            }
+
+            # A 'Succeeded' provisioning state only means the extension settings were written.
+            # Confirm the value actually reflects the requested license type.
+            $applied = $null
+            if ($null -ne $current.Setting) {
+                try { $applied = "$($current.Setting['LicenseType'])" } catch { $applied = $null }
+            }
+
+            if ([string]::IsNullOrEmpty($applied)) {
+                return [PSCustomObject]@{ Result = 'Succeeded'; ErrorMessage = ''; State = $lastState }
+            }
+            if ($applied -eq $ExpectedLicenseType) {
+                return [PSCustomObject]@{ Result = 'Succeeded'; ErrorMessage = ''; State = $lastState }
+            }
+            return [PSCustomObject]@{
+                Result       = 'Failed'
+                ErrorMessage = "Extension reported '$lastState' but LicenseType is '$applied' instead of '$ExpectedLicenseType'."
+                State        = $lastState
+            }
+        }
+
+        # Back off gradually to avoid hammering the API on slow agents.
+        if ($delay -lt 30) { $delay = [Math]::Min(30, $delay * 2) }
+    }
+
+    return [PSCustomObject]@{
+        Result       = 'TimedOut'
+        ErrorMessage = "Did not reach a terminal provisioning state within $TimeoutSeconds seconds (last state: '$lastState'). The update may still be applied by the agent."
+        State        = $lastState
+    }
+}
 
 
 function Connect-Azure {
@@ -1470,6 +1574,22 @@ foreach ($sub in $subscriptions) {
                         Set-AzConnectedMachineExtension -Name $setID.Name -ResourceGroupName $setID.ResourceGroup -Location $setID.Location -MachineName $setID.MachineName -Publisher $setID.Publisher -ExtensionType $setID.ExtensionType -Setting $settings -NoWait -ErrorAction Stop
                         Write-Output "Updated -- Resource group: [$($setID.ResourceGroup)], Connected machine: [$($setID.MachineName)]"
                         $resourceRecord.UpdateResult = "RequestSubmitted"
+
+                        if ($WaitForCompletion) {
+                            Write-Output "   Waiting for the extension update on [$($setID.MachineName)] to complete (timeout ${WaitTimeoutSeconds}s)..."
+                            $wait = Wait-ArcExtensionProvisioning -ResourceGroupName $setID.ResourceGroup `
+                                -MachineName $setID.MachineName -ExtensionName $setID.Name `
+                                -ExpectedLicenseType "$($settings['LicenseType'])" -TimeoutSeconds $WaitTimeoutSeconds
+
+                            $resourceRecord.UpdateResult = $wait.Result
+                            $resourceRecord.UpdateError = $wait.ErrorMessage
+
+                            switch ($wait.Result) {
+                                'Succeeded' { Write-Output "   Confirmed -- [$($setID.MachineName)] provisioning state '$($wait.State)'." }
+                                'TimedOut'  { Write-Warning "Timed out waiting for [$($setID.MachineName)]: $($wait.ErrorMessage)" }
+                                default     { Write-Warning "The extension update for [$($setID.MachineName)] did not succeed: $($wait.ErrorMessage)" }
+                            }
+                        }
                     } catch {
                         $errorMessage = $_.Exception.Message
                         Write-Output "The request to modify the extension object for [$($setID.MachineName)] failed with the following error: $errorMessage"
@@ -1505,7 +1625,6 @@ Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))
 if ($transcriptStarted) {
     try { Stop-Transcript | Out-Null } catch { Write-Warning "Unable to stop transcript logging: $($_.Exception.Message)" }
 }
-
 '@
 
 $EmbeddedScripts['General'] = @'
@@ -1837,6 +1956,7 @@ $scriptFiles = @{
             ResourceGroup = [string]$targetResourceGroup
             TenantId = [string]$TenantId
             ReportOnly = [bool]$ReportOnly
+            WaitForCompletion = [bool]$WaitForCompletion
         }
    }
 }
@@ -1900,6 +2020,7 @@ Force = `$true
 $(if ($null -ne $UsePcoreLicense) { "UsePcoreLicense='$UsePcoreLicense'" } else { "" })
 $(if ($null -ne $TenantId -and $TenantId -ne "") { "TenantId='$TenantId'" })
 $(if ($ReportOnly) { "ReportOnly=`$true" })
+$(if ($WaitForCompletion) { "WaitForCompletion=`$true" })
 $(if ($null -ne $targetSubscription -and $targetSubscription -ne "") { "SubId='$targetSubscription'" })
 $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "ResourceGroup='$targetResourceGroup'" })
 }

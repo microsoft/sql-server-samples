@@ -110,8 +110,8 @@ The script accepts the following command line parameters:
     apply the setting. `UpdateResult = RequestSubmitted` therefore means *"the service accepted
     the request"*, **not** *"the license type has changed"*. The push can still fail afterwards
     on the machine itself.
-  - To confirm the Arc-side outcome, re-query the extensions after the agents have had time to
-    report back — for example:
+  - To confirm the Arc-side outcome, either pass `-WaitForCompletion` (see below) or re-query
+    the extensions after the agents have had time to report back — for example:
 
     ```powershell
     Search-AzGraph -Query @"
@@ -125,6 +125,12 @@ The script accepts the following command line parameters:
 
     Re-running the transition script is also safe: already-converged machines are excluded by
     the discovery query, so a second run reports only whatever genuinely still needs changing.
+  - Alternatively, pass `-WaitForCompletion` to poll each Arc extension until it reaches a
+    terminal provisioning state. The report then records the confirmed outcome (`Succeeded`,
+    `Failed`, or `TimedOut`) instead of `RequestSubmitted`. This is opt-in because it
+    serialises what is otherwise a fast parallel fan-out, so it is considerably slower on
+    large estates. A `TimedOut` result is inconclusive, not a failure — the agent may still
+    apply the setting afterwards.
 - The subscriptions in scope of the transition will be automatically tagged with `ArcSQLServerExtensionDeployment:PAYG` to ensure that the furure SQL Servers onboarded to Azure Arc are configured to use the pay-as-you-go subscription.  For details, see [Manage automatic connection for SQL Server enabled by Azure Arc](https://learn.microsoft.com/sql/sql-server/azure-arc/manage-autodeploy).
 
 ## Example 1
