@@ -460,6 +460,13 @@ foreach ($sub in $subscriptions) {
 
         Write-Output "License Type: $LicenseType"
         az account set --subscription $sub.id
+        if ($LASTEXITCODE -ne 0) {
+            # Every az call below is scoped by the CLI's active subscription. If the switch
+            # fails they would all silently run against whichever subscription was previously
+            # selected, so resources in the wrong subscription could be updated.
+            Write-Warning "Skipping subscription '$($sub.name)' ($($sub.id)): the Azure CLI context could not be switched to it."
+            continue
+        }
 
         # --- Section: Update SQL Virtual Machines ---
         try {
@@ -643,6 +650,10 @@ foreach ($sub in $subscriptions) {
             if ($currentSubContext -ne $sub.id) {
                  Write-Output   "Subscription context mismatch! Re-setting context..."
                 az account set --subscription $sub.id
+                if ($LASTEXITCODE -ne 0) {
+                    Write-Warning "Could not re-select subscription '$($sub.id)'; skipping SQL Server, database and elastic pool processing to avoid querying the wrong subscription."
+                    throw "Subscription context could not be set to '$($sub.id)'."
+                }
             }
             
             # Build SQL Server query with proper JMESPath syntax
