@@ -1292,6 +1292,7 @@ function Wait-ArcExtensionProvisioning {
     $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
     $delay = 5
     $lastState = 'Unknown'
+    $mismatch = $null
 
     while ((Get-Date) -lt $deadline) {
         Start-Sleep -Seconds $delay
@@ -1322,15 +1323,20 @@ function Wait-ArcExtensionProvisioning {
             if ($applied -eq $ExpectedLicenseType) {
                 return [PSCustomObject]@{ Result = 'Succeeded'; ErrorMessage = ''; State = $lastState }
             }
-            return [PSCustomObject]@{
-                Result       = 'Failed'
-                ErrorMessage = "Extension reported '$lastState' but LicenseType is '$applied' instead of '$ExpectedLicenseType'."
-                State        = $lastState
-            }
+
+            # 'Succeeded' with the wrong license type is ambiguous: the update was submitted
+            # with -NoWait, so this may still be the *previous* operation's terminal state read
+            # before the new one started. Keep polling rather than failing on that race; the
+            # mismatch is only reported if it survives to the deadline.
+            $mismatch = "Extension reported '$lastState' but LicenseType is '$applied' instead of '$ExpectedLicenseType'."
         }
 
         # Back off gradually to avoid hammering the API on slow agents.
         if ($delay -lt 30) { $delay = [Math]::Min(30, $delay * 2) }
+    }
+
+    if ($mismatch) {
+        return [PSCustomObject]@{ Result = 'Failed'; ErrorMessage = $mismatch; State = $lastState }
     }
 
     return [PSCustomObject]@{
@@ -1634,6 +1640,13 @@ foreach ($sub in $subscriptions) {
                         if ($Force) {
                             $ext.Setting["LicenseType"] = $LicenseType
                             $WriteSettings = $true
+                        }
+                        elseif ("$($ext.Setting['LicenseType'])" -ne $LicenseType) {
+                            # The machine already carries a license type and -Force was not
+                            # supplied, so it is deliberately left alone. Say so explicitly:
+                            # other settings may still be written below, and without this the
+                            # run would report "Updated" for a license type that never changed.
+                            Write-Warning "[$($setID.MachineName)] LicenseType is '$($ext.Setting['LicenseType'])' and was NOT changed to '$LicenseType'. Re-run with -Force to overwrite an existing license type."
                         }
                     } else {
                         $ext.Setting["LicenseType"] = $LicenseType
