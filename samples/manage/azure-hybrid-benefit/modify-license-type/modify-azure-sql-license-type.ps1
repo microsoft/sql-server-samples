@@ -226,6 +226,49 @@ function Invoke-AzCliLicenseUpdate {
 
 <#
 .SYNOPSIS
+    Runs a read-only Azure CLI query and reports failures instead of silently returning nothing.
+.DESCRIPTION
+    Discovery calls used to be piped straight into ConvertFrom-Json. The Azure CLI signals
+    failure through $LASTEXITCODE rather than by throwing, so a failed query produced $null,
+    which every caller then treated as "no resources found". A transient error therefore looked
+    exactly like an empty result and the affected resources were skipped without any indication
+    that they had not actually been examined.
+
+    This wrapper checks the exit code, surfaces the real service error as a warning, and returns
+    the parsed value normalised to an array so callers can use .Count safely.
+#>
+function Invoke-AzCliQuery {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$Arguments,
+        [Parameter(Mandatory = $true)][string]$Description
+    )
+
+    $output = & az @Arguments 2>&1
+
+    if ($LASTEXITCODE -ne 0) {
+        $message = ($output | Out-String).Trim()
+        Write-Warning "Unable to query $Description`: $message"
+        return [PSCustomObject]@{ Success = $false; Value = @(); ErrorMessage = $message }
+    }
+
+    $raw = ($output | Out-String).Trim()
+    if ([string]::IsNullOrWhiteSpace($raw)) {
+        return [PSCustomObject]@{ Success = $true; Value = @(); ErrorMessage = "" }
+    }
+
+    try { $parsed = $raw | ConvertFrom-Json }
+    catch {
+        Write-Warning "Unable to parse the response for $Description`: $($_.Exception.Message)"
+        return [PSCustomObject]@{ Success = $false; Value = @(); ErrorMessage = $_.Exception.Message }
+    }
+
+    # Normalise to an array so .Count is meaningful for both single objects and empty results.
+    return [PSCustomObject]@{ Success = $true; Value = @($parsed); ErrorMessage = "" }
+}
+
+
+<#
+.SYNOPSIS
     Updates the license type of a SQL virtual machine, asynchronously by default.
 .DESCRIPTION
     'az sql vm update' has no --no-wait option and blocks until the operation reaches a
@@ -443,7 +486,11 @@ foreach ($sub in $subscriptions) {
             $sqlVmQuery += "].{name:name, resourceGroup:resourceGroup, sqlServerLicenseType:sqlServerLicenseType, type:type, id:id, Location:location}"
 
             Write-Output "Seeking SQL Virtual Machines with filter $sqlVmQuery..."
-            $sqlVMs = az sql vm list --query $sqlVmQuery -o json | ConvertFrom-Json
+            $sqlVmQueryResult = Invoke-AzCliQuery -Description "SQL virtual machines" -Arguments @('sql','vm','list','--query',$sqlVmQuery,'-o','json')
+            if (-not $sqlVmQueryResult.Success) {
+                Write-Warning "SQL virtual machines could not be listed, so none were assessed in this subscription. Re-run to retry."
+            }
+            $sqlVMs = $sqlVmQueryResult.Value
             $sqlVmsToUpdate = [System.Collections.ArrayList]::new()
             if($sqlVMs.Count -eq 0) {
                 Write-Output "No SQL VMs found that require a license update."
@@ -454,7 +501,16 @@ foreach ($sub in $subscriptions) {
 
                 if($null -ne (az vm list --query "[?name=='$($sqlvm.name)' && resourceGroup=='$($sqlvm.resourceGroup)' $tagsFilter]"))
                 {
-                    $vmStatus = az vm get-instance-view --resource-group $sqlvm.resourceGroup --name $sqlvm.name --query "{Name:name, ResourceGroup:resourceGroup, PowerState:instanceView.statuses[?starts_with(code, 'PowerState/')].displayStatus | [0]}" -o json | ConvertFrom-Json
+                    $vmStatusQuery = Invoke-AzCliQuery -Description "power state of VM '$($sqlvm.name)'" -Arguments @(
+                        'vm','get-instance-view','--resource-group',$sqlvm.resourceGroup,'--name',$sqlvm.name,
+                        '--query',"{Name:name, ResourceGroup:resourceGroup, PowerState:instanceView.statuses[?starts_with(code, 'PowerState/')].displayStatus | [0]}",'-o','json')
+                    if (-not $vmStatusQuery.Success) {
+                        # Without a power state the VM would silently fail the "VM running" test
+                        # below and be skipped as though it were switched off.
+                        Write-Warning "Skipping SQL VM '$($sqlvm.name)': its power state could not be read, so it was not assessed. Re-run to retry."
+                        continue
+                    }
+                    $vmStatus = $vmStatusQuery.Value | Select-Object -First 1
                     if (($vmStatus.PowerState -eq "VM running") -and ($sqlvm.sqlServerLicenseType -ne "DR")) {
 
                         $vmResult = "NotAttempted"
@@ -529,7 +585,11 @@ foreach ($sub in $subscriptions) {
             $miRunningQuery += "].{name:name, state:state, resourceGroup:resourceGroup, licenseType:licenseType, location:location, id:id, ResourceType:type}"
 
             Write-Output "Processing SQL Managed Instances that are running with filter $miRunningQuery..."
-            $runningMIs = az sql mi list --query $miRunningQuery -o json | ConvertFrom-Json
+            $miQueryResult = Invoke-AzCliQuery -Description "SQL Managed Instances" -Arguments @('sql','mi','list','--query',$miRunningQuery,'-o','json')
+            if (-not $miQueryResult.Success) {
+                Write-Warning "SQL Managed Instances could not be listed, so none were assessed in this subscription. Re-run to retry."
+            }
+            $runningMIs = $miQueryResult.Value
             if($runningMIs.Count -eq 0) {
                 Write-Output "No SQL Managed Instances found that require a license update."
             } else {
@@ -626,11 +686,21 @@ foreach ($sub in $subscriptions) {
              Write-Output   "SQL Server query: $serverQuery"
             
             # Get all servers first as a fallback in case the query fails
-            $allServers = az sql server list -o json | ConvertFrom-Json
+            $allServersQuery = Invoke-AzCliQuery -Description "SQL Servers in the subscription" -Arguments @('sql','server','list','-o','json')
+            $allServers = $allServersQuery.Value
              Write-Output   "Found a total of $($allServers.Count) SQL Servers in subscription"
             
             # Now try the filtered query
-            $servers = az sql server list --query "$serverQuery" -o json | ConvertFrom-Json
+            $serversQuery = Invoke-AzCliQuery -Description "SQL Servers matching the specified filters" -Arguments @('sql','server','list','--query',"$serverQuery",'-o','json')
+            if (-not $serversQuery.Success) {
+                # Distinguish a failed lookup from a genuinely empty one: falling through here
+                # would print "No SQL Servers found" and skip every database and elastic pool
+                # in the subscription as though there were nothing to do.
+                Write-Warning "SQL Servers could not be listed, so no databases or elastic pools were assessed in this subscription. Re-run to retry."
+                $servers = @()
+            } else {
+                $servers = $serversQuery.Value
+            }
             
             # Verify if we got any results
             if ($null -eq $servers -or $servers.Count -eq 0) {
@@ -666,7 +736,13 @@ foreach ($sub in $subscriptions) {
                  Write-Output   "Scanning SQL Databases on server '$($server.name)' in resource group '$($server.resourceGroup)'..."
                 
                 # First get all databases to check if any exist
-                $allDbs = az sql db list --resource-group $server.resourceGroup --server $server.name -o json | ConvertFrom-Json
+                $allDbsQuery = Invoke-AzCliQuery -Description "databases on server '$($server.name)'" -Arguments @(
+                    'sql','db','list','--resource-group',$server.resourceGroup,'--server',$server.name,'-o','json')
+                if (-not $allDbsQuery.Success) {
+                    Write-Warning "Skipping server '$($server.name)': its databases could not be listed, so they cannot be assessed. Re-run to retry."
+                    continue
+                }
+                $allDbs = $allDbsQuery.Value
                  Write-Output   "Found a total of $($allDbs.Count) databases on server '$($server.name)'"
                 
                 # Build database query with better error handling
@@ -686,7 +762,13 @@ foreach ($sub in $subscriptions) {
                 
                 # Get databases with error handling
                 try {
-                    $dbs = az sql db list --resource-group $server.resourceGroup --server $server.name --query "$dbQuery" -o json | ConvertFrom-Json
+                    $dbsQuery = Invoke-AzCliQuery -Description "databases requiring an update on server '$($server.name)'" -Arguments @(
+                        'sql','db','list','--resource-group',$server.resourceGroup,'--server',$server.name,'--query',"$dbQuery",'-o','json')
+                    if (-not $dbsQuery.Success) {
+                        Write-Warning "Skipping server '$($server.name)': its databases could not be assessed for a license update. Re-run to retry."
+                        continue
+                    }
+                    $dbs = $dbsQuery.Value
                     
                     if ($null -eq $dbs) {
                          Write-Output   "No SQL Databases found on Server $($server.name) that require a license update."
@@ -739,7 +821,14 @@ foreach ($sub in $subscriptions) {
                      Write-Output   "Scanning Elastic Pools on server '$($server.name)'..."
                     
                     # First check if there are any elastic pools
-                    $allPools = az sql elastic-pool list --resource-group $server.resourceGroup --server $server.name --only-show-errors -o json 2>$null | ConvertFrom-Json -ErrorAction SilentlyContinue
+                    $allPoolsQuery = Invoke-AzCliQuery -Description "elastic pools on server '$($server.name)'" -Arguments @(
+                        'sql','elastic-pool','list','--resource-group',$server.resourceGroup,'--server',$server.name,'--only-show-errors','-o','json')
+                    if (-not $allPoolsQuery.Success) {
+                        Write-Warning "Elastic pools on server '$($server.name)' could not be listed and were not assessed. Re-run to retry."
+                        $allPools = @()
+                    } else {
+                        $allPools = $allPoolsQuery.Value
+                    }
                     
                     if ($null -eq $allPools -or $allPools.Count -eq 0) {
                          Write-Output   "No Elastic Pools found on server '$($server.name)'."
@@ -758,7 +847,12 @@ foreach ($sub in $subscriptions) {
                         
                          Write-Output   "Elastic Pool query: $elasticPoolQuery"
                         
-                        $elasticPools = az sql elastic-pool list --resource-group $server.resourceGroup --server $server.name --query "$elasticPoolQuery" --only-show-errors -o json 2>$null | ConvertFrom-Json -ErrorAction SilentlyContinue
+                        $elasticPoolsQueryResult = Invoke-AzCliQuery -Description "elastic pools requiring an update on server '$($server.name)'" -Arguments @(
+                            'sql','elastic-pool','list','--resource-group',$server.resourceGroup,'--server',$server.name,'--query',"$elasticPoolQuery",'--only-show-errors','-o','json')
+                        if (-not $elasticPoolsQueryResult.Success) {
+                            Write-Warning "Elastic pools on server '$($server.name)' could not be assessed for a license update. Re-run to retry."
+                        }
+                        $elasticPools = $elasticPoolsQueryResult.Value
                         
                         if ($null -eq $elasticPools -or $elasticPools.Count -eq 0) {
                              Write-Output   "No Elastic Pools found on Server $($server.name) that require a license update."
@@ -833,7 +927,11 @@ foreach ($sub in $subscriptions) {
             
             $instancePoolsQuery += "].{name:name, licenseType:licenseType, location:location, resourceGroup:resourceGroup, id:id, ResourceType:type, State:status}"
             
-            $instancePools = az sql instance-pool list --query $instancePoolsQuery -o json 2>$null | ConvertFrom-Json 
+            $instancePoolsQueryResult = Invoke-AzCliQuery -Description "SQL instance pools" -Arguments @('sql','instance-pool','list','--query',$instancePoolsQuery,'-o','json')
+            if (-not $instancePoolsQueryResult.Success) {
+                Write-Warning "SQL instance pools could not be listed, so none were assessed in this subscription. Re-run to retry."
+            }
+            $instancePools = $instancePoolsQueryResult.Value
             $poolsToUpdate = $instancePools | Where-Object { $_.licenseType -ne $LicenseType }
             if($poolsToUpdate.Count -eq 0) {
                 Write-Output "No SQL Instance Pools found that require a license update."
