@@ -79,6 +79,9 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 30 | Arc updates are fire-and-forget by design | Code inspection of `Set-AzConnectedMachineExtension` call site | ⚠️ Confirmed **asynchronous** — documented, not a defect. The `-NoWait` flag means the script submits the extension write and moves on without waiting for the Arc agent to apply it, so `RequestSubmitted` is an accurate label and must not be read as "changed". Verified there is no polling or `Get-AzConnectedMachineExtension` follow-up anywhere in the Arc path. README now states this explicitly and gives a Resource Graph query for confirming the real end state. |
 | 31 | `-WaitForCompletion` reports confirmed Arc outcomes | Live transition of `sqltvm` (`rajposqltvm`, tenant `d1623670`) with the new switch | ✅ Passed. Without the switch the report records `RequestSubmitted`; with it the script polled the extension to a terminal state and recorded `UpdateResult = Succeeded`, logging `Confirmed -- [sqltvm] provisioning state 'Succeeded'`. Run took 79.6 s. Verified independently via `Search-AzGraph`: the extension shows `LicenseType = LicenseOnly`, `provisioningState = Succeeded`, matching what the script reported. Polling backs off 5→30 s, and the helper also compares the applied `LicenseType` against the requested value, so a `Succeeded` provisioning state carrying the wrong license is reported as `Failed` rather than as success. |
 | 32 | `-WaitForCompletion` is inert in `-ReportOnly` mode | Dry run with both switches against `rajposqltvm` | ✅ Passed. The switch bound correctly through the wrapper (generated `runnow.ps1` contains a bare `-WaitForCompletion`, confirming the earlier `-Force 'True'` class of bug does not recur), and no polling occurred because nothing was submitted — output was the usual `ReportOnly mode enabled. Skipping modification for: sqltvm`. |
+| 33 | Asynchronous submission is the default for every resource type that supports it | Unit-tested `Invoke-AzCliLicenseUpdate` argument construction, verified CLI acceptance, and ran end-to-end | ✅ Passed. Previously Azure updates always blocked; they now submit with `--no-wait` unless `-WaitForCompletion` is passed. Verified the helper appends `--no-wait` only when the command supports it and the switch is absent (`sql db update -o json --no-wait` vs `sql db update -o json`), that the empty CLI output produced by `--no-wait` does not break result parsing, and that the real CLI accepts the flag on `sql db update` and `sql mi update` (failures return `ResourceNotFound`, not `unrecognized arguments`, confirming the flag parsed). Report values are `RequestSubmitted` when submitted asynchronously and `Updated` when waited on. |
+| 34 | Resource types with no asynchronous option are identified rather than faked | `az ... --help` inspection across all five update commands, plus an ARM `PATCH` probe | ⚠️ Documented limitation. `az sql vm update` and `Set-AzDataFactoryV2IntegrationRuntime` expose no `--no-wait`/`-AsJob` equivalent, so SQL virtual machines and SSIS integration runtimes remain synchronous regardless of the switch. A generic `az resource update`/`patch` fallback was ruled out (neither supports `--no-wait`), and a direct ARM `PATCH` against the SQL VM was rejected with `MissingPatchParameters: Approved values: tags, additionalVmPatch`, so the license type cannot be changed by a lightweight non-blocking call. Rather than hand-rolling a full `PUT` with the complete resource body, the two exceptions are documented in the README parameter table and behaviour matrix. |
+| 35 | `-WaitForCompletion` reaches the Azure script through the wrapper | Ran the orchestrator with and without the switch and inspected the generated `runnow.ps1` | ✅ Passed. Emitted as a bare `-WaitForCompletion` (no repeat of the `-Force 'True'` binding defect from #12) and omitted entirely when not requested. The default run reported `Updated` for `rajpoTest` with the change confirmed in Azure (`PAYG`); the `-WaitForCompletion` run restored `AHUB`, also confirmed via `az sql vm show`. |
 
 ## Cleanup
 
@@ -122,15 +125,17 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
   and instance pools are implemented and unit-verified via the shared helper (#28), but have
   not been observed against a genuine service-side failure on those specific resource types —
   only the SQL VM and DataFactory paths have been exercised end-to-end against real errors.
-- **Azure updates are synchronous; Arc updates are not.** The Azure CLI polls the underlying
-  `PUT` to a terminal state before returning (measured: `az sql vm update` took 126 s and
-  returned `provisioningState: Succeeded`, with the new value immediately readable), so
-  `UpdateResult = Updated` is trustworthy. The Arc path deliberately uses
-  `Set-AzConnectedMachineExtension -NoWait`, so `UpdateResult = RequestSubmitted` confirms only
-  that the request was **accepted** — the agent-side push can still fail afterwards and the
-  script will never learn of it. This is why the Arc value is named `RequestSubmitted` rather
-  than `Updated`. Confirming Arc outcomes requires a follow-up Resource Graph query (documented
-  in the README), a re-run, or the opt-in `-WaitForCompletion` switch added in test #31.
+- **Azure updates are asynchronous by default as of test #33.** SQL Managed Instances,
+  databases, elastic pools and instance pools are submitted with `--no-wait` and reported as
+  `RequestSubmitted`; `-WaitForCompletion` restores blocking behaviour and the `Updated`
+  result. SQL virtual machines and SSIS integration runtimes are unavoidable exceptions
+  (test #34) and always wait. The Arc path has always used `-NoWait`. A consequence of the
+  new default is that the report no longer proves a change was applied unless
+  `-WaitForCompletion` was used — verify out of band or re-run, as described in the README.
+- The asynchronous paths for Managed Instances, databases, elastic pools and instance pools
+  were verified by unit-testing argument construction and by confirming the CLI accepts
+  `--no-wait`, but have not been exercised against a live resource of those types: the only
+  candidates visible in the tenant belong to other teams and were deliberately not modified.
 
 ## Required permissions
 

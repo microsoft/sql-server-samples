@@ -47,6 +47,7 @@ The script accepts the following command line parameters:
 |`-targetResourceGroup` |`<name>`|*Optional*: Limits the scope of the transition to the specified resource group.|
 |`-TenantId`|`<tenant_id>`|*Optional*. Azure AD tenant to operate against. If not specified, the tenant of the current Az PowerShell context (`(Get-AzContext).Tenant.Id`) is used. Specify explicitly to avoid running against whichever tenant happens to be selected in your session.|
 |`-ReportOnly`|*(switch)*|*Optional*. Read-only dry run: reports the resources that would be changed without modifying anything.|
+|`-WaitForCompletion`|*(switch)*|*Optional*. Wait for each license change to reach a terminal state and report a confirmed outcome. By default changes are submitted asynchronously and reported as `RequestSubmitted`. SQL virtual machines and SSIS integration runtimes always wait (no asynchronous option exists for them). See [How It Works](#how-it-works).|
 |`-UsePcoreLicense` | `Yes`, `No` |*Optional*. Passed to Arc script to control PCore licensing behavior. Set to `No` if not specified.|
 |`-TargetLicenseType`|`PAYG`, `AHUB`|*Optional*. License type to transition resources to. Defaults to `PAYG`.|
 |`-AutomationAccResourceGroupName`| `<name>`|*Required* only if `-RunMode Scheduled`. Resource group hosting the Automation Account, created if it does not already exist. Not used by `-RunMode Single`.|
@@ -95,42 +96,40 @@ The script accepts the following command line parameters:
   the extension setting must be pushed to a reachable agent. These are skipped and will be
   picked up on a later run once the machines reconnect.
 - The offline Azure VMs will be reactivated for a brief period to change the configuration.
-- Each run writes a `ModifiedResources_<timestamp>.csv` report. For Arc resources the
-  `UpdateResult` column records the actual per-resource outcome (`RequestSubmitted`,
-  `Failed`, or `NotAttempted`), and `UpdateError` carries the service error text when a
+- Each run writes a `ModifiedResources_<timestamp>.csv` report. The `UpdateResult` column
+  records the per-resource outcome and `UpdateError` carries the service error text when a
   change was rejected.
-- **Azure and Arc resources complete differently, and this affects how you read the report:**
-  - **Azure SQL resources** (SQL VM, Managed Instance, database, elastic pool, instance pool,
-    SSIS integration runtime) are updated **synchronously**. The script waits for the
-    underlying `PUT` to reach a terminal state before continuing, so `UpdateResult = Updated`
-    means the change is committed and immediately readable. A single SQL VM update typically
-    takes ~2 minutes for this reason.
-  - **Arc-connected machines** are updated **asynchronously** (`Set-AzConnectedMachineExtension
-    -NoWait`). The script only submits the request; it does not wait for the Arc agent to
-    apply the setting. `UpdateResult = RequestSubmitted` therefore means *"the service accepted
-    the request"*, **not** *"the license type has changed"*. The push can still fail afterwards
-    on the machine itself.
-  - To confirm the Arc-side outcome, either pass `-WaitForCompletion` (see below) or re-query
-    the extensions after the agents have had time to report back — for example:
+- **By default the script does not wait for changes to finish.** Updates are submitted
+  asynchronously and the report records `RequestSubmitted`, which means *"the service accepted
+  the request"* — **not** *"the license type has changed"*. Pass `-WaitForCompletion` to wait
+  for each change to reach a terminal state and report a confirmed outcome instead.
 
-    ```powershell
-    Search-AzGraph -Query @"
-    resources
-    | where type =~ 'microsoft.hybridcompute/machines/extensions'
-    | where properties.type in~ ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')
-    | project name = split(id,'/')[8], licenseType = properties.settings.LicenseType,
-              state = properties.provisioningState
-    "@
-    ```
+  | Resource | Default | With `-WaitForCompletion` |
+  |---|---|---|
+  | SQL Managed Instance, database, elastic pool, instance pool | `--no-wait`, reports `RequestSubmitted` | waits, reports `Updated` |
+  | Arc-connected machine | `-NoWait`, reports `RequestSubmitted` | polls the extension, reports `Succeeded` / `Failed` / `TimedOut` |
+  | **SQL virtual machine** | **always waits**, reports `Updated` | same |
+  | **SSIS integration runtime** | **always waits**, reports `Updated` | same |
 
-    Re-running the transition script is also safe: already-converged machines are excluded by
-    the discovery query, so a second run reports only whatever genuinely still needs changing.
-  - Alternatively, pass `-WaitForCompletion` to poll each Arc extension until it reaches a
-    terminal provisioning state. The report then records the confirmed outcome (`Succeeded`,
-    `Failed`, or `TimedOut`) instead of `RequestSubmitted`. This is opt-in because it
-    serialises what is otherwise a fast parallel fan-out, so it is considerably slower on
-    large estates. A `TimedOut` result is inconclusive, not a failure — the agent may still
-    apply the setting afterwards.
+  SQL virtual machines and SSIS integration runtimes are exceptions because `az sql vm update`
+  and `Set-AzDataFactoryV2IntegrationRuntime` expose no asynchronous option. A single SQL VM
+  update therefore still takes roughly two minutes.
+
+  For Arc, a `TimedOut` result is inconclusive rather than a failure — the agent may still
+  apply the setting after the script stops waiting.
+- To confirm outcomes after a default (non-waiting) run, either re-run the script — already
+  converged resources are excluded by discovery, so a second run reports only what genuinely
+  still needs changing — or query the current state directly. For Arc:
+
+  ```powershell
+  Search-AzGraph -Query @"
+  resources
+  | where type =~ 'microsoft.hybridcompute/machines/extensions'
+  | where properties.type in~ ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')
+  | project name = split(id,'/')[8], licenseType = properties.settings.LicenseType,
+            state = properties.provisioningState
+  "@
+  ```
 - The subscriptions in scope of the transition will be automatically tagged with `ArcSQLServerExtensionDeployment:PAYG` to ensure that the furure SQL Servers onboarded to Azure Arc are configured to use the pay-as-you-go subscription.  For details, see [Manage automatic connection for SQL Server enabled by Azure Arc](https://learn.microsoft.com/sql/sql-server/azure-arc/manage-autodeploy).
 
 ## Example 1

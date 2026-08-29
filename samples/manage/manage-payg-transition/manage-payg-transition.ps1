@@ -38,12 +38,14 @@
     changed, without modifying any license types.
 
 .PARAMETER WaitForCompletion
-    Applies to Arc-connected machines only. Arc extension updates are submitted
-    asynchronously, so by default the report records 'RequestSubmitted', meaning the
-    service accepted the request rather than that the agent applied it. Use this switch
-    to poll each extension until it reaches a terminal state and report the confirmed
-    outcome. Azure SQL resources are always updated synchronously and are unaffected.
-    This makes the run substantially slower on large estates.
+    Wait for each license change to reach a terminal state and report the confirmed
+    outcome. By default updates are submitted asynchronously and the report records
+    'RequestSubmitted', meaning the service accepted the request rather than that the
+    change has been applied.
+
+    Exceptions: SQL virtual machines and SSIS integration runtimes always wait, because
+    'az sql vm update' and Set-AzDataFactoryV2IntegrationRuntime provide no asynchronous
+    option. Using this switch makes runs substantially slower on large estates.
 
 .PARAMETER AutomationAccResourceGroupName
     Required only when -RunMode is 'Scheduled'. Resource group for the Azure
@@ -190,6 +192,16 @@ $EmbeddedScripts['Azure'] = @'
     - For SQL Server: Updates all databases under the specified server
     - For SQL Managed Instance: Updates the specified instance
     - For SQL VM: Updates the specified VM
+
+.PARAMETER WaitForCompletion
+    Optional. If specified, waits for each update to reach a terminal state before continuing
+    and reports the confirmed outcome ("Updated"). By default the script submits updates with
+    --no-wait and reports "RequestSubmitted", meaning the service accepted the request rather
+    than that the change has been applied.
+
+    Note: 'az sql vm update' and Set-AzDataFactoryV2IntegrationRuntime provide no asynchronous
+    option, so SQL virtual machines and SSIS integration runtimes always wait regardless of
+    this switch and always report "Updated".
 #>
 
 param (
@@ -214,6 +226,9 @@ param (
 
     [Parameter (Mandatory= $false)]
     [switch] $UseManagedIdentity,
+
+    [Parameter (Mandatory= $false)]
+    [switch] $WaitForCompletion,
     
     [Parameter (Mandatory= $false)]
     [string] $ResourceName
@@ -308,27 +323,49 @@ function Connect-Azure {
     swallows errors and makes a failed update indistinguishable from a
     successful one. This wrapper checks $LASTEXITCODE and returns a result
     object used to populate the UpdateResult/UpdateError columns of the report.
+
+    By default updates are submitted with --no-wait so a large estate is not
+    processed serially; the caller then records "RequestSubmitted" rather than
+    "Updated", because the service has only accepted the request at that point.
+    Passing -WaitForCompletion to the script omits --no-wait, making the CLI poll
+    the operation to a terminal state so the outcome is confirmed.
+.PARAMETER SupportsNoWait
+    Set for commands that accept --no-wait. 'az sql vm update' does not, so it is
+    always synchronous regardless of -WaitForCompletion.
 #>
 function Invoke-AzCliLicenseUpdate {
     param(
         [Parameter(Mandatory = $true)][string[]]$Arguments,
-        [Parameter(Mandatory = $true)][string]$Description
+        [Parameter(Mandatory = $true)][string]$Description,
+        [switch]$SupportsNoWait
     )
 
-    $output = & az @Arguments 2>&1
+    $effectiveArgs = @($Arguments)
+    $submittedOnly = $false
+    if ($SupportsNoWait -and -not $WaitForCompletion) {
+        $effectiveArgs += '--no-wait'
+        $submittedOnly = $true
+    }
+
+    $output = & az @effectiveArgs 2>&1
 
     if ($LASTEXITCODE -ne 0) {
         $message = ($output | Out-String).Trim()
         Write-Warning "Failed to update $Description`: $message"
-        return [PSCustomObject]@{ Success = $false; Result = $null; ErrorMessage = $message }
+        return [PSCustomObject]@{ Success = $false; Result = $null; ErrorMessage = $message; Submitted = $submittedOnly }
     }
 
+    # --no-wait produces no output, so only attempt to parse when something came back.
     $parsed = $null
-    try { $parsed = $output | ConvertFrom-Json } catch { $parsed = $output }
+    $raw = ($output | Out-String).Trim()
+    if (-not [string]::IsNullOrWhiteSpace($raw)) {
+        try { $parsed = $raw | ConvertFrom-Json } catch { $parsed = $raw }
+    }
+
     # Note: this function must not write to the success stream. Anything emitted there
     # would be merged into the return value, turning it into an array and hiding the
     # message from the caller. Callers log their own success line.
-    return [PSCustomObject]@{ Success = $true; Result = $parsed; ErrorMessage = "" }
+    return [PSCustomObject]@{ Success = $true; Result = $parsed; ErrorMessage = ""; Submitted = $submittedOnly }
 }
 
 
@@ -507,6 +544,8 @@ foreach ($sub in $subscriptions) {
                             Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' (would change '$($sqlvm.sqlServerLicenseType)' -> '$SqlVmLicenseType')."
                         } else {
                             Write-Output "Updating SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' to license type '$SqlVmLicenseType'..."
+                            # 'az sql vm update' offers no --no-wait option, so this call is
+                            # always synchronous regardless of -WaitForCompletion.
                             $update = Invoke-AzCliLicenseUpdate -Description "SQL VM '$($sqlvm.name)'" -Arguments @(
                                 'sql','vm','update','-n',$sqlvm.name,'-g',$sqlvm.resourceGroup,'--license-type',$SqlVmLicenseType,'-o','json')
                             if ($update.Success) { $finalStatus += $update.Result; $vmResult = "Updated"; Write-Output "-- SQL VM '$($sqlvm.name)' updated to license type '$SqlVmLicenseType'" }
@@ -582,9 +621,13 @@ foreach ($sub in $subscriptions) {
 
                 if (-not $ReportOnly) {
                     Write-Output "Updating SQL Managed Instance '$($mi.name)' in RG '$($mi.resourceGroup)' to license type '$LicenseType'..."
-                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Managed Instance '$($mi.name)'" -Arguments @(
+                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Managed Instance '$($mi.name)'" -SupportsNoWait -Arguments @(
                         'sql','mi','update','--name',$mi.name,'--resource-group',$mi.resourceGroup,'--license-type',$LicenseType,'-o','json')
-                    if ($update.Success) { $finalStatus += $update.Result; $miResult = "Updated"; Write-Output "-- SQL Managed Instance '$($mi.name)' updated to license type '$LicenseType'" }
+                    if ($update.Success) {
+                        $finalStatus += $update.Result
+                        $miResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
+                        Write-Output "-- SQL Managed Instance '$($mi.name)': $miResult (license type '$LicenseType')"
+                    }
                     else { $miResult = "Failed"; $miError = $update.ErrorMessage }
                 }
 
@@ -741,9 +784,13 @@ foreach ($sub in $subscriptions) {
 
                             if (-not $ReportOnly) {
                                  Write-Output   "Updating SQL Database '$($db.name)' on server '$($server.name)' to license type '$LicenseType'..."
-                                $update = Invoke-AzCliLicenseUpdate -Description "SQL Database '$($db.name)' on server '$($server.name)'" -Arguments @(
+                                $update = Invoke-AzCliLicenseUpdate -Description "SQL Database '$($db.name)' on server '$($server.name)'" -SupportsNoWait -Arguments @(
                                     'sql','db','update','--name',$db.name,'--server',$server.name,'--resource-group',$server.resourceGroup,'--set',"licenseType=$LicenseType",'-o','json')
-                                if ($update.Success) { $finalStatus += $update.Result; $dbResult = "Updated"; Write-Output "-- SQL Database '$($db.name)' updated to license type '$LicenseType'" }
+                                if ($update.Success) {
+                                    $finalStatus += $update.Result
+                                    $dbResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
+                                    Write-Output "-- SQL Database '$($db.name)': $dbResult (license type '$LicenseType')"
+                                }
                                 else { $dbResult = "Failed"; $dbError = $update.ErrorMessage }
                             }
 
@@ -807,9 +854,13 @@ foreach ($sub in $subscriptions) {
 
                                 if (-not $ReportOnly) {
                                      Write-Output   "Updating Elastic Pool '$($pool.name)' on server '$($server.name)' to license type '$LicenseType'..."
-                                    $update = Invoke-AzCliLicenseUpdate -Description "Elastic Pool '$($pool.name)' on server '$($server.name)'" -Arguments @(
+                                    $update = Invoke-AzCliLicenseUpdate -Description "Elastic Pool '$($pool.name)' on server '$($server.name)'" -SupportsNoWait -Arguments @(
                                         'sql','elastic-pool','update','--name',$pool.name,'--server',$server.name,'--resource-group',$server.resourceGroup,'--set',"licenseType=$LicenseType",'--only-show-errors','-o','json')
-                                    if ($update.Success) { $finalStatus += $update.Result; $poolResult = "Updated"; Write-Output "-- Elastic Pool '$($pool.name)' updated to license type '$LicenseType'" }
+                                    if ($update.Success) {
+                                        $finalStatus += $update.Result
+                                        $poolResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
+                                        Write-Output "-- Elastic Pool '$($pool.name)': $poolResult (license type '$LicenseType')"
+                                    }
                                     else { $poolResult = "Failed"; $poolError = $update.ErrorMessage }
                                 }
 
@@ -875,9 +926,13 @@ foreach ($sub in $subscriptions) {
 
                 if (-not $ReportOnly) {
                     Write-Output "Updating SQL Instance Pool '$($pool.name)' in RG '$($pool.resourceGroup)' to license type '$LicenseType'..."
-                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Instance Pool '$($pool.name)'" -Arguments @(
+                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Instance Pool '$($pool.name)'" -SupportsNoWait -Arguments @(
                         'sql','instance-pool','update','--name',$pool.name,'--resource-group',$pool.resourceGroup,'--license-type',$LicenseType,'-o','json')
-                    if ($update.Success) { $finalStatus += $update.Result; $ipResult = "Updated"; Write-Output "-- SQL Instance Pool '$($pool.name)' updated to license type '$LicenseType'" }
+                    if ($update.Success) {
+                        $finalStatus += $update.Result
+                        $ipResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
+                        Write-Output "-- SQL Instance Pool '$($pool.name)': $ipResult (license type '$LicenseType')"
+                    }
                     else { $ipResult = "Failed"; $ipError = $update.ErrorMessage }
                 }
 
@@ -1944,6 +1999,7 @@ $scriptFiles = @{
             ResourceGroup = [string]$targetResourceGroup
             TenantId = [string]$TenantId
             ReportOnly = [bool]$ReportOnly
+            WaitForCompletion = [bool]$WaitForCompletion
         }
     }
     Arc   = @{
@@ -2045,6 +2101,7 @@ $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "Resour
     LicenseType= '$azureLicenseType'
     $(if ($null -ne $TenantId -and $TenantId -ne "") { "TenantId= '$TenantId'" })
     $(if ($ReportOnly) { "ReportOnly= `$true" })
+    $(if ($WaitForCompletion) { "WaitForCompletion= `$true" })
     $(if ($null -ne $targetResourceGroup -and $targetResourceGroup -ne "") { "ResourceGroup= '$targetResourceGroup'" })
     $(if ($null -ne $targetSubscription -and $targetSubscription -ne "") { "SubId= '$targetSubscription'" })
 
