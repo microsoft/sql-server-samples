@@ -75,6 +75,8 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 26 | CSV schema consistent across resource types | Inspected the header of a report containing a SQL VM row | ✅ Passed after fix. `Export-Csv` derives its header from the **first** object only, so once the DataFactory and SQL VM sections began emitting `UpdateResult`/`UpdateError`, a report whose first row came from any other section would have silently dropped those columns. Rows are now projected through an explicit 10-column `Select-Object` before export. Verified header: `TenantID,SubID,ResourceName,ResourceType,Status,OriginalLicenseType,ResourceGroup,Location,UpdateResult,UpdateError`. |
 | 27 | All Azure resource types report update outcomes consistently | Code change plus real runs against `rajpoTest` (`AHUB`→`PAYG`→`AHUB`) | ✅ Passed. The result-checking added for SQL VMs in #25 was extended to the Managed Instance, SQL Database, elastic pool and instance pool sections, which all still piped `az ... update` into `ConvertFrom-Json` without inspecting the exit code and appended their CSV row *before* the attempt. The elastic pool section was the worst case: it used `2>$null | ConvertFrom-Json -ErrorAction SilentlyContinue`, discarding the error text entirely and reporting only *"No result returned"*. All five `az` update paths now route through a shared `Invoke-AzCliLicenseUpdate` helper that checks `$LASTEXITCODE`, surfaces the real service error via `Write-Warning`, and returns a result object. Verified 6 row builders, 6 `UpdateResult` fields, and zero remaining raw `az ... update` pipes. |
 | 28 | Helper does not corrupt its own return value | Unit-tested `Invoke-AzCliLicenseUpdate` in isolation against a succeeding and a failing `az` command | ✅ Passed after fix. The first implementation called `Write-Output "-- ... updated successfully"` inside the function; in PowerShell that merges into the **return value**, so the caller received a 2-element array instead of the result object and the message never reached the transcript. Caught during verification when the expected success line was missing from an otherwise-successful run. The helper is now silent on the success stream and each caller logs its own message. Verified both paths return `count=1`, `type=PSCustomObject`, with the failure path capturing the genuine service error (`ResourceGroupNotFound ... could not be found`). |
+| 29 | Azure CLI updates block until the operation reaches a terminal state | Timed `az sql vm update` on `rajpoTest` and inspected the response body and an immediate re-read | ✅ Confirmed synchronous. The call returned after **126.1 s** with `provisioningState: Succeeded` and `sqlServerLicenseType: PAYG` in the response body, and an immediate `az sql vm show` already reported `PAYG`. The script passes no `--no-wait`, so every Azure CLI update path waits for completion and `UpdateResult = Updated` reflects a committed change. This also explains the multi-minute runtimes observed whenever a SQL VM is actually modified. |
+| 30 | Arc updates are fire-and-forget by design | Code inspection of `Set-AzConnectedMachineExtension` call site | ⚠️ Confirmed **asynchronous** — documented, not a defect. The `-NoWait` flag means the script submits the extension write and moves on without waiting for the Arc agent to apply it, so `RequestSubmitted` is an accurate label and must not be read as "changed". Verified there is no polling or `Get-AzConnectedMachineExtension` follow-up anywhere in the Arc path. README now states this explicitly and gives a Resource Graph query for confirming the real end state. |
 
 ## Cleanup
 
@@ -118,6 +120,17 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
   and instance pools are implemented and unit-verified via the shared helper (#28), but have
   not been observed against a genuine service-side failure on those specific resource types —
   only the SQL VM and DataFactory paths have been exercised end-to-end against real errors.
+- **Azure updates are synchronous; Arc updates are not.** The Azure CLI polls the underlying
+  `PUT` to a terminal state before returning (measured: `az sql vm update` took 126 s and
+  returned `provisioningState: Succeeded`, with the new value immediately readable), so
+  `UpdateResult = Updated` is trustworthy. The Arc path deliberately uses
+  `Set-AzConnectedMachineExtension -NoWait`, so `UpdateResult = RequestSubmitted` confirms only
+  that the request was **accepted** — the agent-side push can still fail afterwards and the
+  script will never learn of it. This is why the Arc value is named `RequestSubmitted` rather
+  than `Updated`. Confirming Arc outcomes requires a follow-up Resource Graph query (documented
+  in the README) or a re-run. Adding an opt-in `-WaitForCompletion` switch that polls each
+  extension's `provisioningState` would close this, at the cost of serialising what is
+  currently a fast fan-out across potentially hundreds of machines.
 
 ## Required permissions
 

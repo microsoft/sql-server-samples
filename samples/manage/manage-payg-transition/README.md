@@ -99,6 +99,32 @@ The script accepts the following command line parameters:
   `UpdateResult` column records the actual per-resource outcome (`RequestSubmitted`,
   `Failed`, or `NotAttempted`), and `UpdateError` carries the service error text when a
   change was rejected.
+- **Azure and Arc resources complete differently, and this affects how you read the report:**
+  - **Azure SQL resources** (SQL VM, Managed Instance, database, elastic pool, instance pool,
+    SSIS integration runtime) are updated **synchronously**. The script waits for the
+    underlying `PUT` to reach a terminal state before continuing, so `UpdateResult = Updated`
+    means the change is committed and immediately readable. A single SQL VM update typically
+    takes ~2 minutes for this reason.
+  - **Arc-connected machines** are updated **asynchronously** (`Set-AzConnectedMachineExtension
+    -NoWait`). The script only submits the request; it does not wait for the Arc agent to
+    apply the setting. `UpdateResult = RequestSubmitted` therefore means *"the service accepted
+    the request"*, **not** *"the license type has changed"*. The push can still fail afterwards
+    on the machine itself.
+  - To confirm the Arc-side outcome, re-query the extensions after the agents have had time to
+    report back — for example:
+
+    ```powershell
+    Search-AzGraph -Query @"
+    resources
+    | where type =~ 'microsoft.hybridcompute/machines/extensions'
+    | where properties.type in~ ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')
+    | project name = split(id,'/')[8], licenseType = properties.settings.LicenseType,
+              state = properties.provisioningState
+    "@
+    ```
+
+    Re-running the transition script is also safe: already-converged machines are excluded by
+    the discovery query, so a second run reports only whatever genuinely still needs changing.
 - The subscriptions in scope of the transition will be automatically tagged with `ArcSQLServerExtensionDeployment:PAYG` to ensure that the furure SQL Servers onboarded to Azure Arc are configured to use the pay-as-you-go subscription.  For details, see [Manage automatic connection for SQL Server enabled by Azure Arc](https://learn.microsoft.com/sql/sql-server/azure-arc/manage-autodeploy).
 
 ## Example 1
