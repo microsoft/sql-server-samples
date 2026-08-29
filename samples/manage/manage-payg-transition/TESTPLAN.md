@@ -69,6 +69,10 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 20 | `Stop-Transcript` no longer errors when transcription never started | Reproduced by pointing `Start-Transcript` at an unwritable path (`Z:\...`), then ran the script end-to-end | ✅ Passed after fix. Previously `Start-Transcript` could fail silently (unwritable log path, or a host that does not support transcription such as an Azure Automation runbook) and the unguarded `Stop-Transcript` at the end threw *"An error occurred stopping transcription: The host is not currently transcribing"* — surfacing a spurious failure after an otherwise successful run. Now emits `WARNING: Unable to start transcript logging: ... Continuing without a transcript.` and completes cleanly. Verified in all four copies (Arc/Azure × standalone/embedded). |
 | 21 | Scope is not silently widened when `-targetResourceGroup` matches no SQL Servers | Ran `-Target Azure -targetSubscription 6a37df99-... -targetResourceGroup rajpobuddy` (an RG containing a SQL VM but **no** `Microsoft.Sql/servers`) | ✅ Passed after fix. Previously the script fell back to `$servers = $allServers` whenever the server query returned nothing and `-ResourceName` was absent, logging *"Proceeding with all SQL Servers since no specific ResourceName was provided"* and scanning 3 servers in unrelated resource groups. Because the elastic-pool query filters only on `licenseType`/tags — **with no resource-group filter** — a real (non-`ReportOnly`) run would have modified out-of-scope elastic pools; this test only escaped damage because those servers happened to have no pools. The fallback now requires **both** `-ResourceName` and `-ResourceGroup` to be absent, and the log correctly reads *"Scope was explicitly restricted; not falling back to all SQL Servers. Skipping SQL Database and Elastic Pool processing."* |
 | 22 | End-to-end real (non-`ReportOnly`) run with all fixes applied | Ran `-Target Azure -RunMode Single -TenantId 72f988bf-... -targetSubscription 6a37df99-... -targetResourceGroup rajpobuddy -TargetLicenseType PAYG` against `rajpoTest` (`AHUB`) | ✅ Passed. Duration 2m22s. Transcript opened and closed cleanly (#20), the tenant was taken from `-TenantId` rather than the persisted context (#13), scope stayed inside `rajpobuddy` (#21), and the SQL VM transitioned `AHUB`→`PAYG`. **Verified independently of the script's own logging** via `az sql vm show -n rajpoTest -g rajpobuddy --query sqlServerLicenseType` → `PAYG`, and via `Search-AzGraph` across the whole resource group. Note the script prints `Updating SQL VM ...` *before* the `az sql vm update` call and does not inspect its result, so the log line alone is not proof of success — out-of-band verification is required. |
+| 23 | Non-SSIS integration runtimes are no longer selected for licensing | Ran `-Target Azure -targetResourceGroup jh_adf` against `jhomerDataFactory`, whose only runtime is the default `AutoResolveIntegrationRuntime` | ✅ Passed after fix. The selection filter was `$_.Type -eq "Managed" -and $_.LicenseType -ne $LicenseType`. The default `AutoResolveIntegrationRuntime` is *also* `Type = "Managed"` (it is the data-flow/pipeline runtime, not an SSIS-IR) and has a **null** `LicenseType`, so `$null -ne 'LicenseIncluded'` evaluated true and it was selected. `Set-AzDataFactoryV2IntegrationRuntime` then round-tripped the full payload and the service rejected it with *"HTTP Status Code: Conflict / DataFactoryPropertyUpdateNotSupported / Updating property managedVirtualNetwork is not supported"*. Filter now also requires a non-empty `LicenseType`, which only SSIS integration runtimes carry. Log now reads *"No SSIS integration runtimes found on DataFactory 'jhomerDataFactory' that require a license update."* |
+| 24 | DataFactory update failures reported truthfully | Same scenario as #23, before the fix | ✅ Passed after fix. Same class of bug as #17: `Set-AzDataFactoryV2IntegrationRuntime` had no `-ErrorAction Stop`, so the Conflict above was **non-terminating** — the surrounding `catch` never fired and the script still printed `-- DataFactory 'jhomerDataFactory' integration runtime updated to license type LicenseIncluded` immediately after two error blocks. Now wrapped in a per-runtime `try/catch` with `-ErrorAction Stop`, emitting a warning and recording `UpdateResult = Failed` with the service message. |
+| 25 | SQL VM update result checked and recorded | Real run `-targetResourceGroup rajpobuddy -TargetLicenseType AHUB` against `rajpoTest` (`PAYG`) | ✅ Passed after fix. Previously `az sql vm update` output was piped straight to `ConvertFrom-Json` with no exit-code check, and the CSV row was appended *before* the attempt — so a failed update was recorded identically to a successful one (the gap noted in #22). Now checks `$LASTEXITCODE`, logs `-- SQL VM '<name>' updated to license type '<type>'` only on success, and appends the row *after* the attempt with `UpdateResult`/`UpdateError`. Verified: CSV recorded `OriginalLicenseType = PAYG`, `UpdateResult = Updated`, and `az sql vm show` independently confirmed `AHUB`. |
+| 26 | CSV schema consistent across resource types | Inspected the header of a report containing a SQL VM row | ✅ Passed after fix. `Export-Csv` derives its header from the **first** object only, so once the DataFactory and SQL VM sections began emitting `UpdateResult`/`UpdateError`, a report whose first row came from any other section would have silently dropped those columns. Rows are now projected through an explicit 10-column `Select-Object` before export. Verified header: `TenantID,SubID,ResourceName,ResourceType,Status,OriginalLicenseType,ResourceGroup,Location,UpdateResult,UpdateError`. |
 
 ## Cleanup
 
@@ -78,9 +82,9 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 - A `.gitignore` was added to the sample folder so these runtime artifacts
   (`manage-payg-transition/`, `runnow.ps1`, `ModifiedResources_*.csv`, `*.log`)
   cannot be committed by accident.
-- `rajpoTest` was left in `PAYG` state (following the final end-to-end run, test #22) and
-  `abhisqlmi` in `LicenseIncluded` at the user's explicit request (for portal
-  verification); they were deliberately **not** reverted.
+- `rajpoTest` was left in `AHUB` state (following test #25) and `abhisqlmi` in
+  `LicenseIncluded` at the user's explicit request (for portal verification); they were
+  deliberately **not** reverted.
 
 ## Known gaps / follow-ups
 
@@ -107,9 +111,12 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
   and `.\modify-arc-sql-license-type.log`), so every run overwrites the previous run's log.
   This destroys evidence when diagnosing an earlier run; timestamped log names would be an
   improvement.
-- The Azure-side CSV report does not carry the `UpdateResult`/`UpdateError` columns added to
-  the Arc-side report in test #17, and `az sql vm update` results are not inspected, so an
-  Azure-side failure is not reflected in the report.
+- The Azure-side CSV report now carries `UpdateResult`/`UpdateError` for SQL VM and
+  DataFactory integration runtime rows (tests #24–#26), but the Managed Instance, SQL
+  Database, elastic pool and instance pool sections still append their rows *before* the
+  update attempt and do not inspect the `az ... update` exit code, so a failure in those
+  sections is still recorded as though it succeeded. Extending the same pattern to them is
+  the remaining work.
 
 ## Required permissions
 

@@ -324,8 +324,28 @@ foreach ($sub in $subscriptions) {
                 {
                     $vmStatus = az vm get-instance-view --resource-group $sqlvm.resourceGroup --name $sqlvm.name --query "{Name:name, ResourceGroup:resourceGroup, PowerState:instanceView.statuses[?starts_with(code, 'PowerState/')].displayStatus | [0]}" -o json | ConvertFrom-Json
                     if (($vmStatus.PowerState -eq "VM running") -and ($sqlvm.sqlServerLicenseType -ne "DR")) {
-                        
-                        # Collect data before modification
+
+                        $vmResult = "NotAttempted"
+                        $vmError = ""
+
+                        if ($ReportOnly) {
+                            Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' (would change '$($sqlvm.sqlServerLicenseType)' -> '$SqlVmLicenseType')."
+                        } else {
+                            Write-Output "Updating SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' to license type '$SqlVmLicenseType'..."
+                            $azOutput = az sql vm update -n $sqlvm.name -g $sqlvm.resourceGroup --license-type $SqlVmLicenseType -o json 2>&1
+                            if ($LASTEXITCODE -ne 0) {
+                                $vmResult = "Failed"
+                                $vmError = ($azOutput | Out-String).Trim()
+                                Write-Warning "Failed to update SQL VM '$($sqlvm.name)': $vmError"
+                            } else {
+                                $result = $azOutput | ConvertFrom-Json
+                                $finalStatus += $result
+                                $vmResult = "Updated"
+                                Write-Output "-- SQL VM '$($sqlvm.name)' updated to license type '$SqlVmLicenseType'"
+                            }
+                        }
+
+                        # Collect data after the attempt so the recorded outcome is accurate
                         $modifiedResources += [PSCustomObject]@{
                             TenantID            = $TenantId
                             SubID               = ($sqlvm.id -split '/')[2]
@@ -335,16 +355,9 @@ foreach ($sub in $subscriptions) {
                             OriginalLicenseType = $sqlvm.sqlServerLicenseType
                             ResourceGroup       = $sqlvm.resourceGroup
                             Location            = $sqlvm.Location
+                            UpdateResult        = $vmResult
+                            UpdateError         = $vmError
                             # Cores             <To be added>
-                        }
-
-        
-                        if ($ReportOnly) {
-                            Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' (would change '$($sqlvm.sqlServerLicenseType)' -> '$SqlVmLicenseType')."
-                        } else {
-                            Write-Output "Updating SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' to license type '$SqlVmLicenseType'..."
-                            $result = az sql vm update -n $sqlvm.name -g $sqlvm.resourceGroup --license-type $SqlVmLicenseType -o json | ConvertFrom-Json
-                            $finalStatus += $result
                         }
                     }
                 }
@@ -721,33 +734,55 @@ foreach ($sub in $subscriptions) {
                 Where-Object { 
                     $_.Type -eq "Managed" -and 
                     $_.State -ne "Starting" -and 
+                    # Only SSIS integration runtimes carry a LicenseType. The default
+                    # 'AutoResolveIntegrationRuntime' is also Type 'Managed' but has a null
+                    # LicenseType; without this check it passes the filter below (since
+                    # $null -ne $LicenseType) and the update fails with
+                    # 'DataFactoryPropertyUpdateNotSupported: Updating property managedVirtualNetwork'.
+                    (-not [string]::IsNullOrEmpty($_.LicenseType)) -and
                     $_.LicenseType -ne $LicenseType -and
                     ([string]::IsNullOrEmpty($ResourceName) -or $_.Name -eq $ResourceName)
                 }
 
-                if ($IRs.Count -eq 0) {
-                    Write-Output "No matching integration runtimes found."
+                if ($null -eq $IRs -or @($IRs).Count -eq 0) {
+                    Write-Output "No SSIS integration runtimes found on DataFactory '$($df.DataFactoryName)' that require a license update."
                 } else {
                     $IRs | ForEach-Object {
-                        $modifiedResources += [PSCustomObject]@{
-                            TenantID            = $TenantId
-                            SubID               = ($_.Id -split '/')[2]
-                            ResourceName        = $_.Name
-                            ResourceType        = "Microsoft.DataFactory/factories/integrationRuntimes"
-                            Status              = $_.State
-                            OriginalLicenseType = $_.LicenseType
-                            ResourceGroup       = $df.ResourceGroupName
-                            Location            = $df.Location
-                        }
+                        $ir = $_
+                        $irResult = "NotAttempted"
+                        $irError = ""
 
                         if (-not $ReportOnly) {
-                            if (-not [string]::IsNullOrEmpty($ResourceName) -and $_.State -ne "Stopped") {
-                                Write-Output "ADF Integration Service '$($_.Name)' is not in stopped state"
+                            if (-not [string]::IsNullOrEmpty($ResourceName) -and $ir.State -ne "Stopped") {
+                                Write-Output "ADF Integration Service '$($ir.Name)' is not in stopped state"
+                                $irResult = "SkippedNotStopped"
                             } else {
-                                $result = Set-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $df.ResourceGroupName -DataFactoryName $df.DataFactoryName -Name $_.Name -LicenseType $LicenseType -Force
-                                $finalStatus += $result
-                                Write-Output "-- DataFactory '$($df.DataFactoryName)' integration runtime updated to license type $LicenseType"
+                                Write-Output "Updating DataFactory '$($df.DataFactoryName)' integration runtime '$($ir.Name)' to license type $LicenseType..."
+                                try {
+                                    $result = Set-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $df.ResourceGroupName -DataFactoryName $df.DataFactoryName -Name $ir.Name -LicenseType $LicenseType -Force -ErrorAction Stop
+                                    $finalStatus += $result
+                                    $irResult = "Updated"
+                                    Write-Output "-- DataFactory '$($df.DataFactoryName)' integration runtime '$($ir.Name)' updated to license type $LicenseType"
+                                }
+                                catch {
+                                    $irResult = "Failed"
+                                    $irError = $_.Exception.Message
+                                    Write-Warning "Failed to update integration runtime '$($ir.Name)' on DataFactory '$($df.DataFactoryName)': $irError"
+                                }
                             }
+                        }
+
+                        $modifiedResources += [PSCustomObject]@{
+                            TenantID            = $TenantId
+                            SubID               = ($ir.Id -split '/')[2]
+                            ResourceName        = $ir.Name
+                            ResourceType        = "Microsoft.DataFactory/factories/integrationRuntimes"
+                            Status              = $ir.State
+                            OriginalLicenseType = $ir.LicenseType
+                            ResourceGroup       = $df.ResourceGroupName
+                            Location            = $df.Location
+                            UpdateResult        = $irResult
+                            UpdateError         = $irError
                         }
                     }
                 }
@@ -775,7 +810,14 @@ Write-Output "Total duration:    $($totalDuration.ToString())"
 # Export modified resource data to CSV
 if ($modifiedResources.Count -gt 0) {
     $csvPath = "ModifiedResources_$(Get-Date -Format 'yyyyMMdd_HHmmss').csv"
-    $modifiedResources | Export-Csv -Path $csvPath -NoTypeInformation
+    # Export-Csv derives its header from the first object only, so rows built by
+    # different sections (some of which carry UpdateResult/UpdateError) are projected
+    # onto one consistent schema to avoid silently dropping columns.
+    $csvColumns = @('TenantID','SubID','ResourceName','ResourceType','Status',
+                    'OriginalLicenseType','ResourceGroup','Location','UpdateResult','UpdateError')
+    $modifiedResources |
+        Select-Object -Property $csvColumns |
+        Export-Csv -Path $csvPath -NoTypeInformation
     Write-Output "CSV report saved to: $csvPath"
 } else {
     Write-Output "No resources were marked for modification. No CSV generated."
