@@ -53,9 +53,10 @@
     --no-wait and reports "RequestSubmitted", meaning the service accepted the request rather
     than that the change has been applied.
 
-    Note: 'az sql vm update' and Set-AzDataFactoryV2IntegrationRuntime provide no asynchronous
-    option, so SQL virtual machines and SSIS integration runtimes always wait regardless of
-    this switch and always report "Updated".
+    Note: Set-AzDataFactoryV2IntegrationRuntime provides no asynchronous option, so SSIS
+    integration runtimes always wait regardless of this switch and always report "Updated".
+    SQL virtual machines are submitted asynchronously through a direct ARM request because
+    'az sql vm update' has no --no-wait option; see Invoke-SqlVmLicenseUpdate.
 #>
 
 param (
@@ -184,8 +185,8 @@ function Connect-Azure {
     Passing -WaitForCompletion to the script omits --no-wait, making the CLI poll
     the operation to a terminal state so the outcome is confirmed.
 .PARAMETER SupportsNoWait
-    Set for commands that accept --no-wait. 'az sql vm update' does not, so it is
-    always synchronous regardless of -WaitForCompletion.
+    Set for commands that accept --no-wait. 'az sql vm update' does not; SQL VMs are
+    submitted asynchronously through Invoke-SqlVmLicenseUpdate instead.
 #>
 function Invoke-AzCliLicenseUpdate {
     param(
@@ -220,6 +221,71 @@ function Invoke-AzCliLicenseUpdate {
     # would be merged into the return value, turning it into an array and hiding the
     # message from the caller. Callers log their own success line.
     return [PSCustomObject]@{ Success = $true; Result = $parsed; ErrorMessage = ""; Submitted = $submittedOnly }
+}
+
+
+<#
+.SYNOPSIS
+    Updates the license type of a SQL virtual machine, asynchronously by default.
+.DESCRIPTION
+    'az sql vm update' has no --no-wait option and blocks until the operation reaches a
+    terminal state, which for a SQL VM is typically around two minutes per resource.
+    Update-AzSqlVM advertises -NoWait and -AsJob but both are broken in
+    Az.SqlVirtualMachine 2.4.0 (-NoWait forwards the bound parameter into Get-AzSqlVM,
+    which rejects it; -AsJob throws a NullReferenceException).
+
+    To honour the script's async-by-default contract this function talks to ARM directly:
+    it reads the resource, changes only sqlServerLicenseType and writes it back. ARM
+    accepts the request and returns an Azure-AsyncOperation header without waiting for the
+    provisioning to finish, so the call returns in seconds instead of minutes.
+
+    When -WaitForCompletion is passed, or if the ARM round trip fails for any reason, the
+    original synchronous 'az sql vm update' path is used so behaviour degrades safely.
+#>
+function Invoke-SqlVmLicenseUpdate {
+    param(
+        [Parameter(Mandatory = $true)][string]$ResourceId,
+        [Parameter(Mandatory = $true)][string]$Name,
+        [Parameter(Mandatory = $true)][string]$ResourceGroup,
+        [Parameter(Mandatory = $true)][string]$LicenseType
+    )
+
+    $cliArguments = @('sql','vm','update','-n',$Name,'-g',$ResourceGroup,'--license-type',$LicenseType,'-o','json')
+
+    if ($WaitForCompletion) {
+        return Invoke-AzCliLicenseUpdate -Description "SQL VM '$Name'" -Arguments $cliArguments
+    }
+
+    $apiVersion = '2023-10-01'
+    $path = "$ResourceId`?api-version=$apiVersion"
+
+    try {
+        $get = Invoke-AzRestMethod -Path $path -Method GET -ErrorAction Stop
+        if ($get.StatusCode -ne 200) {
+            throw "GET returned HTTP $($get.StatusCode): $($get.Content)"
+        }
+
+        # Read-modify-write: the payload is the body ARM just returned with a single
+        # property changed, so no unrelated settings are dropped by the PUT.
+        $resource = $get.Content | ConvertFrom-Json
+        $resource.properties.sqlServerLicenseType = $LicenseType
+
+        $put = Invoke-AzRestMethod -Path $path -Method PUT -Payload ($resource | ConvertTo-Json -Depth 30) -ErrorAction Stop
+        if ($put.StatusCode -ge 400) {
+            throw "PUT returned HTTP $($put.StatusCode): $($put.Content)"
+        }
+
+        $parsed = $null
+        if (-not [string]::IsNullOrWhiteSpace($put.Content)) {
+            try { $parsed = $put.Content | ConvertFrom-Json } catch { $parsed = $put.Content }
+        }
+
+        return [PSCustomObject]@{ Success = $true; Result = $parsed; ErrorMessage = ""; Submitted = $true }
+    }
+    catch {
+        Write-Warning "Asynchronous update of SQL VM '$Name' failed ($($_.Exception.Message)). Falling back to the synchronous 'az sql vm update' path."
+        return Invoke-AzCliLicenseUpdate -Description "SQL VM '$Name'" -Arguments $cliArguments
+    }
 }
 
 
@@ -398,11 +464,12 @@ foreach ($sub in $subscriptions) {
                             Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' (would change '$($sqlvm.sqlServerLicenseType)' -> '$SqlVmLicenseType')."
                         } else {
                             Write-Output "Updating SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' to license type '$SqlVmLicenseType'..."
-                            # 'az sql vm update' offers no --no-wait option, so this call is
-                            # always synchronous regardless of -WaitForCompletion.
-                            $update = Invoke-AzCliLicenseUpdate -Description "SQL VM '$($sqlvm.name)'" -Arguments @(
-                                'sql','vm','update','-n',$sqlvm.name,'-g',$sqlvm.resourceGroup,'--license-type',$SqlVmLicenseType,'-o','json')
-                            if ($update.Success) { $finalStatus += $update.Result; $vmResult = "Updated"; Write-Output "-- SQL VM '$($sqlvm.name)' updated to license type '$SqlVmLicenseType'" }
+                            $update = Invoke-SqlVmLicenseUpdate -ResourceId $sqlvm.id -Name $sqlvm.name -ResourceGroup $sqlvm.resourceGroup -LicenseType $SqlVmLicenseType
+                            if ($update.Success) {
+                                $finalStatus += $update.Result
+                                $vmResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
+                                Write-Output "-- SQL VM '$($sqlvm.name)': $vmResult (license type '$SqlVmLicenseType')"
+                            }
                             else { $vmResult = "Failed"; $vmError = $update.ErrorMessage }
                         }
 

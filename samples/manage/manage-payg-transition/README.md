@@ -47,7 +47,7 @@ The script accepts the following command line parameters:
 |`-targetResourceGroup` |`<name>`|*Optional*: Limits the scope of the transition to the specified resource group.|
 |`-TenantId`|`<tenant_id>`|*Optional*. Azure AD tenant to operate against. If not specified, the tenant of the current Az PowerShell context (`(Get-AzContext).Tenant.Id`) is used. Specify explicitly to avoid running against whichever tenant happens to be selected in your session.|
 |`-ReportOnly`|*(switch)*|*Optional*. Read-only dry run: reports the resources that would be changed without modifying anything.|
-|`-WaitForCompletion`|*(switch)*|*Optional*. Wait for each license change to reach a terminal state and report a confirmed outcome. By default changes are submitted asynchronously and reported as `RequestSubmitted`. SQL virtual machines and SSIS integration runtimes always wait (no asynchronous option exists for them). See [How It Works](#how-it-works).|
+|`-WaitForCompletion`|*(switch)*|*Optional*. Wait for each license change to reach a terminal state and report a confirmed outcome. By default changes are submitted asynchronously and reported as `RequestSubmitted`. SSIS integration runtimes always wait (no asynchronous option exists for them). See [How It Works](#how-it-works).|
 |`-UsePcoreLicense` | `Yes`, `No` |*Optional*. Passed to Arc script to control PCore licensing behavior. Set to `No` if not specified.|
 |`-TargetLicenseType`|`PAYG`, `AHUB`|*Optional*. License type to transition resources to. Defaults to `PAYG`.|
 |`-AutomationAccResourceGroupName`| `<name>`|*Required* only if `-RunMode Scheduled`. Resource group hosting the Automation Account, created if it does not already exist. Not used by `-RunMode Single`.|
@@ -108,12 +108,18 @@ The script accepts the following command line parameters:
   |---|---|---|
   | SQL Managed Instance, database, elastic pool, instance pool | `--no-wait`, reports `RequestSubmitted` | waits, reports `Updated` |
   | Arc-connected machine | `-NoWait`, reports `RequestSubmitted` | polls the extension, reports `Succeeded` / `Failed` / `TimedOut` |
-  | **SQL virtual machine** | **always waits**, reports `Updated` | same |
+  | SQL virtual machine | direct ARM request, reports `RequestSubmitted` | `az sql vm update` waits, reports `Updated` |
   | **SSIS integration runtime** | **always waits**, reports `Updated` | same |
 
-  SQL virtual machines and SSIS integration runtimes are exceptions because `az sql vm update`
-  and `Set-AzDataFactoryV2IntegrationRuntime` expose no asynchronous option. A single SQL VM
-  update therefore still takes roughly two minutes.
+  SSIS integration runtimes are the one exception, because
+  `Set-AzDataFactoryV2IntegrationRuntime` exposes no asynchronous option.
+
+  SQL virtual machines are a special case. `az sql vm update` has no `--no-wait` option and
+  blocks for roughly two minutes per VM, and although `Update-AzSqlVM` advertises `-NoWait`
+  and `-AsJob`, both are broken in `Az.SqlVirtualMachine` 2.4.0. The script therefore submits
+  the change to ARM directly (read the resource, change `sqlServerLicenseType`, write it
+  back), which returns in seconds. If that request fails for any reason it automatically
+  falls back to the synchronous `az sql vm update` path.
 
   For Arc, a `TimedOut` result is inconclusive rather than a failure — the agent may still
   apply the setting after the script stops waiting.
