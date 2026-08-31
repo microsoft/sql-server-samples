@@ -217,7 +217,7 @@ SELECT
     ItemName,
     SUM(UnitsReturned) AS TotalReturned,
     CAST(SUM(TotalRefunds) AS DECIMAL(18,2)) AS RefundAmount,
-    STRING_AGG(DISTINCT ReasonDescription, ', ') AS ReturnReasons
+    STRING_AGG(ReasonDescription, ', ') AS ReturnReasons
 FROM vw_Sales_ReturnsAnalysis
 GROUP BY ItemName
 ORDER BY SUM(UnitsReturned) DESC;

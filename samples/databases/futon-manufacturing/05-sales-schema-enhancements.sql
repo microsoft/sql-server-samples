@@ -73,6 +73,8 @@ ALTER TABLE SalesOrder ADD SalesChannelID INT NULL;
 ALTER TABLE SalesOrder ADD StoreID INT NULL;
 ALTER TABLE SalesOrder ADD SalesRepID INT NULL;
 ALTER TABLE SalesOrder ADD DiscountAmount DECIMAL(18,2) DEFAULT 0;
+GO
+
 ALTER TABLE SalesOrder ADD NetAmount AS (TotalAmount - DiscountAmount) PERSISTED;
 
 ALTER TABLE SalesOrder ADD CONSTRAINT FK_SalesOrder_SalesChannel
@@ -84,13 +86,16 @@ ALTER TABLE SalesOrder ADD CONSTRAINT FK_SalesOrder_SalesRep
 
 -- Add discount tracking to SalesOrderDetail
 ALTER TABLE SalesOrderDetail ADD DiscountPercent DECIMAL(5,2) DEFAULT 0;
-ALTER TABLE SalesOrderDetail ADD DiscountAmount AS (LineTotal * DiscountPercent / 100) PERSISTED;
-ALTER TABLE SalesOrderDetail ADD NetAmount AS (LineTotal - (LineTotal * DiscountPercent / 100)) PERSISTED;
+GO
+
+ALTER TABLE SalesOrderDetail ADD DiscountAmount AS ((Quantity * UnitPrice) * DiscountPercent / 100) PERSISTED;
+ALTER TABLE SalesOrderDetail ADD NetAmount AS ((Quantity * UnitPrice) - ((Quantity * UnitPrice) * DiscountPercent / 100)) PERSISTED;
 
 -- Add customer segmentation
 ALTER TABLE Customer ADD CustomerType NVARCHAR(20) DEFAULT 'Retail'; -- Retail, Wholesale, Online
 ALTER TABLE Customer ADD SalesRepID INT NULL;
 ALTER TABLE Customer ADD TerritoryID INT NULL;
+GO
 
 ALTER TABLE Customer ADD CONSTRAINT FK_Customer_SalesRep
     FOREIGN KEY (SalesRepID) REFERENCES SalesRep(SalesRepID);

@@ -122,6 +122,10 @@ GO
 -- Bill of Materials - Multi-Level
 -- =============================================
 
+DECLARE @EachUnit INT = (SELECT UnitID FROM UnitOfMeasure WHERE UnitCode = 'EA');
+DECLARE @YardUnit INT = (SELECT UnitID FROM UnitOfMeasure WHERE UnitCode = 'YD');
+DECLARE @PoundUnit INT = (SELECT UnitID FROM UnitOfMeasure WHERE UnitCode = 'LB');
+
 -- Level 1: Pillows (Components made from raw materials)
 -- Standard Polyester Pillow
 INSERT INTO BillOfMaterials (ParentItemID, ComponentItemID, Quantity, UnitID, BOMLevel, ScrapRate) VALUES
