@@ -207,6 +207,99 @@ function Wait-ArcExtensionProvisioning {
 }
 
 
+function Format-ExecutionOutcomeSummary {
+    param(
+        [Parameter(Mandatory = $false)]
+        [array]$TrackedResources = @(),
+        [Parameter(Mandatory = $false)]
+        [bool]$IsReportOnly = $false
+    )
+
+    Write-Output "`n========================================================================"
+    Write-Output "                       EXECUTION OUTCOME SUMMARY                        "
+    Write-Output "========================================================================"
+
+    if ($TrackedResources.Count -eq 0) {
+        Write-Output "No resources qualified for license transition or modification."
+        Write-Output "========================================================================`n"
+        return
+    }
+
+    $friendlyTypes = [ordered]@{
+        "Microsoft.Sql/virtualMachines"                       = "SQL Virtual Machines"
+        "Microsoft.Sql/servers/databases"                     = "SQL Databases"
+        "Microsoft.Sql/servers/elasticPools"                  = "SQL Elastic Pools"
+        "Microsoft.Sql/managedInstances"                      = "SQL Managed Instances"
+        "Microsoft.Sql/instancePools"                         = "SQL Instance Pools"
+        "Microsoft.DataFactory/factories/integrationRuntimes" = "SSIS Integration Runtimes"
+        "Microsoft.AzureArcData/SqlServerInstances"           = "Arc SQL Server Instances"
+        "Microsoft.HybridCompute/machines/extensions"         = "Arc SQL Server (HybridCompute)"
+        "WindowsAgent.SqlServer"                              = "Arc SQL Server Extension (Windows)"
+        "LinuxAgent.SqlServer"                                = "Arc SQL Server Extension (Linux)"
+    }
+
+    $grouped = $TrackedResources | Group-Object -Property ResourceType
+
+    $summaryRows = @()
+    foreach ($grp in $grouped) {
+        $rType = $grp.Name
+        $friendlyName = if ($friendlyTypes.Contains($rType)) { $friendlyTypes[$rType] } else { $rType }
+        
+        $totalQualified = $grp.Count
+        $updatedCount = ($grp.Group | Where-Object { $_.UpdateResult -in @("Updated", "RequestSubmitted", "Succeeded", "SubmittedAsync", "ReportOnly") }).Count
+        $failedCount = ($grp.Group | Where-Object { $_.UpdateResult -in @("Failed", "TimedOut") }).Count
+        $skippedCount = ($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" -or $_.UpdateResult -eq "NotAttempted" }).Count
+
+        $summaryRows += [PSCustomObject]@{
+            "Resource Type" = $friendlyName
+            "Qualified"     = $totalQualified
+            "Updated"       = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
+            "Failed"        = $failedCount
+            "Skipped"       = $skippedCount
+        }
+    }
+
+    $summaryRows | Format-Table -AutoSize | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
+
+    # Check for failures and skips
+    $issues = $TrackedResources | Where-Object { $_.UpdateResult -in @("Failed", "TimedOut") -or $_.UpdateResult -like "Skipped*" }
+
+    Write-Output "------------------------------------------------------------------------"
+    Write-Output "                      FAILURE & SKIP ROOT CAUSES                        "
+    Write-Output "------------------------------------------------------------------------"
+
+    if ($issues.Count -eq 0) {
+        Write-Output "No failures or skipped resources encountered."
+    } else {
+        $issueRows = @()
+        foreach ($item in $issues) {
+            $rType = $item.ResourceType
+            $friendlyName = if ($friendlyTypes.Contains($rType)) { $friendlyTypes[$rType] } else { $rType }
+            $cause = if (-not [string]::IsNullOrWhiteSpace($item.UpdateError)) {
+                $item.UpdateError
+            } elseif ($item.UpdateResult -eq "SkippedTags") {
+                "Resource matched exclusion tags."
+            } elseif ($item.UpdateResult -eq "SkippedInvalidState") {
+                "Extension is not in a valid/Succeeded state."
+            } elseif ($item.UpdateResult -eq "SkippedNoChangeNeeded") {
+                "No changes were needed or -Force was not specified to overwrite existing license type."
+            } else {
+                "Outcome: $($item.UpdateResult)"
+            }
+
+            $issueRows += [PSCustomObject]@{
+                "Resource Name"  = $item.ResourceName
+                "Resource Group" = $item.ResourceGroup
+                "Resource Type"  = $friendlyName
+                "Outcome"        = $item.UpdateResult
+                "Root Cause"     = $cause
+            }
+        }
+        $issueRows | Format-Table -AutoSize -Wrap | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
+    }
+    Write-Output "========================================================================`n"
+}
+
 function Connect-Azure {
     [CmdletBinding()]
     param(
@@ -461,7 +554,21 @@ foreach ($sub in $subscriptions) {
                 }
             }
         }
-        if(!$excludedByTags){
+        if($excludedByTags){
+            $resourceRecord = [PSCustomObject]@{
+                TenantID            = $TenantId
+                SubID               = $setID.SubscriptionId
+                ResourceName        = $setID.MachineName
+                ResourceType        = $setID.ExtensionType
+                Status              = $sqlvm.Status
+                OriginalLicenseType = "Unknown"
+                ResourceGroup       = $setID.ResourceGroup
+                Location            = $setID.Location
+                UpdateResult        = "SkippedTags"
+                UpdateError         = "Matched exclusion tag $($tag):$value"
+            }
+            $modifiedResources += $resourceRecord
+        } else {
            
         
         $WriteSettings = $false
@@ -488,13 +595,17 @@ foreach ($sub in $subscriptions) {
 
         if($ext.ProvisioningState -ne "Succeeded") {
             write-Output "Extension is not in a valid state. Skipping..."
-            {continue}
+            $resourceRecord.UpdateResult = "SkippedInvalidState"
+            $resourceRecord.UpdateError = "Extension provisioning state is '$($ext.ProvisioningState)' (expected 'Succeeded')"
+            continue
         } else {
             $LO_Allowed = (!$ext.Setting["enableExtendedSecurityUpdates"] -and !$EnableESU) -or  ($EnableESU -eq "No")
             
             if ($LicenseType) {
                 if (($LicenseType -eq "LicenseOnly") -and !$LO_Allowed) {
                     write-Output "ESU must be disabled before license type can be set to $($LicenseType)"
+                    $resourceRecord.UpdateResult = "Failed"
+                    $resourceRecord.UpdateError = "ESU must be disabled before license type can be set to $LicenseType"
                 } else {
                     if ($ext.Setting["LicenseType"]) {
                         if ($Force) {
@@ -507,6 +618,8 @@ foreach ($sub in $subscriptions) {
                             # other settings may still be written below, and without this the
                             # run would report "Updated" for a license type that never changed.
                             Write-Warning "[$($setID.MachineName)] LicenseType is '$($ext.Setting['LicenseType'])' and was NOT changed to '$LicenseType'. Re-run with -Force to overwrite an existing license type."
+                            $resourceRecord.UpdateResult = "SkippedNoForce"
+                            $resourceRecord.UpdateError = "Machine carries LicenseType '$($ext.Setting['LicenseType'])'. Re-run with -Force to overwrite."
                         }
                     } else {
                         $ext.Setting["LicenseType"] = $LicenseType
@@ -592,15 +705,31 @@ foreach ($sub in $subscriptions) {
                         $resourceRecord.UpdateError = $errorMessage
                         continue
                     }
+                } elseif ($resourceRecord.UpdateResult -eq "NotAttempted") {
+                    $resourceRecord.UpdateResult = "SkippedNoChangeNeeded"
+                    $resourceRecord.UpdateError = "No configuration changes were required."
                 }
             } else {
                 Write-Output "ReportOnly mode enabled. Skipping modification for: $($setID.MachineName)"
+                $resourceRecord.UpdateResult = "ReportOnly"
             }
         }
         
     }
     }
 }
+
+# --- Final Report ---
+$scriptEndTime = Get-Date
+$executionDuration = $scriptEndTime - $scriptStartTime
+
+Write-Output "`n===== Final Report ====="
+Write-Output "Script started at: $scriptStartTime"
+Write-Output "Script ended at:   $scriptEndTime"
+Write-Output "Total duration:    $($executionDuration.ToString())"
+
+# Print execution outcome summary and failure/skip root causes
+Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
 
 # Export modified resource data to CSV
 if ($modifiedResources.Count -gt 0) {
@@ -613,8 +742,8 @@ if ($modifiedResources.Count -gt 0) {
 
 write-Output "Arc SQL Update Script completed"
 
-$scriptEndTime = Get-Date
-$executionDuration = $scriptEndTime - $scriptStartTime
+Write-Output "Script execution ended at: $($scriptEndTime.ToString('yyyy-MM-dd HH:mm:ss'))"
+Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))"
 Write-Output "Script execution ended at: $($scriptEndTime.ToString('yyyy-MM-dd HH:mm:ss'))"
 Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))"
 if ($transcriptStarted) {
