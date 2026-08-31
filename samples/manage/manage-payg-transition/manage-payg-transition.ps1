@@ -1403,6 +1403,12 @@ if ($modifiedResources.Count -gt 0) {
             $modifiedResources | ConvertTo-Json -Depth 5 | Set-Content -Path $trackedOutPath -Encoding UTF8
         }
     } catch {}
+} else {
+    try {
+        if (Test-Path $trackedOutPath) {
+            Remove-Item -Path $trackedOutPath -Force -ErrorAction SilentlyContinue
+        }
+    } catch {}
 }
 
 if (-not $NoSummary) {
@@ -2186,6 +2192,12 @@ if ($modifiedResources.Count -gt 0) {
             $modifiedResources | ConvertTo-Json -Depth 5 | Set-Content -Path $trackedOutPath -Encoding UTF8
         }
     } catch {}
+} else {
+    try {
+        if (Test-Path $trackedOutPath) {
+            Remove-Item -Path $trackedOutPath -Force -ErrorAction SilentlyContinue
+        }
+    } catch {}
 }
 
 if (-not $NoSummary) {
@@ -2806,6 +2818,10 @@ if($RunMode -eq "Single") {
     $wrapper | Out-File -FilePath './runnow.ps1' -Encoding UTF8 
     
     $global:PaygTrackedResources = @()
+    # Clean any stale tracking files from previous runs
+    if (Test-Path $downloadFolder) {
+        Get-ChildItem -Path $downloadFolder -Filter "tracked_*.json" -ErrorAction SilentlyContinue | Remove-Item -Force
+    }
     .\runnow.ps1
 
     # Gather tracked resources from global tracking and/or exported json files
@@ -2832,6 +2848,11 @@ if($RunMode -eq "Single") {
             $seen[$key] = $true
             $deduped += $item
         }
+    }
+
+    # Clean up tracking json files after aggregation
+    if (Test-Path $downloadFolder) {
+        Get-ChildItem -Path $downloadFolder -Filter "tracked_*.json" -ErrorAction SilentlyContinue | Remove-Item -Force
     }
 
     # Print single unified outcome summary at the very end of execution

@@ -1257,6 +1257,12 @@ if ($modifiedResources.Count -gt 0) {
             $modifiedResources | ConvertTo-Json -Depth 5 | Set-Content -Path $trackedOutPath -Encoding UTF8
         }
     } catch {}
+} else {
+    try {
+        if (Test-Path $trackedOutPath) {
+            Remove-Item -Path $trackedOutPath -Force -ErrorAction SilentlyContinue
+        }
+    } catch {}
 }
 
 if (-not $NoSummary) {
