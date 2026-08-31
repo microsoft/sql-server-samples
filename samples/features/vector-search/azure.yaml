@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: sql-vector-search-quickstart
+metadata:
+  template: sql-vector-search-quickstart
+
+# Infrastructure outputs (AZURE_SQL_SERVER, AZURE_OPENAI_ENDPOINT, etc.)
+# are defined in infra/main.bicep and automatically available via:
+#   azd env get-values
