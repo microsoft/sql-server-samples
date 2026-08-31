@@ -232,7 +232,10 @@ param (
     [switch] $WaitForCompletion,
     
     [Parameter (Mandatory= $false)]
-    [string] $ResourceName
+    [string] $ResourceName,
+
+    [Parameter (Mandatory= $false)]
+    [switch] $NoSummary
 )
 
 
@@ -505,6 +508,8 @@ function Format-ExecutionOutcomeSummary {
         "Microsoft.DataFactory/factories/integrationRuntimes" = "SSIS Integration Runtimes"
         "Microsoft.AzureArcData/SqlServerInstances"           = "Arc SQL Server Instances"
         "Microsoft.HybridCompute/machines/extensions"         = "Arc SQL Server (HybridCompute)"
+        "WindowsAgent.SqlServer"                              = "Arc SQL Server Extension (Windows)"
+        "LinuxAgent.SqlServer"                                = "Arc SQL Server Extension (Linux)"
     }
 
     $grouped = $TrackedResources | Group-Object -Property ResourceType
@@ -520,18 +525,20 @@ function Format-ExecutionOutcomeSummary {
         $skippedCount = @($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" -or $_.UpdateResult -eq "NotAttempted" }).Count
 
         $summaryRows += [PSCustomObject]@{
-            "Resource Type" = $friendlyName
-            "Qualified"     = $totalQualified
-            "Updated"       = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
-            "Failed"        = $failedCount
-            "Skipped"       = $skippedCount
+            "ResourceType"                = $friendlyName
+            "Qualified"                   = $totalQualified
+            "Updated or RequestSubmitted" = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
+            "Failed"                      = $failedCount
+            "Skipped"                     = $skippedCount
         }
     }
+
+    $summaryRows = $summaryRows | Sort-Object -Property ResourceType
 
     $summaryRows | Format-Table -AutoSize | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
 
     # Check for failures and skips
-    $issues = $TrackedResources | Where-Object { $_.UpdateResult -eq "Failed" -or $_.UpdateResult -like "Skipped*" }
+    $issues = $TrackedResources | Where-Object { $_.UpdateResult -in @("Failed", "TimedOut") -or $_.UpdateResult -like "Skipped*" }
 
     Write-Output "------------------------------------------------------------------------"
     Write-Output "                      FAILURE & SKIP ROOT CAUSES                        "
@@ -561,11 +568,12 @@ function Format-ExecutionOutcomeSummary {
             $issueRows += [PSCustomObject]@{
                 "Resource Name"  = $item.ResourceName
                 "Resource Group" = $item.ResourceGroup
-                "Resource Type"  = $friendlyName
+                "ResourceType"   = $friendlyName
                 "Outcome"        = $item.UpdateResult
                 "Root Cause"     = $cause
             }
         }
+        $issueRows = $issueRows | Sort-Object -Property ResourceType, "Resource Name"
         $issueRows | Format-Table -AutoSize -Wrap | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
     }
     Write-Output "========================================================================`n"
@@ -1383,8 +1391,24 @@ Write-Output "Script started at: $scriptStartTime"
 Write-Output "Script ended at:   $scriptEndTime"
 Write-Output "Total duration:    $($totalDuration.ToString())"
 
-# Print execution outcome summary and failure/skip root causes
-Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+# Export tracked resources for orchestrator if running in orchestrated mode
+if (Test-Path variable:global:PaygTrackedResources) {
+    $global:PaygTrackedResources += $modifiedResources
+}
+$trackedOutPath = Join-Path (Get-Location) "manage-payg-transition\tracked_azure.json"
+if ($modifiedResources.Count -gt 0) {
+    try {
+        $parentDir = Split-Path $trackedOutPath -Parent
+        if (Test-Path $parentDir) {
+            $modifiedResources | ConvertTo-Json -Depth 5 | Set-Content -Path $trackedOutPath -Encoding UTF8
+        }
+    } catch {}
+}
+
+if (-not $NoSummary) {
+    # Print execution outcome summary and failure/skip root causes
+    Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+}
 
 # Export modified resource data to CSV
 if ($modifiedResources.Count -gt 0) {
@@ -1526,7 +1550,10 @@ param (
     [int] $WaitTimeoutSeconds = 300,
 
     [Parameter (Mandatory= $false)]
-    [int] $batchSize = 500
+    [int] $batchSize = 500,
+
+    [Parameter (Mandatory= $false)]
+    [switch] $NoSummary
 )
 
 # Transcription is not available in every host (for example Azure Automation
@@ -1667,13 +1694,15 @@ function Format-ExecutionOutcomeSummary {
         $skippedCount = @($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" -or $_.UpdateResult -eq "NotAttempted" }).Count
 
         $summaryRows += [PSCustomObject]@{
-            "Resource Type" = $friendlyName
-            "Qualified"     = $totalQualified
-            "Updated"       = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
-            "Failed"        = $failedCount
-            "Skipped"       = $skippedCount
+            "ResourceType"                = $friendlyName
+            "Qualified"                   = $totalQualified
+            "Updated or RequestSubmitted" = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
+            "Failed"                      = $failedCount
+            "Skipped"                     = $skippedCount
         }
     }
+
+    $summaryRows = $summaryRows | Sort-Object -Property ResourceType
 
     $summaryRows | Format-Table -AutoSize | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
 
@@ -1706,11 +1735,12 @@ function Format-ExecutionOutcomeSummary {
             $issueRows += [PSCustomObject]@{
                 "Resource Name"  = $item.ResourceName
                 "Resource Group" = $item.ResourceGroup
-                "Resource Type"  = $friendlyName
+                "ResourceType"   = $friendlyName
                 "Outcome"        = $item.UpdateResult
                 "Root Cause"     = $cause
             }
         }
+        $issueRows = $issueRows | Sort-Object -Property ResourceType, "Resource Name"
         $issueRows | Format-Table -AutoSize -Wrap | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
     }
     Write-Output "========================================================================`n"
@@ -2144,8 +2174,24 @@ Write-Output "Script started at: $scriptStartTime"
 Write-Output "Script ended at:   $scriptEndTime"
 Write-Output "Total duration:    $($executionDuration.ToString())"
 
-# Print execution outcome summary and failure/skip root causes
-Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+# Export tracked resources for orchestrator if running in orchestrated mode
+if (Test-Path variable:global:PaygTrackedResources) {
+    $global:PaygTrackedResources += $modifiedResources
+}
+$trackedOutPath = Join-Path (Get-Location) "manage-payg-transition\tracked_arc.json"
+if ($modifiedResources.Count -gt 0) {
+    try {
+        $parentDir = Split-Path $trackedOutPath -Parent
+        if (Test-Path $parentDir) {
+            $modifiedResources | ConvertTo-Json -Depth 5 | Set-Content -Path $trackedOutPath -Encoding UTF8
+        }
+    } catch {}
+}
+
+if (-not $NoSummary) {
+    # Print execution outcome summary and failure/skip root causes
+    Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+}
 
 # Export modified resource data to CSV
 if ($modifiedResources.Count -gt 0) {
@@ -2158,8 +2204,6 @@ if ($modifiedResources.Count -gt 0) {
 
 write-Output "Arc SQL Update Script completed"
 
-Write-Output "Script execution ended at: $($scriptEndTime.ToString('yyyy-MM-dd HH:mm:ss'))"
-Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))"
 Write-Output "Script execution ended at: $($scriptEndTime.ToString('yyyy-MM-dd HH:mm:ss'))"
 Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))"
 if ($transcriptStarted) {
@@ -2469,6 +2513,110 @@ Write-Output "Runbook '$RunbookName' has been imported and published successfull
 
 '@
 
+function Format-ExecutionOutcomeSummary {
+    param(
+        [Parameter(Mandatory = $false)]
+        [array]$TrackedResources = @(),
+        [Parameter(Mandatory = $false)]
+        [bool]$IsReportOnly = $false
+    )
+
+    Write-Output "`n========================================================================"
+    Write-Output "                       EXECUTION OUTCOME SUMMARY                        "
+    Write-Output "========================================================================"
+
+    if ($TrackedResources.Count -eq 0) {
+        Write-Output "No resources qualified for license transition or modification."
+        Write-Output "========================================================================`n"
+        return
+    }
+
+    $friendlyTypes = [ordered]@{
+        "Microsoft.Sql/virtualMachines"                       = "SQL Virtual Machines"
+        "Microsoft.Sql/servers/databases"                     = "SQL Databases"
+        "Microsoft.Sql/servers/elasticPools"                  = "SQL Elastic Pools"
+        "Microsoft.Sql/managedInstances"                      = "SQL Managed Instances"
+        "Microsoft.Sql/instancePools"                         = "SQL Instance Pools"
+        "Microsoft.DataFactory/factories/integrationRuntimes" = "SSIS Integration Runtimes"
+        "Microsoft.AzureArcData/SqlServerInstances"           = "Arc SQL Server Instances"
+        "Microsoft.HybridCompute/machines/extensions"         = "Arc SQL Server (HybridCompute)"
+        "WindowsAgent.SqlServer"                              = "Arc SQL Server Extension (Windows)"
+        "LinuxAgent.SqlServer"                                = "Arc SQL Server Extension (Linux)"
+    }
+
+    $grouped = $TrackedResources | Group-Object -Property ResourceType
+
+    $summaryRows = @()
+    foreach ($grp in $grouped) {
+        $rType = $grp.Name
+        $friendlyName = if ($friendlyTypes.Contains($rType)) { $friendlyTypes[$rType] } else { $rType }
+        
+        $totalQualified = $grp.Count
+        $updatedCount = @($grp.Group | Where-Object { $_.UpdateResult -in @("Updated", "RequestSubmitted", "Succeeded", "SubmittedAsync", "ReportOnly") }).Count
+        $failedCount = @($grp.Group | Where-Object { $_.UpdateResult -in @("Failed", "TimedOut") }).Count
+        $skippedCount = @($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" -or $_.UpdateResult -eq "NotAttempted" }).Count
+
+        $summaryRows += [PSCustomObject]@{
+            "ResourceType"                = $friendlyName
+            "Qualified"                   = $totalQualified
+            "Updated or RequestSubmitted" = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
+            "Failed"                      = $failedCount
+            "Skipped"                     = $skippedCount
+        }
+    }
+
+    $summaryRows = $summaryRows | Sort-Object -Property ResourceType
+
+    $summaryRows | Format-Table -AutoSize | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
+
+    # Check for failures and skips
+    $issues = $TrackedResources | Where-Object { $_.UpdateResult -in @("Failed", "TimedOut") -or $_.UpdateResult -like "Skipped*" }
+
+    Write-Output "------------------------------------------------------------------------"
+    Write-Output "                      FAILURE & SKIP ROOT CAUSES                        "
+    Write-Output "------------------------------------------------------------------------"
+
+    if ($issues.Count -eq 0) {
+        Write-Output "No failures or skipped resources encountered."
+    } else {
+        $issueRows = @()
+        foreach ($item in $issues) {
+            $rType = $item.ResourceType
+            $friendlyName = if ($friendlyTypes.Contains($rType)) { $friendlyTypes[$rType] } else { $rType }
+            $cause = if (-not [string]::IsNullOrWhiteSpace($item.UpdateError)) {
+                $item.UpdateError
+            } elseif ($item.UpdateResult -eq "SkippedNotRunning") {
+                "Underlying VM is deallocated / stopped. Azure requires the VM to be running to update license type."
+            } elseif ($item.UpdateResult -eq "SkippedDR") {
+                "Resource has Disaster Recovery (DR) license configured."
+            } elseif ($item.UpdateResult -eq "SkippedTags") {
+                "Resource matched exclusion tags."
+            } elseif ($item.UpdateResult -eq "SkippedNotStopped") {
+                "Integration Runtime is not in stopped state."
+            } elseif ($item.UpdateResult -eq "SkippedInvalidState") {
+                "Extension is not in a valid/Succeeded state."
+            } elseif ($item.UpdateResult -eq "SkippedNoChangeNeeded") {
+                "No changes were needed or -Force was not specified to overwrite existing license type."
+            } elseif ($item.UpdateResult -eq "SkippedNoForce") {
+                "Machine carries an existing license type. Re-run with -Force to overwrite."
+            } else {
+                "Outcome: $($item.UpdateResult)"
+            }
+
+            $issueRows += [PSCustomObject]@{
+                "Resource Name"  = $item.ResourceName
+                "Resource Group" = $item.ResourceGroup
+                "ResourceType"   = $friendlyName
+                "Outcome"        = $item.UpdateResult
+                "Root Cause"     = $cause
+            }
+        }
+        $issueRows = $issueRows | Sort-Object -Property ResourceType, "Resource Name"
+        $issueRows | Format-Table -AutoSize -Wrap | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
+    }
+    Write-Output "========================================================================`n"
+}
+
 # === Configuration ===
 # NOTE: The Azure SQL, Arc SQL, and Automation-runbook logic below is embedded directly
 # (see the $EmbeddedScripts hashtable above) - nothing is downloaded from the internet.
@@ -2485,6 +2633,7 @@ $scriptFiles = @{
             TenantId = [string]$TenantId
             ReportOnly = [bool]$ReportOnly
             WaitForCompletion = [bool]$WaitForCompletion
+            NoSummary = $true
         }
     }
     Arc   = @{
@@ -2498,6 +2647,7 @@ $scriptFiles = @{
             TenantId = [string]$TenantId
             ReportOnly = [bool]$ReportOnly
             WaitForCompletion = [bool]$WaitForCompletion
+            NoSummary = $true
         }
    }
 }
@@ -2654,7 +2804,38 @@ if($RunMode -eq "Single") {
     }
 
     $wrapper | Out-File -FilePath './runnow.ps1' -Encoding UTF8 
+    
+    $global:PaygTrackedResources = @()
     .\runnow.ps1
+
+    # Gather tracked resources from global tracking and/or exported json files
+    $combinedTracked = @()
+    if ($global:PaygTrackedResources -and $global:PaygTrackedResources.Count -gt 0) {
+        $combinedTracked += $global:PaygTrackedResources
+    }
+    
+    Get-ChildItem -Path $downloadFolder -Filter "tracked_*.json" -ErrorAction SilentlyContinue | ForEach-Object {
+        try {
+            $jsonItems = Get-Content -Raw -Path $_.FullName | ConvertFrom-Json
+            if ($jsonItems) {
+                $combinedTracked += @($jsonItems)
+            }
+        } catch {}
+    }
+
+    # Dedup resources if needed by (SubID, ResourceGroup, ResourceName, ResourceType)
+    $deduped = @()
+    $seen = @{}
+    foreach ($item in $combinedTracked) {
+        $key = "$($item.SubID)/$($item.ResourceGroup)/$($item.ResourceName)/$($item.ResourceType)"
+        if (-not $seen.ContainsKey($key)) {
+            $seen[$key] = $true
+            $deduped += $item
+        }
+    }
+
+    # Print single unified outcome summary at the very end of execution
+    Format-ExecutionOutcomeSummary -TrackedResources $deduped -IsReportOnly ([bool]$ReportOnly)
 
     Write-Host "Single run completed."
 }else{

@@ -110,7 +110,10 @@ param (
     [int] $WaitTimeoutSeconds = 300,
 
     [Parameter (Mandatory= $false)]
-    [int] $batchSize = 500
+    [int] $batchSize = 500,
+
+    [Parameter (Mandatory= $false)]
+    [switch] $NoSummary
 )
 
 # Transcription is not available in every host (for example Azure Automation
@@ -251,13 +254,15 @@ function Format-ExecutionOutcomeSummary {
         $skippedCount = @($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" -or $_.UpdateResult -eq "NotAttempted" }).Count
 
         $summaryRows += [PSCustomObject]@{
-            "Resource Type" = $friendlyName
-            "Qualified"     = $totalQualified
-            "Updated"       = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
-            "Failed"        = $failedCount
-            "Skipped"       = $skippedCount
+            "ResourceType"                = $friendlyName
+            "Qualified"                   = $totalQualified
+            "Updated or RequestSubmitted" = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
+            "Failed"                      = $failedCount
+            "Skipped"                     = $skippedCount
         }
     }
+
+    $summaryRows = $summaryRows | Sort-Object -Property ResourceType
 
     $summaryRows | Format-Table -AutoSize | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
 
@@ -290,11 +295,12 @@ function Format-ExecutionOutcomeSummary {
             $issueRows += [PSCustomObject]@{
                 "Resource Name"  = $item.ResourceName
                 "Resource Group" = $item.ResourceGroup
-                "Resource Type"  = $friendlyName
+                "ResourceType"   = $friendlyName
                 "Outcome"        = $item.UpdateResult
                 "Root Cause"     = $cause
             }
         }
+        $issueRows = $issueRows | Sort-Object -Property ResourceType, "Resource Name"
         $issueRows | Format-Table -AutoSize -Wrap | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
     }
     Write-Output "========================================================================`n"
@@ -728,8 +734,24 @@ Write-Output "Script started at: $scriptStartTime"
 Write-Output "Script ended at:   $scriptEndTime"
 Write-Output "Total duration:    $($executionDuration.ToString())"
 
-# Print execution outcome summary and failure/skip root causes
-Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+# Export tracked resources for orchestrator if running in orchestrated mode
+if (Test-Path variable:global:PaygTrackedResources) {
+    $global:PaygTrackedResources += $modifiedResources
+}
+$trackedOutPath = Join-Path (Get-Location) "manage-payg-transition\tracked_arc.json"
+if ($modifiedResources.Count -gt 0) {
+    try {
+        $parentDir = Split-Path $trackedOutPath -Parent
+        if (Test-Path $parentDir) {
+            $modifiedResources | ConvertTo-Json -Depth 5 | Set-Content -Path $trackedOutPath -Encoding UTF8
+        }
+    } catch {}
+}
+
+if (-not $NoSummary) {
+    # Print execution outcome summary and failure/skip root causes
+    Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+}
 
 # Export modified resource data to CSV
 if ($modifiedResources.Count -gt 0) {
@@ -742,8 +764,6 @@ if ($modifiedResources.Count -gt 0) {
 
 write-Output "Arc SQL Update Script completed"
 
-Write-Output "Script execution ended at: $($scriptEndTime.ToString('yyyy-MM-dd HH:mm:ss'))"
-Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))"
 Write-Output "Script execution ended at: $($scriptEndTime.ToString('yyyy-MM-dd HH:mm:ss'))"
 Write-Output "Total execution time: $($executionDuration.ToString('hh\:mm\:ss'))"
 if ($transcriptStarted) {

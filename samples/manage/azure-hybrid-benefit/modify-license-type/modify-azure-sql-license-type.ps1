@@ -86,7 +86,10 @@ param (
     [switch] $WaitForCompletion,
     
     [Parameter (Mandatory= $false)]
-    [string] $ResourceName
+    [string] $ResourceName,
+
+    [Parameter (Mandatory= $false)]
+    [switch] $NoSummary
 )
 
 
@@ -359,6 +362,8 @@ function Format-ExecutionOutcomeSummary {
         "Microsoft.DataFactory/factories/integrationRuntimes" = "SSIS Integration Runtimes"
         "Microsoft.AzureArcData/SqlServerInstances"           = "Arc SQL Server Instances"
         "Microsoft.HybridCompute/machines/extensions"         = "Arc SQL Server (HybridCompute)"
+        "WindowsAgent.SqlServer"                              = "Arc SQL Server Extension (Windows)"
+        "LinuxAgent.SqlServer"                                = "Arc SQL Server Extension (Linux)"
     }
 
     $grouped = $TrackedResources | Group-Object -Property ResourceType
@@ -374,18 +379,20 @@ function Format-ExecutionOutcomeSummary {
         $skippedCount = @($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" -or $_.UpdateResult -eq "NotAttempted" }).Count
 
         $summaryRows += [PSCustomObject]@{
-            "Resource Type" = $friendlyName
-            "Qualified"     = $totalQualified
-            "Updated"       = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
-            "Failed"        = $failedCount
-            "Skipped"       = $skippedCount
+            "ResourceType"                = $friendlyName
+            "Qualified"                   = $totalQualified
+            "Updated or RequestSubmitted" = if ($IsReportOnly) { "$updatedCount (ReportOnly)" } else { $updatedCount }
+            "Failed"                      = $failedCount
+            "Skipped"                     = $skippedCount
         }
     }
+
+    $summaryRows = $summaryRows | Sort-Object -Property ResourceType
 
     $summaryRows | Format-Table -AutoSize | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
 
     # Check for failures and skips
-    $issues = $TrackedResources | Where-Object { $_.UpdateResult -eq "Failed" -or $_.UpdateResult -like "Skipped*" }
+    $issues = $TrackedResources | Where-Object { $_.UpdateResult -in @("Failed", "TimedOut") -or $_.UpdateResult -like "Skipped*" }
 
     Write-Output "------------------------------------------------------------------------"
     Write-Output "                      FAILURE & SKIP ROOT CAUSES                        "
@@ -415,11 +422,12 @@ function Format-ExecutionOutcomeSummary {
             $issueRows += [PSCustomObject]@{
                 "Resource Name"  = $item.ResourceName
                 "Resource Group" = $item.ResourceGroup
-                "Resource Type"  = $friendlyName
+                "ResourceType"   = $friendlyName
                 "Outcome"        = $item.UpdateResult
                 "Root Cause"     = $cause
             }
         }
+        $issueRows = $issueRows | Sort-Object -Property ResourceType, "Resource Name"
         $issueRows | Format-Table -AutoSize -Wrap | Out-String | ForEach-Object { $_.TrimEnd() } | Write-Output
     }
     Write-Output "========================================================================`n"
@@ -1237,8 +1245,24 @@ Write-Output "Script started at: $scriptStartTime"
 Write-Output "Script ended at:   $scriptEndTime"
 Write-Output "Total duration:    $($totalDuration.ToString())"
 
-# Print execution outcome summary and failure/skip root causes
-Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+# Export tracked resources for orchestrator if running in orchestrated mode
+if (Test-Path variable:global:PaygTrackedResources) {
+    $global:PaygTrackedResources += $modifiedResources
+}
+$trackedOutPath = Join-Path (Get-Location) "manage-payg-transition\tracked_azure.json"
+if ($modifiedResources.Count -gt 0) {
+    try {
+        $parentDir = Split-Path $trackedOutPath -Parent
+        if (Test-Path $parentDir) {
+            $modifiedResources | ConvertTo-Json -Depth 5 | Set-Content -Path $trackedOutPath -Encoding UTF8
+        }
+    } catch {}
+}
+
+if (-not $NoSummary) {
+    # Print execution outcome summary and failure/skip root causes
+    Format-ExecutionOutcomeSummary -TrackedResources $modifiedResources -IsReportOnly ([bool]$ReportOnly)
+}
 
 # Export modified resource data to CSV
 if ($modifiedResources.Count -gt 0) {
