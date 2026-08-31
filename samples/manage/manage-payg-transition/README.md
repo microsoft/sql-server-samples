@@ -20,6 +20,19 @@ If not specified, all subscriptions your role has access to are scanned.
 - You must have a *Tag Contributor* *Contributor* RBAC role in each subscription you modify.
 - You must be connected to Azure AD and logged in to your Azure account. If your account have access to multiple tenants, make sure to log in with a specific tenant ID.
 
+### Detailed permissions by resource type
+
+*Contributor* is a superset of everything below and is the simplest option. If you
+prefer a least-privilege role assignment instead, the dependent scripts require:
+
+| Resource type modified | Built-in role needed |
+|---|---|
+| SQL Server VMs, Managed Instances, Azure SQL Databases, Elastic Pools, Instance Pools | *SQL DB Contributor* |
+| Azure Arc-enabled SQL Server (Arc machine extensions) | *Azure Connected Machine Resource Administrator* |
+| Azure Data Factory Azure-SSIS Integration Runtimes (only if present) | *Data Factory Contributor* |
+| Reading/enumerating subscriptions and resources (all of the above) | *Reader* (included in every role above) |
+| Tagging subscriptions with `ArcSQLServerExtensionDeployment:PAYG` | *Tag Contributor* |
+
 ---
 
 # Launching the script
@@ -28,32 +41,101 @@ The script accepts the following command line parameters:
 
 | **Parameter** &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  | **Value** &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; | **Description** |
 |:--|:--|:--|
-|`-SubId`|`<subscription_id>` *or* `<file name>`|*Optional*: Subscription id or a .csv file with the list of subscriptions<sup>1</sup>. If not specified all subscriptions will be transitioned.|
-|`-ResourceGroup` |`<name>`|*Optional*: Limits the scope of transition to a specified resource|
-|`-RunAt` |`YYYY-MM-DD HH:MM:SS` |*Optional*: Sets the transition time in UTC time zone. E.g. 2025-05-01 14:00:00 means May 1, 2025 at 2pm UTC time. If not specified, the transition will be executed immediately.|
+|`-Target`|`Arc`, `Azure`, `Both`|*Optional*. Which environment(s) to process. Defaults to `Both`.|
+|`-RunMode`|`Single`, `Scheduled`|*Optional*. `Single` runs once and exits. `Scheduled` registers a recurring Azure Automation runbook. Defaults to `Single`.|
+|`-targetSubscription`|`<subscription_id>`|*Optional*: Subscription id to limit the scope of the transition. If not specified, all subscriptions in the tenant will be transitioned.|
+|`-targetResourceGroup` |`<name>`|*Optional*: Limits the scope of the transition to the specified resource group.|
+|`-TenantId`|`<tenant_id>`|*Optional*. Azure AD tenant to operate against. If not specified, the tenant of the current Az PowerShell context (`(Get-AzContext).Tenant.Id`) is used. Specify explicitly to avoid running against whichever tenant happens to be selected in your session.|
+|`-ReportOnly`|*(switch)*|*Optional*. Read-only dry run: reports the resources that would be changed without modifying anything.|
+|`-WaitForCompletion`|*(switch)*|*Optional*. Wait for each license change to reach a terminal state and report a confirmed outcome. By default changes are submitted asynchronously and reported as `RequestSubmitted`. SSIS integration runtimes always wait (no asynchronous option exists for them). See [How It Works](#how-it-works).|
 |`-UsePcoreLicense` | `Yes`, `No` |*Optional*. Passed to Arc script to control PCore licensing behavior. Set to `No` if not specified.|
-|`-AutomationAccount`| `<name>`|*Required* if `-RunAt` is specified. The script will automatically create an automation account with this name unless one with this name alreday exists. It will be used for the “General” runbook import operation. |
-|`-Location`|`<region>`|*Required* if `-RunAt` is specified. Azure region for the “General” runbook import operation.|
-|`-ExclusionTag`|`<name:value>`|*Optional*. Specifies the tag name and value to exclude the tagged offline VMs from the forced activation during the transition |
+|`-TargetLicenseType`|`PAYG`, `AHUB`|*Optional*. License type to transition resources to. Defaults to `PAYG`.|
+|`-AutomationAccResourceGroupName`| `<name>`|*Required* only if `-RunMode Scheduled`. Resource group hosting the Automation Account, created if it does not already exist. Not used by `-RunMode Single`.|
+|`-AutomationAccountName`| `<name>`|*Optional*. Name of the Automation Account used in `Scheduled` mode. Defaults to `aaccAzureArcSQLLicenseType`.|
+|`-Location`|`<region>`|*Required* only if `-RunMode Scheduled`. Azure region for the Automation Account. Not used by `-RunMode Single`.|
+|`-cleanDownloads`|`$true`, `$false`|*Optional*. Removes the `.\manage-payg-transition\` working folder after the run. Defaults to `$false`.|
 
-<sup>1</sup>You can create a .csv file using the following command and then edit to remove the subscriptions you don't  want to scan.
-```PowerShell
-Get-AzSubscription | Export-Csv .\mysubscriptions.csv -NoTypeInformation
-```
+> [!NOTE]
+> The script does not expose a `-SubId` parameter; use `-targetSubscription`. Scoping to a
+> list of subscriptions from a `.csv` file is supported by the underlying
+> `modify-azure-sql-license-type.ps1` / `modify-arc-sql-license-type.ps1` scripts when they
+> are run directly, but is not passed through by this wrapper.
 
 
 ## How It Works
 
-- This script internally runs the following scripts
+- This script is **fully self-contained**: the logic of the following three scripts is
+  embedded directly in `manage-payg-transition.ps1` and requires no external downloads
+  to run:
 
    `set-azurerunbook.ps1` - imports & publishes the helper runbook that and run if a scheduled execution is selected. 
 
-   `modify-azure-sql-license-type.ps1` - configures the Azure SQL resources to pay-as-you-go
+   `modify-azure-sql-license-type.ps1` - configures the Azure SQL resources
 
-   `modify-license-type.ps1` configures the existing Arc SQL resources to pay-as-you-go
+   `modify-arc-sql-license-type.ps1` - configures the existing Arc SQL resources
 
-- The dependent scripts are downloaded to `.\PaygTransitionDownloads\`. It is created automatically if doesn't exist. The downloaded scripts are refreshed automatically on each run to ensure that the up-to-date version is used.
-- The offline Azure VMs will be reactivated for a brief period to change the configuration. If the VM should not be recativated, use `-ExclusionTag` option.
+- At runtime, the embedded content of each script is written to local files under
+  `.\manage-payg-transition\` (created automatically if it doesn't exist) so it can be
+  invoked as a normal PowerShell script / imported as an Azure Automation runbook. No
+  network calls to GitHub are made to fetch these dependent scripts.
+- Use `-TargetLicenseType` (`PAYG` by default, or `AHUB`) to control which license
+  model resources are transitioned to. This value is translated internally to the
+  vocabulary each embedded script expects (e.g. `LicenseIncluded`/`BasePrice` for Azure
+  SQL resources, `PAYG`/`Paid` for Arc SQL Server).
+- Use `-ReportOnly` to perform a read-only dry run first. The script discovers and reports
+  every resource it would change (and writes a `ModifiedResources_<timestamp>.csv` report)
+  without modifying any license types. This is the recommended way to confirm the blast
+  radius before a real run.
+- The script selects the tenant from `-TenantId` if supplied; otherwise it falls back to the
+  tenant of your current Az PowerShell context. Run `Get-AzContext` first, or pass
+  `-TenantId` explicitly, to be certain which tenant will be affected.
+- Resources that already have the target license type are excluded from discovery by design,
+  so re-running the script is safe and idempotent. A converged environment correctly reports
+  `Found 0 resource(s) to update`.
+- Arc-connected machines whose agent is `Disconnected` or `Expired` cannot be updated, because
+  the extension setting must be pushed to a reachable agent. These are skipped and will be
+  picked up on a later run once the machines reconnect.
+- The offline Azure VMs will be reactivated for a brief period to change the configuration.
+- Each run writes a `ModifiedResources_<timestamp>.csv` report. The `UpdateResult` column
+  records the per-resource outcome and `UpdateError` carries the service error text when a
+  change was rejected.
+- **By default the script does not wait for changes to finish.** Updates are submitted
+  asynchronously and the report records `RequestSubmitted`, which means *"the service accepted
+  the request"* — **not** *"the license type has changed"*. Pass `-WaitForCompletion` to wait
+  for each change to reach a terminal state and report a confirmed outcome instead.
+
+  | Resource | Default | With `-WaitForCompletion` |
+  |---|---|---|
+  | SQL Managed Instance, database, elastic pool, instance pool | `--no-wait`, reports `RequestSubmitted` | waits, reports `Updated` |
+  | Arc-connected machine | `-NoWait`, reports `RequestSubmitted` | polls the extension, reports `Succeeded` / `Failed` / `TimedOut` |
+  | SQL virtual machine | direct ARM request, reports `RequestSubmitted` | `az sql vm update` waits, reports `Updated` |
+  | **SSIS integration runtime** | **always waits**, reports `Updated` | same |
+
+  SSIS integration runtimes are the one exception, because
+  `Set-AzDataFactoryV2IntegrationRuntime` exposes no asynchronous option.
+
+  SQL virtual machines are a special case. `az sql vm update` has no `--no-wait` option and
+  blocks for roughly two minutes per VM, and although `Update-AzSqlVM` advertises `-NoWait`
+  and `-AsJob`, both are broken in `Az.SqlVirtualMachine` 2.4.0. The script therefore submits
+  the change to ARM directly (read the resource, change `sqlServerLicenseType`, write it
+  back), which returns in seconds. If that request fails for any reason it automatically
+  falls back to the synchronous `az sql vm update` path.
+
+  For Arc, a `TimedOut` result is inconclusive rather than a failure — the agent may still
+  apply the setting after the script stops waiting.
+- To confirm outcomes after a default (non-waiting) run, either re-run the script — already
+  converged resources are excluded by discovery, so a second run reports only what genuinely
+  still needs changing — or query the current state directly. For Arc:
+
+  ```powershell
+  Search-AzGraph -Query @"
+  resources
+  | where type =~ 'microsoft.hybridcompute/machines/extensions'
+  | where properties.type in~ ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')
+  | project name = split(id,'/')[8], licenseType = properties.settings.LicenseType,
+            state = properties.provisioningState
+  "@
+  ```
 - The subscriptions in scope of the transition will be automatically tagged with `ArcSQLServerExtensionDeployment:PAYG` to ensure that the furure SQL Servers onboarded to Azure Arc are configured to use the pay-as-you-go subscription.  For details, see [Manage automatic connection for SQL Server enabled by Azure Arc](https://learn.microsoft.com/sql/sql-server/azure-arc/manage-autodeploy).
 
 ## Example 1
@@ -62,29 +144,41 @@ Switch all machines to pay-as-you-go in a single subscription immediately and us
 
 ```powershell
 .\manage-payg-transition.ps1 `
-    -SubId "00000000-0000-0000-0000-000000000000" `
-    -UsePcoreLicense Yes 
+    -targetSubscription "00000000-0000-0000-0000-000000000000" `
+    -UsePcoreLicense Yes
 ````
 
-## Example 2 
+## Example 2
 
-Switch all machines to pay-as-you-go in subscriptions listed in MySusbcriptions.csv immediately without using unlimited virtualization. Exclude the VMs that tagged with `DoNotActivate:True`
+Preview (dry run) what would change across an entire tenant, without modifying anything. This is the recommended first step before any real run.
 
 ```powershell
 .\manage-payg-transition.ps1 `
--SubId MySubscription.csv
--ExclusionTag DoNotActivate:True
+    -TenantId "00000000-0000-0000-0000-000000000000" `
+    -ReportOnly
 ````
 
-## Example 3 
+## Example 3
 
-Switch all machines to pay-as-you-go in *all* subscriptions on May 1, 2025 at 0:00 using an automation account `MyAutomation` in `EatUS` region.
+Switch the machines in a single resource group back to Azure Hybrid Benefit (AHUB).
 
 ```powershell
 .\manage-payg-transition.ps1 `
-    -SubId "00000000-0000-0000-0000-000000000000" `
-    -RunAt "2025-05-01 00:00:00"
-    -AutomationAccount MyAutomation
+    -targetSubscription "00000000-0000-0000-0000-000000000000" `
+    -targetResourceGroup "MyResourceGroup" `
+    -TargetLicenseType AHUB
+````
+
+## Example 4
+
+Schedule a recurring daily transition for Azure resources only, using an automation account in the `EastUS` region.
+
+```powershell
+.\manage-payg-transition.ps1 `
+    -Target Azure `
+    -RunMode Scheduled `
+    -AutomationAccResourceGroupName "MyAutomationRG" `
+    -AutomationAccountName "MyAutomation" `
     -Location "EastUS"
 ```
 # Running the script using Cloud Shell
@@ -93,10 +187,10 @@ This option is recommended because Cloud shell has the Azure PowerShell modules 
 
 1. Launch the [Cloud Shell](https://shell.azure.com/). For details, [read more about PowerShell in Cloud Shell](https://aka.ms/pscloudshell/docs).
 
-1. Connect to Azure AD. You must specify `<tenant_id>` if you have access to more than one AAD tenants.
+1. Connect to Azure. You must specify `<tenant_id>` if you have access to more than one AAD tenant.
 
     ```console
-   Connect-AzureAD -TenantID <tenant_id>
+   Connect-AzAccount -TenantId <tenant_id>
     ```
 
 1. Upload the script to your cloud shell using the following command:
