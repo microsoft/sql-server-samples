@@ -25,7 +25,7 @@
 .PARAMETER TargetLicenseType
     The license type to transition resources to:
       - PAYG  (default) : Pay-as-you-go / consumption-based licensing.
-      - AHUB             : Azure Hybrid Benefit / License-only (bring-your-own-license).
+      - AHUB             : Azure Hybrid Benefit (bring-your-own-license with Software Assurance).
 
 .PARAMETER TenantId
     Azure AD tenant to operate against. If omitted, the tenant of the current
@@ -137,9 +137,9 @@ if ($RunMode -eq "Scheduled") {
 # Translate the simplified -TargetLicenseType switch into the vocabulary each
 # embedded script expects:
 #   - modify-azure-sql-license-type.ps1 expects "LicenseIncluded" (PAYG) or "BasePrice" (AHUB).
-#   - modify-arc-sql-license-type.ps1 expects "PAYG" or "LicenseOnly" (AHUB-equivalent for Arc).
+#   - modify-arc-sql-license-type.ps1 expects "PAYG" or "Paid" (AHUB/SA for Arc).
 $azureLicenseType = if ($TargetLicenseType -eq "PAYG") { "LicenseIncluded" } else { "BasePrice" }
-$arcLicenseType    = if ($TargetLicenseType -eq "PAYG") { "PAYG" } else { "LicenseOnly" }
+$arcLicenseType    = if ($TargetLicenseType -eq "PAYG") { "PAYG" } else { "Paid" }
 
 # === Embedded dependency scripts (materialized to disk at runtime; nothing is downloaded) ===
 $EmbeddedScripts = @{}

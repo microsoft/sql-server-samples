@@ -81,7 +81,7 @@ The script accepts the following command line parameters:
 - Use `-TargetLicenseType` (`PAYG` by default, or `AHUB`) to control which license
   model resources are transitioned to. This value is translated internally to the
   vocabulary each embedded script expects (e.g. `LicenseIncluded`/`BasePrice` for Azure
-  SQL resources, `PAYG`/`LicenseOnly` for Arc SQL Server).
+  SQL resources, `PAYG`/`Paid` for Arc SQL Server).
 - Use `-ReportOnly` to perform a read-only dry run first. The script discovers and reports
   every resource it would change (and writes a `ModifiedResources_<timestamp>.csv` report)
   without modifying any license types. This is the recommended way to confirm the blast
