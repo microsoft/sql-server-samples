@@ -1,0 +1,176 @@
+{
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy."
+      },
+      "allowedValues": [
+        "DeployIfNotExists",
+        "Disabled"
+      ],
+      "defaultValue": "DeployIfNotExists"
+    },
+    "targetLicenseType": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Target license type",
+        "description": "License type to enforce on the SQL Virtual Machine. PAYG = Pay-as-you-go, AHUB = Azure Hybrid Benefit, DR = HA/DR."
+      },
+      "allowedValues": [
+        "PAYG",
+        "AHUB",
+        "DR"
+      ],
+      "defaultValue": "PAYG"
+    },
+    "licenseTypesToOverwrite": {
+      "type": "Array",
+      "metadata": {
+        "displayName": "Current license types to overwrite",
+        "description": "Select which current license type states are eligible for update."
+      },
+      "allowedValues": [
+        "PAYG",
+        "AHUB",
+        "DR"
+      ],
+      "defaultValue": [
+        "PAYG",
+        "AHUB",
+        "DR"
+      ]
+    }
+  },
+  "policyRule": {
+    "if": {
+      "field": "type",
+      "equals": "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
+    },
+    "then": {
+      "effect": "[parameters('effect')]",
+      "details": {
+        "type": "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+        "roleDefinitionIds": [
+          "/providers/Microsoft.Authorization/roleDefinitions/9980e02c-c2be-4d73-94e8-173b1dc7cf3c",
+          "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+        ],
+        "name": "[field('name')]",
+        "existenceCondition": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.SqlVirtualMachine/sqlVirtualMachines/sqlServerLicenseType",
+                  "equals": "[parameters('targetLicenseType')]"
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.SqlVirtualMachine/sqlVirtualMachines/sqlServerLicenseType",
+                  "equals": "PAYG"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'PAYG')]",
+                  "equals": false
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.SqlVirtualMachine/sqlVirtualMachines/sqlServerLicenseType",
+                  "equals": "AHUB"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'AHUB')]",
+                  "equals": false
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.SqlVirtualMachine/sqlVirtualMachines/sqlServerLicenseType",
+                  "equals": "DR"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'DR')]",
+                  "equals": false
+                }
+              ]
+            }
+          ]
+        },
+        "evaluationDelay": "AfterProvisioningSuccess",
+        "deployment": {
+          "properties": {
+            "mode": "incremental",
+            "template": {
+              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+              "contentVersion": "1.0.0.0",
+              "parameters": {
+                "sqlVmName": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The name of the SQL Virtual Machine."
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The location of the SQL Virtual Machine."
+                  }
+                },
+                "targetLicenseType": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The license type to enforce."
+                  }
+                },
+                "virtualMachineResourceId": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The resource ID of the underlying Compute VM."
+                  }
+                }
+              },
+              "functions": [],
+              "variables": {},
+              "resources": [
+                {
+                  "type": "Microsoft.SqlVirtualMachine/sqlVirtualMachines",
+                  "apiVersion": "2023-10-01",
+                  "name": "[parameters('sqlVmName')]",
+                  "location": "[parameters('location')]",
+                  "properties": {
+                    "virtualMachineResourceId": "[parameters('virtualMachineResourceId')]",
+                    "sqlServerLicenseType": "[parameters('targetLicenseType')]"
+                  }
+                }
+              ],
+              "outputs": {}
+            },
+            "parameters": {
+              "sqlVmName": {
+                "value": "[field('name')]"
+              },
+              "location": {
+                "value": "[field('location')]"
+              },
+              "targetLicenseType": {
+                "value": "[parameters('targetLicenseType')]"
+              },
+              "virtualMachineResourceId": {
+                "value": "[field('Microsoft.SqlVirtualMachine/sqlVirtualMachines/virtualMachineResourceId')]"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "displayName": "Configure SQL Managed Instance license type",
+  "policyType": "Custom",
+  "mode": "Indexed",
+  "description": "This policy configures the license type for Azure SQL Managed Instances to a specified target value.",
+  "metadata": {
+    "category": ""
+  },
+  "version": "1.0.0",
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy."
+      },
+      "allowedValues": [
+        "DeployIfNotExists",
+        "Disabled"
+      ],
+      "defaultValue": "DeployIfNotExists"
+    },
+    "targetLicenseType": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Target license type",
+        "description": "License type to enforce on the SQL Managed Instance. LicenseIncluded = Pay-as-you-go, BasePrice = Azure Hybrid Benefit, HybridFailoverRights = Hybrid failover rights (passive DR)."
+      },
+      "allowedValues": [
+        "LicenseIncluded",
+        "BasePrice",
+        "HybridFailoverRights"
+      ],
+      "defaultValue": "LicenseIncluded"
+    },
+    "licenseTypesToOverwrite": {
+      "type": "Array",
+      "metadata": {
+        "displayName": "Current license types to overwrite",
+        "description": "Select which current license type states are eligible for update."
+      },
+      "allowedValues": [
+        "LicenseIncluded",
+        "BasePrice",
+        "HybridFailoverRights"
+      ],
+      "defaultValue": [
+        "LicenseIncluded",
+        "BasePrice",
+        "HybridFailoverRights"
+      ]
+    }
+  },
+  "policyRule": {
+    "if": {
+      "field": "type",
+      "equals": "Microsoft.Sql/managedInstances"
+    },
+    "then": {
+      "effect": "[parameters('effect')]",
+      "details": {
+        "type": "Microsoft.Sql/managedInstances",
+        "roleDefinitionIds": [
+          "/providers/Microsoft.Authorization/roleDefinitions/4939a1f6-9ae0-4e48-a1e0-f2cbe897382d",
+          "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+        ],
+        "name": "[field('name')]",
+        "existenceCondition": {
+          "anyOf": [
+            {
+              "allOf": [
+                {
+                  "value": "[parameters('targetLicenseType')]",
+                  "equals": "LicenseIncluded"
+                },
+                {
+                  "field": "Microsoft.Sql/managedInstances/licenseType",
+                  "equals": "LicenseIncluded"
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "value": "[parameters('targetLicenseType')]",
+                  "equals": "BasePrice"
+                },
+                {
+                  "field": "Microsoft.Sql/managedInstances/licenseType",
+                  "equals": "BasePrice"
+                },
+                {
+                  "field": "Microsoft.Sql/managedInstances/hybridSecondaryUsage",
+                  "notEquals": "Passive"
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "value": "[parameters('targetLicenseType')]",
+                  "equals": "HybridFailoverRights"
+                },
+                {
+                  "field": "Microsoft.Sql/managedInstances/licenseType",
+                  "equals": "BasePrice"
+                },
+                {
+                  "field": "Microsoft.Sql/managedInstances/hybridSecondaryUsage",
+                  "equals": "Passive"
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.Sql/managedInstances/licenseType",
+                  "equals": "LicenseIncluded"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'LicenseIncluded')]",
+                  "equals": false
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.Sql/managedInstances/licenseType",
+                  "equals": "BasePrice"
+                },
+                {
+                  "field": "Microsoft.Sql/managedInstances/hybridSecondaryUsage",
+                  "notEquals": "Passive"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'BasePrice')]",
+                  "equals": false
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "field": "Microsoft.Sql/managedInstances/licenseType",
+                  "equals": "BasePrice"
+                },
+                {
+                  "field": "Microsoft.Sql/managedInstances/hybridSecondaryUsage",
+                  "equals": "Passive"
+                },
+                {
+                  "value": "[contains(parameters('licenseTypesToOverwrite'), 'HybridFailoverRights')]",
+                  "equals": false
+                }
+              ]
+            }
+          ]
+        },
+        "evaluationDelay": "AfterProvisioningSuccess",
+        "deployment": {
+          "properties": {
+            "mode": "incremental",
+            "template": {
+              "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+              "contentVersion": "1.0.0.0",
+              "parameters": {
+                "managedInstanceName": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The name of the SQL Managed Instance."
+                  }
+                },
+                "location": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The location of the SQL Managed Instance."
+                  }
+                },
+                "targetLicenseType": {
+                  "type": "string",
+                  "metadata": {
+                    "description": "The logical license type to enforce. Maps to licenseType and hybridSecondaryUsage API properties."
+                  }
+                }
+              },
+              "functions": [],
+              "variables": {
+                "resolvedLicenseType": "[if(equals(parameters('targetLicenseType'), 'HybridFailoverRights'), 'BasePrice', parameters('targetLicenseType'))]",
+                "resolvedHybridSecondaryUsage": "[if(equals(parameters('targetLicenseType'), 'HybridFailoverRights'), 'Passive', 'Active')]"
+              },
+              "resources": [
+                {
+                  "type": "Microsoft.Sql/managedInstances",
+                  "apiVersion": "2023-08-01-preview",
+                  "name": "[parameters('managedInstanceName')]",
+                  "location": "[parameters('location')]",
+                  "properties": {
+                    "licenseType": "[variables('resolvedLicenseType')]",
+                    "hybridSecondaryUsage": "[variables('resolvedHybridSecondaryUsage')]"
+                  }
+                }
+              ],
+              "outputs": {}
+            },
+            "parameters": {
+              "managedInstanceName": {
+                "value": "[field('name')]"
+              },
+              "location": {
+                "value": "[field('location')]"
+              },
+              "targetLicenseType": {
+                "value": "[parameters('targetLicenseType')]"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
