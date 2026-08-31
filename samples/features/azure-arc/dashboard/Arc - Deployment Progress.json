@@ -1,10 +1,10 @@
 {
   "properties": {
-    "lenses": {
-      "0": {
+    "lenses": [
+       {
         "order": 0,
-        "parts": {
-          "0": {
+        "parts": [
+           {
             "position": {
               "x": 0,
               "y": 0,
@@ -25,7 +25,7 @@
               }
             }
           },
-          "1": {
+           {
             "position": {
               "x": 0,
               "y": 2,
@@ -77,7 +77,7 @@
               }
             }
           },
-          "2": {
+           {
             "position": {
               "x": 3,
               "y": 2,
@@ -129,7 +129,7 @@
               }
             }
           },
-          "3": {
+           {
             "position": {
               "x": 7,
               "y": 2,
@@ -181,7 +181,7 @@
               }
             }
           },
-          "4": {
+           {
             "position": {
               "x": 11,
               "y": 2,
@@ -233,7 +233,7 @@
               }
             }
           },
-          "5": {
+           {
             "position": {
               "x": 14,
               "y": 2,
@@ -254,7 +254,7 @@
               }
             }
           },
-          "6": {
+          {
             "position": {
               "x": 0,
               "y": 4,
@@ -302,11 +302,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Windows Servers",
-                "subtitle": "Count of Windws Servers registered to Arc"
+                "subtitle": "Count of Windows Servers registered to Arc"
               }
             }
           },
-          "7": {
+           {
             "position": {
               "x": 3,
               "y": 4,
@@ -354,11 +354,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Windows Servers Core Count",
-                "subtitle": "Count of Windws Servers Cores registered to Arc"
+                "subtitle": "Count of Windows Servers Cores registered to Arc"
               }
             }
           },
-          "8": {
+          {
             "position": {
               "x": 7,
               "y": 4,
@@ -410,7 +410,7 @@
               }
             }
           },
-          "9": {
+          {
             "position": {
               "x": 11,
               "y": 4,
@@ -462,7 +462,7 @@
               }
             }
           },
-          "10": {
+          {
             "position": {
               "x": 0,
               "y": 6,
@@ -514,7 +514,7 @@
               }
             }
           },
-          "11": {
+          {
             "position": {
               "x": 3,
               "y": 6,
@@ -566,7 +566,7 @@
               }
             }
           },
-          "12": {
+          {
             "position": {
               "x": 7,
               "y": 6,
@@ -618,7 +618,7 @@
               }
             }
           },
-          "13": {
+          {
             "position": {
               "x": 11,
               "y": 6,
@@ -639,7 +639,7 @@
               }
             }
           },
-          "14": {
+          {
             "position": {
               "x": 0,
               "y": 8,
@@ -691,7 +691,7 @@
               }
             }
           },
-          "15": {
+          {
             "position": {
               "x": 3,
               "y": 8,
@@ -739,11 +739,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Servers with SQL Server Ent/Std Edition",
-                "subtitle": "Servers with at least one instance of Standard or Enterprisre Edition"
+                "subtitle": "Servers with at least one instance of Standard or Enterprise Edition"
               }
             }
           },
-          "16": {
+          {
             "position": {
               "x": 7,
               "y": 8,
@@ -795,7 +795,7 @@
               }
             }
           },
-          "17": {
+          {
             "position": {
               "x": 11,
               "y": 8,
@@ -816,7 +816,7 @@
               }
             }
           },
-          "18": {
+          {
             "position": {
               "x": 16,
               "y": 8,
@@ -868,7 +868,7 @@
               }
             }
           },
-          "19": {
+          {
             "position": {
               "x": 0,
               "y": 10,
@@ -915,12 +915,12 @@
               "type": "Extension/HubsExtension/PartType/ArgQuerySingleValueTile",
               "settings": {},
               "partHeader": {
-                "title": "Provisioned SQL Server Instasnces",
+                "title": "Provisioned SQL Server Instances",
                 "subtitle": "Count of SQL Server instances provisioned"
               }
             }
           },
-          "20": {
+          {
             "position": {
               "x": 3,
               "y": 10,
@@ -972,7 +972,7 @@
               }
             }
           },
-          "21": {
+           {
             "position": {
               "x": 7,
               "y": 10,
@@ -993,7 +993,7 @@
               }
             }
           },
-          "22": {
+           {
             "position": {
               "x": 0,
               "y": 12,
@@ -1046,7 +1046,7 @@
               }
             }
           },
-          "23": {
+          {
             "position": {
               "x": 13,
               "y": 12,
@@ -1099,7 +1099,7 @@
               }
             }
           },
-          "24": {
+          {
             "position": {
               "x": 0,
               "y": 18,
@@ -1152,7 +1152,7 @@
               }
             }
           },
-          "25": {
+          {
             "position": {
               "x": 0,
               "y": 24,
@@ -1205,7 +1205,7 @@
               }
             }
           },
-          "26": {
+          {
             "position": {
               "x": 0,
               "y": 31,
@@ -1258,7 +1258,7 @@
               }
             }
           },
-          "27": {
+          {
             "position": {
               "x": 9,
               "y": 31,
@@ -1310,7 +1310,7 @@
               }
             }
           },
-          "28": {
+          {
             "position": {
               "x": 0,
               "y": 38,
@@ -1359,11 +1359,11 @@
               "settings": {},
               "partHeader": {
                 "title": "SQL Server Instances by Version",
-                "subtitle": "SQL Server instasnces enabled by Azure Arc by SQL Server version"
+                "subtitle": "SQL Server instances enabled by Azure Arc by SQL Server version"
               }
             }
           },
-          "29": {
+          {
             "position": {
               "x": 9,
               "y": 38,
@@ -1416,7 +1416,7 @@
               }
             }
           },
-          "30": {
+          {
             "position": {
               "x": 0,
               "y": 45,
@@ -1468,7 +1468,7 @@
               }
             }
           },
-          "31": {
+          {
             "position": {
               "x": 0,
               "y": 51,
@@ -1520,7 +1520,7 @@
               }
             }
           },
-          "32": {
+          {
             "position": {
               "x": 0,
               "y": 56,
@@ -1572,7 +1572,7 @@
               }
             }
           },
-          "33": {
+          {
             "position": {
               "x": 0,
               "y": 61,
@@ -1624,7 +1624,7 @@
               }
             }
           },
-          "34": {
+          {
             "position": {
               "x": 0,
               "y": 67,
@@ -1678,9 +1678,9 @@
               }
             }
           }
-        }
+        ]
       }
-    },
+    ],
     "metadata": {
       "model": {
         "timeRange": {
@@ -1701,5 +1701,5 @@
   "tags": {
     "hidden-title": "Arc - Deployment Progress"
   },
-  "apiVersion": "2015-08-01-preview"
+  "apiVersion": "2022-12-01-preview"
 }

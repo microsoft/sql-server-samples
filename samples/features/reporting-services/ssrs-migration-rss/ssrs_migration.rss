@@ -16,19 +16,19 @@
 ' 1) Download ssrs_migration.rss
 ' 2) Open a command prompt and navigate to the folder containing ssrs_migration.rss, for example c:\rss
 ' 3) Run the following command (in one line):
-'			rs.exe -i ssrs_migration.rss -e Mgmt2010
+'	rs.exe -i ssrs_migration.rss -e Mgmt2010
 '
-' 			-s SOURCE_URL						        'URL of the source RS server.
-'			-u domain\username -p password		        'Credentials for source server. OPTIONAL, default credentials are used if missing.
-'			-v st="SITE"						        'Specifies SharePoint site, in case source server is in SharePoint integrated mode
-'			-v f="SOURCEFOLDER"					        'Set to "/" for migrating everything, or to something like "/folder/subfolder" for partial migration. Everything within this folder will be copied. OPTIONAL, default is "/".
+'	-s SOURCE_URL					'URL of the source RS server.
+'	-u domain\username -p password		        'Credentials for source server. OPTIONAL, default credentials are used if missing.
+'	-v st="SITE"					'Specifies SharePoint site, in case source server is in SharePoint integrated mode
+'	-v f="SOURCEFOLDER"				'Set to "/" for migrating everything, or to something like "/folder/subfolder" for partial migration. Everything within this folder will be copied. OPTIONAL, default is "/".
 '
-'			-v ts="TARGET_URL" 					        'URL of the target RS server"
-'			-v tu="domain\username" -v tp="password"	'Credentials for target server. OPTIONAL, default credentials are used if missing.
-'			-v tst="SITE"						        'Specifies SharePoint site, in case target server is in SharePoint integrated mode
-'			-v tf="TARGETFOLDER"				        'Set to "/" for migrating into the root level, or to something like "/folder/subfolder" for copying into some folder, which must be already existing. Everything within "SOURCEFOLDER" will be copied into "TARGETFOLDER". OPTIONAL, default is "/".
-'			-v security= "True/False"			        'If set to "False", destination catalog items will inherit security setting according to the settings of the target system. Default is false.
-'           -v logprefix="PREFIX"                       'Prefix name to the output log file.
+'	-v ts="TARGET_URL" 				'URL of the target RS server"
+'	-v tu="domain\username" -v tp="password"	'Credentials for target server. OPTIONAL, default credentials are used if missing.
+'	-v tst="SITE"					'Specifies SharePoint site, in case target server is in SharePoint integrated mode
+'	-v tf="TARGETFOLDER"				'Set to "/" for migrating into the root level, or to something like "/folder/subfolder" for copying into some folder, which must be already existing. Everything within "SOURCEFOLDER" will be copied into "TARGETFOLDER". OPTIONAL, default is "/".
+'	-v security= "True/False"			'If set to "False", destination catalog items will inherit security setting according to the settings of the target system. Default is false.
+'	-v logprefix="PREFIX"                           'Prefix name to the output log file (default is MigrationLog.csv created from where script is run).
 '			
 ' Example: rs.exe -i ssrs_migration.rss -e Mgmt2010 -s http://server1/reportserver -v ts="http://server2/_vti_bin/reportserver"
 ' Example: rs.exe -i ssrs_migration.rss -e Mgmt2010 -s http://server1/reportserver -u domain1\user1 -p password1 -v f="/SOURCEFOLDER" -v ts="http://server2/_vti_bin/reportserver" -v tu="domain1\user2" -v tp="password2" -v tf="/TARGETFOLDER"
@@ -579,6 +579,7 @@ Function MigrateCatalogItem(srcItem As CatalogItem) As CatalogItem
 			For Each w As Warning In warnings
 				If w.Code <> "rsDataSourceReferenceNotPublished" And w.Code <> "rsDataSetReferenceNotPublished" Then	'This should be fine after re-linking
 					Console.WriteLine("Warning: " + w.Message)
+					LogErrorToFile("CATALOGITEM", "Warning: " + srcItem.Path, w.Message)
 				End If
 			Next
 			Console.ResetColor()
@@ -1015,7 +1016,11 @@ Function GetSnkPath(srcPath As String) As String
 	Dim snkPath As String = SnkFolder
 
 	If Not srcPath = "" Then
-		snkPath = snkPath + IIf(SrcFolder = "/", srcPath, srcPath.Remove(0, SrcFolder.Length))
+		If SrcFolder = SnkFolder Then ' exact relative folder paths assumed between source and target
+			snkPath = srcPath
+		Else
+			snkPath = snkPath + IIf(SrcFolder = "/", srcPath, srcPath.Remove(0, SrcFolder.Length))
+		End If		
 	End If
 
 	If snkPath.StartsWith("//") Then

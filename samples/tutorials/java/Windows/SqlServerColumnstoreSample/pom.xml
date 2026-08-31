@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>6.2.2.jre8</version>
+      <version>11.1.0.jre8-preview</version>
     </dependency>
   </dependencies>
 </project>

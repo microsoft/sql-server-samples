@@ -1,10 +1,10 @@
 {
   "properties": {
-    "lenses": {
-      "0": {
+    "lenses": [
+       {
         "order": 0,
-        "parts": {
-          "0": {
+        "parts": [
+           {
             "position": {
               "x": 0,
               "y": 0,
@@ -25,7 +25,7 @@
               }
             }
           },
-          "1": {
+           {
             "position": {
               "x": 0,
               "y": 2,
@@ -77,7 +77,7 @@
               }
             }
           },
-          "2": {
+           {
             "position": {
               "x": 3,
               "y": 2,
@@ -129,7 +129,7 @@
               }
             }
           },
-          "3": {
+           {
             "position": {
               "x": 6,
               "y": 2,
@@ -181,7 +181,7 @@
               }
             }
           },
-          "4": {
+           {
             "position": {
               "x": 0,
               "y": 6,
@@ -234,7 +234,7 @@
               }
             }
           },
-          "5": {
+           {
             "position": {
               "x": 0,
               "y": 11,
@@ -287,7 +287,7 @@
               }
             }
           },
-          "6": {
+           {
             "position": {
               "x": 0,
               "y": 16,
@@ -336,11 +336,11 @@
               "settings": {},
               "partHeader": {
                 "title": "Compatibility Level",
-                "subtitle": "Count of databases by compatibilty level"
+                "subtitle": "Count of databases by compatabilty level"
               }
             }
           },
-          "7": {
+           {
             "position": {
               "x": 0,
               "y": 21,
@@ -393,7 +393,7 @@
               }
             }
           },
-          "8": {
+           {
             "position": {
               "x": 6,
               "y": 21,
@@ -446,7 +446,7 @@
               }
             }
           },
-          "9": {
+           {
             "position": {
               "x": 12,
               "y": 21,
@@ -499,7 +499,7 @@
               }
             }
           },
-          "10": {
+           {
             "position": {
               "x": 0,
               "y": 27,
@@ -548,11 +548,11 @@
               "settings": {},
               "partHeader": {
                 "title": "SQL Server Edition Summary",
-                "subtitle": "Count of SQL Server instances by **instsance** license type and edition"
+                "subtitle": "Count of SQL Server instances by **instances** license type and edition"
               }
             }
           },
-          "11": {
+           {
             "position": {
               "x": 12,
               "y": 27,
@@ -606,7 +606,7 @@
               }
             }
           },
-          "12": {
+           {
             "position": {
               "x": 0,
               "y": 34,
@@ -627,7 +627,7 @@
               }
             }
           },
-          "13": {
+           {
             "position": {
               "x": 0,
               "y": 35,
@@ -680,7 +680,7 @@
               }
             }
           },
-          "14": {
+           {
             "position": {
               "x": 0,
               "y": 42,
@@ -735,7 +735,7 @@
               }
             }
           },
-          "15": {
+           {
             "position": {
               "x": 0,
               "y": 49,
@@ -790,7 +790,7 @@
               }
             }
           },
-          "16": {
+           {
             "position": {
               "x": 0,
               "y": 56,
@@ -845,9 +845,9 @@
               }
             }
           }
-        }
+        ]
       }
-    },
+    ],
     "metadata": {
       "model": {
         "timeRange": {
@@ -868,5 +868,5 @@
   "tags": {
     "hidden-title": "Arc - SQL Server Inventory"
   },
-  "apiVersion": "2015-08-01-preview"
+  "apiVersion": "2022-12-01-preview"
 }

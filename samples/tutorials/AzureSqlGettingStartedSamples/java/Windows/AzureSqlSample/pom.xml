@@ -26,18 +26,18 @@
     <dependency>
         <groupId>com.microsoft.sqlserver</groupId>
         <artifactId>mssql-jdbc</artifactId>
-        <version>7.0.0.jre8</version>
+        <version>11.1.0.jre8-preview</version>
     </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.1</version>
+    <version>4.9.1</version>
 </dependency>
 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.0.0</version>
+    <version>4.10.6</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>

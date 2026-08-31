@@ -52,13 +52,13 @@ function EnsureAzModule {
 function EnsureLogin () {
     $context = Get-AzContext
     If ($null -eq $context.Subscription) {
-        Write-Host "Sign-in..."
+        Write-Host "Signing in..."
         If ($null -eq (Connect-AzAccount -ErrorAction SilentlyContinue -ErrorVariable Errors)) {
             Write-Host ("Sign-in failed: {0}" -f $Errors[0].Exception.Message) -ForegroundColor Red
             Break
         }
     }
-    Write-Host "Sign-in successful." -ForegroundColor Green
+    Write-Host "Signed in successfully." -ForegroundColor Green
 }
 
 function SelectSubscriptionId {
@@ -253,7 +253,7 @@ function CreateNSG
         -Description "Allow access to data" `
         -Direction Inbound -Priority 1000 -Access Allow -Protocol Tcp `
         -SourceAddressPrefix VirtualNetwork -DestinationAddressPrefix $subnet.AddressPrefix `
-        -SourcePortRange * -DestinationPortRange @("1433","11000-11999")
+        -SourcePortRange * -DestinationPortRange "1433"
     $securityRules.Add($rule)
 
 

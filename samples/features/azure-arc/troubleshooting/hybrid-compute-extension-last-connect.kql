@@ -1,0 +1,7 @@
+resources
+    | where type =~ 'microsoft.hybridcompute/machines/extensions'
+    | where properties.type in ('WindowsAgent.SqlServer','LinuxAgent.SqlServer')
+    | parse id with * '/providers/Microsoft.HybridCompute/machines/' machineName '/extensions/' *
+    | parse properties with * 'timestampUTC : ' timestampUTC ';' *
+    | project timestampUTC, subscriptionId, resourceGroup, machineName
+    | order by timestampUTC desc

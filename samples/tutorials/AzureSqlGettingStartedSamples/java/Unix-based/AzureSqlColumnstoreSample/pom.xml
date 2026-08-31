@@ -29,7 +29,7 @@
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-security-keyvault-keys</artifactId>
-        <version>4.0.0</version>
+        <version>4.10.6</version>
     </dependency>
     <dependency>
         <groupId>com.azure</groupId>

@@ -1,0 +1,98 @@
+{
+  "if": {
+    "allOf": [
+      {
+        "equals": "Microsoft.HybridCompute/machines/extensions",
+        "field": "type"
+      },
+      {
+        "equals": "Microsoft.AzureData",
+        "field": "Microsoft.HybridCompute/machines/extensions/publisher"
+      },
+      {
+        "equals": "WindowsAgent.SqlServer",
+        "field": "Microsoft.HybridCompute/machines/extensions/type"
+      }
+    ]
+  },
+  "then": {
+    "effect": "[parameters('effect')]",
+    "details": {
+      "type": "Microsoft.HybridCompute/machines/extensions",
+      "roleDefinitionIds": [
+        "/providers/Microsoft.Authorization/roleDefinitions/7392c568-9289-4bde-aaaa-b7131215889d",
+        "/providers/Microsoft.Authorization/roleDefinitions/acdd72a7-3385-48ef-bd42-f606fba81ae7"
+      ],
+      "name": "[field('fullName')]",
+      "existenceCondition": {
+        "anyOf": [
+          {
+            "equals": "[string(createObject('LicenseType','PAYG'))]",
+            "value": "[string(intersection(if(empty(field('Microsoft.HybridCompute/machines/extensions/settings')), createObject(), field('Microsoft.HybridCompute/machines/extensions/settings')), createObject('LicenseType','PAYG')))]"
+          },
+          {
+            "equals": "[string(createObject('LicenseType','LicenseOnly'))]",
+            "value": "[string(intersection(if(empty(field('Microsoft.HybridCompute/machines/extensions/settings')), createObject(), field('Microsoft.HybridCompute/machines/extensions/settings')), createObject('LicenseType','LicenseOnly')))]"
+          }
+        ]
+      },
+      "evaluationDelay": "AfterProvisioningSuccess",
+      "deployment": {
+        "properties": {
+          "mode": "incremental",
+          "template": {
+            "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+            "contentVersion": "1.0.0.0",
+            "parameters": {
+              "extensionName": {
+                "type": "string"
+              },
+              "vmLocation": {
+                "type": "string"
+              },
+              "agentName": {
+                "type": "string"
+              },
+              "existingSettings": {
+                "type": "object"
+              }
+            },
+            "variables": {
+              "vmExtensionPublisher": "Microsoft.AzureData",
+              "updatedSettings": {
+                "LicenseType": "PAYG"
+              }
+            },
+            "resources": [
+              {
+                "name": "[parameters('extensionName')]",
+                "type": "Microsoft.HybridCompute/machines/extensions",
+                "location": "[parameters('vmLocation')]",
+                "apiVersion": "2022-11-10",
+                "properties": {
+                  "publisher": "[variables('vmExtensionPublisher')]",
+                  "type": "[parameters('agentName')]",
+                  "settings": "[union(parameters('existingSettings'), variables('updatedSettings'))]"
+                }
+              }
+            ]
+          },
+          "parameters": {
+            "extensionName": {
+              "value": "[field('fullName')]"
+            },
+            "vmLocation": {
+              "value": "[field('location')]"
+            },
+            "agentName": {
+              "value": "[field('name')]"
+            },
+            "existingSettings": {
+              "value": "[field('Microsoft.HybridCompute/machines/extensions/settings')]"
+            }
+          }
+        }
+      }
+    }
+  }
+}

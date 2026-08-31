@@ -1,5 +1,0 @@
-name: mleap-census
-version: v1
-runtime: Mleap
-bundleFileName: census_bundle.zip
-replicas: 1

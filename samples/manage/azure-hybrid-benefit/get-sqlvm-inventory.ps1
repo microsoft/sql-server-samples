@@ -1,32 +1,10 @@
-﻿#
-# This script scan each VM in scope to detect if SQL server insstalled and if it is regsitered with IaaS extension.
-# The report includes the following information for each VM.
-#
-# Subscription Name
-# Subscription ID
-# ResourceGroupName
-# Server Name
-# Location
-# Server SKU
-# Size in vCores
-# OS Type
-# OS Version
-# SQL Version
-# SQL Edition
-# IaaS registration status
-#
-# The script accepts the following command line parameters:
-#
-# -SubId [subscription_id]        (Optional. If not specified all subscription the user has access to Accepts a .csv file with the list of subscriptions)
-# -FilePath [csv_file_name]       (Optional. Sprcifies a .csv file to save the data. if not specified, saves it in sql-vcm-inventory.csv)
-#
-
-param (
+﻿param (
     [Parameter (Mandatory= $false)]
     [string] $SubId,
     [Parameter (Mandatory= $false)]
+    [PSCredential] $Cred,
+    [Parameter (Mandatory= $false)]
     [string] $FilePath
-
 )
 
 function CheckModule ($m) {
@@ -56,76 +34,10 @@ function CheckModule ($m) {
     }
 }
 
-function GetVCores {
-    # This function translates each VM or Host sku type and name into vCores
-
-     [CmdletBinding()]
-     param (
-         [Parameter(Mandatory)]
-         [string]$type,
-         [Parameter(Mandatory)]
-         [string]$name
-     )
-
-     if ($global:VM_SKUs.Count -eq 0){
-         $global:VM_SKUs = Get-AzComputeResourceSku  "westus" | where-object {$_.ResourceType -in 'virtualMachines','hostGroups/hosts'}
-     }
-     # Select first size and get the VCPus available
-     $size_info = $global:VM_SKUs | Where-Object {$_.ResourceType.Contains($type) -and ($_.Name -eq $name)} | Select-Object -First 1
-
-     # Save the VCPU count
-     switch ($type) {
-         "hosts" {$vcpu = $size_info.Capabilities | Where-Object {$_.name -eq "Cores"} }
-         "virtualMachines" {$vcpu = $size_info.Capabilities | Where-Object {$_.name -eq "vCPUsAvailable"} }
-     }
-
-     if ($vcpu){
-         return $vcpu.Value
-     }
-     else {
-         return 0
-     }
- }
-
-function DiscoveryOnWindows {
-
-# This script checks if SQL Server is installed on Windows
-
-    [string] $SqlInstalled = ""
-    $regPath = 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server'
-    if (Test-Path $regPath) {
-        $inst = (get-itemproperty $regPath).InstalledInstances
-        #$SqlInstalled = ($inst.Count -gt 0)
-        foreach ($i in $inst) {
-            # Read registry data
-            #
-            $p = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\Instance Names\SQL').$i
-            $setupValues = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\$p\Setup")
-            $edition = ($setupValues.Edition -split ' ')[0]
-            $version = ($setupValues.Version)
-            $SqlInstalled =  $version, $edition -join ':'
-        }
-    }
-    Write-Output $SqlInstalled
-}
-
 #
-# This script checks if SQL Server is installed on Linux
+# Suppress warnings
 #
-#
-$DiscoveryOnLinux =
-    'if ! systemctl is-active --quiet mssql-server.service; then dir
-
-    echo "False"
-    exit
-    else
-        echo "True"
-    fi'
-
-
-
-# Ensure that the required modules are imported
-# In Runbooks these modules must be added to the automation account manually
+Update-AzConfig -DisplayBreakingChangeWarning $false
 
 $requiredModules = @(
     "Az.Accounts",
@@ -137,36 +49,26 @@ $requiredModules = @(
 )
 $requiredModules | Foreach-Object {CheckModule $_}
 
-# Save the function definitions to run in parallel loops
-$GetVCoresDef = $function:GetVCores.ToString()
-
-# Create a script file with the SQL server discovery logic
-New-Item  -ItemType file -path DiscoverSql.ps1 -value $function:DiscoveryOnWindows.ToString() -Force | Out-Null
-New-Item  -ItemType file -path DiscoverSql.sh -value $DiscoveryOnLinux -Force | Out-Null
-
 # Subscriptions to scan
-
 
 if ($SubId -like "*.csv") {
     $subscriptions = Import-Csv $SubId
-}elseif($SubId.length -gt 0){
+}elseif($SubId -ne $null){
     $subscriptions = [PSCustomObject]@{SubscriptionId = $SubId} | Get-AzSubscription
 }else{
     $subscriptions = Get-AzSubscription
 }
 
-
-#File setup
+#Log file setup
 if (!$PSBoundParameters.ContainsKey("FilePath")) {
-    $FilePath = '.\sql-vm-inventory.csv'
+    $FilePath = '.\sql-change-log.csv'
 }
 
-[System.Collections.ArrayList]$inventoryTable = @()
-$inventoryTable += ,(@("Subscription Name", "Subscription ID", "ResourceGroupName", "Name", "Location", "SKU", "vCores", "OS Type", "OS Version", "SQL Version", "SQL Edition", "IaaS registration"))
-
-$global:VM_SKUs = @{} # To hold the VM SKU table for future use
-
 Write-Host ([Environment]::NewLine + "-- Scanning subscriptions --")
+
+# Record the start time
+$startTime = Get-Date
+Write-Host ("Script execution started at: $startTime")
 
 # Calculate usage for each subscription
 
@@ -178,78 +80,90 @@ foreach ($sub in $subscriptions){
         Set-AzContext -SubscriptionId $sub.Id
     }catch {
         write-host "Invalid subscription: " $sub.Id
-        {continue}
+        continue
     }
 
-    # Reset the subtotals
-    #$subtotal.psobject.properties.name | Foreach-object {$subtotal.$_ = 0}
-
     # Get all resource groups in the subscription
-    #$rgs = Get-AzResourceGroup
+    $rgs = Get-AzResourceGroup
 
-    # Scan all VMs with SQL server installed using a parallel loop (up to 10 at a time).
-    # NOTE: ForEach-Object -Parallel requires PS v7.1 or higher
-    if ($PSVersionTable.PSVersion.Major -ge 7){
-        #Get-AzVM -Status | Where-Object { $_.powerstate -eq 'VM running' } | ForEach-Object -ThrottleLimit 10 -Parallel {
-        Get-AzVM -Status | Where-Object { $_.powerstate -eq 'VM running' } | ForEach-Object {
-            #$function:GetVCores = $using:GetVCoresDef
-            $SqlEdition = ''
-            $SqlVersion = ''
-            $vCores = GetVCores -type 'virtualMachines' -name $_.HardwareProfile.VmSize
-            $sql_vm = Get-AzSqlVm -ResourceGroupName $_.ResourceGroupName -Name $_.Name -ErrorAction Ignore
+    # Get all logical servers
+    $servers = Get-AzSqlServer
 
-
-            if ($sql_vm) {
-                $RegStatus = 'SQL Server registered'
-                $SqlEdition = $Sql_vm.Sku
-                $SqlVersion = $Sql_vm.Offer
-            }
-            else {
-               if ($_.StorageProfile.OSDisk.OSType -eq "Windows"){
-                    $params =@{
-                        ResourceGroupName = $_.ResourceGroupName
-                        Name = $_.Name
-                        CommandId = 'RunPowerShellScript'
-                        ScriptPath = 'DiscoverSql.ps1'
-                        ErrorAction = 'Stop'
-                    }
-                }
-                else {
-                    $params =@{
-                        ResourceGroupName = $_.ResourceGroupName
-                        Name = $_.Name
-                        CommandId = 'RunShellScript'
-                        ScriptPath = 'DiscoverSql.sh'
-                        ErrorAction = 'Stop'
-                    }
-                }
-                try {
-                    $out = Invoke-AzVMRunCommand @params
-                    if (!$out.Value[0].Message){
-                        $RegStatus = 'SQL Server not installed'
-                    }
-                    else {
-                        $SqlVersion, $SqlEdition = $out.Value[0].Message -split ':', 2
-                        $RegStatus = 'SQL Server not registered'
-                    }
-                }
-                catch {
-                    $RegStatus = 'No VM access'
-                }
-            }
-            $inventoryTable += ,(@( $sub.Name, $sub.Id, $_.ResourceGroupName, $_.Name, $_.Location, $_.HardwareProfile.VmSize, $vCores, $_.StorageProfile.ImageReference.Offer, $_.StorageProfile.ImageReference.Sku, $SqlVersion, $SqlEdition, $RegStatus))
-            #write-host $_.ResourceGroupName $_.Name $_.Location $_.HardwareProfile.VmSize $vCores $_.StorageProfile.ImageReference.Offer $_.StorageProfile.ImageReference.Sku $SqlVersion $SqlEdition $RegStatus
+    # Scan all vCore-based SQL database resources in the subscription
+    $servers | Get-AzSqlDatabase | Where-Object { $_.SkuName -ne "ElasticPool" -and $_.Edition -in @("GeneralPurpose", "BusinessCritical", "Hyperscale") } | ForEach-Object {
+        if ($_.LicenseType -ne "LicenseIncluded") {
+            Set-AzSqlDatabase -ResourceGroupName $_.ResourceGroupName -ServerName $_.ServerName -DatabaseName $_.DatabaseName -LicenseType "LicenseIncluded"
+            Write-Host ([Environment]::NewLine + "-- Database $_.DatabaseName is set to \"LicenseIncluded\"")
         }
     }
     [system.gc]::Collect()
+
+    # Scan all vCore-based SQL elastic pool resources in the subscription
+    $servers | Get-AzSqlElasticPool | Where-Object { $_.Edition -in @("GeneralPurpose", "BusinessCritical", "Hyperscale") } | ForEach-Object {
+        if ($_.LicenseType -ne "LicenseIncluded") {
+            Set-AzSqlElasticPool -ResourceGroupName $_.ResourceGroupName -ServerName $_.ServerName -ElasticPoolName $_.ElasticPoolName -LicenseType "LicenseIncluded"
+            Write-Host ([Environment]::NewLine + "-- ElasticPool $_.ElasticPoolName is set to \"LicenseIncluded\"")
+        }
+    } 
+    [system.gc]::Collect()
+
+    # Scan all SQL managed instance resources in the subscription
+    Get-AzSqlInstance | Where-Object { $_.InstancePoolName -eq $null } | ForEach-Object {
+        if ($_.LicenseType -ne "LicenseIncluded") {
+            Set-AzSqlInstance -ResourceGroupName $_.ResourceGroupName -ServerName $_.ServerName -InstanceName $_.InstanceName -LicenseType "LicenseIncluded"
+            Write-Host ([Environment]::NewLine + "-- Instance $_.InstanceName is set to \"LicenseIncluded\"")
+        }      
+    }
+    [system.gc]::Collect()
+
+    # Scan all instance pool resources in the subscription
+    Get-AzSqlInstancePool | Foreach-Object {
+        if ($_.LicenseType -ne "LicenseIncluded") {
+            Set-AzSqlInstancePool -ResourceGroupName $_.ResourceGroupName -ServerName $_.ServerName -InstanceName $_.InstanceName -LicenseType "LicenseIncluded"
+            Write-Host ([Environment]::NewLine + "-- InstancePool $_.InstanceName is set to \"LicenseIncluded\"")
+        }
+    }
+    [system.gc]::Collect()
+
+    # Scan all SSIS integration runtime resources in the subscription
+    $rgs | Get-AzDataFactoryV2 | Get-AzDataFactoryV2IntegrationRuntime | Where-Object { $_.State -eq "Started" -and $_.NodeSize -ne $null } | ForEach-Object {
+        if ($_.LicenseType -ne "LicenseIncluded") {
+            # Set the license type to "LicenseIncluded"
+            Set-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $_.ResourceGroupName -DataFactoryName $_.DataFactoryName -Name $_.Name -LicenseType "LicenseIncluded"
+            Write-Host ([Environment]::NewLine + "-- DataFactory $_.DataFactoryName is set to \"LicenseIncluded\"")
+        }
+    }
+    [system.gc]::Collect()
+
+    # Scan all SQL VMs in the subscription
+    $rgs | Get-AzVM | Where-Object { $_.StorageProfile.ImageReference.Offer -like "*sql*" -and $_.ProvisioningState -eq "Succeeded" } | ForEach-Object {
+        $vmName = $_.Name
+        $resourceGroupName = $_.ResourceGroupName
+    
+        # Get the SQL configuration for the VM
+        $sqlConfig = Get-AzVMExtension -ResourceGroupName $resourceGroupName -VMName $vmName -Name "SqlIaaSAgent"
+        
+        if ($sqlConfig -ne $null) {
+            $licenseType = $sqlConfig.Settings.LicenseType
+    
+            if ($licenseType -ne "LicenseIncluded") {
+                # Set the license type to "LicenseIncluded"
+                Set-AzVMExtension -ResourceGroupName $resourceGroupName -VMName $vmName -Name "SqlIaaSAgent" -Publisher "Microsoft.SqlServer.Management" -ExtensionType "SqlIaaSAgent" -TypeHandlerVersion "1.5" -Settings @{ "LicenseType" = "LicenseIncluded" }
+                Write-Host ([Environment]::NewLine + "-- SQL VM $vmName is set to \"LicenseIncluded\"")
+            }
+    
+        }
+    }
+    [system.gc]::Collect()
+
 }
 
+# Record the end time
+$endTime = Get-Date
+Write-Host ("Script execution ended at: $endTime")
 
-# Write usage data to the .csv file
-if ($FilePath){
-    (ConvertFrom-Csv ($inventoryTable | %{$_ -join ','})) | Export-Csv $FilePath -NoType #-Append
-    Write-Host ([Environment]::NewLine + "-- Added the usage data to $FilePath --")
-} else {
-    Write-Host $inventoryTable
-}
+# Calculate the duration of script execution
+$executionDuration = $endTime - $startTime
+Write-Host ("Script execution duration: $executionDuration")
 
+Write-Host ([Environment]::NewLine + "-- Script execution completed --")
