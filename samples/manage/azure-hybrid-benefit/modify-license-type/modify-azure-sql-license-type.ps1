@@ -369,9 +369,9 @@ function Format-ExecutionOutcomeSummary {
         $friendlyName = if ($friendlyTypes.Contains($rType)) { $friendlyTypes[$rType] } else { $rType }
         
         $totalQualified = $grp.Count
-        $updatedCount = ($grp.Group | Where-Object { $_.UpdateResult -in @("Updated", "SubmittedAsync", "ReportOnly") }).Count
-        $failedCount = ($grp.Group | Where-Object { $_.UpdateResult -eq "Failed" }).Count
-        $skippedCount = ($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" }).Count
+        $updatedCount = @($grp.Group | Where-Object { $_.UpdateResult -in @("Updated", "RequestSubmitted", "Succeeded", "SubmittedAsync", "ReportOnly") }).Count
+        $failedCount = @($grp.Group | Where-Object { $_.UpdateResult -in @("Failed", "TimedOut") }).Count
+        $skippedCount = @($grp.Group | Where-Object { $_.UpdateResult -like "Skipped*" -or $_.UpdateResult -eq "NotAttempted" }).Count
 
         $summaryRows += [PSCustomObject]@{
             "Resource Type" = $friendlyName
