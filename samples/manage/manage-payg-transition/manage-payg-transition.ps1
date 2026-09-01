@@ -316,6 +316,15 @@ function Connect-Azure {
         }
         Write-Output "Azure CLI logged in as: $($acct.user.name)"
     }
+    else {
+        # The rest of this script relies on the Azure CLI (Invoke-AzCliQuery /
+        # Invoke-AzCliLicenseUpdate) to enumerate and update SQL Servers, Databases,
+        # and Managed Instances. Failing loudly here - instead of letting each
+        # downstream 'az' call fail later with a confusing "term not recognized"
+        # error - saves time and gives the user a clear, actionable fix.
+        Write-Error "Azure CLI ('az') was not found on PATH. This script requires the Azure CLI to query and update Azure SQL resources. Install it from https://aka.ms/installazurecliwindows, restart the shell, and re-run this script."
+        exit 1
+    }
 }
 
 <#
@@ -1993,24 +2002,26 @@ if (-not $TenantId) {
 }
 
 
-# Ensure the required modules are imported
-
-try{
-    Import-Module Az.Accounts
-}catch{
-    Write-Output "Can't import module Az.Accounts"
-}
-try{
-    Import-Module Az.ConnectedMachine
-}
-catch{
-    Write-Output "Can't import module Az.ConnectedMachine"
-}
-try{
-    Import-Module Az.ResourceGraph
-}
-catch{
-    Write-Output "Can't import module Az.ResourceGraph"
+# Ensure the required modules are installed and imported. These are hard
+# dependencies (Search-AzGraph / Get-AzConnectedMachine are used later), so a
+# missing module must install itself on demand and any failure must stop the
+# script here with an actionable message instead of surfacing as a confusing
+# "term not recognized" error deep inside the resource-scanning logic.
+foreach ($requiredModule in @('Az.Accounts', 'Az.ConnectedMachine', 'Az.ResourceGraph')) {
+    try {
+        if (-not (Get-Module -ListAvailable -Name $requiredModule)) {
+            Write-Output "$requiredModule module not found. Installing..."
+            Install-Module -Name $requiredModule -Scope CurrentUser -Repository PSGallery -Force -AllowClobber -ErrorAction Stop
+        }
+        else {
+            Write-Output "$requiredModule module is already installed."
+        }
+        Import-Module $requiredModule -Force -ErrorAction Stop
+    }
+    catch {
+        Write-Error "Required module '$requiredModule' could not be installed/imported: $_. Install it manually with 'Install-Module -Name $requiredModule -Scope CurrentUser' and re-run this script."
+        exit 1
+    }
 }
 
 $modifiedResources = @()
@@ -2133,8 +2144,10 @@ foreach ($sub in $subscriptions) {
 
     $allResults = [System.Collections.Generic.List[PSObject]]::new()
     do{
-        $resources = Search-AzGraph -Query "$($query)" -First $batchSize -SkipToken $skipToken
-        $allResults.AddRange($resources)
+        $resources = Search-AzGraph -Query "$($query)" -First $batchSize -SkipToken $skipToken -ErrorAction Stop
+        if ($resources) {
+            $allResults.AddRange($resources)
+        }
         $skipToken = $resources.SkipToken
     }while($skipToken)
 
