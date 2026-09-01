@@ -141,6 +141,46 @@ if ($RunMode -eq "Scheduled") {
 $azureLicenseType = if ($TargetLicenseType -eq "PAYG") { "LicenseIncluded" } else { "BasePrice" }
 $arcLicenseType    = if ($TargetLicenseType -eq "PAYG") { "PAYG" } else { "Paid" }
 
+# === Connect once here instead of letting each embedded script (Arc/Azure) redundantly
+#     re-authenticate. Az PowerShell's context and the Azure CLI's token cache are
+#     process-wide, so authenticating once means each embedded script's own Connect-Azure
+#     call finds an already-valid context/session and skips straight past its own login
+#     and (for the Azure CLI) its install-check, instead of repeating that work.
+if ($RunMode -eq "Single") {
+    if (-not (Get-Module -ListAvailable -Name Az.Accounts)) {
+        Write-Output "Az.Accounts module not found. Installing..."
+        Install-Module -Name Az.Accounts -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
+    }
+    Import-Module Az.Accounts -Force
+
+    $currentCtx = Get-AzContext -ErrorAction SilentlyContinue
+    if ($currentCtx -and $currentCtx.Account -and ([string]::IsNullOrWhiteSpace($TenantId) -or $currentCtx.Tenant.Id -eq $TenantId)) {
+        Write-Output "Already connected to Azure PowerShell as: $($currentCtx.Account) (tenant $($currentCtx.Tenant.Id)). Reusing this context for both the Arc and Azure runs below."
+    }
+    else {
+        Write-Output "Connecting to Azure PowerShell once for this run..."
+        if ($TenantId) { Connect-AzAccount -Tenant $TenantId -ErrorAction Stop | Out-Null }
+        else { Connect-AzAccount -ErrorAction Stop | Out-Null }
+        $currentCtx = Get-AzContext
+    }
+    if ([string]::IsNullOrWhiteSpace($TenantId)) { $TenantId = $currentCtx.Tenant.Id }
+
+    # Signal to the embedded scripts (which run in this same process) that the
+    # connection for this tenant has already been established/validated, so their
+    # own Connect-Azure calls can skip repeating the work.
+    $env:PAYG_PRECONNECTED_TENANT = $TenantId
+
+    if ($Target -eq "Both" -or $Target -eq "Azure") {
+        if (Get-Command az -ErrorAction SilentlyContinue) {
+            $acct = az account show --output json 2>$null | ConvertFrom-Json
+            if ($acct -and $acct.tenantId -eq $TenantId) {
+                Write-Output "Azure CLI already logged in as: $($acct.user.name) (tenant $TenantId). Reusing this session for the Azure run below."
+                $env:PAYG_PRECONNECTED_AZCLI = '1'
+            }
+        }
+    }
+}
+
 # === Embedded dependency scripts (materialized to disk at runtime; nothing is downloaded) ===
 $EmbeddedScripts = @{}
 $EmbeddedScripts['Azure'] = @'
@@ -308,6 +348,13 @@ function Connect-Azure {
     #    If it's missing, actually install it (not just report the problem) so a clean machine works
     #    without manual setup: try winget first, then fall back to a direct silent MSI install, which
     #    is Microsoft's documented scriptable install path and doesn't depend on winget being present.
+    #    Skip all of this entirely if the parent script already verified az CLI is installed and
+    #    logged in for this tenant (see $env:PAYG_PRECONNECTED_AZCLI), avoiding redundant work.
+    if ($env:PAYG_PRECONNECTED_AZCLI -eq '1' -and $env:PAYG_PRECONNECTED_TENANT -eq $TenantId -and (Get-Command az -ErrorAction SilentlyContinue)) {
+        Write-Output "Azure CLI session for tenant $TenantId already verified by the parent script. Skipping redundant check."
+        return
+    }
+
     if (-not (Get-Command az -ErrorAction SilentlyContinue)) {
         Write-Output "Azure CLI ('az') not found. Attempting to install it automatically..."
         $azInstalled = $false
