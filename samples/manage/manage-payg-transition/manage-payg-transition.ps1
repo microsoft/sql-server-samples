@@ -260,6 +260,12 @@ $ProgressPreference     = "SilentlyContinue"
 $InformationPreference  = "SilentlyContinue"
 $WarningPreference      = "SilentlyContinue"
 
+# Reloads PATH from the Machine and User scopes into this process so a tool installed
+# by a child process (winget/msiexec) can be found immediately without restarting the shell.
+function Refresh-Path {
+    $env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'User')
+}
+
 function Connect-Azure {
     [CmdletBinding()]
     param(
@@ -299,18 +305,56 @@ function Connect-Azure {
     }
 
     # 3) Sync Azure CLI if available - reuse an existing az CLI session for the same tenant when possible.
-    #    If it's missing, attempt a silent self-install via winget (present on modern Windows/Server
-    #    builds) before giving up, so a clean machine can be made to work without manual setup.
-    if (-not (Get-Command az -ErrorAction SilentlyContinue) -and (Get-Command winget -ErrorAction SilentlyContinue)) {
-        Write-Output "Azure CLI ('az') not found. Attempting to install it via winget..."
-        try {
-            winget install --id Microsoft.AzureCLI --exact --silent --accept-package-agreements --accept-source-agreements | Out-Null
+    #    If it's missing, actually install it (not just report the problem) so a clean machine works
+    #    without manual setup: try winget first, then fall back to a direct silent MSI install, which
+    #    is Microsoft's documented scriptable install path and doesn't depend on winget being present.
+    if (-not (Get-Command az -ErrorAction SilentlyContinue)) {
+        Write-Output "Azure CLI ('az') not found. Attempting to install it automatically..."
+        $azInstalled = $false
+
+        if (Get-Command winget -ErrorAction SilentlyContinue) {
+            Write-Output "Trying winget install of Microsoft.AzureCLI..."
+            winget install --id Microsoft.AzureCLI --exact --silent --accept-package-agreements --accept-source-agreements
+            Refresh-Path
+            if (Get-Command az -ErrorAction SilentlyContinue) {
+                $azInstalled = $true
+                Write-Output "Azure CLI installed successfully via winget."
+            }
+            else {
+                Write-Output "winget install did not result in a usable 'az' command (exit code $LASTEXITCODE)."
+            }
         }
-        catch {
-            Write-Output "winget install of Azure CLI failed: $_"
+
+        if (-not $azInstalled) {
+            Write-Output "Trying direct MSI install of Azure CLI..."
+            $msiPath = Join-Path $env:TEMP "AzureCLI-$(Get-Random).msi"
+            try {
+                Invoke-WebRequest -Uri 'https://aka.ms/installazurecliwindows' -OutFile $msiPath -UseBasicParsing -ErrorAction Stop
+                $msiExit = (Start-Process msiexec.exe -ArgumentList "/I `"$msiPath`" /quiet /norestart" -Wait -PassThru).ExitCode
+                Refresh-Path
+                if (Get-Command az -ErrorAction SilentlyContinue) {
+                    $azInstalled = $true
+                    Write-Output "Azure CLI installed successfully via MSI."
+                }
+                else {
+                    Write-Output "MSI install completed with exit code $msiExit but 'az' is still not on PATH."
+                }
+            }
+            catch {
+                Write-Output "Direct MSI install of Azure CLI failed: $_"
+            }
+            finally {
+                Remove-Item -Path $msiPath -ErrorAction SilentlyContinue
+            }
         }
-        # Refresh PATH in this process so a newly-installed az.cmd can be found without restarting the shell.
-        $env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'User')
+
+        if (-not $azInstalled) {
+            # Both automated install paths were genuinely attempted and failed (e.g. no admin rights,
+            # no internet access to aka.ms/PSGallery). At this point manual intervention is unavoidable,
+            # so fail clearly rather than let every downstream 'az' call error out confusingly later.
+            Write-Error "Azure CLI ('az') could not be installed automatically (winget and direct MSI install both failed or are unavailable). Install it manually from https://aka.ms/installazurecliwindows, restart the shell, and re-run this script."
+            exit 1
+        }
     }
 
     if (Get-Command az -ErrorAction SilentlyContinue) {
