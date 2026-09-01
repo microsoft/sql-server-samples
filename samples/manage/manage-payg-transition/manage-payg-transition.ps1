@@ -299,6 +299,20 @@ function Connect-Azure {
     }
 
     # 3) Sync Azure CLI if available - reuse an existing az CLI session for the same tenant when possible.
+    #    If it's missing, attempt a silent self-install via winget (present on modern Windows/Server
+    #    builds) before giving up, so a clean machine can be made to work without manual setup.
+    if (-not (Get-Command az -ErrorAction SilentlyContinue) -and (Get-Command winget -ErrorAction SilentlyContinue)) {
+        Write-Output "Azure CLI ('az') not found. Attempting to install it via winget..."
+        try {
+            winget install --id Microsoft.AzureCLI --exact --silent --accept-package-agreements --accept-source-agreements | Out-Null
+        }
+        catch {
+            Write-Output "winget install of Azure CLI failed: $_"
+        }
+        # Refresh PATH in this process so a newly-installed az.cmd can be found without restarting the shell.
+        $env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'User')
+    }
+
     if (Get-Command az -ErrorAction SilentlyContinue) {
         $acct = az account show --output json 2>$null | ConvertFrom-Json
         if ($acct -and $acct.tenantId -eq $TenantId) {
