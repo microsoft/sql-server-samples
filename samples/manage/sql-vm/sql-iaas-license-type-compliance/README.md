@@ -27,11 +27,27 @@ The deployment script will prompt for confirmation when targeting `AHUB` or `DR`
 
 ## Prerequisites
 
-- PowerShell with Az modules installed (`Az.Resources`).
-- Logged in to Azure (`Connect-AzAccount`).
+- Access to the Azure portal or PowerShell with the `Az.Resources` module installed.
+- For PowerShell deployment, logged in to Azure (`Connect-AzAccount`).
 - Permissions to create policy definitions/assignments and remediation tasks at target scope.
 
 ## Deploy Policy
+
+### Option 1: Azure portal
+
+1. In the [Azure portal](https://portal.azure.com), search for **Policy**.
+2. Under **Authoring**, select **Definitions**, and then select **+ Policy definition**.
+3. Select the definition location, and enter a name such as `Configure SQL Server on Azure VM license type` and a category.
+4. Open [`policy/azurepolicy.json`](policy/azurepolicy.json), copy the complete JSON document, paste it into the **Policy rule** editor, replacing the example content, and select **Save**.
+5. Open the new definition and select **Assign**. On the **Basics** tab, select the assignment scope.
+6. On the **Parameters** tab, leave **Effect** set to `DeployIfNotExists`, select the **Target license type**, and select the current license types eligible for replacement under **Current license types to overwrite**.
+7. On the **Remediation** tab, select **Create a Managed Identity**, choose an identity location, and select **Create a remediation task** if existing non-compliant SQL virtual machines should be updated.
+8. On the **Review + create** tab, review the settings and select **Create**.
+9. Ensure the assignment's managed identity has the roles listed in [Managed Identity And Roles](#managed-identity-and-roles) at the assignment scope. The portal grants roles referenced by the policy definition when the assignment creator has sufficient permissions; assign any missing roles manually.
+
+Selecting `AHUB` or `DR` confirms that you meet the corresponding licensing conditions described above.
+
+### Option 2: PowerShell
 
 Parameter reference:
 
