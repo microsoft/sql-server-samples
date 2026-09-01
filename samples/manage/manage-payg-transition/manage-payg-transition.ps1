@@ -743,7 +743,12 @@ if ($SubId -like "*.csv") {
     Write-Output "Passed Subscription $($SubId)"
     $subscriptions = $null
     for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
-        try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -ErrorAction Stop; break }
+        # -TenantId scopes resolution to the requested tenant only. Without it, Get-AzSubscription
+        # fans out and tries to acquire a token for *every* tenant the signed-in account belongs
+        # to (including unrelated guest tenants requiring MFA/conditional access), which is why
+        # unrelated 'Authentication failed against tenant ...' warnings were showing up even
+        # though a specific -TenantId was passed to the script.
+        try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -TenantId $TenantId -ErrorAction Stop; break }
         catch {
             if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
             $delay = $subRetryDelays[$subAttempt - 1]
@@ -754,7 +759,7 @@ if ($SubId -like "*.csv") {
 }else {
     $subscriptions = $null
     for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
-        try { $subscriptions = Get-AzSubscription -ErrorAction Stop | Where-Object { $_.TenantId -eq $tenantId }; break }
+        try { $subscriptions = Get-AzSubscription -TenantId $TenantId -ErrorAction Stop; break }
         catch {
             if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
             $delay = $subRetryDelays[$subAttempt - 1]
@@ -2022,7 +2027,12 @@ if ($SubId -like "*.csv") {
     Write-Output "Passed Subscription $($SubId)"
     $subscriptions = $null
     for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
-        try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -ErrorAction Stop; break }
+        # -TenantId scopes resolution to the requested tenant only. Without it, Get-AzSubscription
+        # fans out and tries to acquire a token for *every* tenant the signed-in account belongs
+        # to (including unrelated guest tenants requiring MFA/conditional access), which is why
+        # unrelated 'Authentication failed against tenant ...' warnings were showing up even
+        # though a specific -TenantId was passed to the script.
+        try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -TenantId $TenantId -ErrorAction Stop; break }
         catch {
             if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
             $delay = $subRetryDelays[$subAttempt - 1]
@@ -2033,7 +2043,7 @@ if ($SubId -like "*.csv") {
 }else {
     $subscriptions = $null
     for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
-        try { $subscriptions = Get-AzSubscription -ErrorAction Stop | Where-Object { $_.TenantId -eq $tenantId }; break }
+        try { $subscriptions = Get-AzSubscription -TenantId $TenantId -ErrorAction Stop; break }
         catch {
             if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
             $delay = $subRetryDelays[$subAttempt - 1]
