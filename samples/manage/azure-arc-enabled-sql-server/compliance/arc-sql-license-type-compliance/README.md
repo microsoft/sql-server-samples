@@ -16,8 +16,8 @@ This repo deploys and remediates a custom Azure Policy that configures and enfor
 
 | Path | Use when | Files |
 |---|---|---|
-| **Command line / pipeline** | You want scope, assignment, role grant and remediation handled for you. | `policy/azurepolicy.json` + `scripts/deployment.ps1` + `scripts/start-remediation.ps1` |
 | **Azure Portal** | You want to create the definition by hand and assign it yourself. | `policy/azurepolicy.portal.json` |
+| **Command line / pipeline** | You want scope, assignment, role grant and remediation handled for you. | `policy/azurepolicy.json` + `scripts/deployment.ps1` + `scripts/start-remediation.ps1` |
 
 ## Choosing the license type by edition (compliance)
 
@@ -41,11 +41,29 @@ This repo deploys and remediates a custom Azure Policy that configures and enfor
 
 ## Prerequisites
 
-- PowerShell with Az modules installed (`Az.Resources`).
-- Logged in to Azure (`Connect-AzAccount`).
+- Access to the Azure portal or PowerShell with the `Az.Resources` module installed.
+- For PowerShell deployment, logged in to Azure (`Connect-AzAccount`).
 - Permissions to create policy definitions/assignments and remediation tasks at target scope.
 
 ## Deploy Policy
+
+### Option 1: Azure portal
+
+The **Policy rule** editor expects the policy definition's `properties` contents. Use the dedicated portal file because `policy/azurepolicy.json` includes the read-only `policyType` field and a top-level `version` field that the portal rejects. The portal file also supports `LicenseOnly` and uses it as the safe, non-attesting default.
+
+1. In the [Azure portal](https://portal.azure.com), search for **Policy**.
+2. Under **Authoring**, select **Definitions**, and then select **+ Policy definition**.
+3. Select the definition location, enter a name such as `Configure Arc-enabled SQL Server license type`, and select `Azure Arc` as the category.
+4. Open [`policy/azurepolicy.portal.json`](policy/azurepolicy.portal.json), copy the complete JSON document, paste it into the **Policy rule** editor, replacing the example content, and select **Save**.
+5. Open the new definition and select **Assign**. On the **Basics** tab, select the assignment scope.
+6. On the **Parameters** tab, leave **Effect** set to `DeployIfNotExists`, select the SQL Server extension platforms, select the **Target license type** according to the edition table above, and select the current license types eligible for replacement.
+7. On the **Remediation** tab, select **Create a Managed Identity**, choose an identity location, and select **Create a remediation task** if existing non-compliant extensions should be updated.
+8. On the **Review + create** tab, review the settings and select **Create**.
+9. Ensure the assignment's managed identity has the roles listed in [Managed Identity And Roles](#managed-identity-and-roles) at the assignment scope. The portal grants roles referenced by the policy definition when the assignment creator has sufficient permissions; assign any missing roles manually.
+
+Selecting `Paid` attests that you meet the licensing conditions described above. Selecting `PAYG` enables recurring billing consent as described in [Recurring Billing Consent (PAYG)](#recurring-billing-consent-payg).
+
+### Option 2: PowerShell
 
 Parameter reference:
 
@@ -136,15 +154,6 @@ This will:
 ```
 
 > **Note:** `deployment.ps1` automatically grants required roles to the policy assignment managed identity at assignment scope, preventing common `PolicyAuthorizationFailed` errors during DeployIfNotExists deployments.
-
-## Deploy via the Azure Portal (copy & paste)
-
-Prefer the portal? The **Policy definition → Policy rule** box expects the `properties` contents. The repo's `policy/azurepolicy.json` also carries a read-only `policyType` and a top-level `version` that the portal rejects, so `policy/azurepolicy.portal.json` has those removed (nothing else changed, plus `LicenseOnly` added to the allowed license types).
-
-1. **Policy → Definitions → + Policy definition.**
-2. Set **Definition location**, **Name** (e.g. *Configure Arc-enabled SQL Server license type*), and **Category** = `Azure Arc`.
-3. Open [`policy/azurepolicy.portal.json`](./policy/azurepolicy.portal.json), copy its entire contents, clear the **Policy rule** box and paste it in.
-4. **Save**, then **Assign**. On the *Parameters* tab choose your **Target license type** per the edition table above. Because the effect is `DeployIfNotExists`, the assignment needs a **system-assigned managed identity + location**; the portal grants the required roles. Create a **remediation task** to update existing instances.
 
 ## Start Remediation
 
