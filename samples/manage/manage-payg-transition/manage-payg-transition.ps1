@@ -337,6 +337,72 @@ function Connect-Azure {
     Set for commands that accept --no-wait. 'az sql vm update' does not; SQL VMs are
     submitted asynchronously through Invoke-SqlVmLicenseUpdate instead.
 #>
+
+# Matches transient network failures observed in practice (e.g. Windows ephemeral
+# port exhaustion - WinError 10048 - and generic HttpRequestExceptions/connection
+# resets from Azure CLI or Az PowerShell). These are environment/network blips, not
+# problems with the request itself, so a short retry resolves most of them instead
+# of permanently marking an otherwise-valid resource update as "Failed".
+$script:TransientErrorPattern = 'socket|10048|underlying connection|connection was closed|forcibly closed|timed? ?out|temporarily unavailable|An error occurred while sending the request|could not be resolved|(?<!\d)(429|5\d\d)(?!\d)'
+
+function Invoke-AzCliArgsWithRetry {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$Arguments,
+        [Parameter(Mandatory = $true)][string]$Description,
+        [int]$MaxAttempts = 3,
+        [int]$DelaySeconds = 5
+    )
+
+    for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
+        $output = & az @Arguments 2>&1
+        if ($LASTEXITCODE -eq 0) {
+            return [PSCustomObject]@{ Output = $output; ExitCode = 0 }
+        }
+
+        $message = ($output | Out-String).Trim()
+        $isTransient = $message -match $script:TransientErrorPattern
+        if (-not $isTransient -or $attempt -eq $MaxAttempts) {
+            return [PSCustomObject]@{ Output = $output; ExitCode = $LASTEXITCODE }
+        }
+
+        Write-Warning "Transient network error on attempt $attempt/$MaxAttempts for $Description`: $message. Retrying in $DelaySeconds s..."
+        Start-Sleep -Seconds $DelaySeconds
+    }
+}
+
+<#
+.SYNOPSIS
+    Runs an Az PowerShell cmdlet (via scriptblock) and retries it on transient network errors.
+.DESCRIPTION
+    Companion to Invoke-AzCliArgsWithRetry for Az PowerShell cmdlets, which signal failure by
+    throwing rather than through $LASTEXITCODE. Callers should pass -ErrorAction Stop inside the
+    scriptblock so failures are terminating and therefore retryable/catchable here; otherwise a
+    transient error is written as a non-terminating error and silently treated as an empty result
+    by the caller (exactly the failure mode this script's other helpers were written to avoid).
+#>
+function Invoke-AzCmdletWithRetry {
+    param(
+        [Parameter(Mandatory = $true)][scriptblock]$ScriptBlock,
+        [Parameter(Mandatory = $true)][string]$Description,
+        [int]$MaxAttempts = 3,
+        [int]$DelaySeconds = 5
+    )
+
+    for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
+        try {
+            return & $ScriptBlock
+        }
+        catch {
+            $isTransient = $_.Exception.Message -match $script:TransientErrorPattern
+            if (-not $isTransient -or $attempt -eq $MaxAttempts) {
+                throw
+            }
+            Write-Warning "Transient network error on attempt $attempt/$MaxAttempts for $Description`: $($_.Exception.Message). Retrying in $DelaySeconds s..."
+            Start-Sleep -Seconds $DelaySeconds
+        }
+    }
+}
+
 function Invoke-AzCliLicenseUpdate {
     param(
         [Parameter(Mandatory = $true)][string[]]$Arguments,
@@ -351,9 +417,10 @@ function Invoke-AzCliLicenseUpdate {
         $submittedOnly = $true
     }
 
-    $output = & az @effectiveArgs 2>&1
+    $attemptResult = Invoke-AzCliArgsWithRetry -Arguments $effectiveArgs -Description $Description
+    $output = $attemptResult.Output
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($attemptResult.ExitCode -ne 0) {
         $message = ($output | Out-String).Trim()
         Write-Warning "Failed to update $Description`: $message"
         return [PSCustomObject]@{ Success = $false; Result = $null; ErrorMessage = $message; Submitted = $submittedOnly }
@@ -392,9 +459,10 @@ function Invoke-AzCliQuery {
         [Parameter(Mandatory = $true)][string]$Description
     )
 
-    $output = & az @Arguments 2>&1
+    $attemptResult = Invoke-AzCliArgsWithRetry -Arguments $Arguments -Description $Description
+    $output = $attemptResult.Output
 
-    if ($LASTEXITCODE -ne 0) {
+    if ($attemptResult.ExitCode -ne 0) {
         $message = ($output | Out-String).Trim()
         Write-Warning "Unable to query $Description`: $message"
         return [PSCustomObject]@{ Success = $false; Value = @(); ErrorMessage = $message }
@@ -1302,26 +1370,62 @@ foreach ($sub in $subscriptions) {
         # --- Section: Update DataFactory SSIS Integration Runtimes ---
         try {
             Write-Output "Processing DataFactory SSIS Integration Runtime resources..."
-            Set-AzContext -Subscription $sub.id | Out-Null
-            Get-AzDataFactoryV2 | 
+            # -ErrorAction Stop + retry: previously a transient network blip here (e.g. WinError
+            # 10048 / HttpRequestException) was a non-terminating error that got printed but not
+            # caught, so the script silently kept running DataFactory discovery against whatever
+            # subscription context was already selected instead of the intended one.
+            Invoke-AzCmdletWithRetry -Description "Set-AzContext for subscription $($sub.id)" -ScriptBlock {
+                Set-AzContext -Subscription $sub.id -ErrorAction Stop | Out-Null
+            }
+
+            $dataFactories = Invoke-AzCmdletWithRetry -Description "Get-AzDataFactoryV2 in subscription $($sub.id)" -ScriptBlock {
+                Get-AzDataFactoryV2 -ErrorAction Stop
+            }
+
+            $dataFactories |
             Where-Object { 
                 $_.ProvisioningState -eq "Succeeded" -and
                 ([string]::IsNullOrEmpty($ResourceGroup) -or $_.ResourceGroupName -eq $ResourceGroup)
             } | 
             ForEach-Object {
                 $df = $_
-                $IRs = Get-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $df.ResourceGroupName -DataFactoryName $df.DataFactoryName | 
-                Where-Object { 
-                    $_.Type -eq "Managed" -and 
-                    $_.State -ne "Starting" -and 
-                    # Only SSIS integration runtimes carry a LicenseType. The default
-                    # 'AutoResolveIntegrationRuntime' is also Type 'Managed' but has a null
-                    # LicenseType; without this check it passes the filter below (since
-                    # $null -ne $LicenseType) and the update fails with
-                    # 'DataFactoryPropertyUpdateNotSupported: Updating property managedVirtualNetwork'.
-                    (-not [string]::IsNullOrEmpty($_.LicenseType)) -and
-                    $_.LicenseType -ne $LicenseType -and
-                    ([string]::IsNullOrEmpty($ResourceName) -or $_.Name -eq $ResourceName)
+                $IRs = $null
+                try {
+                    $IRs = Invoke-AzCmdletWithRetry -Description "Get-AzDataFactoryV2IntegrationRuntime on '$($df.DataFactoryName)'" -ScriptBlock {
+                        Get-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $df.ResourceGroupName -DataFactoryName $df.DataFactoryName -ErrorAction Stop |
+                        Where-Object { 
+                            $_.Type -eq "Managed" -and 
+                            $_.State -ne "Starting" -and 
+                            # Only SSIS integration runtimes carry a LicenseType. The default
+                            # 'AutoResolveIntegrationRuntime' is also Type 'Managed' but has a null
+                            # LicenseType; without this check it passes the filter below (since
+                            # $null -ne $LicenseType) and the update fails with
+                            # 'DataFactoryPropertyUpdateNotSupported: Updating property managedVirtualNetwork'.
+                            (-not [string]::IsNullOrEmpty($_.LicenseType)) -and
+                            $_.LicenseType -ne $LicenseType -and
+                            ([string]::IsNullOrEmpty($ResourceName) -or $_.Name -eq $ResourceName)
+                        }
+                    }
+                }
+                catch {
+                    # A failed query used to be indistinguishable from "no runtimes need updating"
+                    # (the pipeline just returned nothing), silently skipping this DataFactory.
+                    # Report it as a failure instead so it isn't mistaken for a clean result.
+                    $queryError = $_.Exception.Message
+                    Write-Warning "Unable to query integration runtimes on DataFactory '$($df.DataFactoryName)': $queryError"
+                    $modifiedResources += [PSCustomObject]@{
+                        TenantID            = $TenantId
+                        SubID               = $sub.id
+                        ResourceName        = $df.DataFactoryName
+                        ResourceType        = "Microsoft.DataFactory/factories"
+                        Status              = $df.ProvisioningState
+                        OriginalLicenseType = $null
+                        ResourceGroup       = $df.ResourceGroupName
+                        Location            = $df.Location
+                        UpdateResult        = "Failed"
+                        UpdateError         = "Failed to query integration runtimes: $queryError"
+                    }
+                    return
                 }
 
                 if ($null -eq $IRs -or @($IRs).Count -eq 0) {
