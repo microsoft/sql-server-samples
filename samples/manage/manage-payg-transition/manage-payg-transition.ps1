@@ -734,28 +734,32 @@ $modifiedResources = @()
 # Get-AzSubscription occasionally fails with a transient HttpRequestException (e.g. network
 # blips outside the usual dev environment). Previously this was a non-terminating error that
 # left $subscriptions empty, so the script silently "completed" having scanned zero
-# subscriptions instead of surfacing the failure. Retry a few times, then fail loudly.
+# subscriptions instead of surfacing the failure. Retry a few times with increasing backoff
+# (observed blips clear up within ~20-30s), then fail loudly.
+$subRetryDelays = @(5, 10, 20, 30, 30)
 if ($SubId -like "*.csv") {
     $subscriptions = Import-Csv $SubId
 }elseif($SubId -ne "") {
     Write-Output "Passed Subscription $($SubId)"
     $subscriptions = $null
-    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+    for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
         try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -ErrorAction Stop; break }
         catch {
-            if ($subAttempt -eq 3) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
-            Write-Warning "Transient error resolving subscription '$SubId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
-            Start-Sleep -Seconds 5
+            if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            $delay = $subRetryDelays[$subAttempt - 1]
+            Write-Warning "Transient error resolving subscription '$SubId' (attempt $subAttempt/$($subRetryDelays.Count)): $($_.Exception.Message). Retrying in ${delay}s..."
+            Start-Sleep -Seconds $delay
         }
     }
 }else {
     $subscriptions = $null
-    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+    for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
         try { $subscriptions = Get-AzSubscription -ErrorAction Stop | Where-Object { $_.TenantId -eq $tenantId }; break }
         catch {
-            if ($subAttempt -eq 3) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
-            Write-Warning "Transient error listing subscriptions for tenant '$tenantId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
-            Start-Sleep -Seconds 5
+            if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            $delay = $subRetryDelays[$subAttempt - 1]
+            Write-Warning "Transient error listing subscriptions for tenant '$tenantId' (attempt $subAttempt/$($subRetryDelays.Count)): $($_.Exception.Message). Retrying in ${delay}s..."
+            Start-Sleep -Seconds $delay
         }
     }
 }
@@ -2009,28 +2013,32 @@ $modifiedResources = @()
 # Get-AzSubscription occasionally fails with a transient HttpRequestException (e.g. network
 # blips outside the usual dev environment). Previously this was a non-terminating error that
 # left $subscriptions empty, so the script silently "completed" having scanned zero
-# subscriptions instead of surfacing the failure. Retry a few times, then fail loudly.
+# subscriptions instead of surfacing the failure. Retry a few times with increasing backoff
+# (observed blips clear up within ~20-30s), then fail loudly.
+$subRetryDelays = @(5, 10, 20, 30, 30)
 if ($SubId -like "*.csv") {
     $subscriptions = Import-Csv $SubId
 }elseif($SubId -ne "") {
     Write-Output "Passed Subscription $($SubId)"
     $subscriptions = $null
-    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+    for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
         try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -ErrorAction Stop; break }
         catch {
-            if ($subAttempt -eq 3) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
-            Write-Warning "Transient error resolving subscription '$SubId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
-            Start-Sleep -Seconds 5
+            if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            $delay = $subRetryDelays[$subAttempt - 1]
+            Write-Warning "Transient error resolving subscription '$SubId' (attempt $subAttempt/$($subRetryDelays.Count)): $($_.Exception.Message). Retrying in ${delay}s..."
+            Start-Sleep -Seconds $delay
         }
     }
 }else {
     $subscriptions = $null
-    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+    for ($subAttempt = 1; $subAttempt -le $subRetryDelays.Count; $subAttempt++) {
         try { $subscriptions = Get-AzSubscription -ErrorAction Stop | Where-Object { $_.TenantId -eq $tenantId }; break }
         catch {
-            if ($subAttempt -eq 3) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
-            Write-Warning "Transient error listing subscriptions for tenant '$tenantId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
-            Start-Sleep -Seconds 5
+            if ($subAttempt -eq $subRetryDelays.Count) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            $delay = $subRetryDelays[$subAttempt - 1]
+            Write-Warning "Transient error listing subscriptions for tenant '$tenantId' (attempt $subAttempt/$($subRetryDelays.Count)): $($_.Exception.Message). Retrying in ${delay}s..."
+            Start-Sleep -Seconds $delay
         }
     }
 }
