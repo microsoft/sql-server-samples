@@ -731,13 +731,38 @@ $SqlVmLicenseType = if ($LicenseType -eq "LicenseIncluded") { "PAYG" } else { "A
 $modifiedResources = @()
 
 # Determine the subscriptions to process: CSV file, single subscription, or all accessible subscriptions.
+# Get-AzSubscription occasionally fails with a transient HttpRequestException (e.g. network
+# blips outside the usual dev environment). Previously this was a non-terminating error that
+# left $subscriptions empty, so the script silently "completed" having scanned zero
+# subscriptions instead of surfacing the failure. Retry a few times, then fail loudly.
 if ($SubId -like "*.csv") {
     $subscriptions = Import-Csv $SubId
 }elseif($SubId -ne "") {
     Write-Output "Passed Subscription $($SubId)"
-    $subscriptions = Get-AzSubscription -SubscriptionId $SubId
+    $subscriptions = $null
+    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+        try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -ErrorAction Stop; break }
+        catch {
+            if ($subAttempt -eq 3) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            Write-Warning "Transient error resolving subscription '$SubId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
+            Start-Sleep -Seconds 5
+        }
+    }
 }else {
-    $subscriptions = Get-AzSubscription | Where-Object { $_.TenantId -eq $tenantId }
+    $subscriptions = $null
+    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+        try { $subscriptions = Get-AzSubscription -ErrorAction Stop | Where-Object { $_.TenantId -eq $tenantId }; break }
+        catch {
+            if ($subAttempt -eq 3) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            Write-Warning "Transient error listing subscriptions for tenant '$tenantId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
+            Start-Sleep -Seconds 5
+        }
+    }
+}
+
+if (-not $subscriptions -or @($subscriptions).Count -eq 0) {
+    Write-Error "No subscriptions resolved (SubId='$SubId', TenantId='$tenantId'). Aborting instead of proceeding with zero subscriptions, which would otherwise look like a clean 'nothing to update' run."
+    exit 1
 }
 
 # Build resource group filter if specified.
@@ -1981,13 +2006,38 @@ catch{
 
 $modifiedResources = @()
 
+# Get-AzSubscription occasionally fails with a transient HttpRequestException (e.g. network
+# blips outside the usual dev environment). Previously this was a non-terminating error that
+# left $subscriptions empty, so the script silently "completed" having scanned zero
+# subscriptions instead of surfacing the failure. Retry a few times, then fail loudly.
 if ($SubId -like "*.csv") {
     $subscriptions = Import-Csv $SubId
 }elseif($SubId -ne "") {
     Write-Output "Passed Subscription $($SubId)"
-    $subscriptions = Get-AzSubscription -SubscriptionId $SubId
+    $subscriptions = $null
+    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+        try { $subscriptions = Get-AzSubscription -SubscriptionId $SubId -ErrorAction Stop; break }
+        catch {
+            if ($subAttempt -eq 3) { Write-Error "Failed to resolve subscription '$SubId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            Write-Warning "Transient error resolving subscription '$SubId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
+            Start-Sleep -Seconds 5
+        }
+    }
 }else {
-    $subscriptions = Get-AzSubscription | Where-Object { $_.TenantId -eq $tenantId }
+    $subscriptions = $null
+    for ($subAttempt = 1; $subAttempt -le 3; $subAttempt++) {
+        try { $subscriptions = Get-AzSubscription -ErrorAction Stop | Where-Object { $_.TenantId -eq $tenantId }; break }
+        catch {
+            if ($subAttempt -eq 3) { Write-Error "Failed to list subscriptions for tenant '$tenantId' after $subAttempt attempts: $($_.Exception.Message)"; exit 1 }
+            Write-Warning "Transient error listing subscriptions for tenant '$tenantId' (attempt $subAttempt/3): $($_.Exception.Message). Retrying in 5s..."
+            Start-Sleep -Seconds 5
+        }
+    }
+}
+
+if (-not $subscriptions -or @($subscriptions).Count -eq 0) {
+    Write-Error "No subscriptions resolved (SubId='$SubId', TenantId='$tenantId'). Aborting instead of proceeding with zero subscriptions, which would otherwise look like a clean 'nothing to update' run."
+    exit 1
 }
 
 # Handle MachineName input (single or CSV)
