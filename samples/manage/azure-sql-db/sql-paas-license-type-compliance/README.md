@@ -58,6 +58,8 @@ Parameter reference:
 | `TargetLicenseType` | Yes | N/A | `LicenseIncluded`, `BasePrice` | Target license type to enforce. |
 | `SkipLicenseConfirmation` | No | `false` | Switch (`present`/`not present`) | Skip the interactive license confirmation prompt (for CI/CD pipelines). |
 
+> **Note:** Unlike SQL service types with three or more license states, SQL PaaS has only `LicenseIncluded` and `BasePrice`, so the policy always changes a non-matching database to the selected target and does not require `LicenseTypesToOverwrite`.
+
 Definition and assignment creation:
 
 1. Download the required files.
