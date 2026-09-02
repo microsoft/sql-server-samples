@@ -40,12 +40,26 @@ The deployment script will prompt for confirmation when targeting `BasePrice`. U
 
 ## Prerequisites
 
-- PowerShell with Az modules installed (`Az.Resources` for deployment; `Az.DataFactory` for remediation).
-- Logged in to Azure (`Connect-AzAccount`).
+- Access to the Azure portal or PowerShell with the `Az.Resources` module installed for deployment.
+- PowerShell with the `Az.DataFactory` module and an authenticated Azure context (`Connect-AzAccount`) for remediation.
 - Permissions to create policy definitions/assignments at target scope.
 - For remediation: Contributor on each Data Factory whose Integration Runtimes will be updated.
 
 ## Deploy Policy
+
+### Option 1: Azure portal
+
+1. In the [Azure portal](https://portal.azure.com), search for **Policy**.
+2. Under **Authoring**, select **Definitions**, and then select **+ Policy definition**.
+3. Select the definition location, and enter a name such as `Audit Azure Data Factory SSIS Integration Runtime license type` and a category.
+4. Open [`policy/azurepolicy.json`](policy/azurepolicy.json), copy the complete JSON document, paste it into the **Policy rule** editor, replacing the example content, and select **Save**.
+5. Open the new definition and select **Assign**. On the **Basics** tab, select the assignment scope.
+6. On the **Parameters** tab, leave **Effect** set to `AuditIfNotExists`, select the **Target license type**, and select the current license types eligible for replacement under **Current license types to overwrite**.
+7. On the **Review + create** tab, review the settings and select **Create**.
+
+This policy audits license type drift only, so the assignment does not require a managed identity. To update non-compliant SSIS Integration Runtimes, follow [Start Remediation](#start-remediation). Selecting `BasePrice` confirms that you meet the Azure Hybrid Benefit licensing conditions described above.
+
+### Option 2: PowerShell
 
 Parameter reference:
 
