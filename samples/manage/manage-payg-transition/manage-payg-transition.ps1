@@ -43,9 +43,8 @@
     'RequestSubmitted', meaning the service accepted the request rather than that the
     change has been applied.
 
-    Exceptions: SQL virtual machines and SSIS integration runtimes always wait, because
-    Update-AzSqlVM must not be run asynchronously for SQL VMs (see Invoke-SqlVmLicenseUpdate)
-    and Set-AzDataFactoryV2IntegrationRuntime provides no asynchronous option. Using this
+    Exception: SQL virtual machine updates are always synchronous, because Update-AzSqlVM
+    must not be run asynchronously for SQL VMs (see Invoke-SqlVmLicenseUpdate). Using this
     switch makes runs substantially slower on large estates.
 
 .PARAMETER AutomationAccResourceGroupName
@@ -56,6 +55,12 @@
 .PARAMETER Location
     Required only when -RunMode is 'Scheduled'. Azure region for the Automation
     Account/resource group. Not needed/used for -RunMode Single.
+
+.PARAMETER Force
+    Skip interactive confirmation prompts: install missing Az PowerShell modules and
+    proceed with the currently connected Azure account/tenant without asking first.
+    Required when running non-interactively (e.g. scheduled/unattended), since the
+    script will otherwise stop and ask for confirmation.
 
 .EXAMPLE
     # Run immediately for both Azure and Arc, transitioning to PAYG (all defaults)
@@ -120,7 +125,10 @@ param(
     [string]$AutomationAccountName="aaccAzureArcSQLLicenseType",
 
     [Parameter(Mandatory=$false)]
-    [string]$Location=$null
+    [string]$Location=$null,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$Force
 )
 
 # -AutomationAccResourceGroupName and -Location are only actually used by the
@@ -135,6 +143,17 @@ if ($RunMode -eq "Scheduled") {
     }
 }
 
+# Heuristic for "is a human watching this run right now". A real interactive console has
+# UserInteractive = $true and an attached (non-redirected) console input stream; scheduled/
+# Automation/CI contexts typically fail at least one of these checks.
+function Test-IsInteractiveSession {
+    try {
+        return [Environment]::UserInteractive -and -not [Console]::IsInputRedirected
+    } catch {
+        return $false
+    }
+}
+
 # Translate the simplified -TargetLicenseType switch into the vocabulary each
 # embedded script expects:
 #   - modify-azure-sql-license-type.ps1 expects "LicenseIncluded" (PAYG) or "BasePrice" (AHUB).
@@ -142,12 +161,22 @@ if ($RunMode -eq "Scheduled") {
 $azureLicenseType = if ($TargetLicenseType -eq "PAYG") { "LicenseIncluded" } else { "BasePrice" }
 $arcLicenseType    = if ($TargetLicenseType -eq "PAYG") { "PAYG" } else { "Paid" }
 
-# === Connect once here instead of letting each embedded script (Arc/Azure) redundantly
-#     re-authenticate. Az PowerShell's context is process-wide, so authenticating once
-#     means each embedded script's own Connect-Azure call finds an already-valid context
-#     and skips straight past its own login, instead of repeating that work.
+# === Connect once here instead of letting each embedded script redundantly re-authenticate.
+#     Az PowerShell's context is process-wide, so authenticating once means each embedded
+#     script's own Connect-Azure call finds an already-valid context and skips straight past
+#     its own login, instead of repeating that work.
 if ($RunMode -eq "Single") {
     if (-not (Get-Module -ListAvailable -Name Az.Accounts)) {
+        if (-not $Force) {
+            if (Test-IsInteractiveSession) {
+                $response = Read-Host "The Az.Accounts PowerShell module is required but not installed. Install it now? (Y/N)"
+                if ($response -notmatch '^(y|yes)$') {
+                    throw "Az.Accounts module is required to continue. Install it manually, or re-run with -Force to install it automatically."
+                }
+            } else {
+                throw "Az.Accounts module is required but not installed, and this session is not interactive. Re-run with -Force to install it automatically."
+            }
+        }
         Write-Output "Az.Accounts module not found. Installing..."
         Install-Module -Name Az.Accounts -Scope CurrentUser -Repository PSGallery -Force -AllowClobber
     }
@@ -155,10 +184,20 @@ if ($RunMode -eq "Single") {
 
     $currentCtx = Get-AzContext -ErrorAction SilentlyContinue
     if ($currentCtx -and $currentCtx.Account -and ([string]::IsNullOrWhiteSpace($TenantId) -or $currentCtx.Tenant.Id -eq $TenantId)) {
-        Write-Output "Already connected to Azure PowerShell as: $($currentCtx.Account) (tenant $($currentCtx.Tenant.Id)). Reusing this context for both the Arc and Azure runs below."
+        Write-Output "Reusing this session ($($currentCtx.Account), tenant $($currentCtx.Tenant.Id))."
+        if (-not $Force) {
+            if (Test-IsInteractiveSession) {
+                $response = Read-Host "Continue using this account/tenant? (Y/N)"
+                if ($response -notmatch '^(y|yes)$') {
+                    throw "Aborted by user. Sign in as a different account/tenant, or re-run with -Force to skip this confirmation."
+                }
+            } else {
+                throw "Currently connected as $($currentCtx.Account) (tenant $($currentCtx.Tenant.Id)). Re-run with -Force to proceed non-interactively, or run interactively to confirm."
+            }
+        }
     }
     else {
-        Write-Output "Connecting to Azure PowerShell once for this run..."
+        Write-Output "Connecting to Azure..."
         if ($TenantId) { Connect-AzAccount -Tenant $TenantId -ErrorAction Stop | Out-Null }
         else { Connect-AzAccount -ErrorAction Stop | Out-Null }
         $currentCtx = Get-AzContext
@@ -188,13 +227,12 @@ $EmbeddedScripts['Azure'] = @'
     SQL Databases
     Elastic Pools
     SQL Instance Pools
-    DataFactory SSIS Integration Runtimes
 
 .VERSION
     1.0.0 - Initial version.
     1.0.2 - Modified to fix errors and to remove the auto-start of the offline resources.
     1.0.3 - Added transcript.
-    1.0.4 - Fixed RG filter for SQL DB
+    1.0.4 - Fixed resource group filter for SQL DB
 
 .PARAMETER SubId
     A single subscription ID or a CSV file name containing a list of subscriptions.
@@ -229,11 +267,9 @@ $EmbeddedScripts['Azure'] = @'
     -AsJob and reports "RequestSubmitted", meaning the service accepted the request rather
     than that the change has been applied.
 
-    Note: Set-AzDataFactoryV2IntegrationRuntime provides no asynchronous option, so SSIS
-    integration runtimes always wait regardless of this switch and always report "Updated".
-    SQL virtual machines are always updated synchronously via Update-AzSqlVM (no -AsJob/-NoWait)
-    because SQL VM license updates must not be submitted asynchronously; see
-    Invoke-SqlVmLicenseUpdate.
+    Note: SQL virtual machines are always updated synchronously via Update-AzSqlVM (no
+    -AsJob/-NoWait) regardless of this switch, because SQL VM license updates must not be
+    submitted asynchronously; see Invoke-SqlVmLicenseUpdate.
 #>
 
 param (
@@ -489,7 +525,6 @@ function Format-ExecutionOutcomeSummary {
         "Microsoft.Sql/servers/elasticPools"                  = "SQL Elastic Pools"
         "Microsoft.Sql/managedInstances"                      = "SQL Managed Instances"
         "Microsoft.Sql/instancePools"                         = "SQL Instance Pools"
-        "Microsoft.DataFactory/factories/integrationRuntimes" = "SSIS Integration Runtimes"
         "Microsoft.AzureArcData/SqlServerInstances"           = "Arc SQL Server Instances"
         "Microsoft.HybridCompute/machines/extensions"         = "Arc SQL Server (HybridCompute)"
         "WindowsAgent.SqlServer"                              = "Arc SQL Server Extension (Windows)"
@@ -632,19 +667,6 @@ try {
     return
 }
 
-# Ensure Az.DataFactory is available and import it
-try {
-    if (-not (Get-Module -ListAvailable -Name Az.DataFactory)) {
-        Write-Output "Az.DataFactory module not found. Installing..."
-        Install-Module -Name Az.DataFactory -Scope CurrentUser -Force
-    } else {
-        Write-Output "Az.DataFactory module is already installed."
-    }
-    Import-Module Az.DataFactory -Force
-} catch {
-    Write-Error "Can't import module Az.DataFactory: $_"
-}
-
 # Ensure Az.Sql is available and import it (Get-/Set-AzSqlDatabase, Get-/Set-AzSqlInstance,
 # Get-/Set-AzSqlElasticPool, Get-/Set-AzSqlInstancePool, Get-/Set-AzSqlServer all live here)
 try {
@@ -755,8 +777,9 @@ foreach ($sub in $subscriptions) {
                 Get-AzSqlVM -ErrorAction Stop
             })
 
-            # Mirrors the previous CLI --query filter: license mismatch, exclude 'DR', and the
-            # optional resource-group/name scope.
+            # License mismatch, exclude 'DR' (Disaster Recovery secondary replicas, which are
+            # licensed separately and must not be overwritten), and the optional
+            # resource-group/name scope.
             $sqlVMs = @($sqlVMs | Where-Object { $_.SqlServerLicenseType -ne $SqlVmLicenseType -and $_.SqlServerLicenseType -ne 'DR' })
             if ($ResourceGroup) {
                 $sqlVMs = @($sqlVMs | Where-Object { ($_.Id -split '/')[4] -eq $ResourceGroup })
@@ -776,7 +799,7 @@ foreach ($sub in $subscriptions) {
                 $vmName = $sqlvm.Name
 
                 if (Test-ExcludedByTags -Tags $sqlvm.Tag -ExclusionTagTable $tagTable) {
-                    Write-Output "SQL VM '$vmName' in RG '$vmResourceGroup' Skipping because of tags..."
+                    Write-Output "SQL VM '$vmName' in resource group '$vmResourceGroup' Skipping because of tags..."
                     $modifiedResources += [PSCustomObject]@{
                         TenantID            = $TenantId
                         SubID               = ($sqlvm.Id -split '/')[2]
@@ -825,9 +848,9 @@ foreach ($sub in $subscriptions) {
 
                     if ($ReportOnly) {
                         $vmResult = "ReportOnly"
-                        Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$vmName' in RG '$vmResourceGroup' (would change '$($sqlvm.SqlServerLicenseType)' -> '$SqlVmLicenseType')."
+                        Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$vmName' in resource group '$vmResourceGroup' (would change '$($sqlvm.SqlServerLicenseType)' -> '$SqlVmLicenseType')."
                     } else {
-                        Write-Output "Updating SQL VM '$vmName' in RG '$vmResourceGroup' to license type '$SqlVmLicenseType'..."
+                        Write-Output "Updating SQL VM '$vmName' in resource group '$vmResourceGroup' to license type '$SqlVmLicenseType'..."
                         # Always synchronous - SQL VM license updates must not be submitted via
                         # -AsJob/-NoWait (see Invoke-SqlVmLicenseUpdate), so this call blocks
                         # until the update completes regardless of -WaitForCompletion.
@@ -856,7 +879,7 @@ foreach ($sub in $subscriptions) {
                     }
                 }
                 else {
-                    Write-Output "SQL VM '$vmName' in RG '$vmResourceGroup' is in '$vmPowerState' state (not running). Skipping update..."
+                    Write-Output "SQL VM '$vmName' in resource group '$vmResourceGroup' is in '$vmPowerState' state (not running). Skipping update..."
                     $modifiedResources += [PSCustomObject]@{
                         TenantID            = $TenantId
                         SubID               = ($sqlvm.Id -split '/')[2]
@@ -882,11 +905,12 @@ foreach ($sub in $subscriptions) {
                 Get-AzSqlInstance -ErrorAction Stop
             })
 
-            # Mirrors the previous CLI --query filter (license mismatch, optional RG/name scope,
-            # tag exclusion). The 'state==Ready' pre-filter is not reproduced here: the Az.Sql
-            # module's managed-instance model does not expose a state/provisioning-state property
-            # to check it against, so a managed instance that is not actually ready is instead
-            # caught by Set-AzSqlInstance failing and being recorded as "Failed" below.
+            # Excludes running instances already at the target license type, plus the optional
+            # resource-group/name scope and tag exclusion. The 'state==Ready' pre-filter is not
+            # reproduced here: the Az.Sql module's managed-instance model does not expose a
+            # state/provisioning-state property to check it against, so a managed instance that
+            # is not actually ready is instead caught by Set-AzSqlInstance failing and being
+            # recorded as "Failed" below.
             $runningMIs = @($runningMIs | Where-Object { $_.LicenseType -ne $LicenseType })
             if ($ResourceGroup) {
                 $runningMIs = @($runningMIs | Where-Object { $_.ResourceGroupName -eq $ResourceGroup })
@@ -909,9 +933,9 @@ foreach ($sub in $subscriptions) {
 
                 if ($ReportOnly) {
                     $miResult = "ReportOnly"
-                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Managed Instance '$($mi.ManagedInstanceName)' in RG '$($mi.ResourceGroupName)' (would change '$($mi.LicenseType)' -> '$LicenseType')."
+                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Managed Instance '$($mi.ManagedInstanceName)' in resource group '$($mi.ResourceGroupName)' (would change '$($mi.LicenseType)' -> '$LicenseType')."
                 } else {
-                    Write-Output "Updating SQL Managed Instance '$($mi.ManagedInstanceName)' in RG '$($mi.ResourceGroupName)' to license type '$LicenseType'..."
+                    Write-Output "Updating SQL Managed Instance '$($mi.ManagedInstanceName)' in resource group '$($mi.ResourceGroupName)' to license type '$LicenseType'..."
                     $update = Invoke-AzLicenseUpdate -Description "SQL Managed Instance '$($mi.ManagedInstanceName)'" -SupportsAsJob -ScriptBlock {
                         Set-AzSqlInstance -Name $mi.ManagedInstanceName -ResourceGroupName $mi.ResourceGroupName -LicenseType $LicenseType -AsJob:$submitAsync -Force -ErrorAction Stop
                     }
@@ -944,12 +968,12 @@ foreach ($sub in $subscriptions) {
 
         # --- Section: Update SQL Databases and Elastic Pools ---
         try {
-            Write-Output "Querying SQL Servers within this subscription..."
+            Write-Output "Querying SQL servers within this subscription..."
 
-            $allServers = @(Invoke-AzCmdletWithRetry -Description "SQL Servers in the subscription" -ScriptBlock {
+            $allServers = @(Invoke-AzCmdletWithRetry -Description "SQL servers in the subscription" -ScriptBlock {
                 Get-AzSqlServer -ErrorAction Stop
             })
-            Write-Output "Found a total of $($allServers.Count) SQL Servers in subscription"
+            Write-Output "Found a total of $($allServers.Count) SQL servers in subscription"
 
             $servers = $allServers
             if ($ResourceGroup) {
@@ -962,8 +986,8 @@ foreach ($sub in $subscriptions) {
 
             # Verify if we got any results
             if ($servers.Count -eq 0) {
-                Write-Output "WARNING: No SQL Servers found with the specified filters."
-                Write-Output "Available SQL Servers in subscription:"
+                Write-Output "WARNING: No SQL servers found with the specified filters."
+                Write-Output "Available SQL servers in subscription:"
                 $allServers | ForEach-Object {
                     Write-Output "  - $($_.ServerName) (Resource Group: $($_.ResourceGroupName))"
                 }
@@ -975,14 +999,14 @@ foreach ($sub in $subscriptions) {
                 # resource-group filtered, so pools on out-of-scope servers would be
                 # modified.
                 if (-not $ResourceName -and -not $ResourceGroup) {
-                    Write-Output "Proceeding with all SQL Servers since no specific ResourceName or ResourceGroup was provided."
+                    Write-Output "Proceeding with all SQL servers since no specific ResourceName or ResourceGroup was provided."
                     $servers = $allServers
                 } else {
-                    Write-Output "Scope was explicitly restricted; not falling back to all SQL Servers. Skipping SQL Database and Elastic Pool processing."
+                    Write-Output "Scope was explicitly restricted; not falling back to all SQL servers. Skipping SQL Database and Elastic Pool processing."
                     $servers = @()
                 }
             } else {
-                Write-Output "Found $($servers.Count) SQL Servers matching the criteria."
+                Write-Output "Found $($servers.Count) SQL servers matching the criteria."
                 $servers | ForEach-Object {
                     Write-Output "  - $($_.ServerName) (Resource Group: $($_.ResourceGroupName))"
                 }
@@ -1127,11 +1151,12 @@ foreach ($sub in $subscriptions) {
                 Get-AzSqlInstancePool -ErrorAction Stop
             })
 
-            # Mirrors the previous CLI --query filter (license mismatch, optional RG/name scope,
-            # tag exclusion). The 'state==Ready' pre-filter is not reproduced here: the Az.Sql
-            # module's instance-pool model does not expose a state/provisioning-state property to
-            # check it against, so an instance pool that is not actually ready is instead caught
-            # by Set-AzSqlInstancePool failing and being recorded as "Failed" below.
+            # Excludes pools already at the target license type, plus the optional
+            # resource-group/name scope and tag exclusion. The 'state==Ready' pre-filter is not
+            # reproduced here: the Az.Sql module's instance-pool model does not expose a
+            # state/provisioning-state property to check it against, so an instance pool that is
+            # not actually ready is instead caught by Set-AzSqlInstancePool failing and being
+            # recorded as "Failed" below.
             $poolsToUpdate = @($instancePools | Where-Object { $_.LicenseType -ne $LicenseType })
             if ($ResourceGroup) {
                 $poolsToUpdate = @($poolsToUpdate | Where-Object { $_.ResourceGroupName -eq $ResourceGroup })
@@ -1153,9 +1178,9 @@ foreach ($sub in $subscriptions) {
 
                 if ($ReportOnly) {
                     $ipResult = "ReportOnly"
-                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Instance Pool '$($pool.Name)' in RG '$($pool.ResourceGroupName)' (would change '$($pool.LicenseType)' -> '$LicenseType')."
+                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Instance Pool '$($pool.Name)' in resource group '$($pool.ResourceGroupName)' (would change '$($pool.LicenseType)' -> '$LicenseType')."
                 } else {
-                    Write-Output "Updating SQL Instance Pool '$($pool.Name)' in RG '$($pool.ResourceGroupName)' to license type '$LicenseType'..."
+                    Write-Output "Updating SQL Instance Pool '$($pool.Name)' in resource group '$($pool.ResourceGroupName)' to license type '$LicenseType'..."
                     $update = Invoke-AzLicenseUpdate -Description "SQL Instance Pool '$($pool.Name)'" -SupportsAsJob -ScriptBlock {
                         Set-AzSqlInstancePool -Name $pool.Name -ResourceGroupName $pool.ResourceGroupName -LicenseType $LicenseType -AsJob:$submitAsync -ErrorAction Stop
                     }
@@ -1184,119 +1209,6 @@ foreach ($sub in $subscriptions) {
         }
         catch {
             Write-Error "An error occurred while updating SQL Instance Pools: $_"
-        }
-
-        # --- Section: Update DataFactory SSIS Integration Runtimes ---
-        try {
-            Write-Output "Processing DataFactory SSIS Integration Runtime resources..."
-            # -ErrorAction Stop + retry: previously a transient network blip here (e.g. WinError
-            # 10048 / HttpRequestException) was a non-terminating error that got printed but not
-            # caught, so the script silently kept running DataFactory discovery against whatever
-            # subscription context was already selected instead of the intended one.
-            Invoke-AzCmdletWithRetry -Description "Set-AzContext for subscription $($sub.id)" -ScriptBlock {
-                Set-AzContext -Subscription $sub.id -ErrorAction Stop | Out-Null
-            }
-
-            $dataFactories = Invoke-AzCmdletWithRetry -Description "Get-AzDataFactoryV2 in subscription $($sub.id)" -ScriptBlock {
-                Get-AzDataFactoryV2 -ErrorAction Stop
-            }
-
-            $dataFactories |
-            Where-Object { 
-                $_.ProvisioningState -eq "Succeeded" -and
-                ([string]::IsNullOrEmpty($ResourceGroup) -or $_.ResourceGroupName -eq $ResourceGroup)
-            } | 
-            ForEach-Object {
-                $df = $_
-                $IRs = $null
-                try {
-                    $IRs = Invoke-AzCmdletWithRetry -Description "Get-AzDataFactoryV2IntegrationRuntime on '$($df.DataFactoryName)'" -ScriptBlock {
-                        Get-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $df.ResourceGroupName -DataFactoryName $df.DataFactoryName -ErrorAction Stop |
-                        Where-Object { 
-                            $_.Type -eq "Managed" -and 
-                            $_.State -ne "Starting" -and 
-                            # Only SSIS integration runtimes carry a LicenseType. The default
-                            # 'AutoResolveIntegrationRuntime' is also Type 'Managed' but has a null
-                            # LicenseType; without this check it passes the filter below (since
-                            # $null -ne $LicenseType) and the update fails with
-                            # 'DataFactoryPropertyUpdateNotSupported: Updating property managedVirtualNetwork'.
-                            (-not [string]::IsNullOrEmpty($_.LicenseType)) -and
-                            $_.LicenseType -ne $LicenseType -and
-                            ([string]::IsNullOrEmpty($ResourceName) -or $_.Name -eq $ResourceName)
-                        }
-                    }
-                }
-                catch {
-                    # A failed query used to be indistinguishable from "no runtimes need updating"
-                    # (the pipeline just returned nothing), silently skipping this DataFactory.
-                    # Report it as a failure instead so it isn't mistaken for a clean result.
-                    $queryError = $_.Exception.Message
-                    Write-Warning "Unable to query integration runtimes on DataFactory '$($df.DataFactoryName)': $queryError"
-                    $modifiedResources += [PSCustomObject]@{
-                        TenantID            = $TenantId
-                        SubID               = $sub.id
-                        ResourceName        = $df.DataFactoryName
-                        ResourceType        = "Microsoft.DataFactory/factories"
-                        Status              = $df.ProvisioningState
-                        OriginalLicenseType = $null
-                        ResourceGroup       = $df.ResourceGroupName
-                        Location            = $df.Location
-                        UpdateResult        = "Failed"
-                        UpdateError         = "Failed to query integration runtimes: $queryError"
-                    }
-                    return
-                }
-
-                if ($null -eq $IRs -or @($IRs).Count -eq 0) {
-                    Write-Output "No SSIS integration runtimes found on DataFactory '$($df.DataFactoryName)' that require a license update."
-                } else {
-                    $IRs | ForEach-Object {
-                        $ir = $_
-                        $irResult = "NotAttempted"
-                        $irError = ""
-
-                        if ($ReportOnly) {
-                            $irResult = "ReportOnly"
-                            Write-Output "ReportOnly mode enabled. Skipping modification for DataFactory '$($df.DataFactoryName)' integration runtime '$($ir.Name)' (would change '$($ir.LicenseType)' -> '$LicenseType')."
-                        } else {
-                            if (-not [string]::IsNullOrEmpty($ResourceName) -and $ir.State -ne "Stopped") {
-                                Write-Output "ADF Integration Service '$($ir.Name)' is not in stopped state"
-                                $irResult = "SkippedNotStopped"
-                                $irError = "Integration runtime is not in stopped state (must be stopped to update license)"
-                            } else {
-                                Write-Output "Updating DataFactory '$($df.DataFactoryName)' integration runtime '$($ir.Name)' to license type $LicenseType..."
-                                try {
-                                    $result = Set-AzDataFactoryV2IntegrationRuntime -ResourceGroupName $df.ResourceGroupName -DataFactoryName $df.DataFactoryName -Name $ir.Name -LicenseType $LicenseType -Force -ErrorAction Stop
-                                    $finalStatus += $result
-                                    $irResult = "Updated"
-                                    Write-Output "-- DataFactory '$($df.DataFactoryName)' integration runtime '$($ir.Name)' updated to license type $LicenseType"
-                                }
-                                catch {
-                                    $irResult = "Failed"
-                                    $irError = $_.Exception.Message
-                                    Write-Warning "Failed to update integration runtime '$($ir.Name)' on DataFactory '$($df.DataFactoryName)': $irError"
-                                }
-                            }
-                        }
-
-                        $modifiedResources += [PSCustomObject]@{
-                            TenantID            = $TenantId
-                            SubID               = ($ir.Id -split '/')[2]
-                            ResourceName        = $ir.Name
-                            ResourceType        = "Microsoft.DataFactory/factories/integrationRuntimes"
-                            Status              = $ir.State
-                            OriginalLicenseType = $ir.LicenseType
-                            ResourceGroup       = $df.ResourceGroupName
-                            Location            = $df.Location
-                            UpdateResult        = $irResult
-                            UpdateError         = $irError
-                        }
-                    }
-                }
-            }
-        }
-        catch {
-            Write-Error "An error occurred while updating DataFactory SSIS Integration Runtimes: $_"
         }
 
     }
@@ -1603,7 +1515,6 @@ function Format-ExecutionOutcomeSummary {
         "Microsoft.Sql/servers/elasticPools"                  = "SQL Elastic Pools"
         "Microsoft.Sql/managedInstances"                      = "SQL Managed Instances"
         "Microsoft.Sql/instancePools"                         = "SQL Instance Pools"
-        "Microsoft.DataFactory/factories/integrationRuntimes" = "SSIS Integration Runtimes"
         "Microsoft.AzureArcData/SqlServerInstances"           = "Arc SQL Server Instances"
         "Microsoft.HybridCompute/machines/extensions"         = "Arc SQL Server (HybridCompute)"
         "WindowsAgent.SqlServer"                              = "Arc SQL Server Extension (Windows)"
@@ -2206,7 +2117,7 @@ $EmbeddedScripts['General'] = @'
     The Automation account name.
 
 .PARAMETER Location
-    Azure region for the RG and account (e.g. "EastUS").
+    Azure region for the resource group and account (e.g. "EastUS").
 
 .PARAMETER RunbookName
     The name under which to import/publish the runbook.
@@ -2248,7 +2159,6 @@ $context = $null
 $roleAssignments = @(
     @{ RoleName = "SQL DB Contributor"; Description = "For Azure SQL Databases and Azure SQL Elastic Pools" },
     @{ RoleName = "SQL Managed Instance Contributor"; Description = "For Azure SQL Managed Instances and Azure SQL Instance Pools" },
-    @{ RoleName = "Data Factory Contributor"; Description = "For Azure Data Factory SSIS Integration Runtimes" },
     @{ RoleName = "Virtual Machine Contributor"; Description = "For SQL Servers in Azure Virtual Machines" },
     @{RoleName = "SQL Server Contributor"; Description = "For Elastic-Pools in Azure Virtual Machines"},
     @{RoleName = "Azure Connected Machine Resource Administrator"; Description = "For SQL Servers in Arc Virtual Machines"},
@@ -2496,7 +2406,6 @@ function Format-ExecutionOutcomeSummary {
         "Microsoft.Sql/servers/elasticPools"                  = "SQL Elastic Pools"
         "Microsoft.Sql/managedInstances"                      = "SQL Managed Instances"
         "Microsoft.Sql/instancePools"                         = "SQL Instance Pools"
-        "Microsoft.DataFactory/factories/integrationRuntimes" = "SSIS Integration Runtimes"
         "Microsoft.AzureArcData/SqlServerInstances"           = "Arc SQL Server Instances"
         "Microsoft.HybridCompute/machines/extensions"         = "Arc SQL Server (HybridCompute)"
         "WindowsAgent.SqlServer"                              = "Arc SQL Server Extension (Windows)"
