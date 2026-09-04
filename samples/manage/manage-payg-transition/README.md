@@ -19,6 +19,16 @@ If not specified, all subscriptions your role has access to are scanned.
 - You must have at least a *Contributor* RBAC role in each subscription you modify.
 - You must have a *Tag Contributor* *Contributor* RBAC role in each subscription you modify.
 - You must be connected to Azure AD and logged in to your Azure account. If your account have access to multiple tenants, make sure to log in with a specific tenant ID.
+- The Az PowerShell modules `Az.Accounts`, `Az.Sql`, `Az.SqlVirtualMachine`,
+  `Az.ConnectedMachine`, and `Az.ResourceGraph` are required; the script installs any that
+  are missing automatically (for the current user, from the PowerShell Gallery). If you are
+  running the script interactively, it will ask for confirmation before installing a missing
+  module; pass `-Force` to install automatically without prompting (required for
+  non-interactive/unattended runs).
+
+> [!NOTE]
+> The Azure CLI (`az`) is **not** required. The script is implemented entirely with Az
+> PowerShell cmdlets.
 
 ### Detailed permissions by resource type
 
@@ -29,7 +39,6 @@ prefer a least-privilege role assignment instead, the dependent scripts require:
 |---|---|
 | SQL Server VMs, Managed Instances, Azure SQL Databases, Elastic Pools, Instance Pools | *SQL DB Contributor* |
 | Azure Arc-enabled SQL Server (Arc machine extensions) | *Azure Connected Machine Resource Administrator* |
-| Azure Data Factory Azure-SSIS Integration Runtimes (only if present) | *Data Factory Contributor* |
 | Reading/enumerating subscriptions and resources (all of the above) | *Reader* (included in every role above) |
 | Tagging subscriptions with `ArcSQLServerExtensionDeployment:PAYG` | *Tag Contributor* |
 
@@ -47,13 +56,14 @@ The script accepts the following command line parameters:
 |`-targetResourceGroup` |`<name>`|*Optional*: Limits the scope of the transition to the specified resource group.|
 |`-TenantId`|`<tenant_id>`|*Optional*. Azure AD tenant to operate against. If not specified, the tenant of the current Az PowerShell context (`(Get-AzContext).Tenant.Id`) is used. Specify explicitly to avoid running against whichever tenant happens to be selected in your session.|
 |`-ReportOnly`|*(switch)*|*Optional*. Read-only dry run: reports the resources that would be changed without modifying anything.|
-|`-WaitForCompletion`|*(switch)*|*Optional*. Wait for each license change to reach a terminal state and report a confirmed outcome. By default changes are submitted asynchronously and reported as `RequestSubmitted`. SSIS integration runtimes always wait (no asynchronous option exists for them). See [How It Works](#how-it-works).|
+|`-WaitForCompletion`|*(switch)*|*Optional*. Wait for each license change to reach a terminal state and report a confirmed outcome. By default changes are submitted asynchronously and reported as `RequestSubmitted`. See [How It Works](#how-it-works).|
 |`-UsePcoreLicense` | `Yes`, `No` |*Optional*. Passed to Arc script to control PCore licensing behavior. Set to `No` if not specified.|
 |`-TargetLicenseType`|`PAYG`, `AHUB`|*Optional*. License type to transition resources to. Defaults to `PAYG`.|
 |`-AutomationAccResourceGroupName`| `<name>`|*Required* only if `-RunMode Scheduled`. Resource group hosting the Automation Account, created if it does not already exist. Not used by `-RunMode Single`.|
 |`-AutomationAccountName`| `<name>`|*Optional*. Name of the Automation Account used in `Scheduled` mode. Defaults to `aaccAzureArcSQLLicenseType`.|
 |`-Location`|`<region>`|*Required* only if `-RunMode Scheduled`. Azure region for the Automation Account. Not used by `-RunMode Single`.|
 |`-cleanDownloads`|`$true`, `$false`|*Optional*. Removes the `.\manage-payg-transition\` working folder after the run. Defaults to `$false`.|
+|`-Force`|*(switch)*|*Optional*. Skip interactive confirmation prompts (installing missing Az modules, continuing with the current Azure account/tenant context). Required for non-interactive/unattended runs, where the script will otherwise throw an error instead of prompting.|
 
 > [!NOTE]
 > The script does not expose a `-SubId` parameter; use `-targetSubscription`. Scoping to a
@@ -95,7 +105,10 @@ The script accepts the following command line parameters:
 - Arc-connected machines whose agent is `Disconnected` or `Expired` cannot be updated, because
   the extension setting must be pushed to a reachable agent. These are skipped and will be
   picked up on a later run once the machines reconnect.
-- The offline Azure VMs will be reactivated for a brief period to change the configuration.
+- SQL virtual machines that are stopped/deallocated are **skipped** rather than modified —
+  the underlying VM must be running for `Update-AzSqlVM` to change its license type. These
+  are reported with `UpdateResult = SkippedNotRunning` and picked up automatically on a later
+  run once the VM is started.
 - Each run writes a `ModifiedResources_<timestamp>.csv` report. The `UpdateResult` column
   records the per-resource outcome and `UpdateError` carries the service error text when a
   change was rejected.
@@ -106,20 +119,11 @@ The script accepts the following command line parameters:
 
   | Resource | Default | With `-WaitForCompletion` |
   |---|---|---|
-  | SQL Managed Instance, database, elastic pool, instance pool | `--no-wait`, reports `RequestSubmitted` | waits, reports `Updated` |
+  | SQL Managed Instance, database, elastic pool, instance pool | `-AsJob`, reports `RequestSubmitted` | waits, reports `Updated` |
   | Arc-connected machine | `-NoWait`, reports `RequestSubmitted` | polls the extension, reports `Succeeded` / `Failed` / `TimedOut` |
-  | SQL virtual machine | direct ARM request, reports `RequestSubmitted` | `az sql vm update` waits, reports `Updated` |
-  | **SSIS integration runtime** | **always waits**, reports `Updated` | same |
+  | **SQL virtual machine** | **always waits**, reports `Updated` | same |
 
-  SSIS integration runtimes are the one exception, because
-  `Set-AzDataFactoryV2IntegrationRuntime` exposes no asynchronous option.
-
-  SQL virtual machines are a special case. `az sql vm update` has no `--no-wait` option and
-  blocks for roughly two minutes per VM, and although `Update-AzSqlVM` advertises `-NoWait`
-  and `-AsJob`, both are broken in `Az.SqlVirtualMachine` 2.4.0. The script therefore submits
-  the change to ARM directly (read the resource, change `sqlServerLicenseType`, write it
-  back), which returns in seconds. If that request fails for any reason it automatically
-  falls back to the synchronous `az sql vm update` path.
+  SQL VM updates are always synchronous, regardless of `-WaitForCompletion`.
 
   For Arc, a `TimedOut` result is inconclusive rather than a failure — the agent may still
   apply the setting after the script stops waiting.

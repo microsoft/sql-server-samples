@@ -6,3 +6,8 @@ manage-payg-transition/
 runnow.ps1
 ModifiedResources_*.csv
 *.log
+
+# Internal test log used during development. It records live test results against
+# real Microsoft internal subscriptions, resource names, tenant/subscription IDs
+# and account details, and must not be published in this public repository.
+TESTPLAN.md
