@@ -44,8 +44,9 @@
     change has been applied.
 
     Exceptions: SQL virtual machines and SSIS integration runtimes always wait, because
-    'az sql vm update' and Set-AzDataFactoryV2IntegrationRuntime provide no asynchronous
-    option. Using this switch makes runs substantially slower on large estates.
+    Update-AzSqlVM must not be run asynchronously for SQL VMs (see Invoke-SqlVmLicenseUpdate)
+    and Set-AzDataFactoryV2IntegrationRuntime provides no asynchronous option. Using this
+    switch makes runs substantially slower on large estates.
 
 .PARAMETER AutomationAccResourceGroupName
     Required only when -RunMode is 'Scheduled'. Resource group for the Azure
@@ -142,10 +143,9 @@ $azureLicenseType = if ($TargetLicenseType -eq "PAYG") { "LicenseIncluded" } els
 $arcLicenseType    = if ($TargetLicenseType -eq "PAYG") { "PAYG" } else { "Paid" }
 
 # === Connect once here instead of letting each embedded script (Arc/Azure) redundantly
-#     re-authenticate. Az PowerShell's context and the Azure CLI's token cache are
-#     process-wide, so authenticating once means each embedded script's own Connect-Azure
-#     call finds an already-valid context/session and skips straight past its own login
-#     and (for the Azure CLI) its install-check, instead of repeating that work.
+#     re-authenticate. Az PowerShell's context is process-wide, so authenticating once
+#     means each embedded script's own Connect-Azure call finds an already-valid context
+#     and skips straight past its own login, instead of repeating that work.
 if ($RunMode -eq "Single") {
     if (-not (Get-Module -ListAvailable -Name Az.Accounts)) {
         Write-Output "Az.Accounts module not found. Installing..."
@@ -169,16 +169,6 @@ if ($RunMode -eq "Single") {
     # connection for this tenant has already been established/validated, so their
     # own Connect-Azure calls can skip repeating the work.
     $env:PAYG_PRECONNECTED_TENANT = $TenantId
-
-    if ($Target -eq "Both" -or $Target -eq "Azure") {
-        if (Get-Command az -ErrorAction SilentlyContinue) {
-            $acct = az account show --output json 2>$null | ConvertFrom-Json
-            if ($acct -and $acct.tenantId -eq $TenantId) {
-                Write-Output "Azure CLI already logged in as: $($acct.user.name) (tenant $TenantId). Reusing this session for the Azure run below."
-                $env:PAYG_PRECONNECTED_AZCLI = '1'
-            }
-        }
-    }
 }
 
 # === Embedded dependency scripts (materialized to disk at runtime; nothing is downloaded) ===
@@ -236,13 +226,14 @@ $EmbeddedScripts['Azure'] = @'
 .PARAMETER WaitForCompletion
     Optional. If specified, waits for each update to reach a terminal state before continuing
     and reports the confirmed outcome ("Updated"). By default the script submits updates with
-    --no-wait and reports "RequestSubmitted", meaning the service accepted the request rather
+    -AsJob and reports "RequestSubmitted", meaning the service accepted the request rather
     than that the change has been applied.
 
     Note: Set-AzDataFactoryV2IntegrationRuntime provides no asynchronous option, so SSIS
     integration runtimes always wait regardless of this switch and always report "Updated".
-    SQL virtual machines are submitted asynchronously through a direct ARM request because
-    'az sql vm update' has no --no-wait option; see Invoke-SqlVmLicenseUpdate.
+    SQL virtual machines are always updated synchronously via Update-AzSqlVM (no -AsJob/-NoWait)
+    because SQL VM license updates must not be submitted asynchronously; see
+    Invoke-SqlVmLicenseUpdate.
 #>
 
 param (
@@ -300,12 +291,6 @@ $ProgressPreference     = "SilentlyContinue"
 $InformationPreference  = "SilentlyContinue"
 $WarningPreference      = "SilentlyContinue"
 
-# Reloads PATH from the Machine and User scopes into this process so a tool installed
-# by a child process (winget/msiexec) can be found immediately without restarting the shell.
-function Refresh-Path {
-    $env:Path = [System.Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path', 'User')
-}
-
 function Connect-Azure {
     [CmdletBinding()]
     param(
@@ -343,146 +328,14 @@ function Connect-Azure {
         }
         Write-Output "Connected to Azure PowerShell as: $($ctx.Context.Account)"
     }
-
-    # 3) Sync Azure CLI if available - reuse an existing az CLI session for the same tenant when possible.
-    #    If it's missing, actually install it (not just report the problem) so a clean machine works
-    #    without manual setup: try winget first, then fall back to a direct silent MSI install, which
-    #    is Microsoft's documented scriptable install path and doesn't depend on winget being present.
-    #    Skip all of this entirely if the parent script already verified az CLI is installed and
-    #    logged in for this tenant (see $env:PAYG_PRECONNECTED_AZCLI), avoiding redundant work.
-    if ($env:PAYG_PRECONNECTED_AZCLI -eq '1' -and $env:PAYG_PRECONNECTED_TENANT -eq $TenantId -and (Get-Command az -ErrorAction SilentlyContinue)) {
-        Write-Output "Azure CLI session for tenant $TenantId already verified by the parent script. Skipping redundant check."
-        return
-    }
-
-    if (-not (Get-Command az -ErrorAction SilentlyContinue)) {
-        Write-Output "Azure CLI ('az') not found. Attempting to install it automatically..."
-        $azInstalled = $false
-
-        if (Get-Command winget -ErrorAction SilentlyContinue) {
-            Write-Output "Trying winget install of Microsoft.AzureCLI..."
-            winget install --id Microsoft.AzureCLI --exact --silent --accept-package-agreements --accept-source-agreements
-            Refresh-Path
-            if (Get-Command az -ErrorAction SilentlyContinue) {
-                $azInstalled = $true
-                Write-Output "Azure CLI installed successfully via winget."
-            }
-            else {
-                Write-Output "winget install did not result in a usable 'az' command (exit code $LASTEXITCODE)."
-            }
-        }
-
-        if (-not $azInstalled) {
-            Write-Output "Trying direct MSI install of Azure CLI..."
-            $msiPath = Join-Path $env:TEMP "AzureCLI-$(Get-Random).msi"
-            try {
-                Invoke-WebRequest -Uri 'https://aka.ms/installazurecliwindows' -OutFile $msiPath -UseBasicParsing -ErrorAction Stop
-                $msiExit = (Start-Process msiexec.exe -ArgumentList "/I `"$msiPath`" /quiet /norestart" -Wait -PassThru).ExitCode
-                Refresh-Path
-                if (Get-Command az -ErrorAction SilentlyContinue) {
-                    $azInstalled = $true
-                    Write-Output "Azure CLI installed successfully via MSI."
-                }
-                else {
-                    Write-Output "MSI install completed with exit code $msiExit but 'az' is still not on PATH."
-                }
-            }
-            catch {
-                Write-Output "Direct MSI install of Azure CLI failed: $_"
-            }
-            finally {
-                Remove-Item -Path $msiPath -ErrorAction SilentlyContinue
-            }
-        }
-
-        if (-not $azInstalled) {
-            # Both automated install paths were genuinely attempted and failed (e.g. no admin rights,
-            # no internet access to aka.ms/PSGallery). At this point manual intervention is unavoidable,
-            # so fail clearly rather than let every downstream 'az' call error out confusingly later.
-            Write-Error "Azure CLI ('az') could not be installed automatically (winget and direct MSI install both failed or are unavailable). Install it manually from https://aka.ms/installazurecliwindows, restart the shell, and re-run this script."
-            exit 1
-        }
-    }
-
-    if (Get-Command az -ErrorAction SilentlyContinue) {
-        $acct = az account show --output json 2>$null | ConvertFrom-Json
-        if ($acct -and $acct.tenantId -eq $TenantId) {
-            Write-Output "Azure CLI already logged in as: $($acct.user.name) (tenant $TenantId). Reusing existing session."
-        }
-        else {
-            Write-Output "Running az login..."
-            if ($UseManagedIdentity -or $envType -eq 'AzureAutomation') {
-                az login --tenant $TenantId --identity | Out-Null
-            }
-            else {
-                az login --tenant $TenantId | Out-Null
-            }
-            $acct = az account show --output json | ConvertFrom-Json
-        }
-        Write-Output "Azure CLI logged in as: $($acct.user.name)"
-    }
-    else {
-        # The rest of this script relies on the Azure CLI (Invoke-AzCliQuery /
-        # Invoke-AzCliLicenseUpdate) to enumerate and update SQL Servers, Databases,
-        # and Managed Instances. Failing loudly here - instead of letting each
-        # downstream 'az' call fail later with a confusing "term not recognized"
-        # error - saves time and gives the user a clear, actionable fix.
-        Write-Error "Azure CLI ('az') was not found on PATH. This script requires the Azure CLI to query and update Azure SQL resources. Install it from https://aka.ms/installazurecliwindows, restart the shell, and re-run this script."
-        exit 1
-    }
 }
-
-<#
-.SYNOPSIS
-    Runs an 'az ... update' command and reports whether it actually succeeded.
-.DESCRIPTION
-    The Azure CLI signals failure through its exit code, not through a thrown
-    exception, so piping its output straight into ConvertFrom-Json silently
-    swallows errors and makes a failed update indistinguishable from a
-    successful one. This wrapper checks $LASTEXITCODE and returns a result
-    object used to populate the UpdateResult/UpdateError columns of the report.
-
-    By default updates are submitted with --no-wait so a large estate is not
-    processed serially; the caller then records "RequestSubmitted" rather than
-    "Updated", because the service has only accepted the request at that point.
-    Passing -WaitForCompletion to the script omits --no-wait, making the CLI poll
-    the operation to a terminal state so the outcome is confirmed.
-.PARAMETER SupportsNoWait
-    Set for commands that accept --no-wait. 'az sql vm update' does not; SQL VMs are
-    submitted asynchronously through Invoke-SqlVmLicenseUpdate instead.
-#>
 
 # Matches transient network failures observed in practice (e.g. Windows ephemeral
 # port exhaustion - WinError 10048 - and generic HttpRequestExceptions/connection
-# resets from Azure CLI or Az PowerShell). These are environment/network blips, not
-# problems with the request itself, so a short retry resolves most of them instead
-# of permanently marking an otherwise-valid resource update as "Failed".
+# resets from Az PowerShell). These are environment/network blips, not problems with
+# the request itself, so a short retry resolves most of them instead of permanently
+# marking an otherwise-valid resource update as "Failed".
 $script:TransientErrorPattern = 'socket|10048|underlying connection|connection was closed|forcibly closed|timed? ?out|temporarily unavailable|An error occurred while sending the request|could not be resolved|(?<!\d)(429|5\d\d)(?!\d)'
-
-function Invoke-AzCliArgsWithRetry {
-    param(
-        [Parameter(Mandatory = $true)][string[]]$Arguments,
-        [Parameter(Mandatory = $true)][string]$Description,
-        [int]$MaxAttempts = 3,
-        [int]$DelaySeconds = 5
-    )
-
-    for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
-        $output = & az @Arguments 2>&1
-        if ($LASTEXITCODE -eq 0) {
-            return [PSCustomObject]@{ Output = $output; ExitCode = 0 }
-        }
-
-        $message = ($output | Out-String).Trim()
-        $isTransient = $message -match $script:TransientErrorPattern
-        if (-not $isTransient -or $attempt -eq $MaxAttempts) {
-            return [PSCustomObject]@{ Output = $output; ExitCode = $LASTEXITCODE }
-        }
-
-        Write-Warning "Transient network error on attempt $attempt/$MaxAttempts for $Description`: $message. Retrying in $DelaySeconds s..."
-        Start-Sleep -Seconds $DelaySeconds
-    }
-}
 
 <#
 .SYNOPSIS
@@ -517,149 +370,98 @@ function Invoke-AzCmdletWithRetry {
     }
 }
 
-function Invoke-AzCliLicenseUpdate {
-    param(
-        [Parameter(Mandatory = $true)][string[]]$Arguments,
-        [Parameter(Mandatory = $true)][string]$Description,
-        [switch]$SupportsNoWait
-    )
-
-    $effectiveArgs = @($Arguments)
-    $submittedOnly = $false
-    if ($SupportsNoWait -and -not $WaitForCompletion) {
-        $effectiveArgs += '--no-wait'
-        $submittedOnly = $true
-    }
-
-    $attemptResult = Invoke-AzCliArgsWithRetry -Arguments $effectiveArgs -Description $Description
-    $output = $attemptResult.Output
-
-    if ($attemptResult.ExitCode -ne 0) {
-        $message = ($output | Out-String).Trim()
-        Write-Warning "Failed to update $Description`: $message"
-        return [PSCustomObject]@{ Success = $false; Result = $null; ErrorMessage = $message; Submitted = $submittedOnly }
-    }
-
-    # --no-wait produces no output, so only attempt to parse when something came back.
-    $parsed = $null
-    $raw = ($output | Out-String).Trim()
-    if (-not [string]::IsNullOrWhiteSpace($raw)) {
-        try { $parsed = $raw | ConvertFrom-Json } catch { $parsed = $raw }
-    }
-
-    # Note: this function must not write to the success stream. Anything emitted there
-    # would be merged into the return value, turning it into an array and hiding the
-    # message from the caller. Callers log their own success line.
-    return [PSCustomObject]@{ Success = $true; Result = $parsed; ErrorMessage = ""; Submitted = $submittedOnly }
-}
-
-
 <#
 .SYNOPSIS
-    Runs a read-only Azure CLI query and reports failures instead of silently returning nothing.
+    Runs an Az PowerShell 'Set-AzSql*' license-type update cmdlet (via scriptblock) and reports
+    whether it actually succeeded.
 .DESCRIPTION
-    Discovery calls used to be piped straight into ConvertFrom-Json. The Azure CLI signals
-    failure through $LASTEXITCODE rather than by throwing, so a failed query produced $null,
-    which every caller then treated as "no resources found". A transient error therefore looked
-    exactly like an empty result and the affected resources were skipped without any indication
-    that they had not actually been examined.
-
-    This wrapper checks the exit code, surfaces the real service error as a warning, and returns
-    the parsed value normalised to an array so callers can use .Count safely.
+    Replaces the previous Azure-CLI-based updater. The caller's scriptblock invokes the
+    appropriate Set-AzSql* cmdlet with -ErrorAction Stop (so failures are terminating and
+    retried/caught here) and, when -SupportsAsJob is set and -WaitForCompletion was not passed
+    to the script, with -AsJob so a large estate is not processed serially. In that case the
+    caller records "RequestSubmitted" rather than "Updated", because the service has only
+    accepted the request at that point; passing -WaitForCompletion to the script omits -AsJob,
+    so the cmdlet blocks until the operation reaches a terminal state and the outcome is
+    confirmed before returning.
+.PARAMETER SupportsAsJob
+    Set for cmdlets whose scriptblock conditionally passes -AsJob. Update-AzSqlVM does not use
+    this switch at all; SQL VMs are always updated synchronously (see Invoke-SqlVmLicenseUpdate).
 #>
-function Invoke-AzCliQuery {
+function Invoke-AzLicenseUpdate {
     param(
-        [Parameter(Mandatory = $true)][string[]]$Arguments,
-        [Parameter(Mandatory = $true)][string]$Description
+        [Parameter(Mandatory = $true)][scriptblock]$ScriptBlock,
+        [Parameter(Mandatory = $true)][string]$Description,
+        [switch]$SupportsAsJob
     )
 
-    $attemptResult = Invoke-AzCliArgsWithRetry -Arguments $Arguments -Description $Description
-    $output = $attemptResult.Output
+    $submittedOnly = [bool]($SupportsAsJob -and -not $WaitForCompletion)
 
-    if ($attemptResult.ExitCode -ne 0) {
-        $message = ($output | Out-String).Trim()
-        Write-Warning "Unable to query $Description`: $message"
-        return [PSCustomObject]@{ Success = $false; Value = @(); ErrorMessage = $message }
+    try {
+        $result = Invoke-AzCmdletWithRetry -Description $Description -ScriptBlock $ScriptBlock
+        return [PSCustomObject]@{ Success = $true; Result = $result; ErrorMessage = ""; Submitted = $submittedOnly }
     }
-
-    $raw = ($output | Out-String).Trim()
-    if ([string]::IsNullOrWhiteSpace($raw)) {
-        return [PSCustomObject]@{ Success = $true; Value = @(); ErrorMessage = "" }
-    }
-
-    try { $parsed = $raw | ConvertFrom-Json }
     catch {
-        Write-Warning "Unable to parse the response for $Description`: $($_.Exception.Message)"
-        return [PSCustomObject]@{ Success = $false; Value = @(); ErrorMessage = $_.Exception.Message }
+        Write-Warning "Failed to update $Description`: $($_.Exception.Message)"
+        return [PSCustomObject]@{ Success = $false; Result = $null; ErrorMessage = $_.Exception.Message; Submitted = $false }
     }
-
-    # Normalise to an array so .Count is meaningful for both single objects and empty results.
-    return [PSCustomObject]@{ Success = $true; Value = @($parsed); ErrorMessage = "" }
 }
-
 
 <#
 .SYNOPSIS
-    Updates the license type of a SQL virtual machine, asynchronously by default.
+    Updates the license type of a SQL virtual machine, always synchronously.
 .DESCRIPTION
-    'az sql vm update' has no --no-wait option and blocks until the operation reaches a
-    terminal state, which for a SQL VM is typically around two minutes per resource.
-    Update-AzSqlVM advertises -NoWait and -AsJob but both are broken in
-    Az.SqlVirtualMachine 2.4.0 (-NoWait forwards the bound parameter into Get-AzSqlVM,
-    which rejects it; -AsJob throws a NullReferenceException).
-
-    To honour the script's async-by-default contract this function talks to ARM directly:
-    it reads the resource, changes only sqlServerLicenseType and writes it back. ARM
-    accepts the request and returns an Azure-AsyncOperation header without waiting for the
-    provisioning to finish, so the call returns in seconds instead of minutes.
-
-    When -WaitForCompletion is passed, or if the ARM round trip fails for any reason, the
-    original synchronous 'az sql vm update' path is used so behaviour degrades safely.
+    Update-AzSqlVM advertises -NoWait and -AsJob, but SQL VM license updates must not be
+    submitted asynchronously: VMs cannot reliably run this operation in the background (the
+    -NoWait/-AsJob switches are also broken in Az.SqlVirtualMachine 2.4.0 - -NoWait forwards the
+    bound parameter into Get-AzSqlVM, which rejects it, and -AsJob throws a
+    NullReferenceException), so this function always calls Update-AzSqlVM synchronously and
+    waits for it to reach a terminal state, regardless of -WaitForCompletion.
 #>
 function Invoke-SqlVmLicenseUpdate {
     param(
-        [Parameter(Mandatory = $true)][string]$ResourceId,
         [Parameter(Mandatory = $true)][string]$Name,
         [Parameter(Mandatory = $true)][string]$ResourceGroup,
         [Parameter(Mandatory = $true)][string]$LicenseType
     )
 
-    $cliArguments = @('sql','vm','update','-n',$Name,'-g',$ResourceGroup,'--license-type',$LicenseType,'-o','json')
-
-    if ($WaitForCompletion) {
-        return Invoke-AzCliLicenseUpdate -Description "SQL VM '$Name'" -Arguments $cliArguments
-    }
-
-    $apiVersion = '2023-10-01'
-    $path = "$ResourceId`?api-version=$apiVersion"
-
     try {
-        $get = Invoke-AzRestMethod -Path $path -Method GET -ErrorAction Stop
-        if ($get.StatusCode -ne 200) {
-            throw "GET returned HTTP $($get.StatusCode): $($get.Content)"
+        $result = Invoke-AzCmdletWithRetry -Description "SQL VM '$Name'" -ScriptBlock {
+            Update-AzSqlVM -Name $Name -ResourceGroupName $ResourceGroup -LicenseType $LicenseType -ErrorAction Stop
         }
-
-        # Read-modify-write: the payload is the body ARM just returned with a single
-        # property changed, so no unrelated settings are dropped by the PUT.
-        $resource = $get.Content | ConvertFrom-Json
-        $resource.properties.sqlServerLicenseType = $LicenseType
-
-        $put = Invoke-AzRestMethod -Path $path -Method PUT -Payload ($resource | ConvertTo-Json -Depth 30) -ErrorAction Stop
-        if ($put.StatusCode -ge 400) {
-            throw "PUT returned HTTP $($put.StatusCode): $($put.Content)"
-        }
-
-        $parsed = $null
-        if (-not [string]::IsNullOrWhiteSpace($put.Content)) {
-            try { $parsed = $put.Content | ConvertFrom-Json } catch { $parsed = $put.Content }
-        }
-
-        return [PSCustomObject]@{ Success = $true; Result = $parsed; ErrorMessage = ""; Submitted = $true }
+        return [PSCustomObject]@{ Success = $true; Result = $result; ErrorMessage = ""; Submitted = $false }
     }
     catch {
-        Write-Warning "Asynchronous update of SQL VM '$Name' failed ($($_.Exception.Message)). Falling back to the synchronous 'az sql vm update' path."
-        return Invoke-AzCliLicenseUpdate -Description "SQL VM '$Name'" -Arguments $cliArguments
+        Write-Warning "Failed to update SQL VM '$Name': $($_.Exception.Message)"
+        return [PSCustomObject]@{ Success = $false; Result = $null; ErrorMessage = $_.Exception.Message; Submitted = $false }
     }
+}
+
+<#
+.SYNOPSIS
+    Tests whether a resource's tags match any of the -ExclusionTags key/value pairs.
+.DESCRIPTION
+    Replaces the JMESPath 'tags.<key> != <value>' clauses previously embedded in each Azure
+    CLI --query. $Tags may be a [hashtable] (Az.Sql database/elastic-pool/instance/instance-pool
+    model objects) or an IDictionary of a single tag (the SQL VM model's singular .Tag property);
+    either shape is handled the same way. A resource is excluded when ANY exclusion tag key is
+    present with a matching value, mirroring the previous CLI filter's semantics.
+#>
+function Test-ExcludedByTags {
+    param(
+        [Parameter(Mandatory = $false)]$Tags,
+        [Parameter(Mandatory = $true)][hashtable]$ExclusionTagTable
+    )
+
+    if ($ExclusionTagTable.Keys.Count -eq 0 -or $null -eq $Tags) {
+        return $false
+    }
+
+    foreach ($key in $ExclusionTagTable.Keys) {
+        if ($Tags.Contains($key) -and $Tags[$key] -eq $ExclusionTagTable[$key]) {
+            return $true
+        }
+    }
+    return $false
 }
 
 
@@ -763,6 +565,11 @@ function Format-ExecutionOutcomeSummary {
 
 $finalStatus = @()
 
+# Whether Set-AzSql* license updates below are submitted with -AsJob (fire-and-forget, reported
+# as "RequestSubmitted") or run synchronously to a terminal state (reported as "Updated"). SQL
+# VMs never use this - see Invoke-SqlVmLicenseUpdate.
+$submitAsync = -not $WaitForCompletion
+
 # Convert to hashtable explicitly
 $tagTable = @{}
 if($ExclusionTags){
@@ -838,6 +645,33 @@ try {
     Write-Error "Can't import module Az.DataFactory: $_"
 }
 
+# Ensure Az.Sql is available and import it (Get-/Set-AzSqlDatabase, Get-/Set-AzSqlInstance,
+# Get-/Set-AzSqlElasticPool, Get-/Set-AzSqlInstancePool, Get-/Set-AzSqlServer all live here)
+try {
+    if (-not (Get-Module -ListAvailable -Name Az.Sql)) {
+        Write-Output "Az.Sql module not found. Installing..."
+        Install-Module -Name Az.Sql -Scope CurrentUser -Repository PSGallery -Force
+    } else {
+        Write-Output "Az.Sql module is already installed."
+    }
+    Import-Module Az.Sql -Force
+} catch {
+    Write-Error "Can't import module Az.Sql: $_"
+}
+
+# Ensure Az.SqlVirtualMachine is available and import it (Get-/Update-AzSqlVM)
+try {
+    if (-not (Get-Module -ListAvailable -Name Az.SqlVirtualMachine)) {
+        Write-Output "Az.SqlVirtualMachine module not found. Installing..."
+        Install-Module -Name Az.SqlVirtualMachine -Scope CurrentUser -Repository PSGallery -Force
+    } else {
+        Write-Output "Az.SqlVirtualMachine module is already installed."
+    }
+    Import-Module Az.SqlVirtualMachine -Force
+} catch {
+    Write-Error "Can't import module Az.SqlVirtualMachine: $_"
+}
+
 # Map License Types for SQL VMs: LicenseIncluded -> PAYG, BasePrice -> AHUB.
 $SqlVmLicenseType = if ($LicenseType -eq "LicenseIncluded") { "PAYG" } else { "AHUB" }
 
@@ -888,233 +722,181 @@ if (-not $subscriptions -or @($subscriptions).Count -eq 0) {
     exit 1
 }
 
-# Build resource group filter if specified.
-$rgFilter = if ($ResourceGroup) { "resourceGroup=='$ResourceGroup'" } else { "" }
+# Resource group and tag-based exclusion filtering are applied per resource type via
+# Where-Object/Test-ExcludedByTags below instead of a shared JMESPath fragment.
 $scriptStartTime = Get-Date
 Write-Output "Our adventure begins at: $scriptStartTime`n"
-$tagsFilter = $null
-if($tagTable.Keys.Count -gt 0) {
-    $tagsFilter += " && "
-    $tagcount = $tagTable.Keys.Count
-    foreach ($tag in $tagTable.Keys) {
-        $tagcount--
-        $tagsFilter += " tags.$($tag) != '$($tagTable[$tag])' "
-        if($tagcount -gt 0) {
-            $tagsFilter += " && "
-        }
-    }
-}
 
 # Process each subscription.
 foreach ($sub in $subscriptions) {
     try {
         Write-Output "===== Entering Subscription: $($sub.name) ====="
         Write-Output "Switching context to subscription: $($sub.name)"
-        <#if($SqlVmLicenseType -eq "LicenseIncluded") {
-            Write-Output "SQL VM License Type: PAYG"
-            $ArcSQLServerExtensionDeployment = az tag list --resource-id "/subscriptions/$sub.id" --query "properties.tags.ArcSQLServerExtensionDeployment" -o json | ConvertFrom-Json
-            if ($ArcSQLServerExtensionDeployment -ne "LicenseIncluded") {
-                Write-Output "SQL VM License Type: PAYG"
-                az tag update --resource-id /"/subscriptions/$sub.id" --operation merge --tags ArcSQLServerExtensionDeployment=PAYG | Out-Null
-            }
-        } else {
-            Write-Output "SQL VM License Type: AHUB"
-        }#>
 
         Write-Output "License Type: $LicenseType"
-        az account set --subscription $sub.id
-        if ($LASTEXITCODE -ne 0) {
-            # Every az call below is scoped by the CLI's active subscription. If the switch
+        try {
+            Invoke-AzCmdletWithRetry -Description "Set-AzContext for subscription $($sub.id)" -ScriptBlock {
+                Set-AzContext -Subscription $sub.id -ErrorAction Stop | Out-Null
+            }
+        }
+        catch {
+            # Every cmdlet below is scoped by the current Az PowerShell context. If the switch
             # fails they would all silently run against whichever subscription was previously
             # selected, so resources in the wrong subscription could be updated.
-            Write-Warning "Skipping subscription '$($sub.name)' ($($sub.id)): the Azure CLI context could not be switched to it."
+            Write-Warning "Skipping subscription '$($sub.name)' ($($sub.id)): the Az PowerShell context could not be switched to it: $($_.Exception.Message)"
             continue
         }
 
         # --- Section: Update SQL Virtual Machines ---
         try {
             Write-Output "Seeking SQL Virtual Machines that require a license update to $SqlVmLicenseType..."
-            
-            # Build SQL VM query
-            $sqlVmQuery = "[?sqlServerLicenseType!='${SqlVmLicenseType}' && sqlServerLicenseType!='DR'"
-            
-            # Add resource group filter if specified
-            if ($rgFilter) {
-                $sqlVmQuery += " && $rgFilter"
-            }
-            
-            # Add name filter if ResourceName specified
-            if ($ResourceName) {
-                $sqlVmQuery += " && name=='$ResourceName'"
-            }
-            
-            # Add tags filter if specified
-            if ($tagsFilter) {
-                $sqlVmQuery += " $tagsFilter"
-            }
-            
-            $sqlVmQuery += "].{name:name, resourceGroup:resourceGroup, sqlServerLicenseType:sqlServerLicenseType, type:type, id:id, Location:location}"
 
-            Write-Output "Seeking SQL Virtual Machines with filter $sqlVmQuery..."
-            $sqlVmQueryResult = Invoke-AzCliQuery -Description "SQL virtual machines" -Arguments @('sql','vm','list','--query',$sqlVmQuery,'-o','json')
-            if (-not $sqlVmQueryResult.Success) {
-                Write-Warning "SQL virtual machines could not be listed, so none were assessed in this subscription. Re-run to retry."
+            $sqlVMs = @(Invoke-AzCmdletWithRetry -Description "SQL virtual machines in subscription $($sub.id)" -ScriptBlock {
+                Get-AzSqlVM -ErrorAction Stop
+            })
+
+            # Mirrors the previous CLI --query filter: license mismatch, exclude 'DR', and the
+            # optional resource-group/name scope.
+            $sqlVMs = @($sqlVMs | Where-Object { $_.SqlServerLicenseType -ne $SqlVmLicenseType -and $_.SqlServerLicenseType -ne 'DR' })
+            if ($ResourceGroup) {
+                $sqlVMs = @($sqlVMs | Where-Object { ($_.Id -split '/')[4] -eq $ResourceGroup })
             }
-            $sqlVMs = $sqlVmQueryResult.Value
-            $sqlVmsToUpdate = [System.Collections.ArrayList]::new()
-            if($sqlVMs.Count -eq 0) {
+            if ($ResourceName) {
+                $sqlVMs = @($sqlVMs | Where-Object { $_.Name -eq $ResourceName })
+            }
+
+            if ($sqlVMs.Count -eq 0) {
                 Write-Output "No SQL VMs found that require a license update."
             } else {
                 Write-Output "Found $($sqlVMs.Count) SQL VMs that require a license update."
             }
+
             foreach ($sqlvm in $sqlVMs) {
+                $vmResourceGroup = ($sqlvm.Id -split '/')[4]
+                $vmName = $sqlvm.Name
 
-                if($null -ne (az vm list --query "[?name=='$($sqlvm.name)' && resourceGroup=='$($sqlvm.resourceGroup)' $tagsFilter]"))
-                {
-                    $vmStatusQuery = Invoke-AzCliQuery -Description "power state of VM '$($sqlvm.name)'" -Arguments @(
-                        'vm','get-instance-view','--resource-group',$sqlvm.resourceGroup,'--name',$sqlvm.name,
-                        '--query',"{Name:name, ResourceGroup:resourceGroup, PowerState:instanceView.statuses[?starts_with(code, 'PowerState/')].displayStatus | [0]}",'-o','json')
-                    if (-not $vmStatusQuery.Success) {
-                        # Without a power state the VM would silently fail the "VM running" test
-                        # below and be skipped as though it were switched off.
-                        Write-Warning "Skipping SQL VM '$($sqlvm.name)': its power state could not be read, so it was not assessed. Re-run to retry."
-                        $modifiedResources += [PSCustomObject]@{
-                            TenantID            = $TenantId
-                            SubID               = ($sqlvm.id -split '/')[2]
-                            ResourceName        = $sqlvm.name
-                            ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
-                            Status              = "UnknownPowerState"
-                            OriginalLicenseType = $sqlvm.sqlServerLicenseType
-                            ResourceGroup       = $sqlvm.resourceGroup
-                            Location            = $sqlvm.Location
-                            UpdateResult        = "Failed"
-                            UpdateError         = "Power state could not be read"
-                        }
-                        continue
-                    }
-                    $vmStatus = $vmStatusQuery.Value | Select-Object -First 1
-                    if (($vmStatus.PowerState -eq "VM running") -and ($sqlvm.sqlServerLicenseType -ne "DR")) {
-
-                        $vmResult = "NotAttempted"
-                        $vmError = ""
-
-                        if ($ReportOnly) {
-                            $vmResult = "ReportOnly"
-                            Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' (would change '$($sqlvm.sqlServerLicenseType)' -> '$SqlVmLicenseType')."
-                        } else {
-                            Write-Output "Updating SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' to license type '$SqlVmLicenseType'..."
-                            $update = Invoke-SqlVmLicenseUpdate -ResourceId $sqlvm.id -Name $sqlvm.name -ResourceGroup $sqlvm.resourceGroup -LicenseType $SqlVmLicenseType
-                            if ($update.Success) {
-                                $finalStatus += $update.Result
-                                $vmResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
-                                Write-Output "-- SQL VM '$($sqlvm.name)': $vmResult (license type '$SqlVmLicenseType')"
-                            }
-                            else { $vmResult = "Failed"; $vmError = $update.ErrorMessage }
-                        }
-
-                        # Collect data after the attempt so the recorded outcome is accurate
-                        $modifiedResources += [PSCustomObject]@{
-                            TenantID            = $TenantId
-                            SubID               = ($sqlvm.id -split '/')[2]
-                            ResourceName        = $sqlvm.name
-                            ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
-                            Status              = $vmStatus.PowerState
-                            OriginalLicenseType = $sqlvm.sqlServerLicenseType
-                            ResourceGroup       = $sqlvm.resourceGroup
-                            Location            = $sqlvm.Location
-                            UpdateResult        = $vmResult
-                            UpdateError         = $vmError
-                            # Cores             <To be added>
-                        }
-                    }
-                    elseif ($vmStatus.PowerState -ne "VM running") {
-                        Write-Output "SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' is in '$($vmStatus.PowerState)' state (not running). Skipping update..."
-                        $modifiedResources += [PSCustomObject]@{
-                            TenantID            = $TenantId
-                            SubID               = ($sqlvm.id -split '/')[2]
-                            ResourceName        = $sqlvm.name
-                            ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
-                            Status              = $vmStatus.PowerState
-                            OriginalLicenseType = $sqlvm.sqlServerLicenseType
-                            ResourceGroup       = $sqlvm.resourceGroup
-                            Location            = $sqlvm.Location
-                            UpdateResult        = "SkippedNotRunning"
-                            UpdateError         = "Underlying VM is in '$($vmStatus.PowerState)' state (must be running to update license)"
-                        }
-                    }
-                    elseif ($sqlvm.sqlServerLicenseType -eq "DR") {
-                        Write-Output "SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' has license type 'DR'. Skipping update..."
-                        $modifiedResources += [PSCustomObject]@{
-                            TenantID            = $TenantId
-                            SubID               = ($sqlvm.id -split '/')[2]
-                            ResourceName        = $sqlvm.name
-                            ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
-                            Status              = $vmStatus.PowerState
-                            OriginalLicenseType = $sqlvm.sqlServerLicenseType
-                            ResourceGroup       = $sqlvm.resourceGroup
-                            Location            = $sqlvm.Location
-                            UpdateResult        = "SkippedDR"
-                            UpdateError         = "SQL VM has Disaster Recovery ('DR') license type"
-                        }
-                    }
-                }
-                else {
-                    Write-Output "SQL VM '$($sqlvm.name)' in RG '$($sqlvm.resourceGroup)' Skipping because of tags..."
+                if (Test-ExcludedByTags -Tags $sqlvm.Tag -ExclusionTagTable $tagTable) {
+                    Write-Output "SQL VM '$vmName' in RG '$vmResourceGroup' Skipping because of tags..."
                     $modifiedResources += [PSCustomObject]@{
                         TenantID            = $TenantId
-                        SubID               = ($sqlvm.id -split '/')[2]
-                        ResourceName        = $sqlvm.name
+                        SubID               = ($sqlvm.Id -split '/')[2]
+                        ResourceName        = $vmName
                         ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
                         Status              = "SkippedTags"
-                        OriginalLicenseType = $sqlvm.sqlServerLicenseType
-                        ResourceGroup       = $sqlvm.resourceGroup
+                        OriginalLicenseType = $sqlvm.SqlServerLicenseType
+                        ResourceGroup       = $vmResourceGroup
                         Location            = $sqlvm.Location
                         UpdateResult        = "SkippedTags"
                         UpdateError         = "Excluded by tags filter"
                     }
+                    continue
                 }
-            }
-            if($sqlVmsToUpdate.Count -eq 0) {
-                Write-Output "No stopped SQL VMs needed to be started for a license update."
-            } else {
-                Write-Output "Found $($sqlVmsToUpdate.Count) to Start SQL VMs that require a license update."
+
+                $vmPowerState = $null
+                try {
+                    $vmPowerState = Invoke-AzCmdletWithRetry -Description "power state of VM '$vmName'" -ScriptBlock {
+                        (Get-AzVM -ResourceGroupName $vmResourceGroup -Name $vmName -Status -ErrorAction Stop).Statuses |
+                            Where-Object { $_.Code -like 'PowerState/*' } | Select-Object -First 1 -ExpandProperty DisplayStatus
+                    }
+                }
+                catch {
+                    # Without a power state the VM would silently fail the "VM running" test
+                    # below and be skipped as though it were switched off.
+                    Write-Warning "Skipping SQL VM '$vmName': its power state could not be read, so it was not assessed. Re-run to retry."
+                    $modifiedResources += [PSCustomObject]@{
+                        TenantID            = $TenantId
+                        SubID               = ($sqlvm.Id -split '/')[2]
+                        ResourceName        = $vmName
+                        ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
+                        Status              = "UnknownPowerState"
+                        OriginalLicenseType = $sqlvm.SqlServerLicenseType
+                        ResourceGroup       = $vmResourceGroup
+                        Location            = $sqlvm.Location
+                        UpdateResult        = "Failed"
+                        UpdateError         = "Power state could not be read"
+                    }
+                    continue
+                }
+
+                if ($vmPowerState -eq "VM running") {
+
+                    $vmResult = "NotAttempted"
+                    $vmError = ""
+
+                    if ($ReportOnly) {
+                        $vmResult = "ReportOnly"
+                        Write-Output "ReportOnly mode enabled. Skipping modification for SQL VM '$vmName' in RG '$vmResourceGroup' (would change '$($sqlvm.SqlServerLicenseType)' -> '$SqlVmLicenseType')."
+                    } else {
+                        Write-Output "Updating SQL VM '$vmName' in RG '$vmResourceGroup' to license type '$SqlVmLicenseType'..."
+                        # Always synchronous - SQL VM license updates must not be submitted via
+                        # -AsJob/-NoWait (see Invoke-SqlVmLicenseUpdate), so this call blocks
+                        # until the update completes regardless of -WaitForCompletion.
+                        $update = Invoke-SqlVmLicenseUpdate -Name $vmName -ResourceGroup $vmResourceGroup -LicenseType $SqlVmLicenseType
+                        if ($update.Success) {
+                            $finalStatus += $update.Result
+                            $vmResult = "Updated"
+                            Write-Output "-- SQL VM '$vmName': $vmResult (license type '$SqlVmLicenseType')"
+                        }
+                        else { $vmResult = "Failed"; $vmError = $update.ErrorMessage }
+                    }
+
+                    # Collect data after the attempt so the recorded outcome is accurate
+                    $modifiedResources += [PSCustomObject]@{
+                        TenantID            = $TenantId
+                        SubID               = ($sqlvm.Id -split '/')[2]
+                        ResourceName        = $vmName
+                        ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
+                        Status              = $vmPowerState
+                        OriginalLicenseType = $sqlvm.SqlServerLicenseType
+                        ResourceGroup       = $vmResourceGroup
+                        Location            = $sqlvm.Location
+                        UpdateResult        = $vmResult
+                        UpdateError         = $vmError
+                        # Cores             <To be added>
+                    }
+                }
+                else {
+                    Write-Output "SQL VM '$vmName' in RG '$vmResourceGroup' is in '$vmPowerState' state (not running). Skipping update..."
+                    $modifiedResources += [PSCustomObject]@{
+                        TenantID            = $TenantId
+                        SubID               = ($sqlvm.Id -split '/')[2]
+                        ResourceName        = $vmName
+                        ResourceType        = "Microsoft.SqlVirtualMachine/sqlVirtualMachines"
+                        Status              = $vmPowerState
+                        OriginalLicenseType = $sqlvm.SqlServerLicenseType
+                        ResourceGroup       = $vmResourceGroup
+                        Location            = $sqlvm.Location
+                        UpdateResult        = "SkippedNotRunning"
+                        UpdateError         = "Underlying VM is in '$vmPowerState' state (must be running to update license)"
+                    }
+                }
             }
         }
         catch {
             Write-Error "An error occurred while updating SQL VMs: $_"
         }
 
-        # --- Section: Update SQL Managed Instances (Stopped then Ready) "
-        $sqlMIsToUpdate = [System.Collections.ArrayList]::new()
+        # --- Section: Update SQL Managed Instances ---
         try {
-            
-          
-            # Build Managed Instance query
-            $miRunningQuery = "[?licenseType!='${LicenseType}' && state=='Ready'"
+            $runningMIs = @(Invoke-AzCmdletWithRetry -Description "SQL Managed Instances in subscription $($sub.id)" -ScriptBlock {
+                Get-AzSqlInstance -ErrorAction Stop
+            })
 
-            # Add resource group filter if specified
-            if ($rgFilter) {
-                $miRunningQuery += " && $rgFilter"
+            # Mirrors the previous CLI --query filter (license mismatch, optional RG/name scope,
+            # tag exclusion). The 'state==Ready' pre-filter is not reproduced here: the Az.Sql
+            # module's managed-instance model does not expose a state/provisioning-state property
+            # to check it against, so a managed instance that is not actually ready is instead
+            # caught by Set-AzSqlInstance failing and being recorded as "Failed" below.
+            $runningMIs = @($runningMIs | Where-Object { $_.LicenseType -ne $LicenseType })
+            if ($ResourceGroup) {
+                $runningMIs = @($runningMIs | Where-Object { $_.ResourceGroupName -eq $ResourceGroup })
             }
-            
-            # Add name filter if ResourceName specified
             if ($ResourceName) {
-                $miRunningQuery += " && name=='$ResourceName'"
+                $runningMIs = @($runningMIs | Where-Object { $_.ManagedInstanceName -eq $ResourceName })
             }
-            
-            # Add tags filter if specified
-            if ($tagsFilter) {
-                $miRunningQuery += " $tagsFilter"
-            }
+            $runningMIs = @($runningMIs | Where-Object { -not (Test-ExcludedByTags -Tags $_.Tags -ExclusionTagTable $tagTable) })
 
-            $miRunningQuery += "].{name:name, state:state, resourceGroup:resourceGroup, licenseType:licenseType, location:location, id:id, ResourceType:type}"
-
-            Write-Output "Processing SQL Managed Instances that are running with filter $miRunningQuery..."
-            $miQueryResult = Invoke-AzCliQuery -Description "SQL Managed Instances" -Arguments @('sql','mi','list','--query',$miRunningQuery,'-o','json')
-            if (-not $miQueryResult.Success) {
-                Write-Warning "SQL Managed Instances could not be listed, so none were assessed in this subscription. Re-run to retry."
-            }
-            $runningMIs = $miQueryResult.Value
+            Write-Output "Processing SQL Managed Instances that require a license update..."
             if($runningMIs.Count -eq 0) {
                 Write-Output "No SQL Managed Instances found that require a license update."
             } else {
@@ -1127,15 +909,16 @@ foreach ($sub in $subscriptions) {
 
                 if ($ReportOnly) {
                     $miResult = "ReportOnly"
-                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Managed Instance '$($mi.name)' in RG '$($mi.resourceGroup)' (would change '$($mi.licenseType)' -> '$LicenseType')."
+                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Managed Instance '$($mi.ManagedInstanceName)' in RG '$($mi.ResourceGroupName)' (would change '$($mi.LicenseType)' -> '$LicenseType')."
                 } else {
-                    Write-Output "Updating SQL Managed Instance '$($mi.name)' in RG '$($mi.resourceGroup)' to license type '$LicenseType'..."
-                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Managed Instance '$($mi.name)'" -SupportsNoWait -Arguments @(
-                        'sql','mi','update','--name',$mi.name,'--resource-group',$mi.resourceGroup,'--license-type',$LicenseType,'-o','json')
+                    Write-Output "Updating SQL Managed Instance '$($mi.ManagedInstanceName)' in RG '$($mi.ResourceGroupName)' to license type '$LicenseType'..."
+                    $update = Invoke-AzLicenseUpdate -Description "SQL Managed Instance '$($mi.ManagedInstanceName)'" -SupportsAsJob -ScriptBlock {
+                        Set-AzSqlInstance -Name $mi.ManagedInstanceName -ResourceGroupName $mi.ResourceGroupName -LicenseType $LicenseType -AsJob:$submitAsync -Force -ErrorAction Stop
+                    }
                     if ($update.Success) {
                         $finalStatus += $update.Result
                         $miResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
-                        Write-Output "-- SQL Managed Instance '$($mi.name)': $miResult (license type '$LicenseType')"
+                        Write-Output "-- SQL Managed Instance '$($mi.ManagedInstanceName)': $miResult (license type '$LicenseType')"
                     }
                     else { $miResult = "Failed"; $miError = $update.ErrorMessage }
                 }
@@ -1143,13 +926,13 @@ foreach ($sub in $subscriptions) {
                 # Collect data after the attempt so the recorded outcome is accurate
                 $modifiedResources += [PSCustomObject]@{
                     TenantID            = $TenantId
-                    SubID               = ($mi.id -split '/')[2]
-                    ResourceName        = $mi.name
-                    ResourceType        = $mi.ResourceType
-                    Status              = $mi.state
-                    OriginalLicenseType = $mi.licenseType
-                    ResourceGroup       = $mi.resourceGroup
-                    Location            = $mi.location
+                    SubID               = ($mi.Id -split '/')[2]
+                    ResourceName        = $mi.ManagedInstanceName
+                    ResourceType        = "Microsoft.Sql/managedInstances"
+                    Status              = ""
+                    OriginalLicenseType = $mi.LicenseType
+                    ResourceGroup       = $mi.ResourceGroupName
+                    Location            = $mi.Location
                     UpdateResult        = $miResult
                     UpdateError         = $miError
                 }
@@ -1160,86 +943,29 @@ foreach ($sub in $subscriptions) {
         }
 
         # --- Section: Update SQL Databases and Elastic Pools ---
-       
         try {
-             Write-Output   "Querying SQL Servers within this subscription..."
-            
-            # First, let's verify we're in the right subscription context
-            $currentSubContext = az account show --query id -o tsv
-             Write-Output   "Currently in subscription context: $currentSubContext"
-            
-            if ($currentSubContext -ne $sub.id) {
-                 Write-Output   "Subscription context mismatch! Re-setting context..."
-                az account set --subscription $sub.id
-                if ($LASTEXITCODE -ne 0) {
-                    Write-Warning "Could not re-select subscription '$($sub.id)'; skipping SQL Server, database and elastic pool processing to avoid querying the wrong subscription."
-                    throw "Subscription context could not be set to '$($sub.id)'."
-                }
+            Write-Output "Querying SQL Servers within this subscription..."
+
+            $allServers = @(Invoke-AzCmdletWithRetry -Description "SQL Servers in the subscription" -ScriptBlock {
+                Get-AzSqlServer -ErrorAction Stop
+            })
+            Write-Output "Found a total of $($allServers.Count) SQL Servers in subscription"
+
+            $servers = $allServers
+            if ($ResourceGroup) {
+                $servers = @($servers | Where-Object { $_.ResourceGroupName -eq $ResourceGroup })
             }
-            
-            # Build SQL Server query with proper JMESPath syntax
-            $serverQuery = ""
-            $filterAdded = $false
-            
-            # Start with an empty filter array
-            if ($rgFilter -or $ResourceName -or $tagsFilter) {
-                $serverQuery = "["
-                
-                # Add resource group filter if specified
-                if ($rgFilter) {
-                    $serverQuery += "?$rgFilter"
-                    $filterAdded = $true
-                }
-                
-                # Add name filter if ResourceName is provided
-                if ($ResourceName) {
-                    if ($filterAdded) {
-                        $serverQuery += " && name=='$ResourceName'"
-                    } else {
-                        $serverQuery += "?name=='$ResourceName'"
-                        $filterAdded = $true
-                    }
-                }
-                
-                # Add tag filter if specified
-                if ($tagsFilter -and $filterAdded) {
-                    $serverQuery += "$tagsFilter"
-                } elseif ($tagsFilter) {
-                    $serverQuery += "?type=='Microsoft.Sql/servers'$tagsFilter" # A trick to make the tags filter work when it's the only filter
-                }
-                
-                $serverQuery += "]"
-            } else {
-                # No filters, get all servers
-                $serverQuery = "[]"
+            if ($ResourceName) {
+                $servers = @($servers | Where-Object { $_.ServerName -eq $ResourceName })
             }
-            
-            # Output the query for debugging
-             Write-Output   "SQL Server query: $serverQuery"
-            
-            # Get all servers first as a fallback in case the query fails
-            $allServersQuery = Invoke-AzCliQuery -Description "SQL Servers in the subscription" -Arguments @('sql','server','list','-o','json')
-            $allServers = $allServersQuery.Value
-             Write-Output   "Found a total of $($allServers.Count) SQL Servers in subscription"
-            
-            # Now try the filtered query
-            $serversQuery = Invoke-AzCliQuery -Description "SQL Servers matching the specified filters" -Arguments @('sql','server','list','--query',"$serverQuery",'-o','json')
-            if (-not $serversQuery.Success) {
-                # Distinguish a failed lookup from a genuinely empty one: falling through here
-                # would print "No SQL Servers found" and skip every database and elastic pool
-                # in the subscription as though there were nothing to do.
-                Write-Warning "SQL Servers could not be listed, so no databases or elastic pools were assessed in this subscription. Re-run to retry."
-                $servers = @()
-            } else {
-                $servers = $serversQuery.Value
-            }
-            
+            $servers = @($servers | Where-Object { -not (Test-ExcludedByTags -Tags $_.Tags -ExclusionTagTable $tagTable) })
+
             # Verify if we got any results
-            if ($null -eq $servers -or $servers.Count -eq 0) {
-                 Write-Output   "WARNING: No SQL Servers found with the specified filters."
-                 Write-Output   "Available SQL Servers in subscription:"
+            if ($servers.Count -eq 0) {
+                Write-Output "WARNING: No SQL Servers found with the specified filters."
+                Write-Output "Available SQL Servers in subscription:"
                 $allServers | ForEach-Object {
-                     Write-Output   "  - $($_.name) (Resource Group: $($_.resourceGroup))"
+                    Write-Output "  - $($_.ServerName) (Resource Group: $($_.ResourceGroupName))"
                 }
 
                 # Only fall back to scanning every server in the subscription when the
@@ -1249,69 +975,41 @@ foreach ($sub in $subscriptions) {
                 # resource-group filtered, so pools on out-of-scope servers would be
                 # modified.
                 if (-not $ResourceName -and -not $ResourceGroup) {
-                     Write-Output   "Proceeding with all SQL Servers since no specific ResourceName or ResourceGroup was provided."
+                    Write-Output "Proceeding with all SQL Servers since no specific ResourceName or ResourceGroup was provided."
                     $servers = $allServers
                 } else {
-                     Write-Output   "Scope was explicitly restricted; not falling back to all SQL Servers. Skipping SQL Database and Elastic Pool processing."
+                    Write-Output "Scope was explicitly restricted; not falling back to all SQL Servers. Skipping SQL Database and Elastic Pool processing."
                     $servers = @()
                 }
             } else {
-                 Write-Output   "Found $($servers.Count) SQL Servers matching the criteria."
+                Write-Output "Found $($servers.Count) SQL Servers matching the criteria."
                 $servers | ForEach-Object {
-                     Write-Output   "  - $($_.name) (Resource Group: $($_.resourceGroup))"
+                    Write-Output "  - $($_.ServerName) (Resource Group: $($_.ResourceGroupName))"
                 }
             }
 
             # Process each server
             foreach ($server in $servers) {
                 # Update SQL Databases
-                 Write-Output   "Scanning SQL Databases on server '$($server.name)' in resource group '$($server.resourceGroup)'..."
-                
-                # First get all databases to check if any exist
-                $allDbsQuery = Invoke-AzCliQuery -Description "databases on server '$($server.name)'" -Arguments @(
-                    'sql','db','list','--resource-group',$server.resourceGroup,'--server',$server.name,'-o','json')
-                if (-not $allDbsQuery.Success) {
-                    Write-Warning "Skipping server '$($server.name)': its databases could not be listed, so they cannot be assessed. Re-run to retry."
-                    continue
-                }
-                $allDbs = $allDbsQuery.Value
-                 Write-Output   "Found a total of $($allDbs.Count) databases on server '$($server.name)'"
-                
-                # Build database query with better error handling
-                $dbQuery = "[?licenseType!=null && licenseType!='$($LicenseType)'"
-                
-                # Add tags filter if specified
-                if ($tagsFilter) {
-                    $dbQuery += "$tagsFilter"
-                }
-                if ($rgFilter) {
-                    $dbQuery += " && $rgFilter"
-                }
-                
-                $dbQuery += "].{name:name, licenseType:licenseType, location:location, resourceGroup:resourceGroup, id:id, ResourceType:type, State:status}"
-                
-                 Write-Output   "Database query: $dbQuery"
-                
-                # Get databases with error handling
+                Write-Output "Scanning SQL Databases on server '$($server.ServerName)' in resource group '$($server.ResourceGroupName)'..."
+
                 try {
-                    $dbsQuery = Invoke-AzCliQuery -Description "databases requiring an update on server '$($server.name)'" -Arguments @(
-                        'sql','db','list','--resource-group',$server.resourceGroup,'--server',$server.name,'--query',"$dbQuery",'-o','json')
-                    if (-not $dbsQuery.Success) {
-                        Write-Warning "Skipping server '$($server.name)': its databases could not be assessed for a license update. Re-run to retry."
-                        continue
-                    }
-                    $dbs = $dbsQuery.Value
-                    
-                    if ($null -eq $dbs) {
-                         Write-Output   "No SQL Databases found on Server $($server.name) that require a license update."
-                    } elseif ($dbs.Count -eq 0) {
-                         Write-Output   "No SQL Databases found on Server $($server.name) that require a license update."
+                    $allDbs = @(Invoke-AzCmdletWithRetry -Description "databases on server '$($server.ServerName)'" -ScriptBlock {
+                        Get-AzSqlDatabase -ResourceGroupName $server.ResourceGroupName -ServerName $server.ServerName -ErrorAction Stop
+                    })
+                    Write-Output "Found a total of $($allDbs.Count) databases on server '$($server.ServerName)'"
+
+                    $dbs = @($allDbs | Where-Object { $null -ne $_.LicenseType -and $_.LicenseType -ne $LicenseType })
+                    $dbs = @($dbs | Where-Object { -not (Test-ExcludedByTags -Tags $_.Tags -ExclusionTagTable $tagTable) })
+
+                    if ($dbs.Count -eq 0) {
+                        Write-Output "No SQL Databases found on Server $($server.ServerName) that require a license update."
                     } else {
-                         Write-Output   "Found $($dbs.Count) SQL Databases on Server $($server.name) that require a license update:"
+                        Write-Output "Found $($dbs.Count) SQL Databases on Server $($server.ServerName) that require a license update:"
                         $dbs | ForEach-Object {
-                             Write-Output   "  - $($_.name) (Current license: $($_.licenseType))"
+                            Write-Output "  - $($_.DatabaseName) (Current license: $($_.LicenseType))"
                         }
-                        
+
                         foreach ($db in $dbs) {
 
                             $dbResult = "NotAttempted"
@@ -1319,15 +1017,16 @@ foreach ($sub in $subscriptions) {
 
                             if ($ReportOnly) {
                                 $dbResult = "ReportOnly"
-                                Write-Output "ReportOnly mode enabled. Skipping modification for SQL Database '$($db.name)' on server '$($server.name)' (would change '$($db.licenseType)' -> '$LicenseType')."
+                                Write-Output "ReportOnly mode enabled. Skipping modification for SQL Database '$($db.DatabaseName)' on server '$($server.ServerName)' (would change '$($db.LicenseType)' -> '$LicenseType')."
                             } else {
-                                 Write-Output   "Updating SQL Database '$($db.name)' on server '$($server.name)' to license type '$LicenseType'..."
-                                $update = Invoke-AzCliLicenseUpdate -Description "SQL Database '$($db.name)' on server '$($server.name)'" -SupportsNoWait -Arguments @(
-                                    'sql','db','update','--name',$db.name,'--server',$server.name,'--resource-group',$server.resourceGroup,'--set',"licenseType=$LicenseType",'-o','json')
+                                Write-Output "Updating SQL Database '$($db.DatabaseName)' on server '$($server.ServerName)' to license type '$LicenseType'..."
+                                $update = Invoke-AzLicenseUpdate -Description "SQL Database '$($db.DatabaseName)' on server '$($server.ServerName)'" -SupportsAsJob -ScriptBlock {
+                                    Set-AzSqlDatabase -ResourceGroupName $server.ResourceGroupName -ServerName $server.ServerName -DatabaseName $db.DatabaseName -LicenseType $LicenseType -AsJob:$submitAsync -ErrorAction Stop
+                                }
                                 if ($update.Success) {
                                     $finalStatus += $update.Result
                                     $dbResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
-                                    Write-Output "-- SQL Database '$($db.name)': $dbResult (license type '$LicenseType')"
+                                    Write-Output "-- SQL Database '$($db.DatabaseName)': $dbResult (license type '$LicenseType')"
                                 }
                                 else { $dbResult = "Failed"; $dbError = $update.ErrorMessage }
                             }
@@ -1335,68 +1034,46 @@ foreach ($sub in $subscriptions) {
                             # Collect data after the attempt so the recorded outcome is accurate
                             $modifiedResources += [PSCustomObject]@{
                                 TenantID            = $TenantId
-                                SubID               = ($db.id -split '/')[2]
-                                ResourceName        = $db.name
-                                ResourceType        = $db.ResourceType
-                                Status              = $db.State
-                                OriginalLicenseType = $db.licenseType
-                                ResourceGroup       = $db.resourceGroup
-                                Location            = $db.location
+                                SubID               = $sub.id
+                                ResourceName        = $db.DatabaseName
+                                ResourceType        = "Microsoft.Sql/servers/databases"
+                                Status              = $db.Status
+                                OriginalLicenseType = $db.LicenseType
+                                ResourceGroup       = $db.ResourceGroupName
+                                Location            = $db.Location
                                 UpdateResult        = $dbResult
                                 UpdateError         = $dbError
                             }
                         }
                     }
                 } catch {
-                     Write-Output   "Error querying databases on server '$($server.name)': $_"
+                    Write-Warning "Error querying databases on server '$($server.ServerName)': $_"
                 }
 
-                # Update Elastic Pools with similar improved error handling
+                # Update Elastic Pools
                 try {
-                     Write-Output   "Scanning Elastic Pools on server '$($server.name)'..."
-                    
-                    # First check if there are any elastic pools
-                    $allPoolsQuery = Invoke-AzCliQuery -Description "elastic pools on server '$($server.name)'" -Arguments @(
-                        'sql','elastic-pool','list','--resource-group',$server.resourceGroup,'--server',$server.name,'--only-show-errors','-o','json')
-                    if (-not $allPoolsQuery.Success) {
-                        Write-Warning "Elastic pools on server '$($server.name)' could not be listed and were not assessed. Re-run to retry."
-                        $allPools = @()
+                    Write-Output "Scanning Elastic Pools on server '$($server.ServerName)'..."
+
+                    $allPools = @(Invoke-AzCmdletWithRetry -Description "elastic pools on server '$($server.ServerName)'" -ScriptBlock {
+                        Get-AzSqlElasticPool -ResourceGroupName $server.ResourceGroupName -ServerName $server.ServerName -ErrorAction Stop
+                    })
+
+                    if ($allPools.Count -eq 0) {
+                        Write-Output "No Elastic Pools found on server '$($server.ServerName)'."
                     } else {
-                        $allPools = $allPoolsQuery.Value
-                    }
-                    
-                    if ($null -eq $allPools -or $allPools.Count -eq 0) {
-                         Write-Output   "No Elastic Pools found on server '$($server.name)'."
-                    } else {
-                         Write-Output   "Found $($allPools.Count) total Elastic Pools on server '$($server.name)'."
-                        
-                        # Build elastic pool query with better formatting
-                        $elasticPoolQuery = "[?licenseType!=null && licenseType!='$($LicenseType)'"
-                        
-                        # Add tags filter if specified
-                        if ($tagsFilter) {
-                            $elasticPoolQuery += " $tagsFilter"
-                        }
-                        
-                        $elasticPoolQuery += "].{name:name, licenseType:licenseType, location:location, resourceGroup:resourceGroup, id:id, ResourceType:type, State:state}"
-                        
-                         Write-Output   "Elastic Pool query: $elasticPoolQuery"
-                        
-                        $elasticPoolsQueryResult = Invoke-AzCliQuery -Description "elastic pools requiring an update on server '$($server.name)'" -Arguments @(
-                            'sql','elastic-pool','list','--resource-group',$server.resourceGroup,'--server',$server.name,'--query',"$elasticPoolQuery",'--only-show-errors','-o','json')
-                        if (-not $elasticPoolsQueryResult.Success) {
-                            Write-Warning "Elastic pools on server '$($server.name)' could not be assessed for a license update. Re-run to retry."
-                        }
-                        $elasticPools = $elasticPoolsQueryResult.Value
-                        
-                        if ($null -eq $elasticPools -or $elasticPools.Count -eq 0) {
-                             Write-Output   "No Elastic Pools found on Server $($server.name) that require a license update."
+                        Write-Output "Found $($allPools.Count) total Elastic Pools on server '$($server.ServerName)'."
+
+                        $elasticPools = @($allPools | Where-Object { $null -ne $_.LicenseType -and $_.LicenseType -ne $LicenseType })
+                        $elasticPools = @($elasticPools | Where-Object { -not (Test-ExcludedByTags -Tags $_.Tags -ExclusionTagTable $tagTable) })
+
+                        if ($elasticPools.Count -eq 0) {
+                            Write-Output "No Elastic Pools found on Server $($server.ServerName) that require a license update."
                         } else {
-                             Write-Output   "Found $($elasticPools.Count) Elastic Pools on Server $($server.name) that require a license update:"
+                            Write-Output "Found $($elasticPools.Count) Elastic Pools on Server $($server.ServerName) that require a license update:"
                             $elasticPools | ForEach-Object {
-                                 Write-Output   "  - $($_.name) (Current license: $($_.licenseType))"
+                                Write-Output "  - $($_.ElasticPoolName) (Current license: $($_.LicenseType))"
                             }
-                            
+
                             foreach ($pool in $elasticPools) {
 
                                 $poolResult = "NotAttempted"
@@ -1404,15 +1081,16 @@ foreach ($sub in $subscriptions) {
 
                                 if ($ReportOnly) {
                                     $poolResult = "ReportOnly"
-                                    Write-Output "ReportOnly mode enabled. Skipping modification for Elastic Pool '$($pool.name)' on server '$($server.name)' (would change '$($pool.licenseType)' -> '$LicenseType')."
+                                    Write-Output "ReportOnly mode enabled. Skipping modification for Elastic Pool '$($pool.ElasticPoolName)' on server '$($server.ServerName)' (would change '$($pool.LicenseType)' -> '$LicenseType')."
                                 } else {
-                                     Write-Output   "Updating Elastic Pool '$($pool.name)' on server '$($server.name)' to license type '$LicenseType'..."
-                                    $update = Invoke-AzCliLicenseUpdate -Description "Elastic Pool '$($pool.name)' on server '$($server.name)'" -SupportsNoWait -Arguments @(
-                                        'sql','elastic-pool','update','--name',$pool.name,'--server',$server.name,'--resource-group',$server.resourceGroup,'--set',"licenseType=$LicenseType",'--only-show-errors','-o','json')
+                                    Write-Output "Updating Elastic Pool '$($pool.ElasticPoolName)' on server '$($server.ServerName)' to license type '$LicenseType'..."
+                                    $update = Invoke-AzLicenseUpdate -Description "Elastic Pool '$($pool.ElasticPoolName)' on server '$($server.ServerName)'" -SupportsAsJob -ScriptBlock {
+                                        Set-AzSqlElasticPool -ResourceGroupName $server.ResourceGroupName -ServerName $server.ServerName -ElasticPoolName $pool.ElasticPoolName -LicenseType $LicenseType -AsJob:$submitAsync -ErrorAction Stop
+                                    }
                                     if ($update.Success) {
                                         $finalStatus += $update.Result
                                         $poolResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
-                                        Write-Output "-- Elastic Pool '$($pool.name)': $poolResult (license type '$LicenseType')"
+                                        Write-Output "-- Elastic Pool '$($pool.ElasticPoolName)': $poolResult (license type '$LicenseType')"
                                     }
                                     else { $poolResult = "Failed"; $poolError = $update.ErrorMessage }
                                 }
@@ -1420,13 +1098,13 @@ foreach ($sub in $subscriptions) {
                                 # Collect data after the attempt so the recorded outcome is accurate
                                 $modifiedResources += [PSCustomObject]@{
                                     TenantID            = $TenantId
-                                    SubID               = ($pool.id -split '/')[2]
-                                    ResourceName        = $pool.name
-                                    ResourceType        = $pool.ResourceType
+                                    SubID               = $sub.id
+                                    ResourceName        = $pool.ElasticPoolName
+                                    ResourceType        = "Microsoft.Sql/servers/elasticPools"
                                     Status              = $pool.State
-                                    OriginalLicenseType = $pool.licenseType
-                                    ResourceGroup       = $pool.resourceGroup
-                                    Location            = $pool.location
+                                    OriginalLicenseType = $pool.LicenseType
+                                    ResourceGroup       = $pool.ResourceGroupName
+                                    Location            = $pool.Location
                                     UpdateResult        = $poolResult
                                     UpdateError         = $poolError
                                 }
@@ -1434,44 +1112,36 @@ foreach ($sub in $subscriptions) {
                         }
                     }
                 } catch {
-                     Write-Output   "Error processing Elastic Pools on server '$($server.name)': $_"
+                    Write-Warning "Error processing Elastic Pools on server '$($server.ServerName)': $_"
                 }
             }
         } catch {
-             Write-Output   "An error occurred while processing SQL Databases or Elastic Pools: $_"
+            Write-Error "An error occurred while processing SQL Databases or Elastic Pools: $_"
         }
 
         # --- Section: Update SQL Instance Pools ---
         try {
             Write-Output "Searching for SQL Instance Pools that require a license update..."
-            
-            # Build instance pool query (skip the passive replicas)
-            $instancePoolsQuery = "[?licenseType!='${LicenseType}' && state=='Ready'"
-            
-            # Add resource group filter if specified
-            if ($rgFilter) {
-                $instancePoolsQuery += " && $rgFilter"
+
+            $instancePools = @(Invoke-AzCmdletWithRetry -Description "SQL instance pools in subscription $($sub.id)" -ScriptBlock {
+                Get-AzSqlInstancePool -ErrorAction Stop
+            })
+
+            # Mirrors the previous CLI --query filter (license mismatch, optional RG/name scope,
+            # tag exclusion). The 'state==Ready' pre-filter is not reproduced here: the Az.Sql
+            # module's instance-pool model does not expose a state/provisioning-state property to
+            # check it against, so an instance pool that is not actually ready is instead caught
+            # by Set-AzSqlInstancePool failing and being recorded as "Failed" below.
+            $poolsToUpdate = @($instancePools | Where-Object { $_.LicenseType -ne $LicenseType })
+            if ($ResourceGroup) {
+                $poolsToUpdate = @($poolsToUpdate | Where-Object { $_.ResourceGroupName -eq $ResourceGroup })
             }
-            
-            # Add name filter if ResourceName specified
             if ($ResourceName) {
-                $instancePoolsQuery += " && name=='$ResourceName'"
+                $poolsToUpdate = @($poolsToUpdate | Where-Object { $_.Name -eq $ResourceName })
             }
-            
-            # Add tags filter if specified
-            if ($tagsFilter) {
-                $instancePoolsQuery += " $tagsFilter"
-            }
-            
-            $instancePoolsQuery += "].{name:name, licenseType:licenseType, location:location, resourceGroup:resourceGroup, id:id, ResourceType:type, State:status}"
-            
-            $instancePoolsQueryResult = Invoke-AzCliQuery -Description "SQL instance pools" -Arguments @('sql','instance-pool','list','--query',$instancePoolsQuery,'-o','json')
-            if (-not $instancePoolsQueryResult.Success) {
-                Write-Warning "SQL instance pools could not be listed, so none were assessed in this subscription. Re-run to retry."
-            }
-            $instancePools = $instancePoolsQueryResult.Value
-            $poolsToUpdate = $instancePools | Where-Object { $_.licenseType -ne $LicenseType }
-            if($poolsToUpdate.Count -eq 0) {
+            $poolsToUpdate = @($poolsToUpdate | Where-Object { -not (Test-ExcludedByTags -Tags $_.Tags -ExclusionTagTable $tagTable) })
+
+            if ($poolsToUpdate.Count -eq 0) {
                 Write-Output "No SQL Instance Pools found that require a license update."
             } else {
                 Write-Output "Found $($poolsToUpdate.Count) SQL Instance Pools that require a license update."
@@ -1483,15 +1153,16 @@ foreach ($sub in $subscriptions) {
 
                 if ($ReportOnly) {
                     $ipResult = "ReportOnly"
-                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Instance Pool '$($pool.name)' in RG '$($pool.resourceGroup)' (would change '$($pool.licenseType)' -> '$LicenseType')."
+                    Write-Output "ReportOnly mode enabled. Skipping modification for SQL Instance Pool '$($pool.Name)' in RG '$($pool.ResourceGroupName)' (would change '$($pool.LicenseType)' -> '$LicenseType')."
                 } else {
-                    Write-Output "Updating SQL Instance Pool '$($pool.name)' in RG '$($pool.resourceGroup)' to license type '$LicenseType'..."
-                    $update = Invoke-AzCliLicenseUpdate -Description "SQL Instance Pool '$($pool.name)'" -SupportsNoWait -Arguments @(
-                        'sql','instance-pool','update','--name',$pool.name,'--resource-group',$pool.resourceGroup,'--license-type',$LicenseType,'-o','json')
+                    Write-Output "Updating SQL Instance Pool '$($pool.Name)' in RG '$($pool.ResourceGroupName)' to license type '$LicenseType'..."
+                    $update = Invoke-AzLicenseUpdate -Description "SQL Instance Pool '$($pool.Name)'" -SupportsAsJob -ScriptBlock {
+                        Set-AzSqlInstancePool -Name $pool.Name -ResourceGroupName $pool.ResourceGroupName -LicenseType $LicenseType -AsJob:$submitAsync -ErrorAction Stop
+                    }
                     if ($update.Success) {
                         $finalStatus += $update.Result
                         $ipResult = if ($update.Submitted) { "RequestSubmitted" } else { "Updated" }
-                        Write-Output "-- SQL Instance Pool '$($pool.name)': $ipResult (license type '$LicenseType')"
+                        Write-Output "-- SQL Instance Pool '$($pool.Name)': $ipResult (license type '$LicenseType')"
                     }
                     else { $ipResult = "Failed"; $ipError = $update.ErrorMessage }
                 }
@@ -1499,13 +1170,13 @@ foreach ($sub in $subscriptions) {
                 # Collect data after the attempt so the recorded outcome is accurate
                 $modifiedResources += [PSCustomObject]@{
                     TenantID            = $TenantId
-                    SubID               = ($pool.id -split '/')[2]
-                    ResourceName        = $pool.name
-                    ResourceType        = $pool.ResourceType
-                    Status              = $pool.State
-                    OriginalLicenseType = $pool.licenseType
-                    ResourceGroup       = $pool.resourceGroup
-                    Location            = $pool.location
+                    SubID               = $sub.id
+                    ResourceName        = $pool.Name
+                    ResourceType        = "Microsoft.Sql/instancePools"
+                    Status              = ""
+                    OriginalLicenseType = $pool.LicenseType
+                    ResourceGroup       = $pool.ResourceGroupName
+                    Location            = $pool.Location
                     UpdateResult        = $ipResult
                     UpdateError         = $ipError
                 }
@@ -2605,20 +2276,6 @@ function Connect-Azure {
         }
         catch {
             Write-Error "An error occurred while testing the Azure connection: $_"
-        }
-        # Ensure the user is logged in to Azure
-        try {
-            $account = az account show 2>$null | ConvertFrom-Json
-            if ($account) {
-                Write-Output "Logged in as: $($account.user.name)"
-            }
-        } catch {
-            Write-Output "Not logged in. Run 'az login'."
-            if($UseManageIdentity){
-                az login --Identity  | Out-Null
-            } else {    
-                az login  | Out-Null
-            }
         }
     }
     function LoadAzModules {

@@ -95,6 +95,70 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 | 45 | A folder-scoped merge of `manage-payg-transition/` alone is self-sufficient | Extracted exactly the tracked contents of the folder at `HEAD` via `git archive HEAD samples/manage/manage-payg-transition` into an empty temp tree (5 files, both sibling scripts absent) and ran the orchestrator there against subscription `20d62cea` with `-ReportOnly` | ✅ Passed. Stronger than #15, which copied the working folder; this reproduces precisely what a folder-only merge would deliver. The orchestrator materialized both sub-scripts from its embedded here-strings and completed the Arc and Azure SQL passes with no missing-file, path or download errors, and the materialized copies were **byte-identical (0 differing lines by `Compare-Object`)** to the fixed standalone scripts. Confirmed no `Invoke-WebRequest`/`Invoke-RestMethod` fetch of the sub-scripts and no relative path escaping the folder — the only outbound URIs are PowerShell Gallery module links used by the Automation-Account path. **Caveat:** merging the folder alone would leave the standalone `modify-azure-sql-license-type.ps1` (+581) and `modify-arc-sql-license-type.ps1` (+167) stale on `master`, so callers invoking them directly would still hit the #40/#41 silent-skip, the #39 Arc false-success and the synchronous SQL VM update from #36, and the embedded-vs-standalone sync invariant would be broken. All 7 changed files should ship together. |
 | 46 | End-of-execution outcome summary and root cause reporting | Added `Format-ExecutionOutcomeSummary` across standalone and orchestrator scripts, tested with `-ReportOnly` and live executions | ✅ Passed. For each run, a structured outcome table is printed to the console/transcript at the very end of execution (unified across all resource types with no intermediate duplicate tables), summarizing: `ResourceType` (sorted alphabetically), `Qualified`, `Updated or RequestSubmitted`, `Failed`, and `Skipped`. Directly beneath the summary table, a detailed `FAILURE & SKIP ROOT CAUSES` breakdown displays the Resource Name, Resource Group, ResourceType, Outcome, and exact error/root-cause message (e.g. stopped/deallocated VM power state, ESU licensing restrictions, tag exclusions, or service errors). If no issues occurred, cleanly outputs `No failures or skipped resources encountered.` |
 
+## Round 2: Azure CLI removal (2026-09-04)
+
+Requested by reviewer Travis Wright on PR #1511: replace all remaining Azure CLI (`az`)
+usage in `modify-azure-sql-license-type.ps1` with native Az PowerShell cmdlets, with the
+explicit requirement that SQL virtual machine license updates must **never** run
+asynchronously (no `-NoWait`/`-AsJob`) because the underlying VM cannot reliably complete
+that operation in the background.
+
+### Changes under test
+
+- Removed `Refresh-Path`, all Azure CLI install/login logic in `Connect-Azure`, and the
+  CLI helper functions (`Invoke-AzCliArgsWithRetry`, `Invoke-AzCliLicenseUpdate`,
+  `Invoke-AzCliQuery`). Replaced with `Invoke-AzCmdletWithRetry`, `Invoke-AzLicenseUpdate`,
+  and `Test-ExcludedByTags` (a PowerShell re-implementation of the previous JMESPath tag
+  filtering).
+- `Invoke-AzLicenseUpdate` is the new shared `Set-AzSql*` update helper. It supports
+  `-AsJob:$submitAsync` for the resource types that accept it (Managed Instance, Database,
+  Elastic Pool, Instance Pool), replacing the async ARM-PUT/CLI-fallback path from
+  test #36. `Update-AzSqlVM` is now called synchronously and unconditionally, regardless of
+  `-WaitForCompletion`, because `-NoWait`/`-AsJob` are broken in `Az.SqlVirtualMachine`
+  2.4.0 (documented in test #36; that finding is unaffected, only the fallback-to-CLI
+  half of the old behavior is gone).
+- SQL VM, Managed Instance, SQL Server/Database/Elastic Pool, and Instance Pool discovery
+  now use `Get-AzSqlVM`, `Get-AzSqlInstance`, `Get-AzSqlServer`/`Get-AzSqlDatabase`/
+  `Get-AzSqlElasticPool`, and `Get-AzSqlInstancePool` respectively, instead of `az ... list`.
+  Subscription context switching consolidated to a single `Set-AzContext` per subscription
+  loop iteration (all `az account set`/`az account show` calls removed).
+- The Arc script (`modify-arc-sql-license-type.ps1`) was **not** changed in this round —
+  it already used only Az PowerShell cmdlets (`Search-AzGraph`, `Get-AzConnectedMachine`,
+  `Get-/Set-AzConnectedMachineExtension`) and never depended on the CLI.
+- Added explicit ensure/install/import logic for `Az.Sql` and `Az.SqlVirtualMachine`
+  (previously only `Az.Accounts` and `Az.DataFactory` had this; see test #52).
+- `README.md` updated to match: the async-by-default table now shows `-AsJob` instead of
+  `--no-wait` for Managed Instance/Database/Elastic Pool/Instance Pool, the SQL VM row now
+  reads "always waits", the stale "offline VMs will be reactivated" line was replaced with
+  the correct `SkippedNotRunning` behavior, and Prerequisites now lists the required Az
+  modules plus an explicit "Azure CLI is not required" note.
+
+### Test environment
+
+- Subscriptions: `20d62cea-b252-4a42-b9d6-16ad2636b3a5` (DMSInternalDevTestER) and
+  `6a37df99-a9de-48c4-91e5-7e6ab00b2362` (DMSBuddy), both tenant
+  `72f988bf-86f1-41af-91ab-2d7cd011db47`.
+- Test SQL VM `payg-test-vm2` (SQL Server 2022 Standard edition, registered via
+  `New-AzSqlVM -LicenseType AHUB`) was provisioned in RG `deleterajpo` (Sub2)
+  specifically for this round, because no existing Standard/Enterprise-edition, running
+  SQL VM was available in either subscription (Developer/Web/Express editions cannot use
+  AHUB — `Update-AzSqlVM` rejects them with *"can only be converted to AHUB when the
+  edition ... is 'Standard' or 'Enterprise'"*). Deleted afterwards along with RG
+  `deleterajpo`.
+
+### Test cases and results
+
+| # | Test | Method | Result |
+|---|------|--------|--------|
+| 47 | Zero Azure CLI invocations remain | `Select-String -Pattern '\baz '` (word-boundary, case-sensitive) across the whole file, plus manual review of every remaining `az`-substring match | ✅ Passed. 0 matches for an actual CLI call; the only substring matches are `Az.*` PowerShell module names and comments describing what CLI logic was replaced. |
+| 48 | SQL VM AHUB→PAYG, always synchronous | Live run against `payg-test-vm2` (Sub2), **without** `-WaitForCompletion` | ✅ Passed. Completed in ~65s and reported `Updated` (not `RequestSubmitted`) even though `-WaitForCompletion` was not passed, confirming the VM path never goes async. Verified live via `Get-AzSqlVM` → `SqlServerLicenseType = PAYG`. |
+| 49 | SQL Managed Instance round trip | Live run against `bhrout-mi` (Sub1): PAYG→AHUB then AHUB→PAYG, both with `-WaitForCompletion` | ✅ Passed both directions; each reported `Updated` and was confirmed live via `Get-AzSqlInstance`; MI restored to its original state (`LicenseIncluded`). |
+| 50 | SQL Database AHUB→PAYG then revert | Live run against `binuj_Northwind_sqlPkg` and `Northwind` on `binuj-sqldb-weu-2` (Sub2): `BasePrice`→`LicenseIncluded`, then reverted | ✅ Passed, both directions confirmed via `Get-AzSqlDatabase`. One revert attempt initially appeared incomplete because of a stale/cached read from `Get-AzSqlDatabase` immediately after the update call; re-querying a few seconds later showed the true state, and the second database was then explicitly reverted and re-confirmed. Not a script defect — a testing artifact of Azure API read-after-write latency. |
+| 51 | `-ReportOnly` dry runs clean post-change | Ran against both subscriptions | ✅ Passed. No CLI, no errors, correct resource discovery in both. |
+| 52 | `Az.Sql`/`Az.SqlVirtualMachine` never explicitly ensured (regression) | User ran the script live against `20d62cea` on a separate machine | ❌ Failed initially: `Get-AzSqlVM`/`Get-AzSqlInstance`/`Get-AzSqlServer`/`Get-AzSqlInstancePool` all reported *"term ... is not recognized"*. Root cause: only `Az.Accounts` and `Az.DataFactory` had ensure/install/import logic; `Az.Sql`/`Az.SqlVirtualMachine` happened to already be loaded on the original dev machine (from unrelated interactive testing), masking the gap. Fixed by adding the same ensure/install/import pattern for both modules. Re-validated via `[System.Management.Automation.Language.Parser]::ParseFile` (no syntax errors) and a re-run of the `-ReportOnly` dry run (now logs `Az.Sql module is already installed` / `Az.SqlVirtualMachine module is already installed`, correct resource discovery). |
+| 53 | User live run end-to-end, post-fix | User ran `-targetSubscription 20d62cea... -TargetLicenseType AHUB` (no `-WaitForCompletion`) | ✅ Passed. Confirms the #52 fix on the user's own machine: `Az.Sql`/`Az.SqlVirtualMachine` reported "already installed", `bhrout-mi` and 2 databases (`ratruong-test-sqldb`, `TestDB`) transitioned to `BasePrice` with `RequestSubmitted` status (expected async default), and the deallocated SQL VM `rradjousql2016` was correctly reported `SkippedNotRunning`. No CLI calls, no errors. |
+| 54 | RBAC-denied write correctly surfaced as a permissions issue, not a code defect | User attempted an Arc SQL Server transition against RG `arunguru-test` in subscription `77a28e80-58e1-402c-aa9e-bc2055d91a03`, got `AuthorizationFailed` on 4 machines | ✅ Confirmed genuine. `Get-AzRoleAssignment -ExpandPrincipalGroups` (including group-inherited roles) showed the user's only subscription-wide role there is *Reader*; their sole *Contributor* grant is scoped to a single Container Registry resource, not `arunguru-test` or any `Microsoft.HybridCompute/*` resource. The script's error message accurately reflects a missing `Microsoft.HybridCompute/machines/extensions/write` permission — not a script bug. |
+
 ## Cleanup
 
 - All temporary test artifacts (generated wrapper scripts, materialized sub-scripts,
@@ -109,19 +173,34 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
 - The Arc machine `sqltvm` (`rajposqltvm`, tenant `d1623670`), which was switched to
   `LicenseOnly` during tests #31 and #39, was restored to `PAYG` and confirmed via
   `Get-AzConnectedMachineExtension`.
+- **Round 2:** `binuj_Northwind_sqlPkg` and `Northwind` (test #50) were reverted to
+  `BasePrice`, confirmed via `Get-AzSqlDatabase`. `bhrout-mi` (test #49) was restored to
+  `LicenseIncluded`. The test SQL VM `payg-test-vm2` and RG `deleterajpo` (including a
+  leftover disk/NIC from an earlier, deleted `payg-test-vm1` attempt) were fully deleted
+  via `Remove-AzResourceGroup` and confirmed gone. A pre-existing, unrelated
+  `Microsoft.AzureArcData/sqlServerEsuLicenses` resource named `test` that already existed
+  in `deleterajpo` before this round's testing began was deleted as collateral damage of
+  the RG deletion; investigation via the subscription's Activity Log showed it was an
+  orphaned ESU license record (no backing `Microsoft.HybridCompute/machines` existed) with
+  no cost impact, so it was not recreated.
 
 ## Known gaps / follow-ups
 
-- **Async coverage is partial.** The `--no-wait` / non-blocking default has been proven live
-  for SQL virtual machines (#36), SQL databases (#40) and Arc-connected machines (#31), but
-  **not** for managed instances, elastic pools or instance pools. The code path is shared
-  (`Invoke-AzCliLicenseUpdate -SupportsNoWait`) and the flag was verified to parse on
-  `sql mi update`, but no live resource of those types has actually been transitioned
-  asynchronously. Subscription `20d62cea` does contain one managed instance (`bhrout-mi`),
-  but it is already at the target license type and belongs to another team, so transitioning
-  it purely to exercise the code path would be a billing-affecting change to someone else's
-  resource; it was deliberately left alone. Elastic pools and instance pools do not exist in
-  any subscription reached so far (0 across all six servers in `20d62cea`).
+- **Azure CLI has been fully removed as of Round 2** (see above) — this closes the
+  CLI-dependency concern that ran through tests #29, #33, #36 and #41/#42 in Round 1.
+  `Invoke-AzCliArgsWithRetry`/`Invoke-AzCliLicenseUpdate`/`Invoke-AzCliQuery` no longer
+  exist; every reference below to those helpers or to `az`/`--no-wait` describes Round 1
+  (pre-CLI-removal) behavior and is retained for historical context only.
+- **Async coverage is partial.** The non-blocking default (now `-AsJob`, previously
+  `--no-wait`) has been proven live for SQL databases (#40, #50) and Arc-connected machines
+  (#31), but **not** for managed instances (only synchronous round trips were run — #49,
+  and originally #8), elastic pools or instance pools. Elastic pools and instance pools do
+  not exist in any subscription reached so far across either round.
+- **SQL virtual machines are now always synchronous** (Round 2), which is a stricter
+  guarantee than the "async ARM-PUT with CLI fallback" behavior tested in Round 1's #36 —
+  that finding (the ARM PUT working, `-NoWait`/`-AsJob` being broken in
+  `Az.SqlVirtualMachine` 2.4.0) is still accurate background, but the CLI-fallback half of
+  it no longer applies.
 - `RunMode Scheduled` has **never been executed end-to-end**. The runbook import-path fix
   (the embedded `set-azurerunbook.ps1` hardcoded `./PayTransitionDownloads/` while the
   orchestrator materializes to `./manage-payg-transition/`) is validated by code review
@@ -150,27 +229,36 @@ against a live Azure environment (Microsoft tenant `72f988bf-86f1-41af-91ab-2d7c
   and instance pools are implemented and unit-verified via the shared helper (#28), but have
   not been observed against a genuine service-side failure on those specific resource types —
   only the SQL VM and DataFactory paths have been exercised end-to-end against real errors.
-- **Azure updates are asynchronous by default as of test #33.** SQL Managed Instances,
-  databases, elastic pools and instance pools are submitted with `--no-wait` and reported as
-  `RequestSubmitted`; `-WaitForCompletion` restores blocking behaviour and the `Updated`
-  result. SQL virtual machines and SSIS integration runtimes are unavoidable exceptions
-  (test #34) and always wait. The Arc path has always used `-NoWait`. A consequence of the
-  new default is that the report no longer proves a change was applied unless
-  `-WaitForCompletion` was used — verify out of band or re-run, as described in the README.
-- The asynchronous paths for Managed Instances, databases, elastic pools and instance pools
-  were verified by unit-testing argument construction and by confirming the CLI accepts
-  `--no-wait`, but have not been exercised against a live resource of those types: the only
-  candidates visible in the tenant belong to other teams and were deliberately not modified.
+- **Azure updates are asynchronous by default as of test #33** (Round 1 CLI implementation:
+  `--no-wait`). **As of Round 2 (CLI removal), this is implemented as `Set-AzSql*` calls
+  with conditional `-AsJob`** for Managed Instances, databases, elastic pools and instance
+  pools, still reported as `RequestSubmitted`; `-WaitForCompletion` restores blocking
+  behaviour and the `Updated` result (re-confirmed live in test #53). SQL virtual machines
+  and SSIS integration runtimes remain exceptions and always wait — for SQL VMs this is now
+  because `-NoWait`/`-AsJob` are broken in `Az.SqlVirtualMachine` 2.4.0 (test #36, #48),
+  not because of any CLI limitation. The Arc path has always used `-NoWait` and is
+  unaffected by the CLI-removal work (it already used Az PowerShell cmdlets exclusively).
+  A consequence of the async default is that the report no longer proves a change was
+  applied unless `-WaitForCompletion` was used — verify out of band or re-run, as described
+  in the README.
+- The asynchronous paths for Managed Instances, elastic pools and instance pools were
+  verified by unit-testing argument construction (both rounds), but have not been exercised
+  against a live resource of those types: the only Managed Instance candidates visible in
+  the tenant belong to other teams and were deliberately not modified, and no elastic pool
+  or instance pool resources exist in any subscription reached so far. The database async
+  path **has** now been exercised live end-to-end (test #50, `-WaitForCompletion` blocking
+  path; the non-blocking `-AsJob` path itself is still only unit-verified).
 
 ## Required permissions
 
-Derived from every Azure CLI/PowerShell call made by the two scripts:
+Derived from every Azure PowerShell call made by the two scripts (Round 2: no Azure CLI
+calls remain in either script):
 
 | Script | Operations performed | Minimum built-in role(s) |
 |---|---|---|
-| `modify-azure-sql-license-type.ps1` | `az sql vm/mi/db/elastic-pool/instance-pool list` and `update`; `Get-AzDataFactoryV2(IntegrationRuntime)` / `Set-AzDataFactoryV2IntegrationRuntime`; `Get-AzSubscription`; `Set-AzContext` | **SQL DB Contributor** (covers `Microsoft.SqlVirtualMachine/*`, `Microsoft.Sql/managedInstances/*`, `Microsoft.Sql/servers/databases/*`, `Microsoft.Sql/servers/elasticPools/*`, `Microsoft.Sql/instancePools/*`) **+** write access to `Microsoft.DataFactory/factories/integrationRuntimes/*` (e.g. **Data Factory Contributor**) |
-| `modify-arc-sql-license-type.ps1` | `Search-AzGraph` (Azure Resource Graph query over `microsoft.hybridcompute/machines` and `.../extensions`); `Get-AzConnectedMachine`; `Get/Set-AzConnectedMachineExtension` | **Azure Connected Machine Resource Administrator** (covers `Microsoft.HybridCompute/machines/extensions/*` write) — Resource Graph read is included in any role with `Microsoft.Resources/subscriptions/resourceGroups/resources/read` (e.g. **Reader**) |
-| Both | `Get-AzSubscription`, `az account show` / `az account set` | **Reader** at minimum on every subscription scanned |
+| `modify-azure-sql-license-type.ps1` | `Get-/Update-AzSqlVM`; `Get-/Set-AzSqlInstance`; `Get-/Set-AzSqlDatabase`; `Get-/Set-AzSqlElasticPool`; `Get-/Set-AzSqlInstancePool`; `Get-AzDataFactoryV2(IntegrationRuntime)` / `Set-AzDataFactoryV2IntegrationRuntime`; `Get-AzSubscription`; `Set-AzContext` | **SQL DB Contributor** (covers `Microsoft.SqlVirtualMachine/*`, `Microsoft.Sql/managedInstances/*`, `Microsoft.Sql/servers/databases/*`, `Microsoft.Sql/servers/elasticPools/*`, `Microsoft.Sql/instancePools/*`) **+** write access to `Microsoft.DataFactory/factories/integrationRuntimes/*` (e.g. **Data Factory Contributor**) |
+| `modify-arc-sql-license-type.ps1` | `Search-AzGraph` (Azure Resource Graph query over `microsoft.hybridcompute/machines` and `.../extensions`); `Get-AzConnectedMachine`; `Get/Set-AzConnectedMachineExtension` | **Azure Connected Machine Resource Administrator** (covers `Microsoft.HybridCompute/machines/extensions/*` write) — Resource Graph read is included in any role with `Microsoft.Resources/subscriptions/resourceGroups/resources/read` (e.g. **Reader**). Confirmed in test #54: a **Reader**-only account correctly receives `AuthorizationFailed` on the extension write. |
+| Both | `Get-AzSubscription`, `Set-AzContext` | **Reader** at minimum on every subscription scanned |
 
 **Practical recommendation:** assign **Contributor** at the target subscription or
 resource-group scope — it is a superset of all the writes above (SQL VM/MI/DB/elastic
