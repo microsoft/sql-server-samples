@@ -1,0 +1,74 @@
+# CI for the Azure SQL Vector Search Python quickstart sample.
+# Security: uses `pull_request` (read-only token, no secrets on forks)
+# with an explicit same-repo check to skip fork PRs entirely.
+#
+# This CI runs static analysis and unit tests only — no live Azure SQL
+# Database or Azure OpenAI resource is required or contacted. Live
+# end-to-end validation is a separate, manual step (see the sample's
+# README and output/sample-output.txt for the explicit no-live-run
+# disclosure).
+
+name: "Vector Search Python — Build"
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "samples/features/vector-search/vector-search-query-python/**"
+  push:
+    branches: [master]
+    paths:
+      - "samples/features/vector-search/vector-search-query-python/**"
+
+# Cancel redundant runs for the same PR / branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Lint, type-check, and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Skip CI on fork PRs — prevents external actors from consuming minutes.
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
+
+    defaults:
+      run:
+        working-directory: samples/features/vector-search/vector-search-query-python
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+          cache: "pip"
+          cache-dependency-path: |
+            samples/features/vector-search/vector-search-query-python/requirements.txt
+            samples/features/vector-search/vector-search-query-python/requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: python -m ruff check .
+
+      - name: Format check
+        run: python -m ruff format --check .
+
+      - name: Type-check
+        run: python -m mypy src
+
+      - name: Unit tests (no Azure connectivity required)
+        run: python -m pytest -v

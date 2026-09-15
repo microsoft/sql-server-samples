@@ -21,19 +21,21 @@ This provisions:
 - **Azure OpenAI** with `text-embedding-3-small` deployment
 - **Managed Identity** with appropriate role assignments
 
-After deployment, create the `.env` file for the language samples:
+After deployment, create the `.env` file for the language samples. For example, for TypeScript:
 
 ```bash
 azd env get-values --cwd samples/features/vector-search > samples/features/vector-search/vector-search-query-typescript/.env
 ```
 
-This writes the deployment outputs (`AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_EMBEDDING_DEPLOYMENT`, `AZURE_SQL_SERVER`, `AZURE_SQL_DATABASE`, etc.) directly into the `.env` file that the samples read at runtime.
+This writes the deployment outputs (`AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_EMBEDDING_DEPLOYMENT`, `AZURE_SQL_SERVER`, `AZURE_SQL_DATABASE`, etc.) directly into the `.env` file that the TypeScript, Python, and Go samples read at runtime. Point the same command at another language's folder to configure it instead.
 
 ## Language samples
 
-| Language | Folder | Description |
-|----------|--------|-------------|
-| TypeScript | [vector-search-query-typescript/](./vector-search-query-typescript/) | Vector search with Node.js, tedious driver, and Azure OpenAI |
+| Language | Folder | Description | Status |
+|----------|--------|-------------|--------|
+| TypeScript | [vector-search-query-typescript/](./vector-search-query-typescript/) | Vector search with Node.js, tedious driver, and Azure OpenAI | Implemented; live end-to-end run captured |
+| Python | [vector-search-query-python/](./vector-search-query-python/) | Vector search with pyodbc, azure-identity, and Azure OpenAI | Implemented; statically validated (lint, type-check, unit tests) — no live end-to-end run captured yet |
+| Go | [vector-search-query-go/](./vector-search-query-go/) | Vector search with go-mssqldb, azidentity, and the OpenAI Go client configured for Azure | Implemented; statically validated (vet, build, unit tests) — no live end-to-end run captured yet; also out of scope for v1 by constitution decision ([ASV-LANG-GO-1](/.github/instructions/vector-search-constitution.instructions.md)) |
 
 ## Infrastructure only
 

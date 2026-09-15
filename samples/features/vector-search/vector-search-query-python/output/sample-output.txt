@@ -1,0 +1,60 @@
+Azure SQL Database vector search — Python quickstart
+Expected-output placeholder (per constitution ASV-CORE-21/ASV-CORE-32).
+
+*** THIS IS NOT A CAPTURED REAL RUN. ***
+
+No authorized live Azure SQL Database or Azure OpenAI environment was
+available while this sample was authored, so no end-to-end execution has
+been performed for Python. This file documents the expected shape of the
+output, based on the already-implemented and already-validated TypeScript
+reference sample's real captured run (see
+../../vector-search-query-typescript/output/sample-output.txt), with
+language-specific values (banner text, table name) adjusted and the
+per-run values (hotel name, category, rating, description, distance,
+similarity) replaced with placeholders because they have not actually
+been produced by running this code.
+
+Do not treat this file as validated evidence that the Python sample works
+end-to-end. Replace it with a real captured run — and update this
+provenance note accordingly — once this sample has been executed against
+a real Azure SQL Database and Azure OpenAI resource.
+
+What has been validated instead, without live Azure access:
+  - Static analysis: ruff check, ruff format --check, mypy (all pass)
+  - Unit tests: pytest (22 passed) covering configuration validation,
+    vector serialization, and dataset shape validation
+  - Local package installation and import-time validation of pyodbc,
+    azure-identity, and openai
+
+=== Azure SQL Vector Search—Python Quickstart ===
+
+Server:     <your-server>.database.windows.net
+Database:   <your-database>
+OpenAI:     https://<your-resource>.openai.azure.com
+Deployment: text-embedding-3-small
+Algorithm:  exact
+Table:      dbo.hotels_python
+
+Loaded 50 hotels from data file.
+
+Connecting to Azure SQL Database...
+Connected.
+
+Creating table dbo.hotels_python (if not exists)...
+Table ready.
+
+Inserting hotel data with precomputed embeddings...
+Inserted 50 hotels.
+
+Searching for: "luxury beachfront hotel with ocean views and spa"
+
+--- Search Results—Exact (kNN) via VECTOR_DISTANCE (Top 3 by Cosine Distance) ---
+
+  Hotel:       <not yet captured — run this sample against a live Azure SQL Database to populate>
+  Category:    <not yet captured>
+  Rating:      <not yet captured>
+  Description: <not yet captured>...
+  Distance:    <not yet captured>
+  Similarity:  <not yet captured>
+
+Done. Connection closed.

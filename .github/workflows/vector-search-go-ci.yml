@@ -1,0 +1,75 @@
+# CI for the Azure SQL Vector Search Go quickstart sample.
+# Security: uses `pull_request` (read-only token, no secrets on forks)
+# with an explicit same-repo check to skip fork PRs entirely.
+#
+# This CI runs static analysis and unit tests only — no live Azure SQL
+# Database or Azure OpenAI resource is required or contacted. Live
+# end-to-end validation is a separate, manual step (see the sample's
+# README and output/sample-output.txt for the explicit no-live-run
+# disclosure).
+
+name: "Vector Search Go — Build"
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - "samples/features/vector-search/vector-search-query-go/**"
+  push:
+    branches: [master]
+    paths:
+      - "samples/features/vector-search/vector-search-query-go/**"
+
+# Cancel redundant runs for the same PR / branch.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Vet, format-check, build, and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Skip CI on fork PRs — prevents external actors from consuming minutes.
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
+
+    defaults:
+      run:
+        working-directory: samples/features/vector-search/vector-search-query-go
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
+        with:
+          go-version: "1.25"
+          cache-dependency-path: samples/features/vector-search/vector-search-query-go/go.sum
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Format check (gofmt)
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "The following files are not gofmt-formatted:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Build
+        run: go build ./...
+
+      - name: Unit tests (no Azure connectivity required)
+        run: go test ./... -v
