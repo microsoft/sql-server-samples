@@ -24,7 +24,9 @@ export function loadConfig(requireSql: boolean = true): AppConfig {
 
   const optional = (key: string): string | undefined => process.env[key];
 
-  const algorithmRaw = (optional("VECTOR_SEARCH_ALGORITHM") ?? "exact").toLowerCase();
+  const algorithmRaw = (
+    optional("VECTOR_SEARCH_ALGORITHM") ?? "exact"
+  ).toLowerCase();
   if (algorithmRaw !== "exact" && algorithmRaw !== "diskann") {
     throw new Error(
       `Invalid VECTOR_SEARCH_ALGORITHM: "${algorithmRaw}". Must be "exact" or "diskann".`
@@ -36,8 +38,8 @@ export function loadConfig(requireSql: boolean = true): AppConfig {
   if (!/^[a-zA-Z_][a-zA-Z0-9_]{0,114}$/.test(tableName)) {
     throw new Error(
       `Invalid AZURE_SQL_TABLE_NAME: "${tableName}". ` +
-      "Must start with a letter or underscore, contain only letters, numbers, and underscores, " +
-      "and be at most 115 characters."
+        "Must start with a letter or underscore, contain only letters, numbers, and underscores, " +
+        "and be at most 115 characters."
     );
   }
 
