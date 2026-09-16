@@ -1,6 +1,7 @@
 [tool.ruff]
 line-length = 110
 target-version = "py313"
+extend-exclude = ["README.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP"]
