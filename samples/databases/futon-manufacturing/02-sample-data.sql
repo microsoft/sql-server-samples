@@ -348,6 +348,249 @@ INSERT INTO SupplierItem (SupplierID, ItemID, SupplierPartNumber, UnitPrice, Min
 GO
 
 -- =============================================
+-- Purchase Orders
+-- =============================================
+INSERT INTO PurchaseOrder
+    (PONumber, SupplierID, WarehouseID, OrderDate, ExpectedDeliveryDate,
+     ActualDeliveryDate, Status, Subtotal, TaxAmount, ShippingAmount,
+     TotalAmount, Notes, CreatedBy)
+VALUES
+(
+    'PO-2024-001',
+    (SELECT SupplierID FROM Supplier WHERE SupplierCode = 'SUP-001'),
+    (SELECT WarehouseID FROM Warehouse WHERE WarehouseCode = 'WH-MAIN'),
+    '2024-11-04',
+    '2024-11-18',
+    '2024-11-18',
+    'Received',
+    1500.00,
+    120.00,
+    50.00,
+    1670.00,
+    'Fabric replenishment for manufacturing inventory.',
+    'SampleData'
+),
+(
+    'PO-2024-002',
+    (SELECT SupplierID FROM Supplier WHERE SupplierCode = 'SUP-002'),
+    (SELECT WarehouseID FROM Warehouse WHERE WarehouseCode = 'WH-MAIN'),
+    '2024-11-05',
+    '2024-11-26',
+    '2024-11-26',
+    'Received',
+    4025.00,
+    322.00,
+    50.00,
+    4397.00,
+    'Fill material replenishment for mattress and pillow production.',
+    'SampleData'
+),
+(
+    'PO-2024-003',
+    (SELECT SupplierID FROM Supplier WHERE SupplierCode = 'SUP-003'),
+    (SELECT WarehouseID FROM Warehouse WHERE WarehouseCode = 'WH-MAIN'),
+    '2024-11-06',
+    '2024-11-20',
+    '2024-11-20',
+    'Received',
+    1240.00,
+    99.20,
+    50.00,
+    1389.20,
+    'Wood and finishing material replenishment.',
+    'SampleData'
+),
+(
+    'PO-2024-004',
+    (SELECT SupplierID FROM Supplier WHERE SupplierCode = 'SUP-004'),
+    (SELECT WarehouseID FROM Warehouse WHERE WarehouseCode = 'WH-MAIN'),
+    '2024-11-07',
+    '2024-11-21',
+    '2024-11-21',
+    'Received',
+    1925.00,
+    154.00,
+    50.00,
+    2129.00,
+    'Hardware replenishment for frame production.',
+    'SampleData'
+),
+(
+    'PO-2024-005',
+    (SELECT SupplierID FROM Supplier WHERE SupplierCode = 'SUP-005'),
+    (SELECT WarehouseID FROM Warehouse WHERE WarehouseCode = 'WH-MAIN'),
+    '2024-11-08',
+    '2024-11-29',
+    '2024-11-29',
+    'Received',
+    1705.00,
+    136.40,
+    50.00,
+    1891.40,
+    'Premium fabric replenishment.',
+    'SampleData'
+);
+GO
+
+-- =============================================
+-- Purchase Order Details
+-- =============================================
+INSERT INTO PurchaseOrderDetail
+    (PurchaseOrderID, LineNumber, ItemID, Quantity, UnitPrice, QuantityReceived)
+VALUES
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-001'),
+    1,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FAB-001'),
+    100,
+    7.50,
+    100
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-001'),
+    2,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FAB-002'),
+    100,
+    7.50,
+    100
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-002'),
+    1,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FILL-001'),
+    500,
+    3.25,
+    500
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-002'),
+    2,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FILL-002'),
+    300,
+    8.00,
+    300
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-003'),
+    1,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-WOOD-001'),
+    50,
+    11.00,
+    50
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-003'),
+    2,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-WOOD-003'),
+    100,
+    6.90,
+    100
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-004'),
+    1,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-METAL-001'),
+    200,
+    2.50,
+    200
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-004'),
+    2,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-METAL-002'),
+    100,
+    14.25,
+    100
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-005'),
+    1,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FAB-004'),
+    80,
+    11.00,
+    80
+),
+(
+    (SELECT PurchaseOrderID FROM PurchaseOrder WHERE PONumber = 'PO-2024-005'),
+    2,
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FAB-006'),
+    60,
+    13.75,
+    60
+);
+GO
+
+-- =============================================
+-- Quality Inspections
+-- =============================================
+INSERT INTO QualityInspection
+    (ItemID, InspectionType, ReferenceType, ReferenceNumber,
+     QuantityInspected, QuantityAccepted, QuantityRejected,
+     InspectionDate, InspectedBy, Notes)
+VALUES
+(
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FAB-001'),
+    'Incoming',
+    'PO',
+    'PO-2024-001',
+    100,
+    98,
+    2,
+    '2024-11-18',
+    'SampleData',
+    'Incoming fabric inspection completed; minor defects identified.'
+),
+(
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FILL-001'),
+    'Incoming',
+    'PO',
+    'PO-2024-002',
+    500,
+    495,
+    5,
+    '2024-11-26',
+    'SampleData',
+    'Incoming fiber inspection completed.'
+),
+(
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-WOOD-001'),
+    'Incoming',
+    'PO',
+    'PO-2024-003',
+    50,
+    49,
+    1,
+    '2024-11-20',
+    'SampleData',
+    'Wood quality inspection completed.'
+),
+(
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-METAL-001'),
+    'Incoming',
+    'PO',
+    'PO-2024-004',
+    200,
+    198,
+    2,
+    '2024-11-21',
+    'SampleData',
+    'Hardware inspection completed.'
+),
+(
+    (SELECT ItemID FROM Items WHERE ItemCode = 'RM-FAB-004'),
+    'Incoming',
+    'PO',
+    'PO-2024-005',
+    80,
+    79,
+    1,
+    '2024-11-29',
+    'SampleData',
+    'Premium fabric inspection completed.'
+);
+GO
+
+-- =============================================
 -- Initial Inventory
 -- =============================================
 
