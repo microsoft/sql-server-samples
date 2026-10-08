@@ -14,7 +14,10 @@
     "start": "node --env-file=.env --import tsx ./src/index.ts",
     "embed": "node --env-file=.env --import tsx ./src/embed.ts",
     "build": "node scripts/typecheck.js",
-    "check": "node scripts/typecheck.js --no-emit"
+    "check": "node scripts/typecheck.js --no-emit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@azure/identity": "^4.9.1",
@@ -22,9 +25,13 @@
     "tedious": "^19.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^22.15.0",
+    "eslint": "^10.10.0",
+    "prettier": "^3.9.6",
     "tsx": "^4.23.13",
-    "typescript": "^5.8.0"
+    "typescript": "^5.8.0",
+    "typescript-eslint": "^8.70.0"
   },
   "engines": {
     "node": ">=20.6.0"

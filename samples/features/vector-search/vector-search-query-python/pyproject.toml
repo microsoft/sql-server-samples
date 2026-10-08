@@ -1,0 +1,15 @@
+[tool.ruff]
+line-length = 110
+target-version = "py313"
+extend-exclude = ["README.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.13"
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

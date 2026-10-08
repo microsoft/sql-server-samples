@@ -29,7 +29,7 @@ param location string
 @description('Object ID of the principal to assign database and application roles. Required — must be set via AZURE_PRINCIPAL_ID. Expected as UUID (36 characters).')
 @minLength(36)
 @maxLength(36)
-param deploymentUserPrincipalId string = ''
+param deploymentUserPrincipalId string
 
 @description('Client IP address for SQL firewall rule (for local development).')
 param clientIpAddress string = ''

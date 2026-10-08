@@ -1,0 +1,69 @@
+Azure SQL Database vector search — Go quickstart
+Expected-output placeholder (per constitution ASV-CORE-21/ASV-CORE-32).
+
+*** THIS IS NOT A CAPTURED REAL RUN. ***
+
+No authorized live Azure SQL Database or Azure OpenAI environment was
+available while this sample was authored, so no end-to-end execution has
+been performed for Go. This file documents the expected shape of the
+output, based on the already-implemented and already-validated TypeScript
+reference sample's real captured run (see
+../../vector-search-query-typescript/output/sample-output.txt), with
+language-specific values (banner text, table name) adjusted and the
+per-run values (hotel name, category, rating, description, distance,
+similarity) replaced with placeholders because they have not actually
+been produced by running this code. Go is also out of scope for this v1
+scenario by the constitution's own decision (ASV-LANG-GO-1); this sample
+exists as a fully specified, validated-as-far-as-possible reference
+implementation ahead of that decision being revisited, not as evidence
+that Go coverage has been approved for release.
+
+Do not treat this file as validated evidence that the Go sample works
+end-to-end. Replace it with a real captured run — and update this
+provenance note accordingly — once this sample has been executed against
+a real Azure SQL Database and Azure OpenAI resource.
+
+What has been validated instead, without live Azure access:
+  - go build ./... (all packages compile)
+  - go vet ./... (no issues)
+  - gofmt -l . (no formatting issues)
+  - go test ./... (6 unit tests passed) covering configuration validation,
+    vector serialization, and dataset shape validation
+  - go mod tidy / go.sum verified against the module proxy for all
+    dependencies (github.com/microsoft/go-mssqldb, its azuread
+    subpackage, github.com/Azure/azure-sdk-for-go/sdk/azidentity,
+    github.com/openai/openai-go/v3 and its azure subpackage,
+    github.com/joho/godotenv)
+
+=== Azure SQL Vector Search—Go Quickstart ===
+
+Server:     <your-server>.database.windows.net
+Database:   <your-database>
+OpenAI:     https://<your-resource>.openai.azure.com
+Deployment: text-embedding-3-small
+Algorithm:  exact
+Table:      dbo.hotels_go
+
+Loaded 50 hotels from data file.
+
+Connecting to Azure SQL Database...
+Connected.
+
+Creating table dbo.hotels_go (if not exists)...
+Table ready.
+
+Inserting hotel data with precomputed embeddings...
+Inserted 50 hotels.
+
+Searching for: "luxury beachfront hotel with ocean views and spa"
+
+--- Search Results—Exact (kNN) via VECTOR_DISTANCE (Top 3 by Cosine Distance) ---
+
+  Hotel:       <not yet captured — run this sample against a live Azure SQL Database to populate>
+  Category:    <not yet captured>
+  Rating:      <not yet captured>
+  Description: <not yet captured>...
+  Distance:    <not yet captured>
+  Similarity:  <not yet captured>
+
+Done. Connection closed.

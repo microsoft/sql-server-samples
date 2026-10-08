@@ -1,0 +1,4 @@
+pyodbc>=5.3.0
+azure-identity>=1.25.0
+openai>=3.9.0
+python-dotenv>=1.2.0

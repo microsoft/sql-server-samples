@@ -1,0 +1,56 @@
+name: "Vector Search .NET — Build"
+
+on:
+  pull_request:
+    branches: [master]
+    paths:
+      - ".github/workflows/vector-search-dotnet-ci.yml"
+      - "samples/features/vector-search/data/**"
+      - "samples/features/vector-search/vector-search-query-dotnet/**"
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/vector-search-dotnet-ci.yml"
+      - "samples/features/vector-search/data/**"
+      - "samples/features/vector-search/vector-search-query-dotnet/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: samples/features/vector-search/vector-search-query-dotnet
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore Tests/vector-search-query-dotnet.Tests.csproj
+
+      - name: Format
+        run: dotnet format Tests/vector-search-query-dotnet.Tests.csproj --verify-no-changes --no-restore
+
+      - name: Build
+        run: dotnet build Tests/vector-search-query-dotnet.Tests.csproj --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test Tests/vector-search-query-dotnet.Tests.csproj --configuration Release --no-build --nologo
+
+      - name: Self-check
+        run: dotnet run --project vector-search-query-dotnet.csproj --configuration Release --no-build -- --self-check

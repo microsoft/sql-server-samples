@@ -1,0 +1,8 @@
+bin/
+obj/
+.vs/
+.idea/
+.env
+.env.*
+**/bin/
+**/obj/

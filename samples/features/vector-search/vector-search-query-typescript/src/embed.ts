@@ -69,7 +69,11 @@ async function main(): Promise<void> {
     DescriptionVector: allEmbeddings[idx],
   }));
 
-  writeFileSync(outputPath, JSON.stringify(hotelsWithVectors, null, 2), "utf-8");
+  writeFileSync(
+    outputPath,
+    JSON.stringify(hotelsWithVectors, null, 2),
+    "utf-8"
+  );
   console.log(`Done. Wrote HotelsData_Vector.json`);
 }
 

@@ -3,11 +3,15 @@
 .env.local
 .env.*.local
 
-# Build output
-dist/
-
-# Dependencies
-node_modules/
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
 # Sample output — keep the committed reference file (output/sample-output.txt);
 # ignore any other ephemeral run artifacts written to this folder.
@@ -16,4 +20,3 @@ output/*
 
 # Logs
 *.log
-npm-debug.log*
