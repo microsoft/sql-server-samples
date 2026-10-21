@@ -1,0 +1,721 @@
+/*
+T-SQL date/time object and expression coverage.
+Target: SQL Server 2025 (17.x), or Azure SQL Database / Azure SQL Managed
+Instance with CURRENT_DATE, DATE_BUCKET, DATETRUNC and CURRENT_TIMEZONE_ID.
+The discovery section also requires REGEXP_* and compatibility level 170
+(or ALLOW_BUILTIN_TVF_IN_ALL_COMPAT_LEVELS enabled). No settings are changed.
+
+Run in a disposable USER database using sqlcmd, or SSMS SQLCMD Mode:
+  sqlcmd -S "<server>" -d "<database>" -E -b -i TSQL_DateTime_Object_Coverage.sql
+For Azure SQL, choose the appropriate authentication options instead of -E.
+
+This creates schema DateTimeLab, sample data, and all objects in one transaction.
+It refuses to overwrite an existing schema and does not change database,
+instance or session time-zone settings. SQLCMD stops on error; disconnecting
+rolls back an uncommitted deployment. Do not run individual batches out of order.
+Exception: the final DATE/TIME DISCOVERY batch is independent and read-only.
+Select that batch alone to inspect any existing database without deploying
+DateTimeLab. Its default scope is all visible user objects in the database.
+
+Coverage:
+  * All six date/time types, plus representative fractional precisions.
+  * 29 native date/time functions, including CURRENT_DATE, CURRENT_TIMEZONE,
+    CURRENT_TIMEZONE_ID, and every native function in the overview below.
+  * CAST, CONVERT, TRY_CAST, TRY_CONVERT, PARSE, TRY_PARSE and FORMAT.
+  * @@DATEFIRST, @@LANGUAGE, SET DATEFIRST, SET DATEFORMAT, SET LANGUAGE,
+    sp_helplanguage and the 13 ODBC date/time functions listed below.
+  * AT TIME ZONE in a default, check, computed column, views, functions,
+    procedures and a set-based INSERT/UPDATE/DELETE trigger.
+  * v_BuiltinCoverage maps the inventory to executable object definitions.
+    v_ArtifactDefinitions exposes defaults, checks, computed columns and modules.
+  * The final discovery batch produces classified summaries, regex occurrences
+    with definition-relative line numbers, typed columns/parameters, and gaps.
+
+Notes:
+  * timestamp/rowversion is NOT a date/time type and is intentionally excluded.
+  * datetimeoffset stores an offset, not a named time zone.
+  * AT TIME ZONE on a datetime2 ATTACHES a zone; on a datetimeoffset it CONVERTS
+    the instant. UTC datetime2 values must first be tagged AT TIME ZONE 'UTC'.
+  * Current-time defaults are independently evaluated, not an atomic snapshot.
+  * Time-dependent CHECK constraints run on INSERT/UPDATE, not as time passes.
+  * Nondeterministic expressions are not indexed or persisted here.
+  * FORMAT/PARSE use CLR; CLR integration need not be enabled for these built-ins.
+  * Scalar UDFs do not execute SET TIME ZONE. Apply any supported database/session
+    setting outside these objects to compare effective local versus UTC behavior.
+
+Inventory sources (reviewed 2026-10-20):
+https://learn.microsoft.com/en-us/sql/t-sql/functions/date-and-time-data-types-and-functions-transact-sql
+https://learn.microsoft.com/en-us/sql/t-sql/functions/odbc-scalar-functions-transact-sql
+https://learn.microsoft.com/en-us/sql/t-sql/functions/current-timezone-transact-sql
+https://learn.microsoft.com/en-us/sql/t-sql/functions/current-timezone-id-transact-sql
+*/
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+
+IF DB_NAME() IN (N'master', N'model', N'msdb', N'tempdb')
+    THROW 51000, 'Run this script in a disposable user database, not a system database.', 1;
+IF @@TRANCOUNT <> 0
+    THROW 51001, 'Run this script without an existing transaction.', 1;
+IF SCHEMA_ID(N'DateTimeLab') IS NOT NULL
+    THROW 51002, 'DateTimeLab already exists. Nothing was overwritten; use a fresh test database.', 1;
+IF (SELECT COUNT(*) FROM sys.time_zone_info
+    WHERE name IN (N'UTC', N'Pacific Standard Time', N'Yukon Standard Time',
+                   N'Canada Central Standard Time', N'Eastern Standard Time (Mexico)')) <> 5
+    THROW 51003, 'One or more required Windows time-zone identifiers are unavailable.', 1;
+
+-- Compile the newest required expressions before creating any objects.
+EXEC sys.sp_executesql N'
+DECLARE @d date = CURRENT_DATE;
+DECLARE @t datetime2(7) = DATETRUNC(day, SYSUTCDATETIME());
+DECLARE @b datetime2(7) = DATE_BUCKET(minute, 15, @t);
+DECLARE @z sysname = CURRENT_TIMEZONE_ID();
+DECLARE @regexProbe int;
+SELECT @regexProbe = COUNT(*) FROM REGEXP_MATCHES(N''GETDATE()'', N''GETDATE'');
+SET @regexProbe = REGEXP_COUNT(N''one'' + NCHAR(10) + N''two'', N''\n'');';
+
+BEGIN TRANSACTION;
+EXEC(N'CREATE SCHEMA DateTimeLab AUTHORIZATION dbo;');
+GO
+
+CREATE TABLE DateTimeLab.Sample
+(
+    SampleId int IDENTITY(1,1) NOT NULL
+        CONSTRAINT PK_DateTimeLab_Sample PRIMARY KEY,
+    SampleName nvarchar(100) NOT NULL
+        CONSTRAINT UQ_DateTimeLab_Sample_Name UNIQUE,
+    DateValue date NOT NULL
+        CONSTRAINT DF_Sample_DateValue DEFAULT (CURRENT_DATE),
+    TimeValue time(7) NOT NULL
+        CONSTRAINT DF_Sample_TimeValue DEFAULT (CAST(SYSDATETIME() AS time(7))),
+    SmallDateTimeValue smalldatetime NOT NULL
+        CONSTRAINT DF_Sample_SmallDateTimeValue DEFAULT (CAST(GETDATE() AS smalldatetime)),
+    DateTimeValue datetime NOT NULL
+        CONSTRAINT DF_Sample_DateTimeValue DEFAULT (GETDATE()),
+    DateTime2Value datetime2(7) NOT NULL
+        CONSTRAINT DF_Sample_DateTime2Value DEFAULT (SYSDATETIME()),
+    DateTimeOffsetValue datetimeoffset(7) NOT NULL
+        CONSTRAINT DF_Sample_DateTimeOffsetValue DEFAULT (SYSDATETIMEOFFSET()),
+    TimeToSeconds time(0) NOT NULL
+        CONSTRAINT DF_Sample_TimeToSeconds DEFAULT (CAST(SYSDATETIME() AS time(0))),
+    DateTime2ToMilliseconds datetime2(3) NOT NULL
+        CONSTRAINT DF_Sample_DateTime2Milliseconds DEFAULT (SYSDATETIME()),
+    OffsetToSeconds datetimeoffset(0) NOT NULL
+        CONSTRAINT DF_Sample_OffsetToSeconds DEFAULT (SYSDATETIMEOFFSET()),
+    CurrentTimestampValue datetime NOT NULL
+        CONSTRAINT DF_Sample_CurrentTimestamp DEFAULT (CURRENT_TIMESTAMP),
+    UtcDateTimeValue datetime NOT NULL
+        CONSTRAINT DF_Sample_UtcDateTime DEFAULT (GETUTCDATE()),
+    UtcStart datetime2(7) NOT NULL
+        CONSTRAINT DF_Sample_UtcStart DEFAULT (SYSUTCDATETIME()),
+    UtcEnd datetime2(7) NOT NULL
+        CONSTRAINT DF_Sample_UtcEnd DEFAULT (DATEADD(hour, 1, SYSUTCDATETIME())),
+    InsertedUtc datetime2(7) NOT NULL
+        CONSTRAINT DF_Sample_InsertedUtc DEFAULT (SYSUTCDATETIME()),
+    DefaultMonthEnd date NOT NULL
+        CONSTRAINT DF_Sample_MonthEnd DEFAULT (EOMONTH(CURRENT_DATE)),
+    DefaultMonthStart datetime2(7) NOT NULL
+        CONSTRAINT DF_Sample_MonthStart DEFAULT (DATETRUNC(month, SYSDATETIME())),
+    DefaultQuarterHour datetime2(7) NOT NULL
+        CONSTRAINT DF_Sample_QuarterHour DEFAULT
+        (DATE_BUCKET(minute, 15, SYSUTCDATETIME(), CONVERT(datetime2(7), '20000101', 112))),
+    DefaultUtcOffset datetimeoffset(7) NOT NULL
+        CONSTRAINT DF_Sample_DefaultUtcOffset DEFAULT
+        (SYSUTCDATETIME() AT TIME ZONE 'UTC'),
+    EffectiveTimeZoneId sysname NOT NULL
+        CONSTRAINT DF_Sample_TimeZoneId DEFAULT (CURRENT_TIMEZONE_ID()),
+    EffectiveTimeZoneDisplay nvarchar(256) NOT NULL
+        CONSTRAINT DF_Sample_TimeZoneDisplay DEFAULT (CURRENT_TIMEZONE()),
+    RegionTimeZone sysname NOT NULL
+        CONSTRAINT DF_Sample_Region DEFAULT (N'Eastern Standard Time (Mexico)'),
+    DateText varchar(10) NOT NULL
+        CONSTRAINT DF_Sample_DateText DEFAULT (CONVERT(varchar(10), CURRENT_DATE, 23)),
+    Notes nvarchar(200) NULL,
+
+    MonthStart AS DATEFROMPARTS(YEAR(DateValue), MONTH(DateValue), 1),
+    MonthEnd AS EOMONTH(DateValue),
+    IsoWeek AS DATEPART(iso_week, DateValue),
+    DurationSeconds AS DATEDIFF_BIG(second, UtcStart, UtcEnd),
+    UtcAtRegion AS ((UtcStart AT TIME ZONE 'UTC') AT TIME ZONE RegionTimeZone),
+
+    CONSTRAINT CK_Sample_DateRange CHECK
+        (DateValue BETWEEN DATEFROMPARTS(1900, 1, 1) AND DATEFROMPARTS(2070, 12, 31)),
+    CONSTRAINT CK_Sample_AnalysisRange CHECK
+        (DateTime2Value >= DATETIME2FROMPARTS(1900, 1, 1, 0, 0, 0, 0, 7)
+         AND DateTime2Value < DATETIME2FROMPARTS(2071, 1, 1, 0, 0, 0, 0, 7)),
+    CONSTRAINT CK_Sample_UtcRange CHECK
+        (UtcStart >= DATETIME2FROMPARTS(1900, 1, 1, 0, 0, 0, 0, 7)
+         AND UtcEnd < DATETIME2FROMPARTS(2071, 1, 1, 0, 0, 0, 0, 7)),
+    CONSTRAINT CK_Sample_Interval CHECK
+        (UtcEnd >= UtcStart AND UtcEnd <= DATEADD(day, 7, UtcStart)
+         AND DATEDIFF_BIG(second, UtcStart, UtcEnd) >= 0),
+    CONSTRAINT CK_Sample_MonthParts CHECK
+        (DAY(DateValue) <= DAY(EOMONTH(DateValue))
+         AND MONTH(DateValue) = DATEPART(month, DateValue)),
+    CONSTRAINT CK_Sample_TimeParts CHECK
+        (TimeValue >= TIMEFROMPARTS(0, 0, 0, 0, 7)
+         AND DATEPART(hour, TimeValue) BETWEEN 0 AND 23),
+    CONSTRAINT CK_Sample_LegacyValidation CHECK
+        (ISDATE(CONVERT(varchar(23), DateTimeValue, 126)) = 1),
+    CONSTRAINT CK_Sample_DateText CHECK
+        (TRY_CONVERT(date, DateText, 23) IS NOT NULL
+         AND CONVERT(varchar(10), TRY_CONVERT(date, DateText, 23), 23) = DateText),
+    CONSTRAINT CK_Sample_OffsetRange CHECK
+        (DATEPART(tzoffset, DateTimeOffsetValue) BETWEEN -840 AND 840),
+    CONSTRAINT CK_Sample_Region CHECK
+        (RegionTimeZone IN (N'UTC', N'Pacific Standard Time', N'Yukon Standard Time',
+                            N'Canada Central Standard Time', N'Eastern Standard Time (Mexico)')),
+    CONSTRAINT CK_Sample_UtcTag CHECK
+        (DATEPART(tzoffset, UtcStart AT TIME ZONE 'UTC') = 0),
+    -- This is an insertion/update-time rule, not a continuously maintained rule.
+    CONSTRAINT CK_Sample_InsertedUtc CHECK
+        (InsertedUtc <= DATEADD(minute, 5, SYSUTCDATETIME()))
+);
+GO
+
+CREATE TABLE DateTimeLab.Audit
+(
+    AuditId bigint IDENTITY(1,1) NOT NULL
+        CONSTRAINT PK_DateTimeLab_Audit PRIMARY KEY,
+    SampleId int NOT NULL,
+    Operation char(1) NOT NULL
+        CONSTRAINT CK_Audit_Operation CHECK (Operation IN ('I', 'U', 'D')),
+    AuditDate date NOT NULL,
+    AuditLocal datetime2(7) NOT NULL,
+    AuditOffset datetimeoffset(7) NOT NULL,
+    AuditUtc datetime2(7) NOT NULL,
+    AuditLegacyLocal datetime NOT NULL,
+    AuditLegacyUtc datetime NOT NULL,
+    AuditCurrentTimestamp datetime NOT NULL,
+    EffectiveTimeZoneId sysname NOT NULL,
+    EffectiveTimeZoneDisplay nvarchar(256) NOT NULL,
+    RegionTimeZone sysname NOT NULL,
+    AuditAtRegion datetimeoffset(7) NOT NULL,
+    AuditUtcBucket datetime2(7) NOT NULL,
+    PreviousUtcStart datetime2(7) NULL,
+    NewUtcStart datetime2(7) NULL,
+    StartShiftSeconds bigint NULL,
+    CONSTRAINT CK_Audit_Offset CHECK
+        (DATEPART(tzoffset, AuditOffset) BETWEEN -840 AND 840)
+);
+GO
+
+CREATE FUNCTION DateTimeLab.ufn_ToRegion
+(
+    @UtcValue datetime2(7),
+    @TimeZone sysname
+)
+RETURNS datetimeoffset(7)
+AS
+BEGIN
+    RETURN (@UtcValue AT TIME ZONE 'UTC') AT TIME ZONE @TimeZone;
+END;
+GO
+
+CREATE FUNCTION DateTimeLab.ufn_DateTimeExpressions
+(
+    @Value datetime2(7),
+    @OffsetValue datetimeoffset(7),
+    @TimeZone sysname,
+    @Text nvarchar(100)
+)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT
+        DATE_BUCKET(minute, 15, @Value, CONVERT(datetime2(7), '20000101', 112)) AS Bucket15Minutes,
+        DATENAME(weekday, @Value) AS WeekdayName,
+        DATEPART(iso_week, @Value) AS IsoWeekNumber,
+        DATETRUNC(iso_week, @Value) AS IsoWeekStart,
+        DAY(@Value) AS DayNumber,
+        MONTH(@Value) AS MonthNumber,
+        YEAR(@Value) AS YearNumber,
+        DATEFROMPARTS(YEAR(@Value), MONTH(@Value), DAY(@Value)) AS ConstructedDate,
+        DATETIMEFROMPARTS(YEAR(@Value), MONTH(@Value), DAY(@Value),
+            DATEPART(hour, @Value), DATEPART(minute, @Value),
+            DATEPART(second, @Value), DATEPART(millisecond, @Value)) AS ConstructedDateTime,
+        DATETIME2FROMPARTS(YEAR(@Value), MONTH(@Value), DAY(@Value),
+            DATEPART(hour, @Value), DATEPART(minute, @Value),
+            DATEPART(second, @Value), DATEPART(nanosecond, @Value) / 100, 7) AS ConstructedDateTime2,
+        DATETIMEOFFSETFROMPARTS(YEAR(@OffsetValue), MONTH(@OffsetValue), DAY(@OffsetValue),
+            DATEPART(hour, @OffsetValue), DATEPART(minute, @OffsetValue),
+            DATEPART(second, @OffsetValue), DATEPART(nanosecond, @OffsetValue) / 100,
+            DATEPART(tzoffset, @OffsetValue) / 60,
+            DATEPART(tzoffset, @OffsetValue) % 60, 7) AS ConstructedDateTimeOffset,
+        SMALLDATETIMEFROMPARTS(YEAR(@Value), MONTH(@Value), DAY(@Value),
+            DATEPART(hour, @Value), DATEPART(minute, @Value)) AS ConstructedSmallDateTime,
+        TIMEFROMPARTS(DATEPART(hour, @Value), DATEPART(minute, @Value),
+            DATEPART(second, @Value), DATEPART(nanosecond, @Value) / 100, 7) AS ConstructedTime,
+        DATEDIFF(day, DATETRUNC(month, @Value), @Value) AS DaysFromMonthStart,
+        DATEDIFF_BIG(nanosecond, DATETRUNC(day, @Value), @Value) AS NanosecondsSinceMidnight,
+        DATEADD(day, 1, @Value) AS NextDay,
+        EOMONTH(@Value) AS MonthEnd,
+        SWITCHOFFSET(@OffsetValue, '+00:00') AS OffsetConvertedToUtc,
+        TODATETIMEOFFSET(@Value, '-05:00') AS WallClockTaggedWithFixedOffset,
+        (@Value AT TIME ZONE 'UTC') AT TIME ZONE @TimeZone AS UtcConvertedToRegion,
+        ISDATE(CONVERT(varchar(23), CAST(@Value AS datetime), 126)) AS IsLegacyDate,
+        CAST(@Value AS date) AS CastDate,
+        CONVERT(varchar(33), @Value, 126) AS IsoText,
+        TRY_CAST(@Text AS datetime2(7)) AS TryCastDateTime2,
+        TRY_CONVERT(datetimeoffset(7), @Text, 127) AS TryConvertOffset,
+        PARSE(CONVERT(nvarchar(10), @Value, 23) AS date USING 'en-US') AS ParsedCanonicalDate,
+        TRY_PARSE(@Text AS datetime2 USING 'en-US') AS TryParsedDateTime2,
+        FORMAT(@Value, N'yyyy-MM-dd HH:mm:ss.fffffff', N'en-US') AS FormattedText
+);
+GO
+
+CREATE FUNCTION DateTimeLab.ufn_DayWindows
+(
+    @FirstDate date,
+    @DayCount int,
+    @TimeZone sysname
+)
+RETURNS @Windows TABLE
+(
+    LocalDate date NOT NULL,
+    StartAtRegion datetimeoffset(7) NOT NULL,
+    EndAtRegion datetimeoffset(7) NOT NULL,
+    ActualMinutes int NOT NULL
+)
+AS
+BEGIN
+    -- This UDF expects valid inputs; usp_DayWindows enforces the input contract.
+    DECLARE @Index int = 0;
+    WHILE @Index < @DayCount
+    BEGIN
+        DECLARE @Date date = DATEADD(day, @Index, @FirstDate);
+        DECLARE @Start datetimeoffset(7) = CAST(@Date AS datetime2(7)) AT TIME ZONE @TimeZone;
+        DECLARE @End datetimeoffset(7) = DATEADD(day, 1, CAST(@Date AS datetime2(7))) AT TIME ZONE @TimeZone;
+        INSERT @Windows (LocalDate, StartAtRegion, EndAtRegion, ActualMinutes)
+        VALUES (@Date, @Start, @End, DATEDIFF(minute, @Start, @End));
+        SET @Index += 1;
+    END;
+    RETURN;
+END;
+GO
+
+CREATE VIEW DateTimeLab.v_CurrentClocks
+AS
+SELECT
+    SYSDATETIME() AS LocalDateTime2,
+    SYSDATETIMEOFFSET() AS LocalDateTimeOffset,
+    SYSUTCDATETIME() AS UtcDateTime2,
+    CURRENT_TIMESTAMP AS LocalCurrentTimestamp,
+    GETDATE() AS LocalDateTime,
+    GETUTCDATE() AS UtcDateTime,
+    CURRENT_DATE AS LocalDate,
+    CURRENT_TIMEZONE() AS EffectiveTimeZoneDisplay,
+    CURRENT_TIMEZONE_ID() AS EffectiveTimeZoneId,
+    @@DATEFIRST AS FirstDayOfWeek,
+    @@LANGUAGE AS SessionLanguage;
+GO
+
+CREATE VIEW DateTimeLab.v_RecentUtcSamples
+AS
+SELECT SampleId, SampleName, UtcStart, UtcEnd,
+       DATE_BUCKET(hour, 1, UtcStart) AS HourBucket,
+       DATEDIFF_BIG(second, UtcStart, UtcEnd) AS DurationSeconds,
+       UtcStart AT TIME ZONE 'UTC' AS StartWithUtcOffset
+FROM DateTimeLab.Sample
+WHERE UtcStart >= DATEADD(day, -7, SYSUTCDATETIME())
+  AND UtcStart < DATEADD(day, 1, DATETRUNC(day, SYSUTCDATETIME()))
+  AND DATEDIFF(day, UtcStart, UtcEnd) <= 7;
+GO
+
+CREATE VIEW DateTimeLab.v_CurrentLocalMonth
+AS
+SELECT SampleId, SampleName, DateValue, DateTimeValue, TimeValue,
+       DATENAME(month, DateValue) AS MonthName
+FROM DateTimeLab.Sample
+WHERE DateValue >= DATEFROMPARTS(YEAR(CURRENT_DATE), MONTH(CURRENT_DATE), 1)
+  AND DateValue <= EOMONTH(CURRENT_DATE)
+  AND DATEPART(hour, TimeValue) BETWEEN 0 AND 23;
+GO
+
+CREATE VIEW DateTimeLab.v_RegionalToday
+AS
+SELECT s.SampleId, s.SampleName, s.RegionTimeZone,
+       (s.UtcStart AT TIME ZONE 'UTC') AT TIME ZONE s.RegionTimeZone AS RegionalStart
+FROM DateTimeLab.Sample AS s
+WHERE CONVERT(date, (s.UtcStart AT TIME ZONE 'UTC') AT TIME ZONE s.RegionTimeZone)
+    = CONVERT(date, (SYSUTCDATETIME() AT TIME ZONE 'UTC') AT TIME ZONE s.RegionTimeZone);
+GO
+
+CREATE TRIGGER DateTimeLab.tr_Sample_Audit
+ON DateTimeLab.Sample
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @AuditUtc datetime2(7) = SYSUTCDATETIME();
+
+    INSERT DateTimeLab.Audit
+    (
+        SampleId, Operation, AuditDate, AuditLocal, AuditOffset, AuditUtc,
+        AuditLegacyLocal, AuditLegacyUtc, AuditCurrentTimestamp,
+        EffectiveTimeZoneId, EffectiveTimeZoneDisplay, RegionTimeZone,
+        AuditAtRegion, AuditUtcBucket, PreviousUtcStart, NewUtcStart, StartShiftSeconds
+    )
+    SELECT
+        COALESCE(i.SampleId, d.SampleId),
+        CASE WHEN d.SampleId IS NULL THEN 'I'
+             WHEN i.SampleId IS NULL THEN 'D' ELSE 'U' END,
+        CURRENT_DATE, SYSDATETIME(), SYSDATETIMEOFFSET(), @AuditUtc,
+        GETDATE(), GETUTCDATE(), CURRENT_TIMESTAMP,
+        CURRENT_TIMEZONE_ID(), CURRENT_TIMEZONE(),
+        COALESCE(i.RegionTimeZone, d.RegionTimeZone),
+        (@AuditUtc AT TIME ZONE 'UTC') AT TIME ZONE COALESCE(i.RegionTimeZone, d.RegionTimeZone),
+        DATE_BUCKET(minute, 15, @AuditUtc),
+        d.UtcStart, i.UtcStart, DATEDIFF_BIG(second, d.UtcStart, i.UtcStart)
+    FROM inserted AS i
+    FULL JOIN deleted AS d ON d.SampleId = i.SampleId;
+END;
+GO
+
+CREATE PROCEDURE DateTimeLab.usp_InsertSample
+    @SampleName nvarchar(100),
+    @TimeZone sysname = N'Eastern Standard Time (Mexico)',
+    @UtcStart datetime2(7) = NULL,
+    @DurationMinutes int = 60
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @SampleName IS NULL OR LEN(LTRIM(RTRIM(@SampleName))) = 0
+        THROW 51010, 'SampleName must not be empty.', 1;
+    IF @TimeZone IS NULL OR @TimeZone NOT IN
+        (N'UTC', N'Pacific Standard Time', N'Yukon Standard Time',
+         N'Canada Central Standard Time', N'Eastern Standard Time (Mexico)')
+        THROW 51011, 'Select one of the five time zones supported by this fixture.', 1;
+    IF @DurationMinutes IS NULL OR @DurationMinutes NOT BETWEEN 1 AND 1440
+        THROW 51012, 'DurationMinutes must be between 1 and 1440.', 1;
+
+    SET @UtcStart = COALESCE(@UtcStart, SYSUTCDATETIME());
+    IF @UtcStart < CONVERT(datetime2(7), '19000101', 112)
+        OR @UtcStart >= CONVERT(datetime2(7), '20701231', 112)
+        THROW 51013, 'UtcStart is outside the fixture range [1900-01-01, 2070-12-31).', 1;
+
+    DECLARE @Ids TABLE (SampleId int NOT NULL);
+    INSERT DateTimeLab.Sample (SampleName, RegionTimeZone, UtcStart, UtcEnd)
+        OUTPUT inserted.SampleId INTO @Ids
+    VALUES (@SampleName, @TimeZone, @UtcStart, DATEADD(minute, @DurationMinutes, @UtcStart));
+
+    SELECT s.*, DateTimeLab.ufn_ToRegion(s.UtcStart, s.RegionTimeZone) AS StartAtRegion
+    FROM DateTimeLab.Sample AS s
+    JOIN @Ids AS i ON i.SampleId = s.SampleId;
+END;
+GO
+
+CREATE PROCEDURE DateTimeLab.usp_InspectExpressions
+    @Value datetime2(7) = '2026-10-20T12:34:56.1234567',
+    @OffsetValue datetimeoffset(7) = '2026-10-20T12:34:56.1234567-05:30',
+    @TimeZone sysname = N'Eastern Standard Time (Mexico)',
+    @Text nvarchar(100) = N'2026-10-20T12:34:56.1234567'
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @Value IS NULL OR @Value < CONVERT(datetime2(7), '19000101', 112)
+        OR @Value >= CONVERT(datetime2(7), '20710101', 112)
+        THROW 51014, 'Value must be in [1900-01-01, 2071-01-01) for all legacy constructors.', 1;
+    IF @OffsetValue IS NULL
+        THROW 51015, 'OffsetValue must not be NULL.', 1;
+    IF @TimeZone IS NULL OR NOT EXISTS (SELECT 1 FROM sys.time_zone_info WHERE name = @TimeZone)
+        THROW 51016, 'TimeZone must be an installed Windows time-zone identifier.', 1;
+
+    SELECT * FROM DateTimeLab.v_CurrentClocks;
+    SELECT * FROM DateTimeLab.ufn_DateTimeExpressions(@Value, @OffsetValue, @TimeZone, @Text);
+
+    SELECT
+        @Value AT TIME ZONE @TimeZone AS NaiveWallClockAssignedToRegion,
+        (@Value AT TIME ZONE 'UTC') AT TIME ZONE @TimeZone AS UtcInstantConvertedToRegion,
+        @OffsetValue AT TIME ZONE @TimeZone AS OffsetInstantConvertedToRegion,
+        DATEPART(tzoffset, @OffsetValue AT TIME ZONE @TimeZone) AS RegionalOffsetMinutes;
+END;
+GO
+
+CREATE PROCEDURE DateTimeLab.usp_DayWindows
+    @FirstDate date = '2026-11-01',
+    @DayCount int = 2,
+    @TimeZone sysname = N'Pacific Standard Time'
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF @FirstDate IS NULL OR @FirstDate < DATEFROMPARTS(1900, 1, 1)
+        OR @FirstDate > DATEFROMPARTS(2070, 1, 1)
+        THROW 51017, 'FirstDate must be between 1900-01-01 and 2070-01-01.', 1;
+    IF @DayCount IS NULL OR @DayCount NOT BETWEEN 1 AND 366
+        THROW 51018, 'DayCount must be between 1 and 366.', 1;
+    IF @TimeZone IS NULL OR NOT EXISTS (SELECT 1 FROM sys.time_zone_info WHERE name = @TimeZone)
+        THROW 51019, 'TimeZone must be an installed Windows time-zone identifier.', 1;
+
+    SELECT * FROM DateTimeLab.ufn_DayWindows(@FirstDate, @DayCount, @TimeZone)
+    ORDER BY LocalDate;
+END;
+GO
+
+CREATE PROCEDURE DateTimeLab.usp_SessionFormats
+AS
+BEGIN
+    SET NOCOUNT ON;
+    -- SET changes made inside this procedure revert when it returns.
+    SET LANGUAGE us_english;
+    SET DATEFORMAT dmy;
+    SET DATEFIRST 1;
+    SELECT @@LANGUAGE AS SessionLanguage, @@DATEFIRST AS FirstDayOfWeek,
+           DATENAME(weekday, DATEFROMPARTS(2026, 10, 20)) AS WeekdayName,
+           DATEPART(weekday, DATEFROMPARTS(2026, 10, 20)) AS WeekdayNumber,
+           ISDATE('31/12/2026') AS IsValidDmy,
+           TRY_CONVERT(date, '31/12/2026') AS ParsedDmy;
+
+    SET DATEFORMAT mdy;
+    SET DATEFIRST 7;
+    SELECT @@LANGUAGE AS SessionLanguage, @@DATEFIRST AS FirstDayOfWeek,
+           ISDATE('31/12/2026') AS IsValidMdy,
+           TRY_CONVERT(date, '31/12/2026') AS ParsedMdy,
+           TRY_CONVERT(date, '2026-12-31', 23) AS ExplicitIsoDate;
+
+    EXEC sys.sp_helplanguage @language = N'us_english';
+END;
+GO
+
+CREATE PROCEDURE DateTimeLab.usp_OdbcDateTime
+    @Value datetime = '2026-10-20T12:34:56.123'
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT
+        {fn CURRENT_DATE()} AS OdbcCurrentDate,
+        {fn CURDATE()} AS OdbcCurDate,
+        {fn CURRENT_TIME(7)} AS OdbcCurrentTime,
+        {fn CURTIME()} AS OdbcCurTime,
+        {fn DAYNAME(@Value)} AS OdbcDayName,
+        {fn DAYOFMONTH(@Value)} AS OdbcDayOfMonth,
+        {fn DAYOFWEEK(@Value)} AS OdbcDayOfWeek,
+        {fn HOUR(@Value)} AS OdbcHour,
+        {fn MINUTE(@Value)} AS OdbcMinute,
+        {fn SECOND(@Value)} AS OdbcSecond,
+        {fn MONTHNAME(@Value)} AS OdbcMonthName,
+        {fn QUARTER(@Value)} AS OdbcQuarter,
+        {fn WEEK(@Value)} AS OdbcWeek;
+END;
+GO
+
+CREATE VIEW DateTimeLab.v_BuiltinCoverage
+AS
+SELECT BuiltinName, Family, PrimaryArtifact
+FROM (VALUES
+    (N'SYSDATETIME', N'Current clock', N'DateTimeLab.v_CurrentClocks'),
+    (N'SYSDATETIMEOFFSET', N'Current clock', N'DateTimeLab.v_CurrentClocks'),
+    (N'SYSUTCDATETIME', N'Current clock', N'DateTimeLab.v_CurrentClocks'),
+    (N'CURRENT_TIMESTAMP', N'Current clock', N'DateTimeLab.v_CurrentClocks'),
+    (N'GETDATE', N'Current clock', N'DateTimeLab.v_CurrentClocks'),
+    (N'GETUTCDATE', N'Current clock', N'DateTimeLab.v_CurrentClocks'),
+    (N'CURRENT_DATE', N'Current clock', N'DateTimeLab.v_CurrentClocks'),
+    (N'CURRENT_TIMEZONE', N'Current time zone', N'DateTimeLab.v_CurrentClocks'),
+    (N'CURRENT_TIMEZONE_ID', N'Current time zone', N'DateTimeLab.v_CurrentClocks'),
+    (N'DATE_BUCKET', N'Parts / truncation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATENAME', N'Parts / truncation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATEPART', N'Parts / truncation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATETRUNC', N'Parts / truncation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DAY', N'Parts / truncation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'MONTH', N'Parts / truncation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'YEAR', N'Parts / truncation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATEFROMPARTS', N'Constructor', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATETIMEFROMPARTS', N'Constructor', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATETIME2FROMPARTS', N'Constructor', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATETIMEOFFSETFROMPARTS', N'Constructor', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'SMALLDATETIMEFROMPARTS', N'Constructor', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'TIMEFROMPARTS', N'Constructor', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATEDIFF', N'Difference', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATEDIFF_BIG', N'Difference', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'DATEADD', N'Modification', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'EOMONTH', N'Modification', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'SWITCHOFFSET', N'Modification', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'TODATETIMEOFFSET', N'Modification', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'ISDATE', N'Validation', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'CAST', N'Conversion / formatting', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'CONVERT', N'Conversion / formatting', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'TRY_CAST', N'Conversion / formatting', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'TRY_CONVERT', N'Conversion / formatting', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'PARSE', N'Conversion / formatting', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'TRY_PARSE', N'Conversion / formatting', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'FORMAT', N'Conversion / formatting', N'DateTimeLab.ufn_DateTimeExpressions'),
+    (N'@@DATEFIRST', N'Session', N'DateTimeLab.usp_SessionFormats'),
+    (N'@@LANGUAGE', N'Session', N'DateTimeLab.usp_SessionFormats'),
+    (N'SET DATEFIRST', N'Session statement', N'DateTimeLab.usp_SessionFormats'),
+    (N'SET DATEFORMAT', N'Session statement', N'DateTimeLab.usp_SessionFormats'),
+    (N'SET LANGUAGE', N'Session statement', N'DateTimeLab.usp_SessionFormats'),
+    (N'sp_helplanguage', N'System procedure', N'DateTimeLab.usp_SessionFormats'),
+    (N'AT TIME ZONE', N'Time-zone operator', N'DateTimeLab.ufn_ToRegion'),
+    (N'{fn CURRENT_DATE()}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn CURDATE()}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn CURRENT_TIME(7)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn CURTIME()}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn DAYNAME(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn DAYOFMONTH(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn DAYOFWEEK(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn HOUR(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn MINUTE(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn SECOND(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn MONTHNAME(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn QUARTER(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime'),
+    (N'{fn WEEK(@Value)}', N'ODBC', N'DateTimeLab.usp_OdbcDateTime')
+) AS coverage(BuiltinName, Family, PrimaryArtifact);
+GO
+
+CREATE VIEW DateTimeLab.v_ArtifactDefinitions
+AS
+    SELECT o.type_desc AS ArtifactType,
+           OBJECT_SCHEMA_NAME(o.object_id) AS SchemaName,
+           o.name AS ObjectName, CAST(NULL AS sysname) AS ColumnName,
+           m.definition AS ExpressionText
+    FROM sys.objects AS o
+    JOIN sys.sql_modules AS m ON m.object_id = o.object_id
+    WHERE o.schema_id = SCHEMA_ID(N'DateTimeLab')
+    UNION ALL
+    SELECT o.type_desc, OBJECT_SCHEMA_NAME(o.object_id), o.name,
+           COL_NAME(d.parent_object_id, d.parent_column_id), d.definition
+    FROM sys.default_constraints AS d
+    JOIN sys.objects AS o ON o.object_id = d.object_id
+    WHERE o.schema_id = SCHEMA_ID(N'DateTimeLab')
+    UNION ALL
+    SELECT o.type_desc, OBJECT_SCHEMA_NAME(o.object_id), o.name,
+           COL_NAME(c.parent_object_id, c.parent_column_id), c.definition
+    FROM sys.check_constraints AS c
+    JOIN sys.objects AS o ON o.object_id = c.object_id
+    WHERE o.schema_id = SCHEMA_ID(N'DateTimeLab')
+    UNION ALL
+    SELECT N'COMPUTED_COLUMN', OBJECT_SCHEMA_NAME(c.object_id),
+           OBJECT_NAME(c.object_id), c.name, c.definition
+    FROM sys.computed_columns AS c
+    JOIN sys.objects AS o ON o.object_id = c.object_id
+    WHERE o.schema_id = SCHEMA_ID(N'DateTimeLab');
+GO
+
+CREATE PROCEDURE DateTimeLab.usp_SmokeTest
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+    DECLARE @OwnTransaction bit = CASE WHEN @@TRANCOUNT = 0 THEN 1 ELSE 0 END;
+    IF @OwnTransaction = 1 BEGIN TRANSACTION;
+    ELSE SAVE TRANSACTION DateTimeLabSmoke;
+
+    BEGIN TRY
+        DECLARE @Ids TABLE (SampleId int PRIMARY KEY);
+        INSERT DateTimeLab.Sample (SampleName, RegionTimeZone)
+            OUTPUT inserted.SampleId INTO @Ids
+        VALUES (N'__Smoke_One', N'Yukon Standard Time'),
+               (N'__Smoke_Two', N'Canada Central Standard Time');
+
+        IF (SELECT COUNT(*) FROM DateTimeLab.Audit AS a JOIN @Ids AS i
+            ON i.SampleId = a.SampleId WHERE a.Operation = 'I') <> 2
+            THROW 51030, 'Multi-row INSERT audit failed.', 1;
+
+        UPDATE s SET UtcStart = DATEADD(second, 1, UtcStart), Notes = N'Smoke test'
+        FROM DateTimeLab.Sample AS s JOIN @Ids AS i ON i.SampleId = s.SampleId;
+        IF (SELECT COUNT(*) FROM DateTimeLab.Audit AS a JOIN @Ids AS i
+            ON i.SampleId = a.SampleId WHERE a.Operation = 'U' AND a.StartShiftSeconds = 1) <> 2
+            THROW 51031, 'Multi-row UPDATE audit failed.', 1;
+
+        IF EXISTS (SELECT 1 FROM DateTimeLab.Sample AS s JOIN @Ids AS i ON i.SampleId = s.SampleId
+            WHERE DATEPART(tzoffset, s.DefaultUtcOffset) <> 0
+               OR s.MonthEnd <> EOMONTH(s.DateValue)
+               OR s.DurationSeconds < 0)
+            THROW 51032, 'Default or computed expression failed.', 1;
+
+        DELETE s FROM DateTimeLab.Sample AS s JOIN @Ids AS i ON i.SampleId = s.SampleId;
+        IF (SELECT COUNT(*) FROM DateTimeLab.Audit AS a JOIN @Ids AS i
+            ON i.SampleId = a.SampleId WHERE a.Operation = 'D') <> 2
+            THROW 51033, 'Multi-row DELETE audit failed.', 1;
+
+        DECLARE @Value datetime2(7) = '2026-10-20T12:34:56.1234567';
+        DECLARE @Offset datetimeoffset(7) = '2026-10-20T12:34:56.1234567-05:30';
+        SELECT * INTO #Expressions
+        FROM DateTimeLab.ufn_DateTimeExpressions
+            (@Value, @Offset, N'Eastern Standard Time (Mexico)', N'not-a-date');
+
+        IF (SELECT COUNT(*) FROM #Expressions) <> 1
+            THROW 51034, 'Inline table-valued function did not return one row.', 1;
+        IF EXISTS (SELECT 1 FROM #Expressions
+            WHERE ConstructedDateTime2 <> @Value
+               OR ConstructedDateTimeOffset <> @Offset
+               OR DATEPART(tzoffset, ConstructedDateTimeOffset) <> -330
+               OR Bucket15Minutes <> CONVERT(datetime2(7), '2026-10-20T12:30:00', 126)
+               OR MonthEnd <> DATEFROMPARTS(2026, 10, 31)
+               OR IsLegacyDate <> 1
+               OR ParsedCanonicalDate <> DATEFROMPARTS(2026, 10, 20)
+               OR TryCastDateTime2 IS NOT NULL
+               OR TryConvertOffset IS NOT NULL
+               OR TryParsedDateTime2 IS NOT NULL
+               OR FormattedText <> N'2026-10-20 12:34:56.1234567'
+               OR DATEPART(tzoffset, UtcConvertedToRegion) <> -300
+               OR CAST(SWITCHOFFSET(UtcConvertedToRegion, '+00:00') AS datetime2(7)) <> @Value)
+            THROW 51035, 'Date/time expression or conversion assertion failed.', 1;
+
+        IF DATEPART(tzoffset, DateTimeLab.ufn_ToRegion(@Value, N'Yukon Standard Time')) <> -420
+            THROW 51036, 'Scalar UTC-to-region function failed.', 1;
+        IF (SELECT ActualMinutes FROM DateTimeLab.ufn_DayWindows
+            (DATEFROMPARTS(2026, 3, 8), 1, N'Pacific Standard Time')) <> 1380
+            THROW 51037, 'Spring-forward day must have 23 hours with the installed Pacific rules.', 1;
+        IF (SELECT ActualMinutes FROM DateTimeLab.ufn_DayWindows
+            (DATEFROMPARTS(2026, 11, 1), 1, N'Pacific Standard Time')) <> 1500
+            THROW 51038, 'Fall-back day must have 25 hours with the installed Pacific rules.', 1;
+
+        IF (SELECT COUNT(*) FROM DateTimeLab.v_BuiltinCoverage) <> 56
+            THROW 51039, 'The builtin coverage inventory is incomplete.', 1;
+        IF EXISTS
+        (
+            SELECT 1 FROM DateTimeLab.v_BuiltinCoverage
+            WHERE OBJECT_ID(PrimaryArtifact) IS NULL
+               OR CHARINDEX(BuiltinName, OBJECT_DEFINITION(OBJECT_ID(PrimaryArtifact))) = 0
+        )
+            THROW 51040, 'A coverage entry is missing from its primary artifact.', 1;
+
+        IF @OwnTransaction = 1 ROLLBACK TRANSACTION;
+        ELSE ROLLBACK TRANSACTION DateTimeLabSmoke;
+        PRINT 'DateTimeLab smoke tests passed; test rows and their audit rows were rolled back.';
+    END TRY
+    BEGIN CATCH
+        IF @OwnTransaction = 1 AND XACT_STATE() <> 0 ROLLBACK TRANSACTION;
+        ELSE IF @OwnTransaction = 0 AND XACT_STATE() = 1 ROLLBACK TRANSACTION DateTimeLabSmoke;
+        THROW;
+    END CATCH;
+END;
+GO
+
+INSERT DateTimeLab.Sample
+(
+    SampleName, DateValue, TimeValue, SmallDateTimeValue, DateTimeValue,
+    DateTime2Value, DateTimeOffsetValue, UtcStart, UtcEnd, RegionTimeZone, DateText
+)
+VALUES
+(
+    N'Leap-day fractions', DATEFROMPARTS(2024, 2, 29), TIMEFROMPARTS(12, 34, 56, 1234567, 7),
+    SMALLDATETIMEFROMPARTS(2024, 2, 29, 12, 34), DATETIMEFROMPARTS(2024, 2, 29, 12, 34, 56, 123),
+    DATETIME2FROMPARTS(2024, 2, 29, 12, 34, 56, 1234567, 7),
+    DATETIMEOFFSETFROMPARTS(2024, 2, 29, 12, 34, 56, 1234567, -5, -30, 7),
+    CONVERT(datetime2(7), '2024-02-29T18:04:56.1234567', 126),
+    CONVERT(datetime2(7), '2024-02-29T19:04:56.1234567', 126),
+    N'UTC', '2024-02-29'
+);
+
+-- Defaults remain visible on these rows; UtcStart/UtcEnd are fixture instants.
+INSERT DateTimeLab.Sample (SampleName, UtcStart, UtcEnd, RegionTimeZone)
+VALUES
+    (N'BC interim', '2026-11-01T09:30:00', '2026-11-01T10:30:00', N'Yukon Standard Time'),
+    (N'Alberta interim', '2026-11-01T08:30:00', '2026-11-01T09:30:00', N'Canada Central Standard Time'),
+    (N'Manitoba interim', '2026-11-01T07:30:00', '2026-11-01T08:30:00', N'Eastern Standard Time (Mexico)'),
+    (N'Pacific seasonal', '2026-11-01T09:30:00', '2026-11-01T10:30:00', N'Pacific Standard Time');
+INSERT DateTimeLab.Sample (SampleName) VALUES (N'Current default expressions');
+
+EXEC DateTimeLab.usp_SmokeTest;
+COMMIT TRANSACTION;
+
+SELECT N'DateTimeLab created successfully' AS DeploymentStatus,
+       (SELECT COUNT(*) FROM DateTimeLab.Sample) AS SampleRows,
+       (SELECT COUNT(*) FROM DateTimeLab.Audit) AS AuditRows,
+       (SELECT COUNT(*) FROM DateTimeLab.v_BuiltinCoverage) AS CoverageEntries;
+GO
