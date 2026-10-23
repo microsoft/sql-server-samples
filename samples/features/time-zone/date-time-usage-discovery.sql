@@ -1,3 +1,45 @@
+/*
+This script will work only on Azure SQL Database, Azure SQL Managed Instance (Always-up-to-date & SQL Server 2025 policy), SQL Server 2025 or above.
+*/
+DECLARE @EngineEdition int =
+    COALESCE(CONVERT(int, SERVERPROPERTY('EngineEdition')), 0);
+
+DECLARE @MajorVersion int =
+    COALESCE(TRY_CONVERT(int, SERVERPROPERTY('ProductMajorVersion')), 0);
+
+DECLARE @UpdateType nvarchar(128) =
+    COALESCE(CONVERT(nvarchar(128), SERVERPROPERTY('ProductUpdateType')), N'');
+
+IF NOT
+(
+    -- Azure SQL Database
+    @EngineEdition = 5
+
+    -- Azure SQL Managed Instance: Always-up-to-date or SQL Server 2025 policy
+    OR
+    (
+        @EngineEdition = 8
+        AND
+        (
+            @UpdateType = N'Continuous'
+            OR (@UpdateType = N'CU' AND @MajorVersion = 17)
+        )
+    )
+
+    -- SQL Server 2025 (17.x) or later: Standard, Enterprise/Developer, Express
+    OR
+    (
+        @EngineEdition IN (2, 3, 4)
+        AND @MajorVersion >= 17
+    )
+)
+BEGIN
+    THROW 50000,
+        'Unsupported platform. Requires Azure SQL Database, Azure SQL Managed Instance with Always-up-to-date or SQL Server 2025 update policy, or SQL Server 2025 (17.x) or later.',
+        1;
+END;
+go
+
 /* ============================================================================
 DATE/TIME DISCOVERY - independent, read-only batch
 
