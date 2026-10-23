@@ -1,5 +1,6 @@
 /*
 This script will work only on Azure SQL Database, Azure SQL Managed Instance (Always-up-to-date & SQL Server 2025 policy), SQL Server 2025 or above.
+T-SQL date/time object and expression coverage - SQL Server 2025 version.
 */
 DECLARE @EngineEdition int =
     COALESCE(CONVERT(int, SERVERPROPERTY('EngineEdition')), 0);
@@ -42,7 +43,7 @@ go
 
 /* ============================================================================
 DATE/TIME DISCOVERY - independent, read-only batch
-
+    
 Select everything from this comment through the final GO to inspect an existing
 database. It uses catalog views only; it does not depend on DateTimeLab objects.
 NULL scans all visible user schemas and database-scoped DDL triggers.
