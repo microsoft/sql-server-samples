@@ -53,10 +53,19 @@ DECLARE @DiscoveryMaxBytes int = 2097152;
 DECLARE @HasViewDefinition bit =
     CASE WHEN HAS_PERMS_BY_NAME(DB_NAME(), N'DATABASE', N'VIEW DEFINITION') = 1
          THEN 1 ELSE 0 END;
+DECLARE @EngineEdition int =
+    COALESCE(CONVERT(int, SERVERPROPERTY('EngineEdition')), 0);
+DECLARE @MajorVersion int =
+    COALESCE(TRY_CONVERT(int, SERVERPROPERTY('ProductMajorVersion')), 0);
 
-IF COALESCE(CONVERT(int, SERVERPROPERTY('EngineEdition')), 0) NOT IN (2, 3, 4)
-    OR COALESCE(TRY_CONVERT(int, SERVERPROPERTY('ProductMajorVersion')), 0) < 16
-    THROW 51051, 'This discovery batch targets SQL Server 2022 (16.x) or later.', 1;
+IF NOT
+(
+    -- Azure SQL Database, SQL Managed Instance, or Fabric SQL database.
+    @EngineEdition IN (5, 8, 12)
+    -- SQL Server 2022 (16.x) or later.
+    OR (@EngineEdition IN (2, 3, 4) AND @MajorVersion >= 16)
+)
+    THROW 51051, 'This discovery batch requires SQL Server 2022 (16.x) or later, Azure SQL Database, Azure SQL Managed Instance, or Fabric SQL database.', 1;
 IF (SELECT compatibility_level FROM sys.databases WHERE database_id = DB_ID()) < 160
     THROW 51052, 'This discovery batch requires compatibility level 160 or later.', 1;
 IF @DiscoveryMaxBytes IS NULL OR @DiscoveryMaxBytes <= 0
