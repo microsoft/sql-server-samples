@@ -577,3 +577,149 @@ Describe 'Format-ShrinkSize' {
         Format-ShrinkSize -Megabytes $Mb | Should -Be $Text
     }
 }
+
+Describe 'Measure-ShrinkFileSpace' {
+    It 'sums allocated, used, free, and growth headroom across files' {
+        $rows = @(
+            [pscustomobject]@{ FileId = 1; SizePages = 1280; UsedPages = 640; MaxSizePages = 2560 }
+            [pscustomobject]@{ FileId = 3; SizePages = 256; UsedPages = 128; MaxSizePages = 256 }
+        )
+        $s = Measure-ShrinkFileSpace -Rows $rows
+        $s.AllocMB | Should -Be 12
+        $s.UsedMB | Should -Be 6
+        $s.FreeKb | Should -Be ((640 + 128) * 8)
+        $s.HeadroomKb | Should -Be (1280 * 8)
+        $s.FallbackFiles | Should -Be ''
+    }
+    It 'returns per-file allocated and used MiB keyed by file id' {
+        $s = Measure-ShrinkFileSpace -Rows @([pscustomobject]@{ FileId = 7; SizePages = 1280; UsedPages = 384; MaxSizePages = -1 })
+        $s.Files[7].Alloc | Should -Be 10
+        $s.Files[7].Used | Should -Be 3
+    }
+    It 'uses the current size as the ceiling for a file with no maximum size and lists it' {
+        $rows = @(
+            [pscustomobject]@{ FileId = 1; SizePages = 1000; UsedPages = 900; MaxSizePages = -1 }
+            [pscustomobject]@{ FileId = 4; SizePages = 1000; UsedPages = 1000; MaxSizePages = -1 }
+        )
+        $s = Measure-ShrinkFileSpace -Rows $rows
+        $s.HeadroomKb | Should -Be 0
+        $s.FreeKb | Should -Be (100 * 8)
+        $s.FallbackFiles | Should -Be '1,4'
+    }
+    It 'never counts negative free space or headroom' {
+        # FILEPROPERTY can briefly report more used pages than the size during a shrink, and max_size can be
+        # below size after a MODIFY FILE; neither should reduce the runway below zero.
+        $s = Measure-ShrinkFileSpace -Rows @([pscustomobject]@{ FileId = 1; SizePages = 100; UsedPages = 120; MaxSizePages = 80 })
+        $s.FreeKb | Should -Be 0
+        $s.HeadroomKb | Should -Be 0
+    }
+    It 'returns zero totals for no files' {
+        $s = Measure-ShrinkFileSpace -Rows @()
+        $s.AllocMB | Should -Be 0
+        $s.FreeKb | Should -Be 0
+        $s.Files.Count | Should -Be 0
+    }
+}
+
+Describe 'Format-ShrinkSafetySkipMessage' {
+    It 'states the check and the reason' {
+        $m = Format-ShrinkSafetySkipMessage -Check Log -Reason 'Execution Timeout Expired.' -ConsecutiveSkips 1 -IntervalSeconds 300
+        $m | Should -Be 'Log safety check skipped: Execution Timeout Expired.'
+    }
+    It 'does not escalate below the threshold' {
+        Format-ShrinkSafetySkipMessage -Check PVS -Reason 'x' -ConsecutiveSkips 2 -IntervalSeconds 300 | Should -Not -Match 'not protected'
+    }
+    It 'escalates at the threshold with the count and approximate span' {
+        $m = Format-ShrinkSafetySkipMessage -Check PVS -Reason 'x' -ConsecutiveSkips 3 -IntervalSeconds 300
+        $m | Should -Match 'Skipped 3 times in a row \(about 15m 0s\)'
+        $m | Should -Match 'not protected against version store \(PVS\) growth'
+    }
+    It 'names log growth for the log check' {
+        Format-ShrinkSafetySkipMessage -Check Log -Reason 'x' -ConsecutiveSkips 5 -IntervalSeconds 60 |
+            Should -Match 'not protected against transaction log growth'
+    }
+    It 'honors a custom escalation threshold' {
+        Format-ShrinkSafetySkipMessage -Check Log -Reason 'x' -ConsecutiveSkips 1 -IntervalSeconds 60 -EscalateAfter 1 |
+            Should -Match 'Skipped 1 times in a row'
+    }
+}
+
+Describe 'Get-ShrinkLateFailureHint' {
+    It 'returns nothing for a command shorter than the threshold' {
+        Get-ShrinkLateFailureHint -ErrorNumber 1222 -CommandSeconds 1799 -ThresholdSeconds 1800 | Should -BeNullOrEmpty
+    }
+    It 'says the retry repeats the command, with its duration and error' {
+        $h = Get-ShrinkLateFailureHint -ErrorNumber 1205 -CommandSeconds 7200 -ThresholdSeconds 1800
+        $h | Should -Match 'ran for 2h 0m 0s and then ended with MSSQL error 1205; a retry runs the whole command again\.'
+        $h | Should -Not -Match 'lock'
+    }
+    It 'says BLOCKERS avoids 49516 at low priority with SELF' {
+        $h = Get-ShrinkLateFailureHint -ErrorNumber 49516 -CommandSeconds 40000 -ThresholdSeconds 1800 -WaitAtLowPriority $true -AbortAfterWait SELF
+        $h | Should -Match 'low-priority lock wait timed out'
+        $h | Should -Match '-AbortAfterWait BLOCKERS avoids this'
+    }
+    It 'says BLOCKERS often but not always avoids 1222 at low priority with SELF' {
+        $h = Get-ShrinkLateFailureHint -ErrorNumber 1222 -CommandSeconds 40000 -ThresholdSeconds 1800 -WaitAtLowPriority $true -AbortAfterWait SELF
+        $h | Should -Match 'MSSQL error 1222 is a lock timeout'
+        $h | Should -Match '-AbortAfterWait BLOCKERS often avoids it'
+        $h | Should -Match 'can still time out'
+    }
+    It 'does not suggest BLOCKERS when it is already used or low priority is off' -TestCases @(
+        @{ Err = 1222; Wlp = $true; Aaw = 'BLOCKERS' }
+        @{ Err = 1222; Wlp = $false; Aaw = 'SELF' }
+        @{ Err = 49516; Wlp = $true; Aaw = 'BLOCKERS' }
+    ) {
+        $h = Get-ShrinkLateFailureHint -ErrorNumber $Err -CommandSeconds 40000 -ThresholdSeconds 1800 -WaitAtLowPriority $Wlp -AbortAfterWait $Aaw
+        $h | Should -Match 'less write activity'
+        $h | Should -Not -Match 'BLOCKERS'
+    }
+    It 'suggests a larger step when more than one step remains' {
+        $h = Get-ShrinkLateFailureHint -ErrorNumber 1222 -CommandSeconds 40000 -ThresholdSeconds 1800 -StepMB 20480 -RemainingMB 100000
+        $h | Should -Match 'larger -StepGiB'
+    }
+    It 'does not suggest a larger step for the last step or for TruncateOnly' -TestCases @(
+        @{ Remaining = 20480; Trunc = $false }
+        @{ Remaining = 100000; Trunc = $true }
+    ) {
+        $h = Get-ShrinkLateFailureHint -ErrorNumber 1222 -CommandSeconds 40000 -ThresholdSeconds 1800 -StepMB 20480 -RemainingMB $Remaining -TruncateOnly $Trunc
+        $h | Should -Not -Match 'StepGiB'
+    }
+}
+
+Describe 'Format-ShrinkDatabaseIdentity' {
+    It 'describes a SQL Server instance with its edition and update level' {
+        $id = @{ server_name = 'SQL01'; database_name = 'MyDb'; product_version = '16.0.4135.4'; product_update_level = 'CU15'
+            engine_edition = 3; server_edition = 'Enterprise Edition (64-bit)'; database_edition = $null; service_objective = $null }
+        Format-ShrinkDatabaseIdentity -Identity $id |
+            Should -Be 'Server reports: server [SQL01], database [MyDb], version 16.0.4135.4 CU15, Enterprise Edition (64-bit).'
+    }
+    It 'describes Azure SQL Database with its edition and service objective' {
+        $id = @{ server_name = 'myserver'; database_name = 'MyDb'; product_version = '12.0.2000.8'; product_update_level = $null
+            engine_edition = 5; server_edition = 'SQL Azure'; database_edition = 'Hyperscale'; service_objective = 'HS_PRMS_8' }
+        Format-ShrinkDatabaseIdentity -Identity $id |
+            Should -Be 'Server reports: server [myserver], database [MyDb], version 12.0.2000.8, Azure SQL Database (Hyperscale, HS_PRMS_8).'
+    }
+    It 'describes Azure SQL Managed Instance' {
+        $id = @{ server_name = 'mi1'; database_name = 'MyDb'; product_version = '12.0.2000.8'; engine_edition = 8; server_edition = 'SQL Azure' }
+        Format-ShrinkDatabaseIdentity -Identity $id | Should -Match 'Azure SQL Managed Instance\.$'
+    }
+    It 'omits values the server did not return' {
+        $id = @{ server_name = 'SQL01'; database_name = 'MyDb'; product_version = $null; engine_edition = $null; server_edition = $null }
+        Format-ShrinkDatabaseIdentity -Identity $id | Should -Be 'Server reports: server [SQL01], database [MyDb].'
+    }
+}
+
+Describe 'Get-ShrinkMissingFileNames' {
+    It 'returns nothing when every requested name was found' {
+        @(Get-ShrinkMissingFileNames -Requested @('data_1', 'data_2') -Found @('data_1', 'data_2', 'data_3')).Count | Should -Be 0
+    }
+    It 'returns the names that were not found' {
+        Get-ShrinkMissingFileNames -Requested @('data_1', 'nope', 'log') -Found @('data_1') | Should -Be @('nope', 'log')
+    }
+    It 'matches names case-insensitively' {
+        @(Get-ShrinkMissingFileNames -Requested @('DATA_1') -Found @('data_1')).Count | Should -Be 0
+    }
+    It 'reports a duplicated missing name once' {
+        @(Get-ShrinkMissingFileNames -Requested @('x', 'x') -Found @()).Count | Should -Be 1
+    }
+}
