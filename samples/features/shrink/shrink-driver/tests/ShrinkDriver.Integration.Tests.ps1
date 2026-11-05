@@ -234,20 +234,31 @@ Describe 'ShrinkDriver integration' -Tag 'Integration' -Skip:(-not $server) {
             # shrink must move that table's pages and blocks; the run then cannot finish and must stop
             # when the short run-time limit fires.
             $blocker = Open-ShrinkTestBlocker -TestDb $db -TableName 'dbo.t2'
+            $tlog = Join-Path ([System.IO.Path]::GetTempPath()) ("shrinkdriver-timeout-{0}.log" -f [guid]::NewGuid().ToString('N'))
             try {
                 $res = Invoke-ShrinkDriver -ServerName $server.ServerInstance -DatabaseName $db.Database -Mode Shrink `
                     -AuthType $server.Auth -WaitAtLowPriority:$false -BackoffBaseSeconds 0 -BackoffCapSeconds 0 `
                     -MinReclaimMBOverride 1 -StepMBOverride 10 -Sessions 2 -StatusIntervalSeconds 2 `
-                    -MaxRuntimeSecondsOverride 5 -PassThru -LogPath $log 6>$null
+                    -MaxRuntimeSecondsOverride 5 -PassThru -LogPath $tlog 6>$null
             }
             finally {
                 Close-ShrinkTestBlocker -Connection $blocker
             }
+            $tlogText = Get-Content -Raw -LiteralPath $tlog
         }
-        AfterAll { Remove-ShrinkTestDatabase -TestDb $db }
+        AfterAll {
+            Remove-ShrinkTestDatabase -TestDb $db
+            if ($tlog -and (Test-Path $tlog)) { Remove-Item -LiteralPath $tlog -ErrorAction SilentlyContinue }
+        }
 
         It 'stops because of the run-time limit' {
             $res.StoppedBy | Should -Be 'Timeout'
+        }
+
+        It 'shows the increment and the retry count of each blocked worker in the status report' {
+            # Each blocked worker is on its first increment with no retries yet (RetryCount defaults to 5).
+            $tlogText | Should -Match 'Increment\s+Retry'
+            $tlogText | Should -Match '\s1\s+0/5\s'
         }
 
         It 'records in-flight or unprocessed files instead of dropping them' {
@@ -315,6 +326,62 @@ Describe 'ShrinkDriver integration' -Tag 'Integration' -Skip:(-not $server) {
         It 'still accounts for every eligible file' {
             $sum = ($res.Counts.PSObject.Properties | Measure-Object -Property Value -Sum).Sum
             $sum | Should -Be $res.Files.Count
+        }
+    }
+
+    Context 'File selection (-FileName)' {
+        BeforeAll {
+            $db = New-ShrinkTestDatabase -Context $server
+            Wait-ShrinkFreeSpaceSettled -TestDb $db -MinFreeMB 8 | Out-Null
+            $before = @(Get-ShrinkTestFileSizes -TestDb $db)
+            # Pick the file with the most unused space so it is eligible at the 1 MB threshold.
+            $target = $before | Sort-Object { [int]$_.alloc_mb - [int]$_.used_mb } -Descending | Select-Object -First 1
+            $flog = Join-Path ([System.IO.Path]::GetTempPath()) ("shrinkdriver-filename-{0}.log" -f [guid]::NewGuid().ToString('N'))
+            $rep = Invoke-ShrinkDriver -ServerName $server.ServerInstance -DatabaseName $db.Database -Mode Report `
+                -AuthType $server.Auth -FileName $target.name -MinReclaimMBOverride 1 -PassThru -LogPath $flog 6>$null
+            $res = Invoke-ShrinkDriver -ServerName $server.ServerInstance -DatabaseName $db.Database -Mode Shrink `
+                -AuthType $server.Auth -FileName $target.name -WaitAtLowPriority:$false -BackoffBaseSeconds 0 -BackoffCapSeconds 0 `
+                -MinReclaimMBOverride 1 -StepMBOverride 20 -Sessions 4 -StatusIntervalSeconds 2 -PassThru -LogPath $flog 6>$null
+            $after = @(Get-ShrinkTestFileSizes -TestDb $db)
+            $flogText = Get-Content -Raw -LiteralPath $flog
+        }
+        AfterAll {
+            Remove-ShrinkTestDatabase -TestDb $db
+            if ($flog -and (Test-Path $flog)) { Remove-Item -LiteralPath $flog -ErrorAction SilentlyContinue }
+        }
+
+        It 'reports only the named file' {
+            $rep.Files.Count | Should -Be 1
+            $rep.Files[0].Name | Should -Be $target.name
+        }
+
+        It 'shrinks only the named file' {
+            $res.Files.Count | Should -Be 1
+            $res.Files[0].FileId | Should -Be ([int]$target.file_id)
+            ($res.Counts.Shrunk + $res.Counts.PartlyShrunk) | Should -Be 1
+        }
+
+        It 'leaves the other data files unchanged' {
+            foreach ($f in $before | Where-Object { [int]$_.file_id -ne [int]$target.file_id }) {
+                ($after | Where-Object file_id -eq $f.file_id).alloc_mb | Should -Be $f.alloc_mb
+            }
+        }
+
+        It 'logs the selection and the server-reported identity' {
+            $flogText | Should -Match ([regex]::Escape("FileName         : $($target.name)"))
+            $flogText | Should -Match ('Server reports: server \[[^\]]+\], database \[' + [regex]::Escape($db.Database) + '\]')
+        }
+
+        It 'stops before doing any work when a name is not a data file' {
+            { Invoke-ShrinkDriver -ServerName $server.ServerInstance -DatabaseName $db.Database -Mode Shrink `
+                    -AuthType $server.Auth -FileName @($target.name, 'no_such_file') -LogPath $flog 6>$null } |
+                Should -Throw -ExpectedMessage '*no_such_file*'
+        }
+
+        It 'rejects a log file name' -Skip:(-not $isBoxEngine) {
+            { Invoke-ShrinkDriver -ServerName $server.ServerInstance -DatabaseName $db.Database -Mode Report `
+                    -AuthType $server.Auth -FileName "$($db.Database)_log" -LogPath $flog 6>$null } |
+                Should -Throw -ExpectedMessage '*Log files*'
         }
     }
 

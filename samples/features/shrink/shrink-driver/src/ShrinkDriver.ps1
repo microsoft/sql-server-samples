@@ -1,5 +1,5 @@
 <#PSScriptInfo
-.VERSION 1.2.0
+.VERSION 1.3.0
 .GUID 1b801c08-f374-45df-ba3e-34d9983e9133
 .AUTHOR Microsoft
 .COMPANYNAME Microsoft
@@ -55,6 +55,11 @@ function Invoke-ShrinkDriver {
       Target SQL Server / Azure SQL logical server name.
     .PARAMETER DatabaseName
       Target database name.
+    .PARAMETER FileName
+      Optional. Limit the run to the named data files (the name column in sys.database_files);
+      by default all data files are considered. Each name must be an online data file in a writable
+      filegroup; otherwise the run stops before doing any work. Applies to Report and Shrink modes. The
+      database totals in the status report and the safety valve still cover the whole database.
     .PARAMETER AuthType
       Authentication method: EntraID (default), Windows, or SQL.
     .PARAMETER SqlLogin
@@ -99,9 +104,11 @@ function Invoke-ShrinkDriver {
       file has no maximum size set, its current size is used as the ceiling.
     .PARAMETER MaxPvsPercentOfFreeSpace
       Safety valve (on by default). If the persistent version store (PVS) reaches this percentage of the
-      free space it can still grow into (data-file unallocated space plus remaining growth to the maximum
+      free space it can still grow into (unused space in the data files plus remaining growth to the maximum
       size), the run stops so shrink does not grow the database. Default 80; 0 disables the PVS check.
-      When a data file has no maximum size set, its current size is used as the ceiling.
+      When a data file has no maximum size set, its current size is used as the ceiling. The log and PVS
+      checks run independently: if one cannot be read at a status report, the other still runs, and a
+      check that keeps failing is reported as leaving the run unprotected.
     .PARAMETER StepGiB
       Increment size used for gradual shrinking (default 20 GiB).
     .PARAMETER MinReclaimGiB
@@ -133,6 +140,7 @@ function Invoke-ShrinkDriver {
     param(
         [Parameter(Mandatory)][string]$ServerName,
         [Parameter(Mandatory)][string]$DatabaseName,
+        [ValidateNotNullOrEmpty()][string[]]$FileName,
 
         [ValidateSet('EntraID', 'Windows', 'SQL')][string]$AuthType = 'EntraID',
         [string]$SqlLogin,
@@ -244,6 +252,7 @@ function Invoke-ShrinkDriver {
         '-------------------- ShrinkDriver run --------------------'
         "Server           : $ServerName"
         "Database         : $DatabaseName"
+        "FileName         : $(if ($FileName) { $FileName -join ', ' } else { '(all data files)' })"
         "Mode             : $Mode"
         "AuthType         : $AuthType" + $(if ($AuthType -eq 'SQL') { " (login $SqlLogin)" } else { '' })
         "TrustServerCert  : $([bool]$TrustServerCertificate)" + $(if ([bool]$TrustServerCertificate) { ' (used only as a fallback if certificate validation fails)' } else { '' })
@@ -344,8 +353,35 @@ function Invoke-ShrinkDriver {
     $control = $controlConn.Connection
     $resolvedEntraMode = $controlConn.EntraMode
     Write-ShrinkLog "Connected to [$DatabaseName] on [$ServerName]."
+    # Record what the server itself reports, which can differ from the names given (a DNS alias, a
+    # failover group listener, or a redirected connection), plus the version and service tier.
+    try {
+        $idCmd = $control.CreateCommand(); $idCmd.CommandTimeout = 30
+        $idCmd.CommandText = @'
+SELECT @@SERVERNAME AS server_name, DB_NAME() AS database_name,
+       CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(128)) AS product_version,
+       CAST(SERVERPROPERTY('ProductUpdateLevel') AS nvarchar(128)) AS product_update_level,
+       CAST(SERVERPROPERTY('EngineEdition') AS int) AS engine_edition,
+       CAST(SERVERPROPERTY('Edition') AS nvarchar(128)) AS server_edition,
+       CAST(DATABASEPROPERTYEX(DB_NAME(), 'Edition') AS nvarchar(128)) AS database_edition,
+       CAST(DATABASEPROPERTYEX(DB_NAME(), 'ServiceObjective') AS nvarchar(128)) AS service_objective;
+'@
+        $idRd = $idCmd.ExecuteReader()
+        try {
+            if ($idRd.Read()) {
+                $identity = @{}
+                foreach ($col in 'server_name', 'database_name', 'product_version', 'product_update_level', 'engine_edition', 'server_edition', 'database_edition', 'service_objective') {
+                    $identity[$col] = if ($idRd[$col] -is [DBNull]) { $null } else { $idRd[$col] }
+                }
+                Write-ShrinkLog (Format-ShrinkDatabaseIdentity -Identity $identity)
+            }
+        } finally { $idRd.Dispose(); $idCmd.Dispose() }
+    }
+    catch { Write-ShrinkLog ("Could not read the server identity: {0}" -f $_.Exception.Message.Split([Environment]::NewLine)[0]) 'WARN' }
 
     function Get-EligibleFiles {
+        <# .SYNOPSIS The online data files in writable filegroups, with allocated and used size (MiB),
+           limited to -FileName when it was given. #>
         param([Microsoft.Data.SqlClient.SqlConnection]$Conn)
         $sql = @'
 SELECT df.file_id, df.name,
@@ -353,9 +389,18 @@ SELECT df.file_id, df.name,
        CAST(FILEPROPERTY(df.name, 'SpaceUsed') / 128.0 AS bigint) AS used_mb
 FROM sys.database_files df
 JOIN sys.filegroups fg ON df.data_space_id = fg.data_space_id
-WHERE df.type_desc = 'ROWS' AND df.state_desc = 'ONLINE' AND fg.is_read_only = 0 AND df.is_read_only = 0;
+WHERE df.type_desc = 'ROWS' AND df.state_desc = 'ONLINE' AND fg.is_read_only = 0 AND df.is_read_only = 0
 '@
-        $cmd = $Conn.CreateCommand(); $cmd.CommandText = $sql; $cmd.CommandTimeout = 120
+        $cmd = $Conn.CreateCommand(); $cmd.CommandTimeout = 120
+        if ($FileName) {
+            $names = @($FileName | Select-Object -Unique)
+            $sql += ' AND df.name IN (' + ((0..($names.Count - 1) | ForEach-Object { "@n$_" }) -join ', ') + ')'
+            for ($i = 0; $i -lt $names.Count; $i++) {
+                $p = $cmd.Parameters.Add([Microsoft.Data.SqlClient.SqlParameter]::new("@n$i", [System.Data.SqlDbType]::NVarChar, 128))
+                $p.Value = $names[$i]
+            }
+        }
+        $cmd.CommandText = "$sql;"
         $rd = $cmd.ExecuteReader()
         $files = [System.Collections.Generic.List[object]]::new()
         try {
@@ -368,63 +413,60 @@ WHERE df.type_desc = 'ROWS' AND df.state_desc = 'ONLINE' AND fg.is_read_only = 0
         } finally { $rd.Dispose(); $cmd.Dispose() }
         $files
     }
-
-    function Get-ShrinkFileSizes {
-        <# .SYNOPSIS Allocated and used size (MiB) for a set of data files, fetched in one query,
-           returned as a hashtable keyed by file_id. Batching avoids one FILEPROPERTY round-trip per
-           file: during heavy concurrent shrink, FILEPROPERTY('SpaceUsed') contends on the same file
-           latches the shrink holds, so many separate calls routinely time out. #>
-        param([Microsoft.Data.SqlClient.SqlConnection]$Conn, [int[]]$FileIds)
-        $sizes = @{}
-        if (-not $FileIds -or $FileIds.Count -eq 0) { return $sizes }
-        $cmd = $Conn.CreateCommand()
-        $cmd.CommandText = "SELECT file_id, size / 128.0 AS alloc_mb, ISNULL(FILEPROPERTY(name, 'SpaceUsed'), 0) / 128.0 AS used_mb FROM sys.database_files WHERE file_id IN ($($FileIds -join ','));"
-        # A single batched query still calls FILEPROPERTY('SpaceUsed') on files being shrunk, so it can
-        # latch-wait under heavy concurrency; give it a generous timeout (well under the status interval)
-        # so a transient wait delays one report at most rather than dropping it.
-        $cmd.CommandTimeout = 120
-        $rd = $cmd.ExecuteReader()
-        try {
-            while ($rd.Read()) { $sizes[[int]$rd['file_id']] = @{ Alloc = [double]$rd['alloc_mb']; Used = [double]$rd['used_mb'] } }
-        } finally { $rd.Dispose(); $cmd.Dispose() }
-        $sizes
+    function Assert-ShrinkFileSelection {
+        # Stop before doing any work if -FileName names a file that is not a shrinkable data file.
+        param([object[]]$Files)
+        if (-not $FileName) { return }
+        $missing = @(Get-ShrinkMissingFileNames -Requested $FileName -Found @($Files | ForEach-Object { $_.Name }))
+        if ($missing.Count -gt 0) {
+            throw ("Not found among the database's online data files in writable filegroups: {0}. Log files, offline files, and files in read-only filegroups cannot be shrunk." -f ($missing -join ', '))
+        }
     }
 
-    function Get-ShrinkDatabaseTotals {
-        <# .SYNOPSIS Total allocated and used size (MiB) across the eligible (online, writable) ROWS files, in one query. #>
+    function Get-ShrinkFileSpace {
+        <# .SYNOPSIS Allocated, used, and maximum size of every online data file in a writable filegroup,
+           read in one query and summarized by Measure-ShrinkFileSpace: per-file sizes for the status rows,
+           database totals, and the free space PVS can grow into for the safety valve. One query per
+           report keeps the FILEPROPERTY('SpaceUsed') calls to a minimum: while files are being shrunk a
+           call can be blocked (for example while the file's used-space count is recomputed). #>
         param([Microsoft.Data.SqlClient.SqlConnection]$Conn)
         $sql = @'
-SELECT ISNULL(SUM(CAST(df.size AS bigint)) / 128.0, 0) AS alloc_mb,
-       ISNULL(SUM(CAST(ISNULL(FILEPROPERTY(df.name, 'SpaceUsed'), 0) AS bigint)) / 128.0, 0) AS used_mb
+SELECT df.file_id,
+       CAST(df.size AS bigint) AS size_pages,
+       CAST(ISNULL(FILEPROPERTY(df.name, 'SpaceUsed'), 0) AS bigint) AS used_pages,
+       CAST(df.max_size AS bigint) AS max_size_pages
 FROM sys.database_files df
 JOIN sys.filegroups fg ON df.data_space_id = fg.data_space_id
 WHERE df.type_desc = 'ROWS' AND df.state_desc = 'ONLINE' AND fg.is_read_only = 0 AND df.is_read_only = 0;
 '@
-        $cmd = $Conn.CreateCommand(); $cmd.CommandText = $sql; $cmd.CommandTimeout = 60
+        $cmd = $Conn.CreateCommand(); $cmd.CommandText = $sql
+        # Generous, but well under the default status interval, so a wait delays one report rather than failing it.
+        $cmd.CommandTimeout = 120
         $rd = $cmd.ExecuteReader()
+        $rows = [System.Collections.Generic.List[object]]::new()
         try {
-            if ($rd.Read()) { @{ Alloc = [double]$rd['alloc_mb']; Used = [double]$rd['used_mb'] } } else { @{ Alloc = 0.0; Used = 0.0 } }
+            while ($rd.Read()) {
+                $rows.Add([pscustomobject]@{
+                        FileId = [int]$rd['file_id']; SizePages = [long]$rd['size_pages']
+                        UsedPages = [long]$rd['used_pages']; MaxSizePages = [long]$rd['max_size_pages']
+                    })
+            }
         } finally { $rd.Dispose(); $cmd.Dispose() }
+        Measure-ShrinkFileSpace -Rows $rows.ToArray()
     }
 
-    function Get-ShrinkResourceStats {
-        <# .SYNOPSIS Transaction log and PVS figures for the safety valve, read in one query: log used and
-           ceiling bytes (ceiling from each log file's max size, or its current size when the max is unset),
-           the log reuse-wait reason, PVS size, and the free space PVS can grow into (data-file unallocated
-           space plus remaining growth to the maximum size). File IDs whose max size is unset - so current
-           size was used as the ceiling - are returned so the stop message can flag a possibly premature
-           stop. #>
+    function Get-ShrinkLogStats {
+        <# .SYNOPSIS Transaction log figures for the log safety check: used and ceiling bytes (ceiling from
+           each log file's max size, or its current size when the max is unset), the log reuse-wait reason,
+           and the IDs of log files whose max size is unset so the stop message can flag a possibly premature
+           stop. Kept separate from the PVS figures so a slow PVS read cannot disable the log check. #>
         param([Microsoft.Data.SqlClient.SqlConnection]$Conn)
         $sql = @'
 SELECT
     ISNULL(lsu.used_log_space_in_bytes, 0) AS log_used_bytes,
     ISNULL(lg.log_ceiling_bytes, 0) AS log_ceiling_bytes,
     lg.log_fallback_files,
-    d.log_reuse_wait_desc,
-    pv.pvs_kb,
-    dt.data_headroom_kb,
-    dt.data_fallback_files,
-    fs.data_unalloc_kb
+    d.log_reuse_wait_desc
 FROM sys.dm_db_log_space_usage AS lsu
 CROSS JOIN (
     SELECT SUM(CASE WHEN max_size = -1 THEN CAST(size AS bigint) ELSE CAST(max_size AS bigint) END) * 8192 AS log_ceiling_bytes,
@@ -436,40 +478,28 @@ CROSS JOIN (
     SELECT log_reuse_wait_desc
     FROM sys.databases
     WHERE database_id = DB_ID()
-) AS d
-CROSS JOIN (
-    SELECT ISNULL(SUM(persistent_version_store_size_kb), 0) AS pvs_kb
-    FROM sys.dm_tran_persistent_version_store_stats WHERE database_id = DB_ID()
-) AS pv
-CROSS JOIN (
-    SELECT ISNULL(SUM(CASE WHEN max_size = -1 THEN 0 ELSE CAST(max_size AS bigint) - CAST(size AS bigint) END), 0) * 8 AS data_headroom_kb,
-           STRING_AGG(CASE WHEN max_size = -1 THEN CAST(file_id AS varchar(11)) END, ',') AS data_fallback_files
-    FROM sys.database_files
-    WHERE type = 0 AND state_desc = 'ONLINE' AND is_read_only = 0
-) AS dt
-CROSS JOIN (
-    SELECT ISNULL(SUM(CAST(fsu.unallocated_extent_page_count AS bigint)), 0) * 8 AS data_unalloc_kb
-    FROM sys.dm_db_file_space_usage AS fsu
-    JOIN sys.database_files AS mf ON mf.file_id = fsu.file_id
-    WHERE mf.type = 0 AND mf.state_desc = 'ONLINE' AND mf.is_read_only = 0
-) AS fs;
+) AS d;
 '@
         $cmd = $Conn.CreateCommand(); $cmd.CommandText = $sql; $cmd.CommandTimeout = 60
         $rd = $cmd.ExecuteReader()
         try {
             if ($rd.Read()) {
                 [pscustomobject]@{
-                    LogUsedBytes      = [double]$rd['log_used_bytes']
-                    LogCeilingBytes   = [double]$rd['log_ceiling_bytes']
-                    LogFallbackFiles  = if ($rd['log_fallback_files'] -is [DBNull]) { '' } else { [string]$rd['log_fallback_files'] }
-                    LogReuseWaitDesc  = if ($rd['log_reuse_wait_desc'] -is [DBNull]) { '' } else { [string]$rd['log_reuse_wait_desc'] }
-                    PvsKb             = [double]$rd['pvs_kb']
-                    DataHeadroomKb    = [double]$rd['data_headroom_kb']
-                    DataFallbackFiles = if ($rd['data_fallback_files'] -is [DBNull]) { '' } else { [string]$rd['data_fallback_files'] }
-                    DataUnallocKb     = [double]$rd['data_unalloc_kb']
+                    LogUsedBytes     = [double]$rd['log_used_bytes']
+                    LogCeilingBytes  = [double]$rd['log_ceiling_bytes']
+                    LogFallbackFiles = if ($rd['log_fallback_files'] -is [DBNull]) { '' } else { [string]$rd['log_fallback_files'] }
+                    LogReuseWaitDesc = if ($rd['log_reuse_wait_desc'] -is [DBNull]) { '' } else { [string]$rd['log_reuse_wait_desc'] }
                 }
             } else { $null }
         } finally { $rd.Dispose(); $cmd.Dispose() }
+    }
+
+    function Get-ShrinkPvsKb {
+        <# .SYNOPSIS Current persistent version store (PVS) size in KiB for this database. #>
+        param([Microsoft.Data.SqlClient.SqlConnection]$Conn)
+        $cmd = $Conn.CreateCommand(); $cmd.CommandTimeout = 60
+        $cmd.CommandText = 'SELECT ISNULL(SUM(persistent_version_store_size_kb), 0) FROM sys.dm_tran_persistent_version_store_stats WHERE database_id = DB_ID();'
+        try { [double]$cmd.ExecuteScalar() } finally { $cmd.Dispose() }
     }
 
     function Get-ShrinkOldestTranInfo {
@@ -542,7 +572,9 @@ ORDER BY snap.transaction_sequence_num ASC;
     # sys.database_files / FILEPROPERTY only needs the public role.
     if ($Mode -eq 'Report') {
         Write-ShrinkLog 'Report mode: analyzing reclaimable space; no files will be shrunk.'
-        $report = @(Get-EligibleFiles -Conn $control | ForEach-Object {
+        $reportFiles = @(Get-EligibleFiles -Conn $control)
+        Assert-ShrinkFileSelection -Files $reportFiles
+        $report = @($reportFiles | ForEach-Object {
                 [pscustomobject]@{
                     FileId = $_.FileId; Name = $_.Name; UsedMB = $_.UsedMB; AllocatedMB = $_.AllocatedMB
                     ReclaimableMB = (Get-ShrinkReclaimableMB -AllocatedMB $_.AllocatedMB -UsedMB $_.UsedMB -FloorMB $floorMB)
@@ -559,7 +591,7 @@ ORDER BY snap.transaction_sequence_num ASC;
         $sumRecl = Get-ShrinkSumMB -Items $eligibleFiles -Property ReclaimableMB
         Write-ShrinkLog '-------------------- summary --------------------'
         Format-ShrinkKeyValueTable -Rows ([ordered]@{
-                'Data files'             = $report.Count
+                $(if ($FileName) { 'Data files (selected)' } else { 'Data files' }) = $report.Count
                 'Eligible to shrink'     = $eligibleFiles.Count
                 'Used'                   = (Format-ShrinkSize $sumUsed)
                 'Allocated'              = (Format-ShrinkSize $sumAlloc)
@@ -615,7 +647,8 @@ SELECT CAST(SERVERPROPERTY('EngineEdition') AS int) AS engine_edition,
     }
 
     $allFiles = @(Get-EligibleFiles -Conn $control)
-    $eligible = @($allFiles | Where-Object { Test-ShrinkWorthwhile -AllocatedMB $_.AllocatedMB -UsedMB $_.UsedMB -FloorMB $floorMB -MinReclaimMB $minReclaimMB })
+    Assert-ShrinkFileSelection -Files $allFiles
+    $eligible =  @($allFiles | Where-Object { Test-ShrinkWorthwhile -AllocatedMB $_.AllocatedMB -UsedMB $_.UsedMB -FloorMB $floorMB -MinReclaimMB $minReclaimMB })
     $allocSum = [long](($allFiles | Measure-Object AllocatedMB -Sum).Sum)
     $usedSum = [long](($allFiles | Measure-Object UsedMB -Sum).Sum)
     Write-ShrinkLog ("Eligible data files: {0} of {1} (with at least {2} to reclaim). Total allocated {3}, used {4}, reclaimable {5}." -f `
@@ -665,6 +698,9 @@ SELECT CAST(SERVERPROPERTY('EngineEdition') AS int) AS engine_edition,
         FloorMB = $floorMB; StepMB = $stepMB; RetryCount = $RetryCount
         MinReclaimMB = $minReclaimMB
         BackoffBaseSec = $BackoffBaseSeconds; BackoffCapSec = $BackoffCapSeconds
+        # A retriable failure after a command ran at least this long gets a hint in the log, because a
+        # retry repeats the whole command.
+        LateFailureSec = 1800
     }
 
     $workerScript = {
@@ -698,6 +734,10 @@ SELECT CAST(SERVERPROPERTY('EngineEdition') AS int) AS engine_edition,
         function Get-Size($conn, $fileId) {
             $cmd = $conn.CreateCommand()
             $cmd.CommandText = "SELECT CAST(size/128.0 AS bigint) AS a, CAST(FILEPROPERTY(name,'SpaceUsed')/128.0 AS bigint) AS u FROM sys.database_files WHERE file_id = $fileId;"
+            # FILEPROPERTY('SpaceUsed') can wait behind another reader's rescan of the same file (for example the
+            # status report's) or on allocation-page latches, so allow for that instead of failing after the
+            # 30-second default. Only this worker shrinks this file, so no other shrink is holding it here.
+            $cmd.CommandTimeout = 120
             $rd = $cmd.ExecuteReader()
             try { if ($rd.Read()) { @{ Alloc = [long]$rd['a']; Used = [long]$rd['u'] } } else { $null } }
             finally { $rd.Dispose(); $cmd.Dispose() }
@@ -771,7 +811,7 @@ ORDER BY dt.database_transaction_begin_time ASC;
         $conn = New-WConn
         $spidCmd = $conn.CreateCommand(); $spidCmd.CommandText = 'SELECT @@SPID'
         $spid = [int]$spidCmd.ExecuteScalar(); $spidCmd.Dispose()
-        $shared.Sessions[$workerId] = @{ Spid = $spid; Command = $null; FileId = $null; State = 'Idle'; ConnectTime = [System.Diagnostics.Stopwatch]::GetTimestamp(); RequestSeq = 0 }
+        $shared.Sessions[$workerId] = @{ Spid = $spid; Command = $null; FileId = $null; State = 'Idle'; ConnectTime = [System.Diagnostics.Stopwatch]::GetTimestamp(); RequestSeq = 0; Increment = 0; Retry = 0 }
         Emit "Connected (session ID $spid)"
 
         try {
@@ -787,9 +827,12 @@ ORDER BY dt.database_transaction_begin_time ASC;
 
                 $shared.Sessions[$workerId].FileId = $file.FileId
                 $shared.Sessions[$workerId].State = 'Shrinking'
+                $shared.Sessions[$workerId].Increment = 0
+                $shared.Sessions[$workerId].Retry = 0
                 Emit "Start file $($file.FileId) [$($file.Name)]"
 
                 $attempt = 0
+                $newIncrement = $true          # the next command starts a new increment (first command, or after the size dropped)
                 $startAlloc = $null            # allocated size (MB) when this worker took the file
                 $bucket = $null                # terminal outcome: Shrunk | PartlyShrunk | AlreadyMinimal | AlreadyAtTarget | Grew | GaveUp
                 $bucketReason = $null          # detail text, recorded for the give-up outcomes
@@ -799,6 +842,23 @@ ORDER BY dt.database_transaction_begin_time ASC;
                     try { $sz = Get-Size $conn $file.FileId }
                     catch [Microsoft.Data.SqlClient.SqlException] {
                         if ($shared.Stop) { break }
+                        if ($conn.State -eq 'Open') {
+                            # The connection is fine but the size query failed - typically a timeout while
+                            # FILEPROPERTY is blocked. Not a lost connection: keep the connection
+                            # and retry the measurement within the file's retry budget.
+                            $attempt++
+                            $msg = $_.Exception.Message.Split([Environment]::NewLine)[0]
+                            if ($attempt -gt $connParams.RetryCount) {
+                                $bucket = 'Interrupted'
+                                $bucketReason = "could not read the file's size after $($connParams.RetryCount) retries (MSSQL error $($_.Exception.Number): $msg)"
+                                Emit "File $($file.FileId) interrupted: $bucketReason"
+                                break
+                            }
+                            $wait = Get-ShrinkBackoffSeconds -Attempt $attempt -BaseSec $connParams.BackoffBaseSec -CapSec $connParams.BackoffCapSec
+                            Emit "File $($file.FileId) size check failed (MSSQL error $($_.Exception.Number), retry $attempt in $([int]$wait)s): $msg"
+                            Start-Sleep -Seconds $wait
+                            continue
+                        }
                         # The server dropped the connection between shrink steps; reconnect and retry.
                         # Clear the (now dead) session id first so the status report does not match a
                         # recycled spid to an unrelated session while we reconnect.
@@ -853,8 +913,13 @@ ORDER BY dt.database_transaction_begin_time ASC;
                     # counters restart at zero. Bump the sequence the status report uses to key its deltas
                     # so it only differences counters within one request, never across a step boundary.
                     $shared.Sessions[$workerId].RequestSeq++
+                    # Increment counts the shrink steps (new, smaller targets) for this file; Retry counts the
+                    # attempts at the current step. A retry repeats the same increment.
+                    if ($newIncrement) { $shared.Sessions[$workerId].Increment++; $newIncrement = $false }
+                    $shared.Sessions[$workerId].Retry = $attempt
                     $shared.Sessions[$workerId].Command = $cmd
                     $before = $sz.Alloc
+                    $stepClock = [System.Diagnostics.Stopwatch]::StartNew()
                     try {
                         # DBCC SHRINKFILE returns a one-row result set; read CurrentSize from it to learn
                         # the file's size after the attempt without a second round trip.
@@ -892,6 +957,7 @@ ORDER BY dt.database_transaction_begin_time ASC;
                         if ($after -lt $before) {
                             # Made progress this pass; keep shrinking.
                             $attempt = 0
+                            $newIncrement = $true
                         }
                         elseif ($after -gt $before) {
                             # The file grew during this pass (other workloads added data). Growth can be
@@ -947,7 +1013,12 @@ ORDER BY dt.database_transaction_begin_time ASC;
                             # pages) or a lagging/long-queried secondary. The engine has already exhausted its
                             # own retries and the watermark rarely advances within a client retry, so stop and let
                             # a later run reclaim the space once the watermark moves.
-                            $after = if ($conn.State -eq 'Open') { (Get-Size $conn $file.FileId).Alloc } else { $before }
+                            $after = $before
+                            if ($conn.State -eq 'Open') {
+                                # Best effort: if the size read fails (for example a latch-wait timeout), keep
+                                # the size from before the command rather than losing the worker.
+                                try { $m = Get-Size $conn $file.FileId; if ($m) { $after = $m.Alloc } } catch {}
+                            }
                             $held = if ($conn.State -eq 'Open') { Get-ShrinkOldestTran $conn } else { $null }
                             $bucket = Get-ShrinkGaveUpBucket -StartAllocMB $startAlloc -FinalAllocMB $after
                             $bucketReason = 'blocked by the database low watermark (MSSQL error 49537): a page to be moved is pinned by a long-running transaction or a lagging secondary; run shrink again later'
@@ -978,6 +1049,13 @@ ORDER BY dt.database_transaction_begin_time ASC;
                             # The connection is still up but the command failed transiently; retry the
                             # file up to the retry budget with backoff.
                             $attempt++
+                            # After a long command, say so: the retry repeats the whole command.
+                            $remainingMB = [long]$before - (Get-ShrinkEffectiveFloorMB -UsedMB ([long]$sz.Used) -FloorMB $connParams.FloorMB)
+                            $hint = Get-ShrinkLateFailureHint -ErrorNumber $num -CommandSeconds $stepClock.Elapsed.TotalSeconds `
+                                -ThresholdSeconds $connParams.LateFailureSec -WaitAtLowPriority $connParams.Wlp `
+                                -AbortAfterWait $connParams.AbortAfterWait -StepMB $connParams.StepMB -RemainingMB $remainingMB `
+                                -TruncateOnly $connParams.TruncateOnly
+                            if ($hint) { Emit "File $($file.FileId): $hint" }
                             if ($attempt -gt $connParams.RetryCount) {
                                 $bucket = Get-ShrinkGaveUpBucket -StartAllocMB $startAlloc -FinalAllocMB $before
                                 $bucketReason = "MSSQL error $num after $($connParams.RetryCount) retries: $($_.Exception.Message.Split([Environment]::NewLine)[0])"
@@ -1080,6 +1158,9 @@ ORDER BY dt.database_transaction_begin_time ASC;
     $runClock = [System.Diagnostics.Stopwatch]::StartNew()
     $limitSeconds = if ($null -ne $MaxRuntimeSecondsOverride) { [double]$MaxRuntimeSecondsOverride } elseif ($null -ne $MaxRuntimeMinutes) { [double]$MaxRuntimeMinutes * 60 } else { $null }
     $prev = @{}; $stuckState = @{}
+    # State shared between the status report and the safety valve (a reference type, so the report
+    # function can update it): the latest file-space reading, and consecutive skips of each safety check.
+    $reportState = @{ Space = $null; LogSkips = 0; PvsSkips = 0 }
 
     function Write-StatusReport {
         $evt = ''
@@ -1107,11 +1188,17 @@ FROM sys.dm_exec_requests r WHERE r.session_id IN ($inList);
         }
 
         Write-ShrinkLog '---- status ----'
-        # Fetch every in-flight file's size in one query rather than one FILEPROPERTY round-trip per
-        # worker: FILEPROPERTY('SpaceUsed') contends on the same file latches the shrink holds, so
-        # under high concurrency the per-file calls time out and the whole report is dropped.
-        $statusFileIds = @($shared.Sessions.Values | Where-Object { $_.FileId } | ForEach-Object { [int]$_.FileId } | Sort-Object -Unique)
-        $sizeById = Get-ShrinkFileSizes -Conn $control -FileIds $statusFileIds
+        # Read every data file's size in one query - the in-flight files' rows and the database totals both
+        # come from it, and the safety valve reuses it for the free space PVS can grow into. FILEPROPERTY
+        # ('SpaceUsed') can be blocked while files are being shrunk, so a failure here (usually a timeout) must
+        # not drop the report or skip stuck detection: render the sizes as unavailable instead.
+        $space = $null
+        try { $space = Get-ShrinkFileSpace -Conn $control }
+        catch {
+            Write-ShrinkLog ("File sizes unavailable for this report: {0} Reading space used can be blocked while files are being shrunk; the next report tries again." -f $_.Exception.Message.Split([Environment]::NewLine)[0]) 'WARN'
+        }
+        $reportState.Space = $space
+        $sizeById = if ($space) { $space.Files } else { @{} }
         $statusData = [System.Collections.Generic.List[object]]::new()
         foreach ($sess in $shared.Sessions.GetEnumerator() | Sort-Object { $_.Key }) {
             $workerId = $sess.Key; $s = $sess.Value
@@ -1121,17 +1208,20 @@ FROM sys.dm_exec_requests r WHERE r.session_id IN ($inList);
             # start is in the database-total section.
             $sessElapsedS = if ($s.ConnectTime) { [int](([System.Diagnostics.Stopwatch]::GetTimestamp() - [long]$s.ConnectTime) / [System.Diagnostics.Stopwatch]::Frequency) } else { $null }
             $row = $rows | Where-Object Spid -eq $s.Spid | Select-Object -First 1
+            # Increment and Retry describe the current file's steps; show them only while a file is assigned.
+            $incText = if ($s.FileId -and $s.Increment) { [string]$s.Increment } else { '-' }
+            $retryText = if ($s.FileId -and $s.Increment) { '{0}/{1}' -f $s.Retry, $RetryCount } else { '-' }
             if (-not $row) {
                 $statusData.Add([pscustomobject]@{
                         Worker = $workerId; Spid = $s.Spid; FileId = $s.FileId; UsedMB = $null; AllocMB = $null
-                        Cmd = ''; Status = $s.State; Pct = $null; ElapsedS = $sessElapsedS; Increment = $seq
+                        Cmd = ''; Status = $s.State; Pct = $null; ElapsedS = $sessElapsedS; Increment = $incText; Retry = $retryText
                         Wait = ''; DCpu = '-'; DReads = '-'; DWrites = '-'; Blocker = ''
                     })
                 continue
             }
-            # cpu_time/reads/writes in dm_exec_requests are per-request and restart on each new shrink step,
-            # so a delta is only meaningful when the increment is unchanged since the last report; otherwise
-            # show '-'.
+            # cpu_time/reads/writes in dm_exec_requests are per-request and restart on each new shrink command
+            # (a new increment or a retry), so a delta is only meaningful when the command is unchanged since
+            # the last report; otherwise show '-'.
             $dCpu = '-'; $dReads = '-'; $dWrites = '-'
             if ($prev.ContainsKey($s.Spid) -and $prev[$s.Spid].Seq -eq $seq) {
                 $c = Get-ShrinkDeltaWithReset -Previous $prev[$s.Spid].Cpu -Current $row.Cpu
@@ -1146,7 +1236,7 @@ FROM sys.dm_exec_requests r WHERE r.session_id IN ($inList);
             $statusData.Add([pscustomobject]@{
                     Worker = $workerId; Spid = $s.Spid; FileId = $s.FileId
                     UsedMB = $(if ($z) { $z.Used } else { $null }); AllocMB = $(if ($z) { $z.Alloc } else { $null })
-                    Cmd = $row.Command; Status = $row.Status; Pct = [math]::Round($row.Pct, 1); ElapsedS = $sessElapsedS; Increment = $seq
+                    Cmd = $row.Command; Status = $row.Status; Pct = [math]::Round($row.Pct, 1); ElapsedS = $sessElapsedS; Increment = $incText; Retry = $retryText
                     Wait = $(if ($row.Wait) { "$($row.Wait) $($row.WaitTime)ms" } else { '' })
                     DCpu = $dCpu; DReads = $dReads; DWrites = $dWrites
                     Blocker = $(if ($row.Blocker) { "$($row.Blocker) ($($row.BlockerCmd))" } else { '' })
@@ -1179,6 +1269,7 @@ FROM sys.dm_exec_requests r WHERE r.session_id IN ($inList);
                 '%Done'   = $(if ($null -ne $d.Pct) { [string]$d.Pct } else { '' })
                 Elapsed   = $(if ($null -ne $d.ElapsedS) { Format-ShrinkDuration -TimeSpan ([TimeSpan]::FromSeconds($d.ElapsedS)) } else { '' })
                 Increment = [string]$d.Increment
+                Retry     = [string]$d.Retry
                 Cmd       = [string]$d.Cmd
                 Status    = [string]$d.Status
                 dCPU      = [string]$d.DCpu
@@ -1188,17 +1279,17 @@ FROM sys.dm_exec_requests r WHERE r.session_id IN ($inList);
                 Wait      = [string]$d.Wait
             }
         }
-        Format-ShrinkTable -Rows @($statusTable) -RightAlign @('Worker', 'SPID', 'File', $usedHdr, $allocHdr, '%Done', 'Elapsed', 'Increment', 'dCPU', 'dReads', 'dWrites') |
+        Format-ShrinkTable -Rows @($statusTable) -RightAlign @('Worker', 'SPID', 'File', $usedHdr, $allocHdr, '%Done', 'Elapsed', 'Increment', 'Retry', 'dCPU', 'dReads', 'dWrites') |
             ForEach-Object { Write-ShrinkLog $_ }
-        $tot = Get-ShrinkDatabaseTotals -Conn $control
-        $dbUsedMb = $tot.Used; $dbAllocMb = $tot.Alloc
+        $dbUsedText = if ($space) { Format-ShrinkSize $space.UsedMB } else { '(unavailable)' }
+        $dbAllocText = if ($space) { Format-ShrinkSize $space.AllocMB } else { '(unavailable)' }
         [System.Threading.Monitor]::Enter($shared.Lock)
         try { $buckets = @($shared.Completed.Values | ForEach-Object { $_.Bucket }) } finally { [System.Threading.Monitor]::Exit($shared.Lock) }
         $c = Get-ShrinkBucketCounts -Buckets $buckets
         Write-ShrinkLog '---- database total ----'
         Format-ShrinkKeyValueTable -Rows (Get-ShrinkTotalsRows `
                 -RunTime (Format-ShrinkDuration -TimeSpan $runClock.Elapsed) `
-                -Used (Format-ShrinkSize $dbUsedMb) -Allocated (Format-ShrinkSize $dbAllocMb) -Counts $c) |
+                -Used $dbUsedText -Allocated $dbAllocText -Counts $c) |
             ForEach-Object { Write-ShrinkLog $_ }
     }
 
@@ -1236,63 +1327,103 @@ FROM sys.dm_exec_requests r WHERE r.session_id IN ($inList);
             if ($runClock.Elapsed.TotalSeconds -ge $nextReportAtS) {
                 # The status report reads through the control connection; if the server dropped it
                 # (e.g. a restart), reopen it and skip just this report rather than failing the run.
+                $reportState.Space = $null
                 try {
                     $control = Get-ShrinkLiveControl $control
                     Write-StatusReport
                 }
                 catch {
-                    Write-ShrinkLog ("Status report skipped (control connection issue): {0}" -f $_.Exception.Message.Split([Environment]::NewLine)[0]) 'WARN'
+                    Write-ShrinkLog ("Status report skipped: {0}" -f $_.Exception.Message.Split([Environment]::NewLine)[0]) 'WARN'
                     try { $control = Get-ShrinkLiveControl $control } catch { Write-ShrinkLog ("Control reconnect failed; will retry at the next report: {0}" -f $_.Exception.Message.Split([Environment]::NewLine)[0]) 'WARN' }
                 }
                 # Safety valve: evaluated at the report cadence on the same control connection. Some
                 # shrink transactions are fully logged, and a long-running shrink transaction pins
                 # the low watermark on the database. If the log or PVS size exceeds a threshold, stop
                 # the run - regardless of whether shrink itself causes the high usage, since
-                # continuing can make it worse.
+                # continuing can make it worse. The log and PVS checks are read separately so that one
+                # failing read does not disable the other, and the PVS growth runway reuses the file
+                # space this report just read instead of scanning allocation pages again.
                 if (-not $shared.Stop -and ($MaxLogUsedPercent -gt 0 -or $MaxPvsPercentOfFreeSpace -gt 0)) {
-                    try {
-                        $control = Get-ShrinkLiveControl $control
-                        $stat = Get-ShrinkResourceStats -Conn $control
-                        if ($stat) {
-                            $freeKb = $stat.DataHeadroomKb + $stat.DataUnallocKb
-                            $p = Test-ShrinkResourcePressure -LogUsedBytes $stat.LogUsedBytes -LogCeilingBytes $stat.LogCeilingBytes `
-                                -MaxLogUsedPercent $MaxLogUsedPercent -PvsKb $stat.PvsKb -FreeForGrowthKb $freeKb `
-                                -MaxPvsPercentOfFreeSpace $MaxPvsPercentOfFreeSpace
-                            if ($p.Breach) {
-                                # Attribute the hold to a session only when a transaction is (or would be) the
-                                # holder: for PVS the oldest active snapshot pins the low watermark; for the log
-                                # the oldest active write transaction holds the MinLSN when its reuse wait is
-                                # ACTIVE_TRANSACTION.
-                                $holderText = ''; $holderSpid = 0; $holderIsWorker = $null
-                                if ($p.Breach -eq 'PvsGrowth' -or $stat.LogReuseWaitDesc -eq 'ACTIVE_TRANSACTION') {
-                                    $oldest = if ($p.Breach -eq 'PvsGrowth') { Get-ShrinkPvsHolderInfo -Conn $control } else { Get-ShrinkOldestTranInfo -Conn $control }
-                                    if ($oldest) {
-                                        $holderSpid = [int]$oldest.Spid
-                                        $workerBySpid = @{}
-                                        foreach ($sess in $shared.Sessions.GetEnumerator()) { if ($sess.Value.Spid) { $workerBySpid[[int]$sess.Value.Spid] = $sess.Key } }
-                                        if ($workerBySpid.ContainsKey($holderSpid)) {
-                                            $lab = if ($oldest.TranName) { $oldest.TranName } elseif ($oldest.Prog) { $oldest.Prog } else { '' }
-                                            $holderText = if ($lab) { "session $holderSpid ($lab, worker $($workerBySpid[$holderSpid]))" } else { "session $holderSpid (worker $($workerBySpid[$holderSpid]))" }
-                                            $holderIsWorker = $true
-                                        } else {
-                                            $lab = if ($oldest.Prog) { $oldest.Prog } elseif ($oldest.TranName) { $oldest.TranName } else { '' }
-                                            $holderText = if ($lab) { "session $holderSpid ($lab, not a shrink worker)" } else { "session $holderSpid (not a shrink worker)" }
-                                            $holderIsWorker = $false
-                                        }
-                                    }
-                                }
-                                $fallback = if ($p.Breach -eq 'LogFull') { $stat.LogFallbackFiles } else { $stat.DataFallbackFiles }
-                                $msg = Format-ShrinkSafetyValveMessage -Breach $p.Breach -LogPercent $p.LogPercent -PvsPercent $p.PvsPercent `
-                                    -PvsKb $stat.PvsKb -FreeForGrowthKb $freeKb -LogReuseWaitDesc $stat.LogReuseWaitDesc `
-                                    -HolderText $holderText -HolderSpid $holderSpid -HolderIsWorker $holderIsWorker -FallbackFiles $fallback
-                                Write-ShrinkLog $msg 'WARN'
-                                $shared.StopReason = $p.Breach
-                                $shared.Stop = $true
-                                foreach ($sess in $shared.Sessions.Values) { if ($sess.Command) { try { $sess.Command.Cancel() } catch {} } }
+                    $space = $reportState.Space
+                    $logStat = $null; $logSkip = $null
+                    if ($MaxLogUsedPercent -gt 0) {
+                        try {
+                            $control = Get-ShrinkLiveControl $control
+                            $logStat = Get-ShrinkLogStats -Conn $control
+                            if (-not $logStat) { $logSkip = 'the log query returned no data' }
+                        }
+                        catch { $logSkip = $_.Exception.Message.Split([Environment]::NewLine)[0] }
+                    }
+                    $pvsKb = $null; $pvsSkip = $null
+                    if ($MaxPvsPercentOfFreeSpace -gt 0) {
+                        if (-not $space) { $pvsSkip = 'file sizes were unavailable for this report' }
+                        else {
+                            try {
+                                $control = Get-ShrinkLiveControl $control
+                                $pvsKb = Get-ShrinkPvsKb -Conn $control
                             }
+                            catch { $pvsSkip = $_.Exception.Message.Split([Environment]::NewLine)[0] }
                         }
                     }
-                    catch { Write-ShrinkLog ("Safety-valve check skipped (control connection issue): {0}" -f $_.Exception.Message.Split([Environment]::NewLine)[0]) 'WARN' }
+                    # Track consecutive skips per check, so a check that keeps failing is called out as such.
+                    foreach ($chk in @(
+                            @{ Name = 'Log'; Enabled = ($MaxLogUsedPercent -gt 0); Skip = $logSkip; Key = 'LogSkips' },
+                            @{ Name = 'PVS'; Enabled = ($MaxPvsPercentOfFreeSpace -gt 0); Skip = $pvsSkip; Key = 'PvsSkips' })) {
+                        if (-not $chk.Enabled) { continue }
+                        if ($chk.Skip) {
+                            $reportState[$chk.Key]++
+                            Write-ShrinkLog (Format-ShrinkSafetySkipMessage -Check $chk.Name -Reason $chk.Skip -ConsecutiveSkips $reportState[$chk.Key] -IntervalSeconds $StatusIntervalSeconds) 'WARN'
+                        }
+                        elseif ($reportState[$chk.Key] -gt 0) {
+                            if ($reportState[$chk.Key] -ge 3) { Write-ShrinkLog ("{0} safety check succeeded again after {1} skipped checks." -f $chk.Name, $reportState[$chk.Key]) }
+                            $reportState[$chk.Key] = 0
+                        }
+                    }
+                    $logOn = $null -ne $logStat
+                    $pvsOn = $null -ne $pvsKb
+                    if ($logOn -or $pvsOn) {
+                        $freeKb = if ($pvsOn) { $space.FreeKb + $space.HeadroomKb } else { 0.0 }
+                        $p = Test-ShrinkResourcePressure `
+                            -LogUsedBytes $(if ($logOn) { $logStat.LogUsedBytes } else { 0.0 }) `
+                            -LogCeilingBytes $(if ($logOn) { $logStat.LogCeilingBytes } else { 0.0 }) `
+                            -MaxLogUsedPercent $(if ($logOn) { $MaxLogUsedPercent } else { 0 }) `
+                            -PvsKb $(if ($pvsOn) { $pvsKb } else { 0.0 }) -FreeForGrowthKb $freeKb `
+                            -MaxPvsPercentOfFreeSpace $(if ($pvsOn) { $MaxPvsPercentOfFreeSpace } else { 0 })
+                        if ($p.Breach) {
+                            $reuseWait = if ($logOn) { $logStat.LogReuseWaitDesc } else { '' }
+                            # Attribute the hold to a session only when a transaction is (or would be) the
+                            # holder: for PVS the oldest active snapshot pins the low watermark; for the log
+                            # the oldest active write transaction holds the MinLSN when its reuse wait is
+                            # ACTIVE_TRANSACTION. Attribution is best effort and never prevents the stop.
+                            $holderText = ''; $holderSpid = 0; $holderIsWorker = $null
+                            if ($p.Breach -eq 'PvsGrowth' -or $reuseWait -eq 'ACTIVE_TRANSACTION') {
+                                $oldest = $null
+                                try { $oldest = if ($p.Breach -eq 'PvsGrowth') { Get-ShrinkPvsHolderInfo -Conn $control } else { Get-ShrinkOldestTranInfo -Conn $control } } catch {}
+                                if ($oldest) {
+                                    $holderSpid = [int]$oldest.Spid
+                                    $workerBySpid = @{}
+                                    foreach ($sess in $shared.Sessions.GetEnumerator()) { if ($sess.Value.Spid) { $workerBySpid[[int]$sess.Value.Spid] = $sess.Key } }
+                                    if ($workerBySpid.ContainsKey($holderSpid)) {
+                                        $lab = if ($oldest.TranName) { $oldest.TranName } elseif ($oldest.Prog) { $oldest.Prog } else { '' }
+                                        $holderText = if ($lab) { "session $holderSpid ($lab, worker $($workerBySpid[$holderSpid]))" } else { "session $holderSpid (worker $($workerBySpid[$holderSpid]))" }
+                                        $holderIsWorker = $true
+                                    } else {
+                                        $lab = if ($oldest.Prog) { $oldest.Prog } elseif ($oldest.TranName) { $oldest.TranName } else { '' }
+                                        $holderText = if ($lab) { "session $holderSpid ($lab, not a shrink worker)" } else { "session $holderSpid (not a shrink worker)" }
+                                        $holderIsWorker = $false
+                                    }
+                                }
+                            }
+                            $fallback = if ($p.Breach -eq 'LogFull') { $logStat.LogFallbackFiles } else { $space.FallbackFiles }
+                            $msg = Format-ShrinkSafetyValveMessage -Breach $p.Breach -LogPercent $p.LogPercent -PvsPercent $p.PvsPercent `
+                                -PvsKb $(if ($pvsOn) { $pvsKb } else { 0.0 }) -FreeForGrowthKb $freeKb -LogReuseWaitDesc $reuseWait `
+                                -HolderText $holderText -HolderSpid $holderSpid -HolderIsWorker $holderIsWorker -FallbackFiles $fallback
+                            Write-ShrinkLog $msg 'WARN'
+                            $shared.StopReason = $p.Breach
+                            $shared.Stop = $true
+                            foreach ($sess in $shared.Sessions.Values) { if ($sess.Command) { try { $sess.Command.Cancel() } catch {} } }
+                        }
+                    }
                 }
                 $nextReportAtS = $runClock.Elapsed.TotalSeconds + $StatusIntervalSeconds
             }
@@ -1326,8 +1457,8 @@ FROM sys.dm_exec_requests r WHERE r.session_id IN ($inList);
         $remainingEligible = @()
         try {
             $control = Get-ShrinkLiveControl $control
-            $tot = Get-ShrinkDatabaseTotals -Conn $control
-            $dbUsedMb = $tot.Used; $dbAllocMb = $tot.Alloc
+            $tot = Get-ShrinkFileSpace -Conn $control
+            $dbUsedMb = $tot.UsedMB; $dbAllocMb = $tot.AllocMB
             $remainingEligible = @(Get-EligibleFiles -Conn $control | Where-Object { Test-ShrinkWorthwhile -AllocatedMB $_.AllocatedMB -UsedMB $_.UsedMB -FloorMB $floorMB -MinReclaimMB $minReclaimMB })
         } catch { Write-ShrinkLog ("Could not read final database totals: {0}" -f $_.Exception.Message.Split([Environment]::NewLine)[0]) 'WARN' }
         # Reconcile: any eligible file that never reached a terminal state (e.g. left unprocessed after
@@ -1780,6 +1911,139 @@ function Format-ShrinkSafetyValveMessage {
         $m += " Aborting reclaims PVS only if a shrink transaction is pinning the low watermark."
     }
     return "$m$caveat"
+}
+
+function Format-ShrinkSafetySkipMessage {
+    <# .SYNOPSIS
+      Build the warning logged when a safety-valve check could not run. After EscalateAfter consecutive
+      skips, add that the run is unprotected against that kind of growth until a check succeeds, so a check
+      that keeps failing is not mistaken for an occasional hiccup. #>
+    [CmdletBinding()][OutputType([string])]
+    param(
+        [Parameter(Mandatory)][ValidateSet('Log', 'PVS')][string]$Check,
+        [Parameter(Mandatory)][string]$Reason,
+        [Parameter(Mandatory)][int]$ConsecutiveSkips,
+        [Parameter(Mandatory)][int]$IntervalSeconds,
+        [int]$EscalateAfter = 3
+    )
+    $m = "$Check safety check skipped: $Reason"
+    if ($ConsecutiveSkips -ge $EscalateAfter) {
+        $what = if ($Check -eq 'Log') { 'transaction log growth' } else { 'version store (PVS) growth' }
+        $span = Format-ShrinkDuration -TimeSpan ([TimeSpan]::FromSeconds([double]$ConsecutiveSkips * $IntervalSeconds))
+        $m += " Skipped $ConsecutiveSkips times in a row (about $span); the run is not protected against $what until a check succeeds."
+    }
+    $m
+}
+
+function Get-ShrinkLateFailureHint {
+    <# .SYNOPSIS
+      Advice to log when a shrink command ends with a retriable error after running a long time (at
+      least ThresholdSeconds), because the retry repeats the whole command. Adds lock-timeout advice for
+      MSSQL error 49516 (a low-priority lock wait timed out, which ABORT_AFTER_WAIT = BLOCKERS avoids) and
+      1222 (a lock timeout, which BLOCKERS often but not always avoids), and suggests fewer, larger steps
+      when more than one step remains. Returns $null for a command shorter than the threshold. #>
+    [CmdletBinding()][OutputType([string])]
+    param(
+        [Parameter(Mandatory)][int]$ErrorNumber,
+        [Parameter(Mandatory)][double]$CommandSeconds,
+        [Parameter(Mandatory)][int]$ThresholdSeconds,
+        [bool]$WaitAtLowPriority = $true,
+        [string]$AbortAfterWait = 'SELF',
+        [long]$StepMB = 0,
+        [long]$RemainingMB = 0,
+        [bool]$TruncateOnly = $false
+    )
+    if ($CommandSeconds -lt $ThresholdSeconds) { return $null }
+    $dur = Format-ShrinkDuration -TimeSpan ([TimeSpan]::FromSeconds($CommandSeconds))
+    $m = "the shrink command ran for $dur and then ended with MSSQL error $ErrorNumber; a retry runs the whole command again."
+    $suggestBlockers = $WaitAtLowPriority -and $AbortAfterWait -eq 'SELF'
+    if ($ErrorNumber -eq 49516) {
+        $m += ' MSSQL error 49516 means the low-priority lock wait timed out.'
+        if ($suggestBlockers) {
+            $m += ' -AbortAfterWait BLOCKERS avoids this by rolling back the blocking transactions; alternatively, run when there is less write activity.'
+        } else {
+            $m += ' Consider running when there is less write activity.'
+        }
+    }
+    elseif ($ErrorNumber -eq 1222) {
+        if ($suggestBlockers) {
+            $m += ' MSSQL error 1222 is a lock timeout; near the end of a shrink it is usually a low-priority lock wait giving up when concurrent writes block it. -AbortAfterWait BLOCKERS often avoids it by rolling back the blocking transactions, but the lock can still time out if those transactions take a long time to roll back; alternatively, run when there is less write activity.'
+        } else {
+            $m += ' MSSQL error 1222 is a lock timeout: concurrent activity kept the shrink from acquiring a lock it needs. Consider running when there is less write activity.'
+        }
+    }
+    if (-not $TruncateOnly -and $StepMB -gt 0 -and $RemainingMB -gt $StepMB) {
+        $m += ' Each shrink command can also spend a long time on work that does not depend on the step size, so a larger -StepGiB (fewer commands) can shorten the run.'
+    }
+    $m
+}
+
+function Format-ShrinkDatabaseIdentity {
+    <# .SYNOPSIS
+      One log line identifying the target database as the server reports it: database and server name,
+      product version and update level, and the platform (box edition, or the Azure SQL Database or
+      Managed Instance edition and service objective). Keys are the column names of the identity query;
+      missing or null values are left out. #>
+    [CmdletBinding()][OutputType([string])]
+    param([Parameter(Mandatory)][hashtable]$Identity)
+    $engine = if ($null -ne $Identity['engine_edition']) { [int]$Identity['engine_edition'] } else { 0 }
+    $platform = switch ($engine) {
+        5 { 'Azure SQL Database' }
+        8 { 'Azure SQL Managed Instance' }
+        default { if ($Identity['server_edition']) { [string]$Identity['server_edition'] } elseif ($engine) { "engine edition $engine" } else { '' } }
+    }
+    $details = @(@($Identity['database_edition'], $Identity['service_objective']) |
+            Where-Object { $_ -and [string]$_ -ne $platform } | ForEach-Object { [string]$_ } | Select-Object -Unique)
+    if ($platform -and $details.Count -gt 0) { $platform += " ($($details -join ', '))" }
+    $version = [string]$Identity['product_version']
+    if ($version -and $Identity['product_update_level']) { $version += " $($Identity['product_update_level'])" }
+    $parts = [System.Collections.Generic.List[string]]::new()
+    $parts.Add("server [$($Identity['server_name'])]")
+    $parts.Add("database [$($Identity['database_name'])]")
+    if ($version) { $parts.Add("version $version") }
+    if ($platform) { $parts.Add($platform) }
+    'Server reports: ' + ($parts -join ', ') + '.'
+}
+
+function Get-ShrinkMissingFileNames {
+    <# .SYNOPSIS The requested file names (duplicates removed) with no match among the found names, compared case-insensitively. #>
+    [CmdletBinding()][OutputType([string[]])]
+    param(
+        [Parameter(Mandatory)][AllowEmptyCollection()][string[]]$Requested,
+        [AllowEmptyCollection()][string[]]$Found = @()
+    )
+    foreach ($n in ($Requested | Select-Object -Unique)) {
+        if (-not ($Found | Where-Object { $_ -ieq $n })) { $n }
+    }
+}
+
+function Measure-ShrinkFileSpace {
+    <# .SYNOPSIS
+      Summarize data-file sizes (in 8-KiB pages, as in sys.database_files) into per-file allocated and used
+      MiB, database totals, and the free space PVS can grow into: unused space inside the files plus room
+      left to grow to each file's maximum size. A file with no maximum size (max_size = -1) has an unknown
+      growth ceiling, so its current size is used as the ceiling and its id is listed in FallbackFiles. #>
+    [CmdletBinding()][OutputType([pscustomobject])]
+    param([Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Rows)
+    $files = @{}
+    $allocPages = [long]0; $usedPages = [long]0; $freePages = [long]0; $headroomPages = [long]0
+    $fallback = [System.Collections.Generic.List[string]]::new()
+    foreach ($r in $Rows) {
+        $size = [long]$r.SizePages; $used = [long]$r.UsedPages; $max = [long]$r.MaxSizePages
+        $files[[int]$r.FileId] = @{ Alloc = $size / 128.0; Used = $used / 128.0 }
+        $allocPages += $size; $usedPages += $used
+        $freePages += [Math]::Max([long]0, $size - $used)
+        if ($max -eq -1) { $fallback.Add([string]$r.FileId) }
+        else { $headroomPages += [Math]::Max([long]0, $max - $size) }
+    }
+    [pscustomobject]@{
+        Files         = $files
+        AllocMB       = $allocPages / 128.0
+        UsedMB        = $usedPages / 128.0
+        FreeKb        = [double]$freePages * 8
+        HeadroomKb    = [double]$headroomPages * 8
+        FallbackFiles = ($fallback -join ',')
+    }
 }
 
 function Test-ShrinkParameterSet {

@@ -43,6 +43,9 @@ Invoke-ShrinkDriver -ServerName sql01 -DatabaseName MyDb -Mode Shrink -AuthType 
 # Shrink with SQL auth (prompts securely for the password when it is not supplied)
 Invoke-ShrinkDriver -ServerName sql01 -DatabaseName MyDb -Mode Shrink -AuthType SQL -SqlLogin appuser
 
+# Shrink only the named data files
+Invoke-ShrinkDriver -ServerName sql01 -DatabaseName MyDb -Mode Shrink -AuthType Windows -FileName data_3, data_4
+
 # Connect to an instance with a self-signed certificate
 Invoke-ShrinkDriver -ServerName devsql01 -DatabaseName MyDb -Mode Shrink -AuthType Windows -TrustServerCertificate
 ```
@@ -56,9 +59,10 @@ Get-Help Invoke-ShrinkDriver -Full
 ## Output
 
 Progress is written to the console and mirrored to a log file — by default a
-timestamped `shrink-<time>.log` next to the script, or the
-path given with `-LogPath`. The log records specified parameter values and a 
-periodic per-file status report plus notable events (retries and cancellations).
+timestamped `shrink-<time>.log` next to the script, or the path given with
+`-LogPath`. The log records specified parameter values, the server and database
+the connection reached as reported by the server, a periodic per-file status
+report, and notable events (retries and cancellations).
 
 ### Status report
 
@@ -70,32 +74,35 @@ Each periodic report has one row per worker session, with these columns:
 - **Used**, **Alloc** — the file's used and allocated size.
 - **%Done** — progress of the current `DBCC SHRINKFILE` increment as reported in `sys.dm_exec_requests`.
 - **Elapsed** — time since the worker's session was established.
-- **Increment** — the number of the current incremental shrink step.
+- **Increment** — the number of the current incremental shrink step for the file. A retry of the same step keeps the same number.
+- **Retry** — retries of the current step so far, out of `-RetryCount` (for example, `2/5`).
 - **Cmd** — the current shrink phase, as reported by `sys.dm_exec_requests`, such as `DbccSpaceReclaim` or `DbccFilesCompact`.
 - **Status** — the request's execution status (running, suspended, and so on).
-- **dCPU**, **dReads**, **dWrites** — CPU, reads, and writes since the previous report, within the same shrink increment.
+- **dCPU**, **dReads**, **dWrites** — CPU, reads, and writes since the previous report, within the same shrink command.
 - **Blocker** — the blocking session, if any.
 - **Wait** — the current wait type, if any.
 
 It closes with a database-wide total: overall run time, total used and allocated
-space, and a running tally of file outcomes.
+space, and a running tally of file outcomes. If the file sizes can't be read for a
+report (for example, because the read is blocked while files are being shrunk),
+they're shown as unavailable and the next report tries again.
 
 Here's an example of the status report:
 
 ```output
 2026-07-13 11:30:04 [INFO] ---- status ----
-2026-07-13 11:30:04 [INFO] Worker  SPID  File  Used (GiB)  Alloc (GiB)  %Done     Elapsed  Increment  Cmd               Status       dCPU  dReads  dWrites  Blocker                 Wait              
-2026-07-13 11:30:04 [INFO] ------  ----  ----  ----------  -----------  -----  ----------  ---------  ----------------  ---------  ------  ------  -------  ----------------------  ------------------
-2026-07-13 11:30:04 [INFO]      0   157    13        66.3         78.0   88.8  4h 37m 34s         12  DbccFilesCompact  suspended  37,507  68,713  143,163  -                       PAGEIOLATCH_EX 1ms
-2026-07-13 11:30:04 [INFO]      1   160    11        66.2         78.0     89  4h 37m 34s         13  DbccFilesCompact  suspended  34,064  69,614  143,715  -                       PAGEIOLATCH_EX 1ms
-2026-07-13 11:30:04 [INFO]      2   162    33        43.5         50.0   89.6  4h 37m 33s         17  DbccFilesCompact  runnable   45,499  67,346  141,368  -                                         
-2026-07-13 11:30:04 [INFO]      3   143    12        65.7         68.0   97.2  4h 37m 34s         18  DbccFilesCompact  suspended       -       -        -  -                       PAGEIOLATCH_EX 0ms
-2026-07-13 11:30:04 [INFO]      4   170    31        80.2         88.0   93.7  4h 37m 34s         11  DbccFilesCompact  running    45,815  66,481  154,862  -                                         
-2026-07-13 11:30:04 [INFO]      5   179     6        70.3         78.4   92.5  4h 37m 33s         12  DbccFilesCompact  suspended  33,075  79,371  153,667  164 (DbccFilesCompact)  LCK_M_X 0ms       
-2026-07-13 11:30:04 [INFO]      6   164     5        72.4         98.0   92.3  4h 37m 34s         15  DbccFilesCompact  running    45,118  79,988  175,718  -                                         
-2026-07-13 11:30:04 [INFO]      7   172    29        80.5         98.0   94.6  4h 37m 33s         11  DbccFilesCompact  running    36,587  69,368  143,467  -                                         
-2026-07-13 11:30:04 [INFO]      8   161    34        31.4         50.0   92.5  4h 37m 34s         14  DbccFilesCompact  suspended  39,537  55,254  150,108  179 (DbccFilesCompact)  LCK_M_X 5ms       
-2026-07-13 11:30:04 [INFO]      9   141    30        80.4         88.0   92.6  4h 37m 34s         12  DbccFilesCompact  suspended  40,900  68,313  150,113  161 (DbccFilesCompact)  LCK_M_X 2ms       
+2026-07-13 11:30:04 [INFO] Worker  SPID  File  Used (GiB)  Alloc (GiB)  %Done     Elapsed  Increment  Retry  Cmd               Status       dCPU  dReads  dWrites  Blocker                 Wait              
+2026-07-13 11:30:04 [INFO] ------  ----  ----  ----------  -----------  -----  ----------  ---------  -----  ----------------  ---------  ------  ------  -------  ----------------------  ------------------
+2026-07-13 11:30:04 [INFO]      0   157    13        66.3         78.0   88.8  4h 37m 34s          2    0/5  DbccFilesCompact  suspended  37,507  68,713  143,163  -                       PAGEIOLATCH_EX 1ms
+2026-07-13 11:30:04 [INFO]      1   160    11        66.2         78.0     89  4h 37m 34s          2    0/5  DbccFilesCompact  suspended  34,064  69,614  143,715  -                       PAGEIOLATCH_EX 1ms
+2026-07-13 11:30:04 [INFO]      2   162    33        43.5         50.0   89.6  4h 37m 33s          3    0/5  DbccFilesCompact  runnable   45,499  67,346  141,368  -                                         
+2026-07-13 11:30:04 [INFO]      3   143    12        65.7         68.0   97.2  4h 37m 34s          4    1/5  DbccFilesCompact  suspended       -       -        -  -                       PAGEIOLATCH_EX 0ms
+2026-07-13 11:30:04 [INFO]      4   170    31        80.2         88.0   93.7  4h 37m 34s          2    0/5  DbccFilesCompact  running    45,815  66,481  154,862  -                                         
+2026-07-13 11:30:04 [INFO]      5   179     6        70.3         78.4   92.5  4h 37m 33s          2    0/5  DbccFilesCompact  suspended  33,075  79,371  153,667  164 (DbccFilesCompact)  LCK_M_X 0ms       
+2026-07-13 11:30:04 [INFO]      6   164     5        72.4         98.0   92.3  4h 37m 34s          3    0/5  DbccFilesCompact  running    45,118  79,988  175,718  -                                         
+2026-07-13 11:30:04 [INFO]      7   172    29        80.5         98.0   94.6  4h 37m 33s          2    0/5  DbccFilesCompact  running    36,587  69,368  143,467  -                                         
+2026-07-13 11:30:04 [INFO]      8   161    34        31.4         50.0   92.5  4h 37m 34s          3    0/5  DbccFilesCompact  suspended  39,537  55,254  150,108  179 (DbccFilesCompact)  LCK_M_X 5ms       
+2026-07-13 11:30:04 [INFO]      9   141    30        80.4         88.0   92.6  4h 37m 34s          2    0/5  DbccFilesCompact  suspended  40,900  68,313  150,113  161 (DbccFilesCompact)  LCK_M_X 2ms       
 2026-07-13 11:30:04 [INFO] ---- database total ----
 2026-07-13 11:30:04 [INFO]   Run time           : 12h 10m 24s
 2026-07-13 11:30:04 [INFO]   Used               : 2.3 TiB

@@ -200,6 +200,10 @@ CREATE DATABASE [$Database] ON PRIMARY
  (NAME='${Database}_1', FILENAME='$DataDir\$Database.mdf', SIZE=16MB, FILEGROWTH=16MB),
 $addedFiles
  LOG ON (NAME='${Database}_log', FILENAME='$DataDir\${Database}_log.ldf', SIZE=64MB, FILEGROWTH=64MB);
+-- LocalDB/Express create databases with AUTO_CLOSE ON. Each short-lived fixture connection would then
+-- shut the database down and the next one restart it, which is slow and interrupts the background
+-- deallocation that Wait-ShrinkFreeSpaceSettled waits for.
+ALTER DATABASE [$Database] SET AUTO_CLOSE OFF;
 "@ | Out-Null
     }
 

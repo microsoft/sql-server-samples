@@ -2,6 +2,39 @@
 
 All notable changes to the ShrinkDriver sample are documented in this file.
 
+## [1.3.0] - 2026-11-04
+
+### Added
+
+- `-FileName`: limit a run to the named data files.
+- The log records what the server reports about the connection: server and database name,
+  product version and update level, and the edition or service objective.
+- A **Retry** column in the status report shows the attempt count for the current increment
+  (for example `2/5`).
+- When a shrink command ends with an error (for example, a lock timeout) after running for a
+  long time, the log notes that the retry repeats the whole command, with advice for lock
+  timeouts and for the step size.
+
+### Changed
+
+- **Increment** in the status report now counts the shrink steps for the current file; a retry
+  no longer increases it.
+- The log and PVS safety checks run independently, so a failed read of one no longer disables
+  the other. The PVS check reuses the file sizes read for the status report instead of running a
+  separate, more expensive query. A check that is skipped several times in a row is reported as
+  leaving the run unprotected.
+
+### Fixed
+
+- A blocked file-size read (for example, while files are being shrunk) no
+  longer drops the whole status report or skips stuck detection; the sizes are shown as
+  unavailable for that report.
+- A worker no longer treats a timed-out file-size read as a lost connection and reconnects;
+  it retries the read within the file's retry budget.
+- If reading a file's size fails right after MSSQL error 49537 (shrink blocked by the low
+  watermark; run shrink again later), the worker now records the file's outcome and
+  continues, instead of stopping and leaving unstarted files unprocessed.
+
 ## [1.2.0] - 2026-09-11
 
 ### Added
